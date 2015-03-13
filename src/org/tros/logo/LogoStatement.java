@@ -15,6 +15,8 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.ProcessResult;
+import org.tros.torgo.CodeBlock;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,7 +46,7 @@ public class LogoStatement extends LogoBlock {
      * @param command
      * @param ctx
      */
-    public LogoStatement(String command, ParserRuleContext ctx) {
+    protected LogoStatement(String command, ParserRuleContext ctx) {
         super(ctx);
 
         this.command = command.trim();
@@ -80,15 +82,15 @@ public class LogoStatement extends LogoBlock {
      * @return
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context, Stack<LogoBlock> stack) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context, Stack<CodeBlock> stack) {
         //if the thread has halted, don't process and pop up the stack.
-        if (stack.firstElement().isHalted()) {
+        if (isHalted()) {
             return ProcessResult.HALT;
         }
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()});
-        LogoBlock first = stack.firstElement();
-        first.listeners.stream().forEach((l) -> {
+
+        listeners.stream().forEach((l) -> {
             l.currStatement(command, ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex());
         });
         
@@ -239,7 +241,7 @@ public class LogoStatement extends LogoBlock {
                 break;
             default:
                 stack.push(this);
-                LogoFunction lf = getFunction(command, stack);
+                CodeBlock lf = getFunction(command, stack);
                 if (lf != null) {
                     success = lf.process(scope, canvas, ctx, stack);
                 } else {

@@ -15,6 +15,9 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.ProcessResult;
+import org.tros.torgo.CodeBlock;
+import org.tros.torgo.CodeFunction;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -30,7 +33,7 @@ import org.tros.torgo.Scope;
  *
  * @author matta
  */
-public class LogoFunction extends LogoBlock {
+public class LogoFunction extends LogoBlock implements CodeFunction {
 
     private final String funcitonName;
 
@@ -40,7 +43,7 @@ public class LogoFunction extends LogoBlock {
      * @param functionName
      * @param ctx
      */
-    public LogoFunction(String functionName, ParserRuleContext ctx) {
+    protected LogoFunction(String functionName, ParserRuleContext ctx) {
         super(ctx);
         this.funcitonName = functionName;
     }
@@ -50,6 +53,7 @@ public class LogoFunction extends LogoBlock {
      *
      * @return
      */
+    @Override
     public String getFunctionName() {
         return funcitonName;
     }
@@ -78,7 +82,7 @@ public class LogoFunction extends LogoBlock {
      * @return
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext prc, Stack<LogoBlock> stack) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext prc, Stack<CodeBlock> stack) {
         scope.push();
         ProcedureInvocationContext context = (ProcedureInvocationContext) prc;
 

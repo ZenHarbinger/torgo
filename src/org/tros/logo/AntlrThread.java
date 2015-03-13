@@ -15,6 +15,7 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.CodeBlock;
 import org.tros.utils.HaltMonitor;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -28,25 +29,28 @@ import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.DynamicScope;
 import org.tros.torgo.InterpreterListener;
 import org.tros.torgo.InterpreterThread;
+import org.tros.torgo.LexicalAnalyzer;
 import org.tros.torgo.TorgoCanvas;
 
 /**
  * Logo processing thread.
+ *
  * @author matta
  */
 public class AntlrThread extends Thread implements InterpreterThread {
 
     private final HaltMonitor monitor;
     private ParseTree tree;
-    private LogoBlock script;
+    private CodeBlock script;
     private final String source;
     private final TorgoCanvas canvas;
     private final ArrayList<InterpreterListener> listeners = new ArrayList<>();
 
     /**
      * Constructor
+     *
      * @param source
-     * @param canvas 
+     * @param canvas
      */
     public AntlrThread(String source, TorgoCanvas canvas) {
         this.source = source;
@@ -56,7 +60,8 @@ public class AntlrThread extends Thread implements InterpreterThread {
 
     /**
      * Check to see if the thread is halted.
-     * @return 
+     *
+     * @return
      */
     @Override
     public boolean isHalted() {
@@ -73,7 +78,8 @@ public class AntlrThread extends Thread implements InterpreterThread {
 
     /**
      * Add a specified listener.
-     * @param listener 
+     *
+     * @param listener
      */
     @Override
     public void addInterpreterListener(InterpreterListener listener) {
@@ -84,7 +90,8 @@ public class AntlrThread extends Thread implements InterpreterThread {
 
     /**
      * Remove a specified listener.
-     * @param listener 
+     *
+     * @param listener
      */
     @Override
     public void removeInterpreterListener(InterpreterListener listener) {
@@ -109,10 +116,9 @@ public class AntlrThread extends Thread implements InterpreterThread {
             //the prog element is the root element defined in the logo.g4 grammar.
             tree = parser.prog();
             //walk the parse tree and build the execution map
-            script = CommandListener.lexicalAnalysis(tree);
-            //set the halt monitor on the root element of the stack
-            script.setHaltMonitor(monitor);
-            script.addInterpreterListener(new InterpreterListener() {
+            LexicalAnalyzer l = CommandListener.lexicalAnalysis(tree);
+            script = l.getEntryPoint();
+            InterpreterListener listener = new InterpreterListener() {
 
                 @Override
                 public void started() {
@@ -136,6 +142,10 @@ public class AntlrThread extends Thread implements InterpreterThread {
                         l.currStatement(statement, line, start, end);
                     });
                 }
+            };
+            l.getCodeBlocks().stream().forEach((cb) -> {
+                cb.addInterpreterListener(listener);
+                monitor.addListener(cb);
             });
             //interpret the script
             script.process(new DynamicScope(), canvas, null, new Stack<>());

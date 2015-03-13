@@ -15,6 +15,9 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.ProcessResult;
+import org.tros.torgo.CodeBlock;
+import org.tros.torgo.CodeFunction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,27 +35,22 @@ import org.tros.utils.IHaltMonitor;
  *
  * @author matta
  */
-public class LogoBlock {
-
-    public enum ProcessResult {
-
-        SUCCESS,
-        HALT,
-        RETURN
-    }
+public class LogoBlock implements CodeBlock {
 
     protected final ParserRuleContext ctx;
-    private final ArrayList<LogoBlock> commands = new ArrayList<>();
-    private final HashMap<String, LogoFunction> functions = new HashMap<>();
-    private IHaltMonitor monitor;
+    private final ArrayList<CodeBlock> commands = new ArrayList<>();
+    private final HashMap<String, CodeFunction> functions = new HashMap<>();
     protected final ArrayList<InterpreterListener> listeners = new ArrayList<>();
+    private final AtomicBoolean halted = new AtomicBoolean(false);
 
+    @Override
     public void addInterpreterListener(InterpreterListener listener) {
         if (!listeners.contains(listener)) {
             listeners.add(listener);
         }
     }
 
+    @Override
     public void removeInterpreterListener(InterpreterListener listener) {
         if (listeners.contains(listener)) {
             listeners.remove(listener);
@@ -60,30 +58,11 @@ public class LogoBlock {
     }
 
     /**
-     * Set the halt monitor. This is currently only used on the First element in
-     * the stack so it does not need to be passed to every LogoBlock instance.
-     *
-     * @param monitor
-     */
-    protected void setHaltMonitor(IHaltMonitor monitor) {
-        this.monitor = monitor;
-    }
-
-    /**
-     * Get the halt monitor.
-     *
-     * @return
-     */
-    protected IHaltMonitor haltMonitor() {
-        return this.monitor;
-    }
-
-    /**
      * Constructor
      *
      * @param ctx
      */
-    public LogoBlock(ParserRuleContext ctx) {
+    protected LogoBlock(ParserRuleContext ctx) {
         this.ctx = ctx;
     }
 
@@ -92,7 +71,8 @@ public class LogoBlock {
      *
      * @param command
      */
-    public final void addCommand(LogoBlock command) {
+    @Override
+    public final void addCommand(CodeBlock command) {
         if (!commands.contains(command)) {
             commands.add(command);
         }
@@ -103,7 +83,8 @@ public class LogoBlock {
      *
      * @param commands
      */
-    public final void addCommand(Collection<LogoBlock> commands) {
+    @Override
+    public final void addCommand(Collection<CodeBlock> commands) {
         this.commands.addAll(commands);
     }
 
@@ -112,8 +93,9 @@ public class LogoBlock {
      *
      * @return
      */
-    public final LogoBlock[] getCommands() {
-        return commands.toArray(new LogoBlock[]{});
+    @Override
+    public final CodeBlock[] getCommands() {
+        return commands.toArray(new CodeBlock[]{});
     }
 
     /**
@@ -122,8 +104,9 @@ public class LogoBlock {
      * @return true if halted, false if the monitor is null or the monitor is
      * not halted.
      */
+    @Override
     public boolean isHalted() {
-        return monitor != null ? monitor.isHalted() : false;
+        return halted.get();
     }
 
     /**
@@ -135,7 +118,8 @@ public class LogoBlock {
      * @param stack
      * @return true if we should continue, false otherwise
      */
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext, Stack<LogoBlock> stack) {
+    @Override
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext, Stack<CodeBlock> stack) {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
         stack.push(this);
@@ -174,10 +158,10 @@ public class LogoBlock {
      * @param callstack
      * @return
      */
-    protected LogoFunction getFunction(String name, Stack<LogoBlock> callstack) {
-        LogoFunction ret = null;
+    public CodeBlock getFunction(String name, Stack<CodeBlock> callstack) {
+        CodeBlock ret = null;
         if (!hasFunction(name)) {
-            for (LogoBlock lb : callstack) {
+            for (CodeBlock lb : callstack) {
                 if (lb.hasFunction(name)) {
                     ret = lb.getFunction(name);
                     break;
@@ -193,7 +177,8 @@ public class LogoBlock {
      * @param name
      * @return
      */
-    protected boolean hasFunction(String name) {
+    @Override
+    public boolean hasFunction(String name) {
         return functions.containsKey(name);
     }
 
@@ -203,7 +188,8 @@ public class LogoBlock {
      * @param name
      * @return
      */
-    protected LogoFunction getFunction(String name) {
+    @Override
+    public CodeFunction getFunction(String name) {
         return functions.get(name);
     }
 
@@ -213,7 +199,18 @@ public class LogoBlock {
      *
      * @param function
      */
-    protected void addFunction(LogoFunction function) {
+    @Override
+    public void addFunction(CodeFunction function) {
         functions.put(function.getFunctionName(), function);
+    }
+
+    @Override
+    public void halted(IHaltMonitor monitor) {
+        halted.set(monitor.isHalted());
+    }
+    
+    @Override
+    public ParserRuleContext getParserRuleContext() {
+        return ctx;
     }
 }

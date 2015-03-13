@@ -15,6 +15,8 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.ProcessResult;
+import org.tros.torgo.CodeBlock;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,7 +49,7 @@ public class LogoFor extends LogoBlock {
      * Constructor
      * @param ctx 
      */
-    public LogoFor(ParserRuleContext ctx) {
+    protected LogoFor(ParserRuleContext ctx) {
         super(ctx);
     }
 
@@ -60,11 +62,10 @@ public class LogoFor extends LogoBlock {
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext, Stack<LogoBlock> stack) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext, Stack<CodeBlock> stack) {
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
-        LogoBlock first = stack.firstElement();
-        first.listeners.stream().forEach((l) -> {
+        listeners.stream().forEach((l) -> {
             l.currStatement("for", ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex());
         });
 

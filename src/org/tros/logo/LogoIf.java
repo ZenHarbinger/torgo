@@ -15,6 +15,8 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.ProcessResult;
+import org.tros.torgo.CodeBlock;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +37,7 @@ public class LogoIf extends LogoBlock {
      * Constructor
      * @param ctx 
      */
-    public LogoIf(ParserRuleContext ctx) {
+    protected LogoIf(ParserRuleContext ctx) {
         super(ctx);
     }
 
@@ -61,12 +63,11 @@ public class LogoIf extends LogoBlock {
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context, Stack<LogoBlock> stack) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context, Stack<CodeBlock> stack) {
         scope.push();
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
-        LogoBlock first = stack.firstElement();
-        first.listeners.stream().forEach((l) -> {
+        listeners.stream().forEach((l) -> {
             l.currStatement("if", ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex());
         });
 

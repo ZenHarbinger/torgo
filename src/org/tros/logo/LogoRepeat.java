@@ -15,6 +15,8 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.ProcessResult;
+import org.tros.torgo.CodeBlock;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +43,7 @@ public class LogoRepeat extends LogoBlock {
      * Constructor
      * @param ctx 
      */
-    public LogoRepeat(ParserRuleContext ctx) {
+    protected LogoRepeat(ParserRuleContext ctx) {
         super(ctx);
     }
 
@@ -67,11 +69,10 @@ public class LogoRepeat extends LogoBlock {
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context, Stack<LogoBlock> stack) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context, Stack<CodeBlock> stack) {
         int repeat = ExpressionListener.evaluateDouble(scope, ((logoParser.RepeatContext)ctx).expression()).intValue();
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
-        LogoBlock first = stack.firstElement();
-        first.listeners.stream().forEach((l) -> {
+        listeners.stream().forEach((l) -> {
             l.currStatement("repeat", ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex());
         });
 
