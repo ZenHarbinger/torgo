@@ -1,0 +1,3 @@
+clear
+home
+cs pu setxy -60 60 pd home rt 45 fd 85 lt 135 fd 120

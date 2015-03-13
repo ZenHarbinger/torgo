@@ -1,0 +1,3 @@
+clear
+home
+for [i 10 100 10] [fd :i rt 90] ht

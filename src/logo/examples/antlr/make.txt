@@ -1,0 +1,4 @@
+clear
+home
+make "size 60
+print :size

@@ -1,0 +1,17 @@
+;--works with the caveat that recursion is limited
+;--java.lang.StackOverflowError thrown
+;--this makes sense since there is no base condition to stop the recursion...
+clear
+home
+to star
+    to walk_the_stars
+        repeat 5 [fd 10 rt 144] fd 20 rt random 360
+    end
+
+    ;add in a condition that will prevent infinite recursion
+    ;as it is, we cannot recurse too much...
+    if random 100 < 98 [ star ]
+    walk_the_stars
+end
+
+star

@@ -1,0 +1,4 @@
+;doesn't fail, prints 0's
+print "if
+print "print
+print "repeat

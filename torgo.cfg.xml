@@ -1,0 +1,23 @@
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>dist/torgo.jar</jar>
+  <outfile>torgo.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl>https://code.google.com/p/torgo/</supportUrl>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <!-- <icon>App.ico</icon> -->
+  <jre>
+    <path></path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <minVersion>1.8.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <opt>-jar dist/torgo.jar</opt>
+  </jre>
+</launch4jConfig>

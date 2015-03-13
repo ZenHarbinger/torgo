@@ -1,0 +1,5 @@
+;string values don't work yet
+clear
+home
+make "first_programmer "Ada_Lovelace
+print :first_programmer

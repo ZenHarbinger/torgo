@@ -1,0 +1,21 @@
+clear
+home
+fontsize 36
+fontstyle bold
+
+pu
+setxy 140 0
+pd
+
+make "color 10
+repeat 24 [
+    pencolor :color 0 :color 50
+    left 15
+    penup
+    forward 45
+    pendown
+    lt 90
+    drawstring "this_is_logo_text
+    rt 90
+    make "color :color + 10
+]

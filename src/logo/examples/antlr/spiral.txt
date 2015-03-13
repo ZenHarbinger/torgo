@@ -1,0 +1,10 @@
+clear
+home
+to spiral :size :angle
+    if :size > 100 [stop]
+    forward :size
+    right :angle
+    spiral :size + 2 :angle
+end
+
+spiral 1 45

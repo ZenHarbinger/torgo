@@ -1,0 +1,23 @@
+clear
+home
+
+make "i 0
+repeat 255 [
+	make "j 0
+	repeat 255 [
+		make "red :i
+		make "green :j * :i
+		make "blue :j
+		pencolor :red :green :blue 3
+		repeat 4 [
+			forward 500
+			right 90
+		]
+		forward 25
+		right 3.7
+		make "j :j + 1
+	]
+	forward 100
+	left 17
+	make "i :i + 1
+]

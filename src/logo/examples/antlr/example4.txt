@@ -1,0 +1,5 @@
+clear
+home
+make "angle 0
+repeat 1000 [fd 3 rt :angle make "angle :angle + 7]
+	

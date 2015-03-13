@@ -1,0 +1,12 @@
+make "i 1
+make "j 1
+
+print :i
+print :j
+
+repeat 12 [
+	make "k :i + :j
+	make "i :j
+	make "j :k
+	print :k
+]

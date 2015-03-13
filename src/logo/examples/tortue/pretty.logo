@@ -1,0 +1,14 @@
+to SQUARE
+    repeat 4[
+        forward 50
+        left 90
+    ]
+end
+
+clear
+home
+pencolor RED
+repeat 6 [
+    SQUARE
+    right 60
+]

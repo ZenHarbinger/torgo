@@ -1,0 +1,19 @@
+to spoke
+    repeat :x [
+        forward :y
+        make "turnamount 360 / :x
+        left :turnamount
+    ]
+end
+
+clear
+home
+pendown
+
+pencolor blue
+repeat 20 [
+    make "x 3
+    make "y 45
+    spoke
+    left 18
+]

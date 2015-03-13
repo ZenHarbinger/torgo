@@ -1,0 +1,8 @@
+clear
+home
+to random_walk
+repeat 100 [fd random 80 rt 90]
+end
+
+random_walk
+

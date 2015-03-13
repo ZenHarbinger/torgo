@@ -1,0 +1,13 @@
+to snowflake
+    repeat 8 [
+        repeat 8 [
+            left 135
+            forward 30
+        ]
+        left 45
+    ]
+end
+
+home
+clear
+snowflake

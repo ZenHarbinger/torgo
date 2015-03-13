@@ -1,0 +1,26 @@
+clear
+home
+pencolor 0 0 0 3
+
+make "i 1
+repeat 256 [
+	make "j 1
+	repeat 256 [
+		repeat 4 [
+			forward 200
+			right 90
+		]
+		right 0.1
+		penup
+		make "forwardamount :j / 200
+		forward :forwardamount
+		pendown
+		make "j :j + 1
+	]
+	penup
+	make "forwardamount :i / 200
+	forward :forwardamount
+	pendown
+	left :i
+	make "i :i + 1
+]

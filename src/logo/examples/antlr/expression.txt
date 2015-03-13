@@ -1,0 +1,6 @@
+clear
+home
+make "size 81/9
+print 2*3
+print :size - 4
+print - 1 - 2 ^ -2 * (3 + 4) / 2

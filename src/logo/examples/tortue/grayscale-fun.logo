@@ -1,0 +1,14 @@
+clear
+home
+pencolor 0.0 0.0 0.0 3.0
+
+repeat 15 [
+	repeat 250 [
+		repeat 4 [
+			forward 200
+			right 90
+		]
+		right 0.1
+	]
+	left 1
+]

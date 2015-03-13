@@ -1,0 +1,19 @@
+cs
+home
+to tree :size
+  forward :size
+  if :size > 2 [
+    localmake "angle (30 + random 60)
+    localmake "scale 0.6 + (random 20)/100
+    right :angle / 2
+    tree :size * :scale
+    left :angle 
+    tree :size * :scale
+    right :angle / 2
+  ]
+  back :size
+end
+penup
+back 208
+pendown
+tree 100

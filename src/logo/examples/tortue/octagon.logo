@@ -1,0 +1,7 @@
+clear
+home
+pencolor BLUE
+repeat 8 [
+    forward 50
+    left 45
+]

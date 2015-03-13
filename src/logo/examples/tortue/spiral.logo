@@ -1,0 +1,9 @@
+home
+clear
+pencolor BLUE
+make "i 1
+repeat 888 [
+	forward :i
+	left 45
+	make "i :i + 1
+]

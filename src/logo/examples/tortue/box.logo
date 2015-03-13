@@ -1,0 +1,11 @@
+clear
+home
+to BOX
+repeat 4 [
+    forward 100
+    left 90
+]
+end
+
+pencolor green
+BOX

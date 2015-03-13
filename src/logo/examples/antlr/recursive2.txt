@@ -1,0 +1,20 @@
+to tree :size
+    if :size < 5 [
+        fd :size
+        bk :size
+        stop
+    ]
+    fd :size/3
+    left 30 tree :size*2/3 right 30
+    fd :size/6
+    right 25 tree :size/2 left 25
+    fd :size/3
+    right 25 tree :size/2 left 25
+    fd :size/6
+    bk :size
+end
+
+clear
+home
+
+tree 150

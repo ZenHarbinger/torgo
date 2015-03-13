@@ -1,0 +1,71 @@
+; test to make sure no exceptions are thrown
+; nothing fancy here.
+to test
+    clear
+    home
+
+    fontstyle bold
+    fontstyle italic
+    fontstyle plain
+    fontsize 36
+    backward 10
+    forward 10
+    left 45
+    right 45
+    setxy 0 0
+    penup
+    pendown
+;    new
+    canvascolor white
+    drawstring "hello
+    pause 1
+    home
+    ht
+    st
+    repeat 5 [
+        forward 1
+    ]
+
+    make "i 1
+    print :i
+    make "i :i + 1
+    print :i
+    make "i :i * 2
+    print :i
+    make "i :i / 2
+    print :i
+    make "i :i - 1
+    print :i
+    if :i > 0 [
+        print :i
+    ]
+
+    pencolor BLACK
+    forward 10
+    pencolor BLUE
+    forward 10
+    pencolor CYAN
+    forward 10
+    pencolor DARKGRAY
+    forward 10
+    pencolor GRAY
+    forward 10
+    pencolor GREEN
+    forward 10
+    pencolor LIGHTGRAY
+    forward 10
+    pencolor MAGENTA
+    forward 10
+    pencolor ORANGE
+    forward 10
+    pencolor PINK
+    forward 10
+    pencolor RED
+    forward 10
+    pencolor WHITE
+    forward 10
+    pencolor YELLOW
+    forward 10
+end
+
+test

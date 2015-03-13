@@ -1,0 +1,15 @@
+clear
+home
+canvascolor black
+pencolor 128 128 0 3
+
+repeat 15 [
+	repeat 250 [
+		repeat 4 [
+			forward 200
+			right 90
+		]
+		right 0.1
+	]
+	left 1
+]

@@ -1,0 +1,17 @@
+clear
+home
+
+make "i 1
+make "color 200
+repeat 500 [
+	make "red :color
+	make "blue :color / 2
+	make "green :color
+	pencolor :red :green :blue 255
+	make "forwardamount :i + 1
+	forward :forwardamount
+	right 70
+	make "i :i + 1
+	make "color :color + 1
+	if :color > 255 [ make "color 200 ]
+]

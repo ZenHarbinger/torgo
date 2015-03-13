@@ -1,0 +1,3 @@
+clear
+home
+repeat 8 [rt 45 fd 10]
