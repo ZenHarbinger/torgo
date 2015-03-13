@@ -12,7 +12,7 @@ debian/torgo.debhelper.log
 debian/torgo.substvars
 debian/torgo/
 
-src/org/tros/torgo/TorgoInfo.properties
+# src/org/tros/torgo/TorgoInfo.properties
 
 *.class
 
