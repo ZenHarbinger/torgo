@@ -15,23 +15,140 @@
  */
 package org.tros.torgo;
 
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.tros.utils.HaltMonitor;
+
 /**
  * Interpreter Thread Interface
  * @author matta
  */
-public interface InterpreterThread {
+public abstract class InterpreterThread extends Thread {
 
-    boolean isHalted();
+    protected final HaltMonitor monitor;
+    protected CodeBlock script;
+    protected final String source;
+    protected final TorgoCanvas canvas;
+    protected final ArrayList<InterpreterListener> listeners = new ArrayList<>();
 
-    void halt();
+    /**
+     * Constructor
+     *
+     * @param source
+     * @param canvas
+     */
+    public InterpreterThread(String source, TorgoCanvas canvas) {
+        this.source = source;
+        this.canvas = canvas;
+        this.monitor = new HaltMonitor();
+    }
 
-    void start();
+    /**
+     * Check to see if the thread is halted.
+     *
+     * @return
+     */
+    public final boolean isHalted() {
+        return monitor.isHalted();
+    }
 
-    void run();
+    /**
+     * Halt the thread.
+     */
+    public final void halt() {
+        monitor.halt();
+    }
+
+    /**
+     * Add a specified listener.
+     *
+     * @param listener
+     */
+    public final void addInterpreterListener(InterpreterListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    /**
+     * Remove a specified listener.
+     *
+     * @param listener
+     */
+    public final void removeInterpreterListener(InterpreterListener listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
+    }
     
-    void waitForTermination();
+    protected abstract ParseTree getParseTree();
+    protected abstract LexicalAnalyzer getLexicalAnalysis(ParseTree tree);
 
-    void addInterpreterListener(InterpreterListener listener);
+    /**
+     * Threaded function.
+     */
+    @Override
+    public final void run() {
+        listeners.stream().forEach((l) -> {
+            l.started();
+        });
+        try {
+            ParseTree tree = getParseTree();
+            //walk the parse tree and build the execution map
+            LexicalAnalyzer l = getLexicalAnalysis(tree);
 
-    void removeInterpreterListener(InterpreterListener listener);
+            script = l.getEntryPoint();
+            InterpreterListener listener = new InterpreterListener() {
+
+                @Override
+                public void started() {
+                }
+
+                @Override
+                public void finished() {
+                }
+
+                @Override
+                public void error(Exception e) {
+                }
+
+                @Override
+                public void message(String msg) {
+                }
+
+                @Override
+                public void currStatement(String statement, int line, int start, int end) {
+                    listeners.stream().forEach((l) -> {
+                        l.currStatement(statement, line, start, end);
+                    });
+                }
+            };
+            l.getCodeBlocks().stream().forEach((cb) -> {
+                cb.addInterpreterListener(listener);
+                monitor.addListener(cb);
+            });
+            //interpret the script
+            script.process(new DynamicScope(), canvas, null, new Stack<>());
+        } catch (Exception ex) {
+            listeners.stream().forEach((l) -> {
+                l.error(ex);
+                Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
+            });
+            Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        listeners.stream().forEach((l) -> {
+            l.finished();
+        });
+    }
+
+    public final void waitForTermination() {
+        try {
+            join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

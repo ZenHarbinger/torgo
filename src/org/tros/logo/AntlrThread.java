@@ -15,158 +15,53 @@
  */
 package org.tros.logo;
 
-import org.tros.torgo.CodeBlock;
-import org.tros.utils.HaltMonitor;
-import java.util.ArrayList;
-import java.util.Stack;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.tros.logo.antlr.logoLexer;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.DynamicScope;
-import org.tros.torgo.InterpreterListener;
 import org.tros.torgo.InterpreterThread;
 import org.tros.torgo.LexicalAnalyzer;
 import org.tros.torgo.TorgoCanvas;
 
 /**
- * Logo processing thread.
+ * Logo specific processing thread.
  *
  * @author matta
  */
-public class AntlrThread extends Thread implements InterpreterThread {
-
-    private final HaltMonitor monitor;
-    private ParseTree tree;
-    private CodeBlock script;
-    private final String source;
-    private final TorgoCanvas canvas;
-    private final ArrayList<InterpreterListener> listeners = new ArrayList<>();
+public class AntlrThread extends InterpreterThread {
 
     /**
-     * Constructor
-     *
+     * Protected constructor, should only be created within the package.
      * @param source
-     * @param canvas
+     * @param canvas 
      */
-    public AntlrThread(String source, TorgoCanvas canvas) {
-        this.source = source;
-        this.canvas = canvas;
-        this.monitor = new HaltMonitor();
+    protected AntlrThread(String source, TorgoCanvas canvas) {
+        super(source, canvas);
     }
 
     /**
-     * Check to see if the thread is halted.
-     *
-     * @return
+     * Get the parse tree, this should only be used by the following function.
+     * @return 
      */
     @Override
-    public boolean isHalted() {
-        return monitor.isHalted();
+    protected ParseTree getParseTree() {
+        //lexical analysis and parsing with ANTLR
+        logoLexer lexer = new logoLexer(new ANTLRInputStream(source));
+        logoParser parser = new logoParser(new CommonTokenStream(lexer));
+        //get the prog element from the parse tree
+        //the prog element is the root element defined in the logo.g4 grammar.
+        return  parser.prog();
     }
 
     /**
-     * Halt the thread.
+     * Get a generic lexical analysis which returns all code blocks as well
+     * as the entry point to the application.
+     * @param tree
+     * @return 
      */
     @Override
-    public void halt() {
-        monitor.halt();
-    }
-
-    /**
-     * Add a specified listener.
-     *
-     * @param listener
-     */
-    @Override
-    public void addInterpreterListener(InterpreterListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
-        }
-    }
-
-    /**
-     * Remove a specified listener.
-     *
-     * @param listener
-     */
-    @Override
-    public void removeInterpreterListener(InterpreterListener listener) {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        }
-    }
-
-    /**
-     * Threaded function.
-     */
-    @Override
-    public void run() {
-        listeners.stream().forEach((l) -> {
-            l.started();
-        });
-        try {
-            //lexical analysis and parsing with ANTLR
-            logoLexer lexer = new logoLexer(new ANTLRInputStream(source));
-            logoParser parser = new logoParser(new CommonTokenStream(lexer));
-            //get the prog element from the parse tree
-            //the prog element is the root element defined in the logo.g4 grammar.
-            tree = parser.prog();
-            //walk the parse tree and build the execution map
-            LexicalAnalyzer l = CommandListener.lexicalAnalysis(tree);
-            script = l.getEntryPoint();
-            InterpreterListener listener = new InterpreterListener() {
-
-                @Override
-                public void started() {
-                }
-
-                @Override
-                public void finished() {
-                }
-
-                @Override
-                public void error(Exception e) {
-                }
-
-                @Override
-                public void message(String msg) {
-                }
-
-                @Override
-                public void currStatement(String statement, int line, int start, int end) {
-                    listeners.stream().forEach((l) -> {
-                        l.currStatement(statement, line, start, end);
-                    });
-                }
-            };
-            l.getCodeBlocks().stream().forEach((cb) -> {
-                cb.addInterpreterListener(listener);
-                monitor.addListener(cb);
-            });
-            //interpret the script
-            script.process(new DynamicScope(), canvas, null, new Stack<>());
-        } catch (Exception ex) {
-            listeners.stream().forEach((l) -> {
-                l.error(ex);
-                Logger.getLogger(AntlrThread.class.getName()).log(Level.SEVERE, null, ex);
-            });
-            Logger.getLogger(AntlrThread.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        listeners.stream().forEach((l) -> {
-            l.finished();
-        });
-    }
-
-    @Override
-    public void waitForTermination() {
-        try {
-            join();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(AntlrThread.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    protected LexicalAnalyzer getLexicalAnalysis(ParseTree tree) {
+        return CommandListener.lexicalAnalysis(tree);
     }
 }

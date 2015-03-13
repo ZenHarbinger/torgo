@@ -37,7 +37,8 @@ import org.tros.torgo.swing.SwingTextConsole;
 public final class LogoController extends ControllerBase {
 
     /**
-     * Hidden Constructor, sets up the environment.
+     * Constructor, must be public for the ServiceLoader.
+     * Only initializes basic object needs.
      */
     public LogoController() {
     }

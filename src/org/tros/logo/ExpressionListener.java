@@ -26,7 +26,7 @@ import org.tros.torgo.Scope;
 /**
  * Evaluates expressions.  Builds a stack/tree of expressions and evaluates them
  * As the tree walker visits/exists nodes in the parse tree.  The scope is passed
- * in to allow for variable dereferencing.
+ * in to allow for variable dereferencing.  This is for the Logo language only.
  * @author matta
  */
 public class ExpressionListener extends logoBaseListener {
@@ -40,7 +40,7 @@ public class ExpressionListener extends logoBaseListener {
      * @param ctx
      * @return 
      */
-    public static Double evaluateDouble(Scope scope, ParseTree ctx) {
+    protected static Double evaluateDouble(Scope scope, ParseTree ctx) {
         ExpressionListener el = new ExpressionListener(scope);
         ParseTreeWalker.DEFAULT.walk(el, ctx);
         return el.getValue();

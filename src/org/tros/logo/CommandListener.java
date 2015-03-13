@@ -28,7 +28,7 @@ import org.tros.torgo.LexicalAnalyzer;
 /**
  * Gets a list of commands to execute.  This does not execute then, but
  * instead builds a tree of commands to run.  Once this tree is built,
- * it will be interpreted.
+ * it will be interpreted.  This is for the Logo language only.
  * @author matta
  */
 public class CommandListener extends logoBaseListener implements LexicalAnalyzer{
@@ -47,7 +47,7 @@ public class CommandListener extends logoBaseListener implements LexicalAnalyzer
      * @param tree
      * @return 
      */
-    public static CommandListener lexicalAnalysis(ParseTree tree) {
+    protected static CommandListener lexicalAnalysis(ParseTree tree) {
         CommandListener cl = new CommandListener();
         ParseTreeWalker.DEFAULT.walk(cl, tree);
         return cl;
