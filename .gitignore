@@ -7,6 +7,13 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 
+debian/files
+debian/torgo.debhelper.log
+debian/torgo.substvars
+debian/torgo/
+
+src/org/tros/torgo/TorgoInfo.properties
+
 *.class
 
 # Mobile Tools for Java (J2ME)
