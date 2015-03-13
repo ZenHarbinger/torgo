@@ -64,6 +64,7 @@ rm -rf debian/torgo.substvars
 fakeroot dh binary
 mv ../*deb .
 
-rm -rf debian/torgo*
-#rm -rf debian/files
-#rm -rf debian/rules
+rm -rf debian/torgo
+rm -rf debian/torgo.substvars
+rm -rf debian/torgo.debhelper.log
+rm -rf debian/files

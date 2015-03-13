@@ -1,8 +1,9 @@
 #!/usr/bin/make -f
 
+include /usr/share/javahelper/java-vars.mk
+
+export JAVA_HOME=/usr/lib/jvm/default-java
+
 %: ; dh $@ --with javahelper
 override_dh_auto_build: ; dh_auto_build -- jar
 override_dh_auto_clean: ; dh_auto_clean -- clean
-#clean: ; ant clean jar
-#build: ; ant clean jar
-#binary: ; ant clean jar
