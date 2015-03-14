@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.tros.utils.HaltMonitor;
 
 /**
@@ -28,11 +27,11 @@ import org.tros.utils.HaltMonitor;
  */
 public abstract class InterpreterThread extends Thread {
 
-    protected final HaltMonitor monitor;
-    protected CodeBlock script;
-    protected final String source;
-    protected final TorgoCanvas canvas;
-    protected final ArrayList<InterpreterListener> listeners = new ArrayList<>();
+    private final HaltMonitor monitor;
+    private CodeBlock script;
+    private final String source;
+    private final TorgoCanvas canvas;
+    private final ArrayList<InterpreterListener> listeners = new ArrayList<>();
 
     /**
      * Constructor
@@ -84,8 +83,7 @@ public abstract class InterpreterThread extends Thread {
         }
     }
     
-    protected abstract ParseTree getParseTree();
-    protected abstract LexicalAnalyzer getLexicalAnalysis(ParseTree tree);
+    protected abstract LexicalAnalyzer getLexicalAnalysis(String source);
 
     /**
      * Threaded function.
@@ -96,9 +94,8 @@ public abstract class InterpreterThread extends Thread {
             l.started();
         });
         try {
-            ParseTree tree = getParseTree();
             //walk the parse tree and build the execution map
-            LexicalAnalyzer l = getLexicalAnalysis(tree);
+            LexicalAnalyzer l = getLexicalAnalysis(source);
 
             script = l.getEntryPoint();
             InterpreterListener listener = new InterpreterListener() {

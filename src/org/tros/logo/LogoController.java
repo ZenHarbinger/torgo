@@ -17,17 +17,22 @@ package org.tros.logo;
 
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.tros.logo.antlr.logoLexer;
+import org.tros.logo.antlr.logoParser;
 import org.tros.logo.swing.LogoCanvas;
 import org.tros.logo.swing.LogoMenuBar;
-import org.tros.torgo.swing.TorgoToolBar;
 import org.tros.logo.swing.LogoUserInputPanel;
-import org.tros.torgo.ControllerBase;
 import org.tros.torgo.Controller;
+import org.tros.torgo.ControllerBase;
 import org.tros.torgo.InterpreterThread;
+import org.tros.torgo.LexicalAnalyzer;
 import org.tros.torgo.TorgoCanvas;
 import org.tros.torgo.TorgoTextConsole;
 import org.tros.torgo.swing.SwingCanvas;
 import org.tros.torgo.swing.SwingTextConsole;
+import org.tros.torgo.swing.TorgoToolBar;
 
 /**
  * The main application. Controls GUI and interpreting process.
@@ -37,8 +42,8 @@ import org.tros.torgo.swing.SwingTextConsole;
 public final class LogoController extends ControllerBase {
 
     /**
-     * Constructor, must be public for the ServiceLoader.
-     * Only initializes basic object needs.
+     * Constructor, must be public for the ServiceLoader. Only initializes basic
+     * object needs.
      */
     public LogoController() {
     }
@@ -72,11 +77,34 @@ public final class LogoController extends ControllerBase {
     public void runHelper() {
     }
 
+    /**
+     * Get an interpreter thread.
+     *
+     * @param source
+     * @param canvas
+     * @return
+     */
     @Override
     protected InterpreterThread createInterpreterThread(String source, TorgoCanvas canvas) {
-        return new AntlrThread(source, canvas);
+        return new InterpreterThread(source, canvas) {
+
+            @Override
+            protected LexicalAnalyzer getLexicalAnalysis(String source) {
+                //lexical analysis and parsing with ANTLR
+                logoLexer lexer = new logoLexer(new ANTLRInputStream(source));
+                logoParser parser = new logoParser(new CommonTokenStream(lexer));
+                //get the prog element from the parse tree
+                //the prog element is the root element defined in the logo.g4 grammar.
+                return CommandListener.lexicalAnalysis(parser.prog());
+            }
+        };
     }
 
+    /**
+     * Get the supported language.
+     *
+     * @return
+     */
     @Override
     public String getLang() {
         return "logo";
