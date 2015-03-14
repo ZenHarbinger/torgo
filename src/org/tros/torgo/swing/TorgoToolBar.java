@@ -23,7 +23,6 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
-import org.tros.logo.swing.Localization;
 import org.tros.torgo.Controller;
 import org.tros.torgo.InterpreterListener;
 

@@ -41,8 +41,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
-import org.tros.logo.LogoController;
-import org.tros.logo.swing.Localization;
+import org.tros.torgo.swing.Localization;
 import org.tros.torgo.swing.SwingCanvas;
 import org.tros.torgo.swing.SwingTextConsole;
 import org.tros.torgo.swing.TorgoWindow;
@@ -117,10 +116,10 @@ public abstract class ControllerBase implements Controller {
 
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoWindow.class);
         final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, (Component) torgoCanvas, (Component) torgoPanel);
-        int dividerLocation = prefs.getInt(LogoController.class.getName() + "divider-location", window.getWidth() - 200);
+        int dividerLocation = prefs.getInt(ControllerBase.class.getName() + "divider-location", window.getWidth() - 200);
         splitPane.setDividerLocation(dividerLocation);
         splitPane.addPropertyChangeListener((PropertyChangeEvent evt) -> {
-            prefs.putInt(LogoController.class.getName() + "divider-location", splitPane.getDividerLocation());
+            prefs.putInt(ControllerBase.class.getName() + "divider-location", splitPane.getDividerLocation());
         });
 
         window.addWindowListener(new WindowListener() {
@@ -239,7 +238,7 @@ public abstract class ControllerBase implements Controller {
             this.window.setTitle("Torgo - " + split[split.length - 1]);
         } catch (IOException ex) {
             init();
-            Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -250,12 +249,12 @@ public abstract class ControllerBase implements Controller {
     public void openFile() {
         JFileChooser chooser = new JFileChooser();
         chooser.setMultiSelectionEnabled(false);
-        java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoController.class);
-        chooser.setCurrentDirectory(new File(prefs.get(LogoController.class.getName() + "-working-directory", ".")));
+        java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(ControllerBase.class);
+        chooser.setCurrentDirectory(new File(prefs.get(ControllerBase.class.getName() + "-working-directory", ".")));
 
         if (chooser.showOpenDialog(window) == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().getPath();
-            prefs.put(LogoController.class.getName() + "-working-directory", chooser.getSelectedFile().getParent());
+            prefs.put(ControllerBase.class.getName() + "-working-directory", chooser.getSelectedFile().getParent());
             openFile(chooser.getSelectedFile());
         }
     }
@@ -267,14 +266,14 @@ public abstract class ControllerBase implements Controller {
     public void saveFileAs() {
         JFileChooser chooser = new JFileChooser();
         chooser.setMultiSelectionEnabled(false);
-        java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoController.class);
-        chooser.setCurrentDirectory(new File(prefs.get(LogoController.class.getName() + "-working-directory", ".")));
+        java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(ControllerBase.class);
+        chooser.setCurrentDirectory(new File(prefs.get(ControllerBase.class.getName() + "-working-directory", ".")));
 
         int result = chooser.showSaveDialog(window);
 
         if (result == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().getPath();
-            prefs.put(LogoController.class.getName() + "-working-directory", chooser.getSelectedFile().getParent());
+            prefs.put(ControllerBase.class.getName() + "-working-directory", chooser.getSelectedFile().getParent());
             saveFile();
         }
     }
@@ -300,7 +299,7 @@ public abstract class ControllerBase implements Controller {
             out.write(sourceArray);
             window.setTitle("Torgo - " + filename);
         } catch (Exception e) {
-            Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -309,7 +308,7 @@ public abstract class ControllerBase implements Controller {
      */
     @Override
     public void printCanvas() {
-        Logger.getLogger(LogoController.class.getName()).log(Level.FINER, "printCanvas() called");
+        Logger.getLogger(ControllerBase.class.getName()).log(Level.FINER, "printCanvas() called");
         /*
          PrinterJob printJob = PrinterJob.getPrinterJob();
          PageFormat pageFormat = printJob.defaultPage();
@@ -347,7 +346,7 @@ public abstract class ControllerBase implements Controller {
                 listeners.stream().forEach((l) -> {
                     l.error(e);
                 });
-                Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
             }
 
             @Override
@@ -395,7 +394,7 @@ public abstract class ControllerBase implements Controller {
                 listeners.stream().forEach((l) -> {
                     l.error(e);
                 });
-                Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
             }
 
             @Override
@@ -414,7 +413,7 @@ public abstract class ControllerBase implements Controller {
                     //TODO: this needs to be configurable
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 torgoPanel.highlight(line, start, end);
             }
@@ -488,7 +487,7 @@ public abstract class ControllerBase implements Controller {
                         try {
                             writer.close();
                         } catch (IOException ex) {
-                            Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
 
@@ -497,7 +496,7 @@ public abstract class ControllerBase implements Controller {
                         listeners.stream().forEach((l) -> {
                             l.error(e);
                         });
-                        Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, e);
+                        Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
                     }
 
                     @Override
@@ -512,13 +511,13 @@ public abstract class ControllerBase implements Controller {
                         try {
                             writer.writeToSequence(SwingCanvas.deepCopy(torgoCanvas.getImage()));
                         } catch (IOException ex) {
-                            Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 });
                 interp.start();
             } catch (IOException ex) {
-                Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             try {
@@ -527,7 +526,7 @@ public abstract class ControllerBase implements Controller {
                 File outputfile = new File(filename);
                 ImageIO.write(bi, format, outputfile);
             } catch (IOException e) {
-                Logger.getLogger(LogoController.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
             }
         }
     }

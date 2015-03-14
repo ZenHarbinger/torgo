@@ -15,7 +15,6 @@
  */
 package org.tros.torgo.swing;
 
-import org.tros.logo.swing.*;
 import org.tros.torgo.Controller;
 import java.awt.Component;
 import java.awt.event.ActionEvent;

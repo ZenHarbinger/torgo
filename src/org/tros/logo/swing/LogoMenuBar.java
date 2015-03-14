@@ -15,6 +15,7 @@
  */
 package org.tros.logo.swing;
 
+import org.tros.torgo.swing.Localization;
 import org.tros.torgo.Controller;
 import java.awt.Color;
 import java.awt.Component;
