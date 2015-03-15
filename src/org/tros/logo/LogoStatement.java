@@ -17,7 +17,6 @@ package org.tros.logo;
 
 import org.tros.torgo.ProcessResult;
 import org.tros.torgo.CodeBlock;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -78,11 +77,10 @@ public class LogoStatement extends LogoBlock {
      * @param scope
      * @param canvas
      * @param context
-     * @param stack
      * @return
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context, Stack<CodeBlock> stack) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context) {
         //if the thread has halted, don't process and pop up the stack.
         if (isHalted()) {
             return ProcessResult.HALT;
@@ -240,16 +238,14 @@ public class LogoStatement extends LogoBlock {
                 canvas.message(this.getClass().getName() + " -> " + ExpressionListener.evaluateDouble(scope, ctx.getChild(1)).toString());
                 break;
             default:
-                stack.push(this);
-                CodeBlock lf = getFunction(command, stack);
+                CodeBlock lf = getFunction(command, scope);
                 if (lf != null) {
-                    success = lf.process(scope, canvas, ctx, stack);
+                    success = lf.process(scope, canvas, ctx);
                 } else {
                     success = ProcessResult.HALT;
                     canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
                     logger.log(Level.WARNING, "process(): UNKNOWN -> {0}", new Object[]{command});
                 }
-                stack.pop();
                 break;
         }
         canvas.repaint();

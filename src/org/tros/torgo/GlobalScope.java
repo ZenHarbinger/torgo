@@ -33,9 +33,10 @@ public class GlobalScope implements Scope {
 
     /**
      * Does nothing
+     * @param block
      */
     @Override
-    public void push() {
+    public void push(CodeBlock block) {
     }
 
     /**
@@ -92,5 +93,15 @@ public class GlobalScope implements Scope {
     @Override
     public void setNew(String name, double value) {
         set(name, value);
+    }
+
+    @Override
+    public CodeFunction getFunction(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean hasFunction(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

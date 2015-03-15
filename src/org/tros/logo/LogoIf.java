@@ -16,8 +16,6 @@
 package org.tros.logo;
 
 import org.tros.torgo.ProcessResult;
-import org.tros.torgo.CodeBlock;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -59,12 +57,11 @@ public class LogoIf extends LogoBlock {
      * @param scope
      * @param canvas
      * @param context
-     * @param stack
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context, Stack<CodeBlock> stack) {
-        scope.push();
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context) {
+        scope.push(this);
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         listeners.stream().forEach((l) -> {
@@ -80,43 +77,41 @@ public class LogoIf extends LogoBlock {
         ProcessResult success = ProcessResult.SUCCESS;
 
         //evaluate the if condition, if it is satisfied, evaluate the if block.
-        stack.push(this);
         switch (comparator) {
             case ">":
                 if (val1 > val2) {
-                    success = super.process(scope, canvas, ctx, stack);
+                    success = super.process(scope, canvas, ctx);
                 }
                 break;
             case "<":
                 if (val1 < val2) {
-                    success = super.process(scope, canvas, ctx, stack);
+                    success = super.process(scope, canvas, ctx);
                 }
                 break;
             case ">=":
                 if (val1 >= val2) {
-                    success = super.process(scope, canvas, ctx, stack);
+                    success = super.process(scope, canvas, ctx);
                 }
                 break;
             case "<=":
                 if (val1 <= val2) {
-                    success = super.process(scope, canvas, ctx, stack);
+                    success = super.process(scope, canvas, ctx);
                 }
                 break;
             case "=":
             case "==":
                 if (val1 == val2) {
-                    success = super.process(scope, canvas, ctx, stack);
+                    success = super.process(scope, canvas, ctx);
                 }
                 break;
             case "<>":
             case "!=":
             case "!":
                 if (val1 != val2) {
-                    success = super.process(scope, canvas, ctx, stack);
+                    success = super.process(scope, canvas, ctx);
                 }
                 break;
         }
-        stack.pop();
         scope.pop();
         return success;
     }

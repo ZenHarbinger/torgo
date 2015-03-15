@@ -58,11 +58,10 @@ public class LogoFor extends LogoBlock {
      * @param scope
      * @param canvas
      * @param currentContext
-     * @param stack
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext, Stack<CodeBlock> stack) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext) {
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         listeners.stream().forEach((l) -> {
@@ -70,8 +69,7 @@ public class LogoFor extends LogoBlock {
         });
 
         logoParser.ForeContext fore = (logoParser.ForeContext) ctx;
-        scope.push();
-        stack.push(this);
+        scope.push(this);
 
         String variable = fore.name().STRING().getText();
 
@@ -104,7 +102,7 @@ public class LogoFor extends LogoBlock {
             boolean doMore = type == ForType.INCREASE ? start < stop : stop < start;
             while (success && doMore) {
                 scope.setNew(variable, start);
-                success = success && super.process(scope, canvas, currentContext, stack) == ProcessResult.SUCCESS;
+                success = success && super.process(scope, canvas, currentContext) == ProcessResult.SUCCESS;
 
                 switch (type) {
                     case INCREASE:
@@ -119,7 +117,6 @@ public class LogoFor extends LogoBlock {
             }
         }
 
-        stack.pop();
         scope.pop();
         
         return ProcessResult.SUCCESS;

@@ -66,7 +66,7 @@ public interface CodeBlock extends IHaltListener {
      * @param stack
      * @return true if we should continue, false otherwise
      */
-    ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext, Stack<CodeBlock> stack);
+    ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext);
 
     /**
      * Add listener to this object
@@ -94,9 +94,17 @@ public interface CodeBlock extends IHaltListener {
      */
     void addFunction(CodeFunction function);
 
-    /**
-     * Get the local context of this ANTLR generated parse tree stub.
-     * @return 
-     */
-    ParserRuleContext getParserRuleContext();
+//    /**
+//     * Get the local context of this ANTLR generated parse tree stub.
+//     * @return 
+//     */
+//    ParserRuleContext getParserRuleContext();
+    
+    boolean hasVariable(String name);
+    
+    void setVariable(String name, Double value);
+    
+    Double getVariable(String name);
+    
+    CodeBlock getParent();
 }

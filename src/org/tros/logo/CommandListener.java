@@ -58,6 +58,7 @@ public class CommandListener extends logoBaseListener implements LexicalAnalyzer
         LogoFunction lf = new LogoFunction(ctx.name().getText(), ctx);
         blocks.add(lf);
         stack.peek().addFunction(lf);
+        lf.setParent(stack.peek());
         stack.push(lf);
     }
 
@@ -231,6 +232,7 @@ public class CommandListener extends logoBaseListener implements LexicalAnalyzer
         LogoIf lc = new LogoIf(ctx);
         blocks.add(lc);
         stack.peek().addCommand(lc);
+        lc.setParent(stack.peek());
         stack.push(lc);
     }
 
@@ -251,6 +253,7 @@ public class CommandListener extends logoBaseListener implements LexicalAnalyzer
         LogoFor lc = new LogoFor(ctx);
         blocks.add(lc);
         stack.peek().addCommand(lc);
+        lc.setParent(stack.peek());
         stack.push(lc);
     }
 
@@ -264,6 +267,7 @@ public class CommandListener extends logoBaseListener implements LexicalAnalyzer
         LogoRepeat lc = new LogoRepeat(ctx);
         blocks.add(lc);
         stack.peek().addCommand(lc);
+        lc.setParent(stack.peek());
         stack.push(lc);
     }
 

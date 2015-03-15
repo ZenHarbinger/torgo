@@ -128,7 +128,7 @@ public abstract class InterpreterThread extends Thread {
                 monitor.addListener(cb);
             });
             //interpret the script
-            script.process(new DynamicScope(), canvas, null, new Stack<>());
+            script.process(createScope(), canvas, null);
         } catch (Exception ex) {
             listeners.stream().forEach((l) -> {
                 l.error(ex);
@@ -140,6 +140,8 @@ public abstract class InterpreterThread extends Thread {
             l.finished();
         });
     }
+    
+    protected abstract Scope createScope();
 
     public final void waitForTermination() {
         try {

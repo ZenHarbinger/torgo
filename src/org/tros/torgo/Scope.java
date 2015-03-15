@@ -28,10 +28,13 @@ public interface Scope {
 
     void pop();
 
-    void push();
+    void push(CodeBlock block);
 
     void set(String name, double value);
 
     void setNew(String name, double value);
+
+    CodeFunction getFunction(String name);
     
+    boolean hasFunction(String name);
 }

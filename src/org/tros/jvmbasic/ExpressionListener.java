@@ -87,7 +87,6 @@ public class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterExpression(jvmBasicParser.ExpressionContext ctx) {
-        scope.push();
         super.enterExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -99,61 +98,51 @@ public class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterRelationalExpression(jvmBasicParser.RelationalExpressionContext ctx) {
-        scope.push();
         super.enterRelationalExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void exitRelationalExpression(jvmBasicParser.RelationalExpressionContext ctx) {
-        scope.pop();
         super.exitRelationalExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void enterAddingExpression(jvmBasicParser.AddingExpressionContext ctx) {
-        scope.push();
         super.enterAddingExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void exitAddingExpression(jvmBasicParser.AddingExpressionContext ctx) {
-        scope.pop();
         super.exitAddingExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void enterMultiplyingExpression(jvmBasicParser.MultiplyingExpressionContext ctx) {
-        scope.push();
         super.enterMultiplyingExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void exitMultiplyingExpression(jvmBasicParser.MultiplyingExpressionContext ctx) {
-        scope.pop();
         super.exitMultiplyingExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void enterExponentExpression(jvmBasicParser.ExponentExpressionContext ctx) {
-        scope.push();
         super.enterExponentExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void exitExponentExpression(jvmBasicParser.ExponentExpressionContext ctx) {
-        scope.pop();
         super.exitExponentExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void enterSignExpression(jvmBasicParser.SignExpressionContext ctx) {
-        scope.push();
         super.enterSignExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void exitSignExpression(jvmBasicParser.SignExpressionContext ctx) {
-        scope.pop();
         super.exitSignExpression(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -167,13 +156,11 @@ public class ExpressionListener extends jvmBasicBaseListener {
             value.peek().add(ctx.getText());
         } else {
         }
-        scope.push();
         super.enterFunc(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void exitFunc(jvmBasicParser.FuncContext ctx) {
-        scope.pop();
         super.exitFunc(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 

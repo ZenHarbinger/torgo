@@ -26,8 +26,10 @@ import org.tros.logo.swing.LogoMenuBar;
 import org.tros.logo.swing.LogoUserInputPanel;
 import org.tros.torgo.Controller;
 import org.tros.torgo.ControllerBase;
+import org.tros.torgo.DynamicScope;
 import org.tros.torgo.InterpreterThread;
 import org.tros.torgo.LexicalAnalyzer;
+import org.tros.torgo.Scope;
 import org.tros.torgo.TorgoCanvas;
 import org.tros.torgo.TorgoTextConsole;
 import org.tros.torgo.swing.SwingCanvas;
@@ -88,6 +90,11 @@ public final class LogoController extends ControllerBase {
     protected InterpreterThread createInterpreterThread(String source, TorgoCanvas canvas) {
         return new InterpreterThread(source, canvas) {
 
+            @Override
+            protected Scope createScope() {
+                return new DynamicScope();
+            }
+            
             @Override
             protected LexicalAnalyzer getLexicalAnalysis(String source) {
                 //lexical analysis and parsing with ANTLR

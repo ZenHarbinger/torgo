@@ -1,0 +1,15 @@
+;this is a test for dynamic scope
+;dynamic scoping will print 3, then 1
+;http://en.wikipedia.org/wiki/Scope_%28computer_science%29#Lexical_scoping_vs._dynamic_scoping
+
+make "x 1
+to g
+    print :x
+    make "x 2
+end
+to f
+    localmake "x 3
+    g
+end
+f
+print :x

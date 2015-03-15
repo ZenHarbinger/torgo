@@ -16,8 +16,6 @@
 package org.tros.logo;
 
 import org.tros.torgo.ProcessResult;
-import org.tros.torgo.CodeBlock;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -65,25 +63,22 @@ public class LogoRepeat extends LogoBlock {
      * @param scope
      * @param canvas
      * @param context
-     * @param stack
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context, Stack<CodeBlock> stack) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context) {
         int repeat = ExpressionListener.evaluateDouble(scope, ((logoParser.RepeatContext)ctx).expression()).intValue();
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         listeners.stream().forEach((l) -> {
             l.currStatement("repeat", ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex());
         });
 
-        scope.push();
-        stack.push(this);
+        scope.push(this);
         ProcessResult success = ProcessResult.SUCCESS;
         for (int ii = 0; ii < repeat && success == ProcessResult.SUCCESS; ii++) {
             scope.setNew(REPCOUNT_VAR, ii + 1);
-            success = super.process(scope, canvas, ctx, stack);
+            success = super.process(scope, canvas, ctx);
         }
-        stack.pop();
         scope.pop();
         return success;
     }

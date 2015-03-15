@@ -26,6 +26,7 @@ import java.util.HashMap;
 public class DynamicScope implements Scope {
 
     private final ArrayList<HashMap<String, Double>> scope = new ArrayList<>();
+    private final ArrayList<CodeBlock> callStack = new ArrayList<>();
 
     /**
      * Constructor
@@ -36,10 +37,12 @@ public class DynamicScope implements Scope {
 
     /**
      * Push a new level onto the scope.
+     * @param block
      */
     @Override
-    public void push() {
+    public void push(CodeBlock block) {
         scope.add(0, new HashMap<>());
+        callStack.add(0, block);
     }
 
     /**
@@ -50,6 +53,7 @@ public class DynamicScope implements Scope {
         //do not remove the last scope...
         if (scope.size() > 1) {
             scope.remove(0);
+            callStack.remove(0);
         }
     }
 
@@ -129,5 +133,20 @@ public class DynamicScope implements Scope {
     @Override
     public void setNew(String name, double value) {
         scope.get(0).put(name, value);
+    }
+
+    @Override
+    public CodeFunction getFunction(String name) {
+        for(CodeBlock cb : callStack) {
+            if (cb.hasFunction(name)) {
+                return cb.getFunction(name);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasFunction(String name) {
+        return callStack.stream().anyMatch((cb) -> (cb.hasFunction(name)));
     }
 }

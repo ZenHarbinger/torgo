@@ -21,7 +21,6 @@ import org.tros.torgo.CodeFunction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.torgo.InterpreterListener;
@@ -42,6 +41,9 @@ public class LogoBlock implements CodeBlock {
     private final HashMap<String, CodeFunction> functions = new HashMap<>();
     protected final ArrayList<InterpreterListener> listeners = new ArrayList<>();
     private final AtomicBoolean halted = new AtomicBoolean(false);
+
+    private final HashMap<String, Double> variables = new HashMap<>();
+    private CodeBlock parent;
 
     @Override
     public void addInterpreterListener(InterpreterListener listener) {
@@ -115,17 +117,16 @@ public class LogoBlock implements CodeBlock {
      * @param scope
      * @param canvas
      * @param currentContext
-     * @param stack
      * @return true if we should continue, false otherwise
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext, Stack<CodeBlock> stack) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext) {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
-        stack.push(this);
+        scope.push(this);
         commands.stream().forEach((lc) -> {
             if (success.get() && !stop.get()) {
-                ProcessResult pr = lc.process(scope, canvas, ctx, stack);
+                ProcessResult pr = lc.process(scope, canvas, ctx);
                 if (pr == ProcessResult.HALT) {
                     success.set(false);
                 } else if (pr == ProcessResult.RETURN) {
@@ -133,7 +134,7 @@ public class LogoBlock implements CodeBlock {
                 }
             }
         });
-        stack.pop();
+        scope.pop();
         return success.get() ? (stop.get() ? ProcessResult.RETURN : ProcessResult.SUCCESS) : ProcessResult.HALT;
     }
 
@@ -155,20 +156,11 @@ public class LogoBlock implements CodeBlock {
      * Look for a function with the specified name.
      *
      * @param name
-     * @param callstack
+     * @param scope
      * @return
      */
-    public CodeBlock getFunction(String name, Stack<CodeBlock> callstack) {
-        CodeBlock ret = null;
-        if (!hasFunction(name)) {
-            for (CodeBlock lb : callstack) {
-                if (lb.hasFunction(name)) {
-                    ret = lb.getFunction(name);
-                    break;
-                }
-            }
-        }
-        return ret;
+    public CodeBlock getFunction(String name, Scope scope) {
+        return scope.getFunction(name);
     }
 
     /**
@@ -208,9 +200,33 @@ public class LogoBlock implements CodeBlock {
     public void halted(IHaltMonitor monitor) {
         halted.set(monitor.isHalted());
     }
-    
+
+//    @Override
+//    public ParserRuleContext getParserRuleContext() {
+//        return ctx;
+//    }
+
     @Override
-    public ParserRuleContext getParserRuleContext() {
-        return ctx;
+    public boolean hasVariable(String name) {
+        return variables.containsKey(name);
+    }
+
+    @Override
+    public void setVariable(String name, Double value) {
+        variables.put(name, value);
+    }
+
+    @Override
+    public Double getVariable(String name) {
+        return variables.get(name);
+    }
+
+    @Override
+    public CodeBlock getParent() {
+        return parent;
+    }
+
+    protected void setParent(CodeBlock value) {
+        this.parent = value;
     }
 }

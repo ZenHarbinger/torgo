@@ -16,10 +16,8 @@
 package org.tros.logo;
 
 import org.tros.torgo.ProcessResult;
-import org.tros.torgo.CodeBlock;
 import org.tros.torgo.CodeFunction;
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -78,12 +76,11 @@ public class LogoFunction extends LogoBlock implements CodeFunction {
      * @param scope
      * @param canvas
      * @param prc
-     * @param stack
      * @return
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext prc, Stack<CodeBlock> stack) {
-        scope.push();
+    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext prc) {
+        scope.push(this);
         ProcedureInvocationContext context = (ProcedureInvocationContext) prc;
 
         logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) ctx;
@@ -106,7 +103,6 @@ public class LogoFunction extends LogoBlock implements CodeFunction {
             }
         }
 
-        stack.push(this);
         ProcessResult ret = ProcessResult.SUCCESS;
         try {
             Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "function: {0}", new Object[]{funcitonName});
@@ -115,11 +111,9 @@ public class LogoFunction extends LogoBlock implements CodeFunction {
                 Double value = paramValues.get(ii);
                 Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "param: {0} -> {1}", new Object[]{name, value});
             }
-            ret = super.process(scope, canvas, ctx, stack);
+            ret = super.process(scope, canvas, ctx);
         } catch (Exception ex) {
             Logger.getLogger(LogoFunction.class.getName()).log(Level.WARNING, "{0} -> {1}", new Object[]{ex.getClass().getName(), ex.getMessage()});
-        } finally {
-            stack.pop();
         }
         if (ret == ProcessResult.RETURN) {
             ret = ProcessResult.SUCCESS;
