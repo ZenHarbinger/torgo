@@ -19,9 +19,17 @@ package org.tros.torgo;
  *
  * @author matta
  */
-public enum ProcessResult {
+public interface InterpreterType {
 
-    SUCCESS,
-    HALT,
-    RETURN
+    public enum Type {
+
+        STRING,
+        NUMBER,
+        COMMAND,
+        NULL
+    }
+
+    ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas);
+
+    InterpreterValue.Type getType();
 }

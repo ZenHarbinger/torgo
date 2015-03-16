@@ -15,13 +15,14 @@
  */
 package org.tros.logo;
 
-import org.tros.torgo.ProcessResult;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.TorgoCanvas;
+import org.tros.torgo.ReturnValue;
+import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
+import org.tros.torgo.TorgoCanvas;
 
 /**
  *
@@ -46,26 +47,13 @@ class LogoRepeat extends LogoBlock {
     }
 
     /**
-     * Debugging use.
-     * @return 
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("repeat ").append(System.getProperty("line.separator"));
-        sb.append(super.toString());
-        sb.append("end repeat").append(System.getProperty("line.separator"));
-        return sb.toString();
-    }
-
-    /**
      * Process the repeat
      * @param scope
      * @param canvas
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
         int repeat = ExpressionListener.evaluateDouble(scope, ((logoParser.RepeatContext)ctx).expression()).intValue();
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         listeners.stream().forEach((l) -> {

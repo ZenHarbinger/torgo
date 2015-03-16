@@ -154,4 +154,14 @@ public class DynamicScope implements Scope {
     public CodeBlock peek() {
         return callStack.get(0);
     }
+    
+    @Override
+    public CodeBlock peek(int val) {
+        return callStack.get(val);
+    }
+    
+    @Override
+    public int size() {
+        return callStack.size();
+    }
 }

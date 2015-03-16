@@ -16,31 +16,26 @@
 package org.tros.torgo;
 
 /**
- * Scoping interface.  Not sure that this is sufficient to describe lexical
- * scoping, but works for dynamic and global for now.
+ *
  * @author matta
  */
-public interface Scope {
+public class ReturnValue extends InterpreterValue {
 
-    double get(String name);
+    public enum ProcessResult {
 
-    boolean has(String name);
+        SUCCESS,
+        HALT,
+        RETURN
+    }
 
-    void pop();
+    private final ProcessResult result;
 
-    void push(CodeBlock block);
+    public ReturnValue(Type type, Object value, ProcessResult result) {
+        super(type, value);
+        this.result = result;
+    }
 
-    void set(String name, double value);
-
-    void setNew(String name, double value);
-
-    CodeFunction getFunction(String name);
-    
-    boolean hasFunction(String name);
-    
-    CodeBlock peek();
-
-    CodeBlock peek(int val);
-    
-    int size();
+    public ProcessResult getResult() {
+        return result;
+    }
 }

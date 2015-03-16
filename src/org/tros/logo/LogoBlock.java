@@ -15,17 +15,19 @@
  */
 package org.tros.logo;
 
-import org.tros.torgo.ProcessResult;
-import org.tros.torgo.CodeBlock;
-import org.tros.torgo.CodeFunction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.tros.torgo.CodeBlock;
+import org.tros.torgo.CodeFunction;
 import org.tros.torgo.InterpreterListener;
-import org.tros.torgo.TorgoCanvas;
+import org.tros.torgo.InterpreterType.Type;
+import org.tros.torgo.ReturnValue;
+import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
+import org.tros.torgo.TorgoCanvas;
 import org.tros.utils.IHaltMonitor;
 
 /**
@@ -119,14 +121,14 @@ class LogoBlock implements CodeBlock {
      * @return true if we should continue, false otherwise
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
         scope.push(this);
         commands.stream().forEach((lc) -> {
             if (success.get() && !stop.get()) {
-                ProcessResult pr = lc.process(scope, canvas);
-                if (pr == ProcessResult.HALT) {
+                ReturnValue.ProcessResult pr = lc.process(scope, canvas);
+                if (pr == ReturnValue.ProcessResult.HALT) {
                     success.set(false);
                 } else if (pr == ProcessResult.RETURN) {
                     stop.set(true);
@@ -134,21 +136,7 @@ class LogoBlock implements CodeBlock {
             }
         });
         scope.pop();
-        return success.get() ? (stop.get() ? ProcessResult.RETURN : ProcessResult.SUCCESS) : ProcessResult.HALT;
-    }
-
-    /**
-     * Debugging use only.
-     *
-     * @return
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        commands.stream().forEach((lc) -> {
-            sb.append(lc.toString());
-        });
-        return sb.toString();
+        return success.get() ? (stop.get() ? ReturnValue.ProcessResult.RETURN : ReturnValue.ProcessResult.SUCCESS) : ReturnValue.ProcessResult.HALT;
     }
 
     /**
@@ -227,5 +215,10 @@ class LogoBlock implements CodeBlock {
 
     protected void setParent(CodeBlock value) {
         this.parent = value;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.COMMAND;
     }
 }

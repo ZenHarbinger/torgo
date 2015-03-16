@@ -23,7 +23,7 @@ import org.tros.utils.IHaltListener;
  *
  * @author matta
  */
-public interface CodeBlock extends IHaltListener {
+public interface CodeBlock extends InterpreterType, IHaltListener {
 
     /**
      * Add a command to the list.
@@ -63,7 +63,8 @@ public interface CodeBlock extends IHaltListener {
      * @param canvas
      * @return true if we should continue, false otherwise
      */
-    ProcessResult process(Scope scope, TorgoCanvas canvas);
+    @Override
+    ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas);
 
     /**
      * Add listener to this object

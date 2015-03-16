@@ -15,13 +15,14 @@
  */
 package org.tros.logo;
 
-import org.tros.torgo.ProcessResult;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.TorgoCanvas;
+import org.tros.torgo.ReturnValue;
+import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
+import org.tros.torgo.TorgoCanvas;
 
 /**
  * Supports if statements/expressions.
@@ -40,26 +41,13 @@ class LogoIf extends LogoBlock {
     }
 
     /**
-     * Debugging use.
-     * @return 
-     */
-    @Override
-    public String toString() {
-        StringBuilder bi = new StringBuilder();
-        bi.append("if ");//.append(val1).append(" ").append(condition).append(" ").append(val2).append(System.getProperty("line.separator"));
-        bi.append(super.toString());
-        bi.append("end if").append(System.getProperty("line.separator"));
-        return bi.toString();
-    }
-
-    /**
      * Process the if statement.
      * @param scope
      * @param canvas
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
         scope.push(this);
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});

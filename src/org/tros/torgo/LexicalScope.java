@@ -105,6 +105,16 @@ public class LexicalScope implements Scope {
 
     @Override
     public CodeBlock peek() {
-        return stack.get(0);
+        return peek(0);
+    }
+
+    @Override
+    public CodeBlock peek(int val) {
+        return stack.get(val);
+    }
+    
+    @Override
+    public int size() {
+        return stack.size();
     }
 }

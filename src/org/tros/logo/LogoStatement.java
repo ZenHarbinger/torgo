@@ -15,14 +15,15 @@
  */
 package org.tros.logo;
 
-import org.tros.torgo.ProcessResult;
-import org.tros.torgo.CodeBlock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.TorgoCanvas;
+import org.tros.torgo.CodeBlock;
+import org.tros.torgo.ReturnValue;
+import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
+import org.tros.torgo.TorgoCanvas;
 
 /**
  * This is perhaps the most trickily named class. This inherits from LogoBlock,
@@ -62,16 +63,6 @@ class LogoStatement extends LogoBlock {
     }
 
     /**
-     * Debugging use.
-     *
-     * @return
-     */
-    @Override
-    public String toString() {
-        return command + System.getProperty("line.separator");
-    }
-
-    /**
      * Process the statement.
      *
      * @param scope
@@ -79,7 +70,7 @@ class LogoStatement extends LogoBlock {
      * @return
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
         //if the thread has halted, don't process and pop up the stack.
         if (isHalted()) {
             return ProcessResult.HALT;

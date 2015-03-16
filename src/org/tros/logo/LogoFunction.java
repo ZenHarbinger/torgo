@@ -15,16 +15,17 @@
  */
 package org.tros.logo;
 
-import org.tros.torgo.ProcessResult;
-import org.tros.torgo.CodeFunction;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
 import org.tros.logo.antlr.logoParser.ProcedureInvocationContext;
-import org.tros.torgo.TorgoCanvas;
+import org.tros.torgo.CodeFunction;
+import org.tros.torgo.ReturnValue;
+import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
+import org.tros.torgo.TorgoCanvas;
 
 /**
  * Supports functions with parameters.
@@ -57,20 +58,6 @@ class LogoFunction extends LogoBlock implements CodeFunction {
     }
 
     /**
-     * Debugging use.
-     *
-     * @return
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("to ").append(funcitonName).append(System.getProperty("line.separator"));
-        sb.append(super.toString());
-        sb.append("end").append(System.getProperty("line.separator"));
-        return sb.toString();
-    }
-
-    /**
      * Process the function.
      *
      * @param scope
@@ -78,7 +65,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
      * @return
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
         ProcedureInvocationContext context = (ProcedureInvocationContext) scope.peek().getParserRuleContext();
 
         logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) ctx;
