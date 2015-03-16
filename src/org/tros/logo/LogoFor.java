@@ -59,7 +59,7 @@ class LogoFor extends LogoBlock {
      * @return 
      */
     @Override
-    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         listeners.stream().forEach((l) -> {
@@ -100,7 +100,7 @@ class LogoFor extends LogoBlock {
             boolean doMore = type == ForType.INCREASE ? start < stop : stop < start;
             while (success && doMore) {
                 scope.setNew(variable, start);
-                success = success && super.process(scope, canvas) == ProcessResult.SUCCESS;
+                success = success && super.process(scope, canvas).getResult() == ProcessResult.SUCCESS;
 
                 switch (type) {
                     case INCREASE:
@@ -117,6 +117,6 @@ class LogoFor extends LogoBlock {
 
         scope.pop();
         
-        return ProcessResult.SUCCESS;
+        return ReturnValue.SUCCESS;
     }
 }

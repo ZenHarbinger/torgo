@@ -20,7 +20,7 @@ package org.tros.torgo;
  * @author matta
  */
 public class InterpreterValue implements InterpreterType {
-
+    
     private final Object value;
     private final Type type;
 
@@ -38,20 +38,25 @@ public class InterpreterValue implements InterpreterType {
         return type;
     }
 
-    @Override
-    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
-        switch (type) {
-            case STRING:
-                break;
-            case NUMBER:
-                break;
-            case COMMAND:
-                return ((CodeBlock) value).process(scope, canvas);
-            case NULL:
-                break;
-            default:
-                return null;
-        }
-        return null;
-    }
+//    /**
+//     * This function probably needs work.
+//     * It allows returning a CodeBlock as a value.  When used as a function
+//     * we must remember to push the stack to get the procedure invocation context.
+//     * Not sure what we should do for primitive (String/Number) values.
+//     * @param scope
+//     * @param canvas
+//     * @return 
+//     */
+//    @Override
+//    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
+//        switch (type) {
+//            case COMMAND:
+//                return ((CodeBlock) value).process(scope, canvas);
+//            case STRING:
+//            case NUMBER:
+//            case NULL:
+//            default:
+//                return new ReturnValue(Type.NULL, null, ReturnValue.ProcessResult.HALT);
+//        }
+//    }
 }

@@ -121,22 +121,23 @@ class LogoBlock implements CodeBlock {
      * @return true if we should continue, false otherwise
      */
     @Override
-    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
         scope.push(this);
         commands.stream().forEach((lc) -> {
             if (success.get() && !stop.get()) {
-                ReturnValue.ProcessResult pr = lc.process(scope, canvas);
-                if (pr == ReturnValue.ProcessResult.HALT) {
+                ReturnValue pr = lc.process(scope, canvas);
+                if (pr.getResult() == ReturnValue.ProcessResult.HALT) {
                     success.set(false);
-                } else if (pr == ProcessResult.RETURN) {
+                } else if (pr.getResult() == ProcessResult.RETURN) {
                     stop.set(true);
                 }
             }
         });
         scope.pop();
-        return success.get() ? (stop.get() ? ReturnValue.ProcessResult.RETURN : ReturnValue.ProcessResult.SUCCESS) : ReturnValue.ProcessResult.HALT;
+        ReturnValue.ProcessResult res = success.get() ? (stop.get() ? ReturnValue.ProcessResult.RETURN : ReturnValue.ProcessResult.SUCCESS) : ReturnValue.ProcessResult.HALT;
+        return new ReturnValue(Type.NULL, null, res);
     }
 
     /**

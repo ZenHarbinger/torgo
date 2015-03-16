@@ -70,10 +70,10 @@ class LogoStatement extends LogoBlock {
      * @return
      */
     @Override
-    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
         //if the thread has halted, don't process and pop up the stack.
         if (isHalted()) {
-            return ProcessResult.HALT;
+            return new ReturnValue(Type.NULL, null, ProcessResult.HALT);
         }
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()});
@@ -86,7 +86,7 @@ class LogoStatement extends LogoBlock {
         scope.set(TURTLE_Y_VAR, canvas.getTurtleY());
         scope.set(TURTLE_ANGLE_VAR, canvas.getTurtleAngle());
         
-        ProcessResult success = ProcessResult.SUCCESS;
+        ReturnValue success = ReturnValue.SUCCESS;
         switch (command) {
             case "fd":
                 canvas.forward(ExpressionListener.evaluateDouble(scope, ((logoParser.FdContext) ctx).expression()));
@@ -116,7 +116,7 @@ class LogoStatement extends LogoBlock {
             case "stop":
                 //note, this is the one time false is returned (except thread halting).
                 //this is used to break out of functions.
-                success = ProcessResult.RETURN;
+                success = new ReturnValue(Type.NULL, null, ProcessResult.RETURN);
                 break;
             case "pc": {
                 logoParser.PcContext fd = (logoParser.PcContext) ctx;
@@ -234,7 +234,7 @@ class LogoStatement extends LogoBlock {
                     success = lf.process(scope, canvas);
                     scope.pop();
                 } else {
-                    success = ProcessResult.HALT;
+                    success = new ReturnValue(Type.NULL, null, ProcessResult.HALT);
                     canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
                     logger.log(Level.WARNING, "process(): UNKNOWN -> {0}", new Object[]{command});
                 }

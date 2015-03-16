@@ -65,7 +65,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
      * @return
      */
     @Override
-    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
         ProcedureInvocationContext context = (ProcedureInvocationContext) scope.peek().getParserRuleContext();
 
         logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) ctx;
@@ -88,7 +88,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
             }
         }
 
-        ProcessResult ret = ProcessResult.SUCCESS;
+        ReturnValue ret = null;
         try {
             Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "function: {0}", new Object[]{funcitonName});
             for (int ii = 0; ii < paramNames.size(); ii++) {
@@ -100,8 +100,12 @@ class LogoFunction extends LogoBlock implements CodeFunction {
         } catch (Exception ex) {
             Logger.getLogger(LogoFunction.class.getName()).log(Level.WARNING, "{0} -> {1}", new Object[]{ex.getClass().getName(), ex.getMessage()});
         }
-        if (ret == ProcessResult.RETURN) {
-            ret = ProcessResult.SUCCESS;
+        if (ret != null && ret.getResult() != ProcessResult.HALT) {
+            //NOT HALT!
+            ret = new ReturnValue(ret.getType(), ret.getValue(), ProcessResult.SUCCESS);
+        } else {
+            //HALT or ERROR (possible null)!
+            ret = ReturnValue.HALT;
         }
 
         return ret;

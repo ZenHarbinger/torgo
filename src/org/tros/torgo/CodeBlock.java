@@ -63,8 +63,7 @@ public interface CodeBlock extends InterpreterType, IHaltListener {
      * @param canvas
      * @return true if we should continue, false otherwise
      */
-    @Override
-    ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas);
+    ReturnValue process(Scope scope, TorgoCanvas canvas);
 
     /**
      * Add listener to this object

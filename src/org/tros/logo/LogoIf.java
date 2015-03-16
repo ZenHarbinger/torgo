@@ -47,7 +47,7 @@ class LogoIf extends LogoBlock {
      * @return 
      */
     @Override
-    public ReturnValue.ProcessResult process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
         scope.push(this);
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
@@ -61,7 +61,7 @@ class LogoIf extends LogoBlock {
         double val2 = ExpressionListener.evaluateDouble(scope, ct.comparison().expression(1));
         String comparator = ct.comparison().comparisonOperator().getText();
 
-        ProcessResult success = ProcessResult.SUCCESS;
+        ReturnValue success = ReturnValue.SUCCESS;
 
         //evaluate the if condition, if it is satisfied, evaluate the if block.
         switch (comparator) {

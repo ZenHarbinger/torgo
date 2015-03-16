@@ -21,6 +21,9 @@ package org.tros.torgo;
  */
 public class ReturnValue extends InterpreterValue {
 
+    public static final ReturnValue SUCCESS = new ReturnValue(Type.NULL, null, ProcessResult.SUCCESS);
+    public static final ReturnValue HALT = new ReturnValue(Type.NULL, null, ProcessResult.HALT);
+
     public enum ProcessResult {
 
         SUCCESS,
