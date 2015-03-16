@@ -31,7 +31,7 @@ import org.tros.torgo.LexicalAnalyzer;
  * it will be interpreted.  This is for the Logo language only.
  * @author matta
  */
-public class CommandListener extends logoBaseListener implements LexicalAnalyzer{
+class CommandListener extends logoBaseListener implements LexicalAnalyzer{
 
     private final Stack<CodeBlock> stack = new Stack<>();
     private final ArrayList<CodeBlock> blocks = new ArrayList<>();
@@ -47,7 +47,7 @@ public class CommandListener extends logoBaseListener implements LexicalAnalyzer
      * @param tree
      * @return 
      */
-    protected static CommandListener lexicalAnalysis(ParseTree tree) {
+    protected static LexicalAnalyzer lexicalAnalysis(ParseTree tree) {
         CommandListener cl = new CommandListener();
         ParseTreeWalker.DEFAULT.walk(cl, tree);
         return cl;

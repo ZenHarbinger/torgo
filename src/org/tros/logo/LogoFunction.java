@@ -31,7 +31,7 @@ import org.tros.torgo.Scope;
  *
  * @author matta
  */
-public class LogoFunction extends LogoBlock implements CodeFunction {
+class LogoFunction extends LogoBlock implements CodeFunction {
 
     private final String funcitonName;
 

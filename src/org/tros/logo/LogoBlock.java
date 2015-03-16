@@ -34,7 +34,7 @@ import org.tros.utils.IHaltMonitor;
  *
  * @author matta
  */
-public class LogoBlock implements CodeBlock {
+class LogoBlock implements CodeBlock {
 
     protected final ParserRuleContext ctx;
     private final ArrayList<CodeBlock> commands = new ArrayList<>();

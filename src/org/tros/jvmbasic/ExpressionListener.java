@@ -30,7 +30,7 @@ import org.tros.torgo.Scope;
  *
  * @author matta
  */
-public class ExpressionListener extends jvmBasicBaseListener {
+class ExpressionListener extends jvmBasicBaseListener {
 
     private final Scope scope;
     private final Stack<ArrayList<Object>> value = new Stack<>();

@@ -29,7 +29,7 @@ import org.tros.torgo.Scope;
  * in to allow for variable dereferencing.  This is for the Logo language only.
  * @author matta
  */
-public class ExpressionListener extends logoBaseListener {
+class ExpressionListener extends logoBaseListener {
 
     private final Scope scope;
     private final Stack<ArrayList<Double>> value = new Stack<>();

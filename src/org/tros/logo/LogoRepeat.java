@@ -27,7 +27,7 @@ import org.tros.torgo.Scope;
  *
  * @author matta
  */
-public class LogoRepeat extends LogoBlock {
+class LogoRepeat extends LogoBlock {
 
     /**
      * This variable name is used to set the repcount value,

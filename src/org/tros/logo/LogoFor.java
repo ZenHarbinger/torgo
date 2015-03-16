@@ -27,7 +27,7 @@ import org.tros.torgo.Scope;
  * Supports for (up-to and down-to) with and without a specified step value.
  * @author matta
  */
-public class LogoFor extends LogoBlock {
+class LogoFor extends LogoBlock {
     
     private static final Logger logger = Logger.getLogger(LogoFor.class.getName());
 

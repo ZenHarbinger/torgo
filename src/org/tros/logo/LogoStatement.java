@@ -31,7 +31,7 @@ import org.tros.torgo.Scope;
  *
  * @author matta
  */
-public class LogoStatement extends LogoBlock {
+class LogoStatement extends LogoBlock {
     public static final String TURTLE_X_VAR = "1_turtlex%";
     public static final String TURTLE_Y_VAR = "1_turtley%";
     public static final String TURTLE_ANGLE_VAR = "1_turtlea%";

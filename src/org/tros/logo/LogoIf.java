@@ -27,7 +27,7 @@ import org.tros.torgo.Scope;
  * Supports if statements/expressions.
  * @author matta
  */
-public class LogoIf extends LogoBlock {
+class LogoIf extends LogoBlock {
 
     private static final Logger logger = Logger.getLogger(LogoIf.class.getName());
     
