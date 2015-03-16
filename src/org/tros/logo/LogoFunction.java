@@ -75,13 +75,11 @@ public class LogoFunction extends LogoBlock implements CodeFunction {
      *
      * @param scope
      * @param canvas
-     * @param prc
      * @return
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext prc) {
-        scope.push(this);
-        ProcedureInvocationContext context = (ProcedureInvocationContext) prc;
+    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
+        ProcedureInvocationContext context = (ProcedureInvocationContext) scope.peek().getParserRuleContext();
 
         logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) ctx;
         ArrayList<String> paramNames = new ArrayList<>();
@@ -111,14 +109,14 @@ public class LogoFunction extends LogoBlock implements CodeFunction {
                 Double value = paramValues.get(ii);
                 Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "param: {0} -> {1}", new Object[]{name, value});
             }
-            ret = super.process(scope, canvas, ctx);
+            ret = super.process(scope, canvas);
         } catch (Exception ex) {
             Logger.getLogger(LogoFunction.class.getName()).log(Level.WARNING, "{0} -> {1}", new Object[]{ex.getClass().getName(), ex.getMessage()});
         }
         if (ret == ProcessResult.RETURN) {
             ret = ProcessResult.SUCCESS;
         }
-        scope.pop();
+
         return ret;
     }
 }

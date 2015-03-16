@@ -56,11 +56,10 @@ public class LogoIf extends LogoBlock {
      * Process the if statement.
      * @param scope
      * @param canvas
-     * @param context
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
         scope.push(this);
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
@@ -80,35 +79,35 @@ public class LogoIf extends LogoBlock {
         switch (comparator) {
             case ">":
                 if (val1 > val2) {
-                    success = super.process(scope, canvas, ctx);
+                    success = super.process(scope, canvas);
                 }
                 break;
             case "<":
                 if (val1 < val2) {
-                    success = super.process(scope, canvas, ctx);
+                    success = super.process(scope, canvas);
                 }
                 break;
             case ">=":
                 if (val1 >= val2) {
-                    success = super.process(scope, canvas, ctx);
+                    success = super.process(scope, canvas);
                 }
                 break;
             case "<=":
                 if (val1 <= val2) {
-                    success = super.process(scope, canvas, ctx);
+                    success = super.process(scope, canvas);
                 }
                 break;
             case "=":
             case "==":
                 if (val1 == val2) {
-                    success = super.process(scope, canvas, ctx);
+                    success = super.process(scope, canvas);
                 }
                 break;
             case "<>":
             case "!=":
             case "!":
                 if (val1 != val2) {
-                    success = super.process(scope, canvas, ctx);
+                    success = super.process(scope, canvas);
                 }
                 break;
         }

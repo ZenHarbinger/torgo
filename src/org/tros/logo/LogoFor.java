@@ -16,8 +16,6 @@
 package org.tros.logo;
 
 import org.tros.torgo.ProcessResult;
-import org.tros.torgo.CodeBlock;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -57,11 +55,10 @@ public class LogoFor extends LogoBlock {
      * Process the for loop.
      * @param scope
      * @param canvas
-     * @param currentContext
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         listeners.stream().forEach((l) -> {
@@ -102,7 +99,7 @@ public class LogoFor extends LogoBlock {
             boolean doMore = type == ForType.INCREASE ? start < stop : stop < start;
             while (success && doMore) {
                 scope.setNew(variable, start);
-                success = success && super.process(scope, canvas, currentContext) == ProcessResult.SUCCESS;
+                success = success && super.process(scope, canvas) == ProcessResult.SUCCESS;
 
                 switch (type) {
                     case INCREASE:

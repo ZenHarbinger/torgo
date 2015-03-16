@@ -116,17 +116,16 @@ public class LogoBlock implements CodeBlock {
      *
      * @param scope
      * @param canvas
-     * @param currentContext
      * @return true if we should continue, false otherwise
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
         scope.push(this);
         commands.stream().forEach((lc) -> {
             if (success.get() && !stop.get()) {
-                ProcessResult pr = lc.process(scope, canvas, ctx);
+                ProcessResult pr = lc.process(scope, canvas);
                 if (pr == ProcessResult.HALT) {
                     success.set(false);
                 } else if (pr == ProcessResult.RETURN) {
@@ -201,10 +200,10 @@ public class LogoBlock implements CodeBlock {
         halted.set(monitor.isHalted());
     }
 
-//    @Override
-//    public ParserRuleContext getParserRuleContext() {
-//        return ctx;
-//    }
+    @Override
+    public ParserRuleContext getParserRuleContext() {
+        return ctx;
+    }
 
     @Override
     public boolean hasVariable(String name) {

@@ -16,7 +16,6 @@
 package org.tros.torgo;
 
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.tros.utils.HaltMonitor;
@@ -128,7 +127,7 @@ public abstract class InterpreterThread extends Thread {
                 monitor.addListener(cb);
             });
             //interpret the script
-            script.process(createScope(), canvas, null);
+            script.process(createScope(), canvas);
         } catch (Exception ex) {
             listeners.stream().forEach((l) -> {
                 l.error(ex);

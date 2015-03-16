@@ -37,4 +37,6 @@ public interface Scope {
     CodeFunction getFunction(String name);
     
     boolean hasFunction(String name);
+    
+    CodeBlock peek();
 }

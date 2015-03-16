@@ -149,4 +149,9 @@ public class DynamicScope implements Scope {
     public boolean hasFunction(String name) {
         return callStack.stream().anyMatch((cb) -> (cb.hasFunction(name)));
     }
+
+    @Override
+    public CodeBlock peek() {
+        return callStack.get(0);
+    }
 }

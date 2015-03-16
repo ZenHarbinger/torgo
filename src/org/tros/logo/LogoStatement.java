@@ -76,11 +76,10 @@ public class LogoStatement extends LogoBlock {
      *
      * @param scope
      * @param canvas
-     * @param context
      * @return
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
         //if the thread has halted, don't process and pop up the stack.
         if (isHalted()) {
             return ProcessResult.HALT;
@@ -240,7 +239,9 @@ public class LogoStatement extends LogoBlock {
             default:
                 CodeBlock lf = getFunction(command, scope);
                 if (lf != null) {
-                    success = lf.process(scope, canvas, ctx);
+                    scope.push(this);
+                    success = lf.process(scope, canvas);
+                    scope.pop();
                 } else {
                     success = ProcessResult.HALT;
                     canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);

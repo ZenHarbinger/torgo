@@ -103,4 +103,8 @@ public class LexicalScope implements Scope {
         return false;
     }
 
+    @Override
+    public CodeBlock peek() {
+        return stack.get(0);
+    }
 }

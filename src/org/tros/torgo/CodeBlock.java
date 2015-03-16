@@ -16,7 +16,6 @@
 package org.tros.torgo;
 
 import java.util.Collection;
-import java.util.Stack;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.utils.IHaltListener;
 
@@ -62,11 +61,9 @@ public interface CodeBlock extends IHaltListener {
      *
      * @param scope
      * @param canvas
-     * @param currentContext
-     * @param stack
      * @return true if we should continue, false otherwise
      */
-    ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext currentContext);
+    ProcessResult process(Scope scope, TorgoCanvas canvas);
 
     /**
      * Add listener to this object
@@ -94,11 +91,11 @@ public interface CodeBlock extends IHaltListener {
      */
     void addFunction(CodeFunction function);
 
-//    /**
-//     * Get the local context of this ANTLR generated parse tree stub.
-//     * @return 
-//     */
-//    ParserRuleContext getParserRuleContext();
+    /**
+     * Get the local context of this ANTLR generated parse tree stub.
+     * @return 
+     */
+    ParserRuleContext getParserRuleContext();
     
     boolean hasVariable(String name);
     

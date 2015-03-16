@@ -62,11 +62,10 @@ public class LogoRepeat extends LogoBlock {
      * Process the repeat
      * @param scope
      * @param canvas
-     * @param context
      * @return 
      */
     @Override
-    public ProcessResult process(Scope scope, TorgoCanvas canvas, ParserRuleContext context) {
+    public ProcessResult process(Scope scope, TorgoCanvas canvas) {
         int repeat = ExpressionListener.evaluateDouble(scope, ((logoParser.RepeatContext)ctx).expression()).intValue();
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         listeners.stream().forEach((l) -> {
@@ -77,7 +76,7 @@ public class LogoRepeat extends LogoBlock {
         ProcessResult success = ProcessResult.SUCCESS;
         for (int ii = 0; ii < repeat && success == ProcessResult.SUCCESS; ii++) {
             scope.setNew(REPCOUNT_VAR, ii + 1);
-            success = super.process(scope, canvas, ctx);
+            success = super.process(scope, canvas);
         }
         scope.pop();
         return success;
