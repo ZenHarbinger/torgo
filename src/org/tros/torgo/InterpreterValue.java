@@ -21,6 +21,8 @@ package org.tros.torgo;
  */
 public class InterpreterValue implements InterpreterType {
     
+    public static final InterpreterValue NULL = new InterpreterValue(Type.NULL, null);
+
     private final Object value;
     private final Type type;
 

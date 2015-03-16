@@ -26,7 +26,7 @@ public class LexicalScope implements Scope {
     private final ArrayList<CodeBlock> stack = new ArrayList<>();
 
     @Override
-    public double get(String name) {
+    public InterpreterValue get(String name) {
         CodeBlock p = stack.get(0);
         while(p != null) {
             if (p.hasVariable(name)) {
@@ -34,7 +34,7 @@ public class LexicalScope implements Scope {
             }
             p = p.getParent();
         }
-        return 0;
+        return InterpreterValue.NULL;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class LexicalScope implements Scope {
     }
 
     @Override
-    public void set(String name, double value) {
+    public void set(String name, InterpreterValue value) {
         CodeBlock p = stack.get(0);
         while(p != null) {
             if (p.hasVariable(name)) {
@@ -75,7 +75,7 @@ public class LexicalScope implements Scope {
     }
 
     @Override
-    public void setNew(String name, double value) {
+    public void setNew(String name, InterpreterValue value) {
         stack.get(0).setVariable(name, value);
     }
 

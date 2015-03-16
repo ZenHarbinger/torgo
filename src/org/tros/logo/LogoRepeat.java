@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
+import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
@@ -31,16 +32,17 @@ import org.tros.torgo.TorgoCanvas;
 class LogoRepeat extends LogoBlock {
 
     /**
-     * This variable name is used to set the repcount value,
-     * The name is such that it should be be used within logo and so it
-     * cannot be over-written or declared.
+     * This variable name is used to set the repcount value, The name is such
+     * that it should be be used within logo and so it cannot be over-written or
+     * declared.
      */
     public static final String REPCOUNT_VAR = "1_repcount%";
     private final static Logger logger = Logger.getLogger(LogoRepeat.class.getName());
 
     /**
      * Constructor
-     * @param ctx 
+     *
+     * @param ctx
      */
     protected LogoRepeat(ParserRuleContext ctx) {
         super(ctx);
@@ -48,13 +50,14 @@ class LogoRepeat extends LogoBlock {
 
     /**
      * Process the repeat
+     *
      * @param scope
      * @param canvas
-     * @return 
+     * @return
      */
     @Override
     public ReturnValue process(Scope scope, TorgoCanvas canvas) {
-        int repeat = ExpressionListener.evaluateDouble(scope, ((logoParser.RepeatContext)ctx).expression()).intValue();
+        int repeat = ((Number) ExpressionListener.evaluate(scope, ((logoParser.RepeatContext) ctx).expression()).getValue()).intValue();
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         listeners.stream().forEach((l) -> {
             l.currStatement("repeat", ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex());
@@ -63,7 +66,7 @@ class LogoRepeat extends LogoBlock {
         scope.push(this);
         ReturnValue success = ReturnValue.SUCCESS;
         for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
-            scope.setNew(REPCOUNT_VAR, ii + 1);
+            scope.setNew(REPCOUNT_VAR, new InterpreterValue(Type.NUMBER, ii + 1));
             success = super.process(scope, canvas);
         }
         scope.pop();

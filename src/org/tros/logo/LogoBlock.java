@@ -24,6 +24,7 @@ import org.tros.torgo.CodeBlock;
 import org.tros.torgo.CodeFunction;
 import org.tros.torgo.InterpreterListener;
 import org.tros.torgo.InterpreterType.Type;
+import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
@@ -44,7 +45,7 @@ class LogoBlock implements CodeBlock {
     protected final ArrayList<InterpreterListener> listeners = new ArrayList<>();
     private final AtomicBoolean halted = new AtomicBoolean(false);
 
-    private final HashMap<String, Double> variables = new HashMap<>();
+    private final HashMap<String, InterpreterValue> variables = new HashMap<>();
     private CodeBlock parent;
 
     @Override
@@ -200,12 +201,12 @@ class LogoBlock implements CodeBlock {
     }
 
     @Override
-    public void setVariable(String name, Double value) {
+    public void setVariable(String name, InterpreterValue value) {
         variables.put(name, value);
     }
 
     @Override
-    public Double getVariable(String name) {
+    public InterpreterValue getVariable(String name) {
         return variables.get(name);
     }
 

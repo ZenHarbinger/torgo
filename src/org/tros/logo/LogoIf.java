@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.ReturnValue;
-import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
 import org.tros.torgo.TorgoCanvas;
 
@@ -57,8 +56,8 @@ class LogoIf extends LogoBlock {
 
         //evaluate the 2 expressions.
         logoParser.IfeContext ct = (logoParser.IfeContext) ctx;
-        double val1 = ExpressionListener.evaluateDouble(scope, ct.comparison().expression(0));
-        double val2 = ExpressionListener.evaluateDouble(scope, ct.comparison().expression(1));
+        double val1 = ((Number) ExpressionListener.evaluate(scope, ct.comparison().expression(0)).getValue()).doubleValue();
+        double val2 = ((Number) ExpressionListener.evaluate(scope, ct.comparison().expression(1)).getValue()).doubleValue();
         String comparator = ct.comparison().comparisonOperator().getText();
 
         ReturnValue success = ReturnValue.SUCCESS;

@@ -22,7 +22,7 @@ package org.tros.torgo;
  */
 public interface Scope {
 
-    double get(String name);
+    InterpreterValue get(String name);
 
     boolean has(String name);
 
@@ -30,9 +30,9 @@ public interface Scope {
 
     void push(CodeBlock block);
 
-    void set(String name, double value);
+    void set(String name, InterpreterValue value);
 
-    void setNew(String name, double value);
+    void setNew(String name, InterpreterValue value);
 
     CodeFunction getFunction(String name);
     

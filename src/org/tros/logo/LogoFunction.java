@@ -22,6 +22,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
 import org.tros.logo.antlr.logoParser.ProcedureInvocationContext;
 import org.tros.torgo.CodeFunction;
+import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
@@ -70,14 +71,14 @@ class LogoFunction extends LogoBlock implements CodeFunction {
 
         logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) ctx;
         ArrayList<String> paramNames = new ArrayList<>();
-        ArrayList<Double> paramValues = new ArrayList<>();
+        ArrayList<InterpreterValue> paramValues = new ArrayList<>();
 
         funct.parameterDeclarations().stream().forEach((param) -> {
             paramNames.add(param.getText().substring(1));
         });
 
         context.expression().stream().map((exp) -> {
-            return ExpressionListener.evaluateDouble(scope, exp);
+            return ExpressionListener.evaluate(scope, exp);
         }).forEach((el) -> {
             paramValues.add(el);
         });
@@ -93,7 +94,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
             Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "function: {0}", new Object[]{funcitonName});
             for (int ii = 0; ii < paramNames.size(); ii++) {
                 String name = paramNames.get(ii);
-                Double value = paramValues.get(ii);
+                InterpreterValue value = paramValues.get(ii);
                 Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "param: {0} -> {1}", new Object[]{name, value});
             }
             ret = super.process(scope, canvas);

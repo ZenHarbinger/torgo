@@ -99,9 +99,9 @@ public interface CodeBlock extends InterpreterType, IHaltListener {
     
     boolean hasVariable(String name);
     
-    void setVariable(String name, Double value);
+    void setVariable(String name, InterpreterValue value);
     
-    Double getVariable(String name);
+    InterpreterValue getVariable(String name);
     
     CodeBlock getParent();
 }

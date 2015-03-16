@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.tros.utils.HaltMonitor;
+import org.tros.utils.logging.LogConsole;
 
 /**
  * Interpreter Thread Interface
@@ -134,6 +135,7 @@ public abstract class InterpreterThread extends Thread {
                 Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
             });
             Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
+            LogConsole.CONSOLE.setVisible(true);
         }
         listeners.stream().forEach((l) -> {
             l.finished();

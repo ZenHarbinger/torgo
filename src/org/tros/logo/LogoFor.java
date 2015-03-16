@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
+import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
@@ -71,12 +72,12 @@ class LogoFor extends LogoBlock {
 
         String variable = fore.name().STRING().getText();
 
-        Double start = ExpressionListener.evaluateDouble(scope, fore.expression(0));
-        Double stop = ExpressionListener.evaluateDouble(scope, fore.expression(1));
+        double start = ((Number) ExpressionListener.evaluate(scope, fore.expression(0)).getValue()).doubleValue();
+        double stop = ((Number) ExpressionListener.evaluate(scope, fore.expression(1)).getValue()).doubleValue();
 
         //Are we increasing/decreasing.
         //set the default step accordingly.
-        Double step;
+        double step;
         if (start > stop) {
             type = ForType.DECREASE;
             step = -1.0;
@@ -90,7 +91,7 @@ class LogoFor extends LogoBlock {
 
         //if the step value is specified, evalutate.
         if (fore.expression().size() > 2) {
-            step = ExpressionListener.evaluateDouble(scope, fore.expression(2));
+            step = ((Number) ExpressionListener.evaluate(scope, fore.expression(2)).getValue()).doubleValue();
         }
 
         //process and step
@@ -99,7 +100,7 @@ class LogoFor extends LogoBlock {
             //not sure if this should be <=
             boolean doMore = type == ForType.INCREASE ? start < stop : stop < start;
             while (success && doMore) {
-                scope.setNew(variable, start);
+                scope.setNew(variable, new InterpreterValue(Type.NUMBER, start));
                 success = success && super.process(scope, canvas).getResult() == ProcessResult.SUCCESS;
 
                 switch (type) {

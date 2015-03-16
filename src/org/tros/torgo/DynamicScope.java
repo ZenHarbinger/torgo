@@ -25,7 +25,7 @@ import java.util.HashMap;
  */
 public class DynamicScope implements Scope {
 
-    private final ArrayList<HashMap<String, Double>> scope = new ArrayList<>();
+    private final ArrayList<HashMap<String, InterpreterValue>> scope = new ArrayList<>();
     private final ArrayList<CodeBlock> callStack = new ArrayList<>();
 
     /**
@@ -63,23 +63,23 @@ public class DynamicScope implements Scope {
      * @return 
      */
     @Override
-    public double get(String name) {
-        Double ret = null;
+    public InterpreterValue get(String name) {
+        InterpreterValue ret = InterpreterValue.NULL;
 
-        for (HashMap<String, Double> map : scope) {
+        for (HashMap<String, InterpreterValue> map : scope) {
             if (map.containsKey(name)) {
                 ret = map.get(name);
                 break;
             }
         }
 
-        if (ret == null) {
-            try {
-                ret = Double.parseDouble(name);
-            } catch (Exception ex) {
-                ret = 0.0;
-            }
-        }
+//        if (ret == null) {
+//            try {
+//                ret = Double.parseDouble(name);
+//            } catch (Exception ex) {
+//                ret = 0.0;
+//            }
+//        }
 
         return ret;
     }
@@ -90,9 +90,9 @@ public class DynamicScope implements Scope {
      * @param value 
      */
     @Override
-    public void set(String name, double value) {
+    public void set(String name, InterpreterValue value) {
         boolean found = false;
-        for (HashMap<String, Double> scope1 : scope) {
+        for (HashMap<String, InterpreterValue> scope1 : scope) {
             if (scope1.containsKey(name)) {
                 scope1.put(name, value);
                 found = true;
@@ -113,7 +113,7 @@ public class DynamicScope implements Scope {
     public boolean has(String name) {
         boolean ret = false;
 
-        for (HashMap<String, Double> map : scope) {
+        for (HashMap<String, InterpreterValue> map : scope) {
             if (map.containsKey(name)) {
                 ret = true;
                 break;
@@ -131,7 +131,7 @@ public class DynamicScope implements Scope {
      * @param value 
      */
     @Override
-    public void setNew(String name, double value) {
+    public void setNew(String name, InterpreterValue value) {
         scope.get(0).put(name, value);
     }
 
