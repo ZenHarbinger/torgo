@@ -23,14 +23,14 @@ import org.tros.jvmbasic.antlr.jvmBasicBaseListener;
  * it will be interpreted.
  * @author matta
  */
-public class CommandListener extends jvmBasicBaseListener {
+class LexcialListener extends jvmBasicBaseListener {
 
 //    private final Stack<LogoBlock> stack = new Stack<>();
 
     /**
      * Hidden constructor, force use of "lexicalAnalysis" method.
      */
-    private CommandListener() {
+    private LexcialListener() {
     }
 
 //    /**

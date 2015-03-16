@@ -102,7 +102,7 @@ public final class LogoController extends ControllerBase {
                 logoParser parser = new logoParser(new CommonTokenStream(lexer));
                 //get the prog element from the parse tree
                 //the prog element is the root element defined in the logo.g4 grammar.
-                return CommandListener.lexicalAnalysis(parser.prog());
+                return LexicalListener.lexicalAnalysis(parser.prog());
             }
         };
     }
