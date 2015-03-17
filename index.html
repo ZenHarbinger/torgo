@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Torgo : Logo Interpreter in Java">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Torgo</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ZenHarbinger/torgo">View on GitHub</a>
+
+          <h1 id="project_title">Torgo</h1>
+          <h2 id="project_tagline">Logo Interpreter in Java</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/ZenHarbinger/torgo/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ZenHarbinger/torgo/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="torgo" class="anchor" href="#torgo" aria-hidden="true"><span class="octicon octicon-link"></span></a>torgo</h1>
+
+<h2>
+<a id="logo-interpreter-in-java" class="anchor" href="#logo-interpreter-in-java" aria-hidden="true"><span class="octicon octicon-link"></span></a>Logo Interpreter in Java</h2>
+
+<p>Torgo is a Logo interpreter written in Java.  It uses <a href="http://www.antlr.org/">ANTLR</a> as a language parser and for lexical analysis.  The parsed scripts are then walked to interpret the commands.</p>
+
+<p>Torgo is built using Java8 (use of lamba for personal learning).</p>
+
+<p>Some goals for Torgo are:</p>
+
+<ul>
+<li>to learn to program</li>
+<li>to learn how machines execute programs</li>
+<li>to modify/add languages to change behaviors</li>
+</ul>
+
+<p>This project was inspired by <a href="http://tortue.sourceforge.net/">Tortue</a>.</p>
+
+<h2>
+<a id="languages" class="anchor" href="#languages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Languages</h2>
+
+<p>Torgo currently supports logo; jvmBasic and lisp are in development.</p>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
+
+<p>All requirements (and optional jars) for compiling and running are available in the /lib directory of the project.</p>
+
+<h3>
+<a id="run" class="anchor" href="#run" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run</h3>
+
+<ul>
+<li>
+<a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">Java8</a> (for lambdas)</li>
+<li><a href="http://commons.apache.org/proper/commons-io/">apache-commons-io</a></li>
+<li><a href="http://commons.apache.org/proper/commons-collections/">apache-commons-collections</a></li>
+<li><a href="http://commons.apache.org/proper/commons-cli/">apache-commons-cli</a></li>
+<li><a href="http://www.antlr.org/">ANTLR 4.5</a></li>
+</ul>
+
+<h3>
+<a id="optional" class="anchor" href="#optional" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optional</h3>
+
+<ul>
+<li>
+<a href="http://fifesoft.com/rsyntaxtextarea/">RSyntaxArea</a> - Will compile and run without this jar, but looks nicer with it.</li>
+</ul>
+
+<h3>
+<a id="building" class="anchor" href="#building" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building</h3>
+
+<ul>
+<li>org-netbeans-modules-java-j2seproject-copylibstask.jar</li>
+</ul>
+
+<h2>
+<a id="compile" class="anchor" href="#compile" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compile</h2>
+
+<ol>
+<li>Check out code</li>
+<li><code>ant clean jar</code></li>
+</ol>
+
+<h2>
+<a id="run-1" class="anchor" href="#run-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run</h2>
+
+<ol>
+<li><code>java -jar dist/torgo.jar</code></li>
+</ol>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Torgo maintained by <a href="https://github.com/ZenHarbinger">ZenHarbinger</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
