@@ -39,6 +39,11 @@ public class InterpreterValue implements InterpreterType {
     public Type getType() {
         return type;
     }
+    
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 
 //    /**
 //     * This function probably needs work.
