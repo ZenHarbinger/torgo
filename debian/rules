@@ -2,6 +2,7 @@
 
 include /usr/share/javahelper/java-vars.mk
 
+unset JAVA_HOME
 #export JAVA_HOME=/usr/lib/jvm/default-java
 export JAVA_HOME_DIRS=/usr/lib/jvm/java-7-openjdk-amd64/:/usr/lib/jvm/java-7-openjdk-i386:/usr/lib/jvm/java-8-oracle:/usr/lib/jvm/default-java
 
