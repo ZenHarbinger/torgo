@@ -2,7 +2,8 @@
 
 include /usr/share/javahelper/java-vars.mk
 
-export JAVA_HOME=/usr/lib/jvm/default-java
+#export JAVA_HOME=/usr/lib/jvm/default-java
+export JAVA_HOME_DIRS=/usr/lib/jvm/java-7-openjdk-amd64/:/usr/lib/jvm/java-7-openjdk-i386:/usr/lib/jvm/java-8-oracle:/usr/lib/jvm/default-java
 
 %: ; dh $@ --with javahelper
 override_dh_auto_build: ; dh_auto_build -- jar
