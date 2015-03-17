@@ -1,9 +1,0 @@
-#!/usr/bin/make -f
-
-include /usr/share/javahelper/java-vars.mk
-
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-$(JAVA_ARCH)
-
-%: ; dh $@ --with javahelper
-override_dh_auto_build: ; dh_auto_build -- jar
-override_dh_auto_clean: ; dh_auto_clean -- clean
