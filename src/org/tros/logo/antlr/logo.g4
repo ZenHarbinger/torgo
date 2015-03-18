@@ -61,7 +61,6 @@ cmd
     | ht
     | st
     | home
-    | label
     | setxy
     | make
     | localmake
@@ -229,10 +228,6 @@ stop
     : 'stop'
     ;
         
-label
-    : 'label'
-    ;
-
 setxy
     : 'setxy' expression expression
     ;
@@ -289,7 +284,7 @@ pause
 
 /* --draw a string to the canvas-- */
 ds
-    : ('ds'|'drawstring') value
+    : ('ds'|'drawstring' | 'label') value
     ;
 
 fontname

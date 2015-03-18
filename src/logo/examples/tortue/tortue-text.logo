@@ -14,9 +14,7 @@ repeat 24 [
     penup
     forward 45
     pendown
-    lt 90
     make "string_var "this_is_logo_text
     drawstring :string_var
-    rt 90
     make "color :color + 10
 ]

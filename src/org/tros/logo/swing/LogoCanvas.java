@@ -255,8 +255,8 @@ public class LogoCanvas extends SwingCanvas {
     public void drawString(String message) {
         if (!penup) {
             AffineTransform saveXform = g2.getTransform();
-            double offsetAngle = (Math.PI / 2.0);
-            //double offsetAngle = 0;
+            //double offsetAngle = (Math.PI / 2.0);
+            double offsetAngle = 0;
             g2.setTransform(AffineTransform.getRotateInstance(angle + offsetAngle, penX, penY));
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g2.drawString(message, (int) penX, (int) penY);

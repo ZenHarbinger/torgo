@@ -192,13 +192,6 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer{
     }
 
     @Override
-    public void enterLabel(logoParser.LabelContext ctx) {
-        LogoStatement logoStatement = new LogoStatement("label", ctx);
-        blocks.add(logoStatement);
-        stack.peek().addCommand(logoStatement);
-    }
-
-    @Override
     public void enterSetxy(logoParser.SetxyContext ctx) {
         LogoStatement logoStatement = new LogoStatement("setxy", ctx);
         blocks.add(logoStatement);
