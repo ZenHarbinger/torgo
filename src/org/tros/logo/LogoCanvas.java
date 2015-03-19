@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo;
+package org.tros.logo;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -22,7 +22,7 @@ import java.awt.image.BufferedImage;
  * Canvas/Drawing Interface
  * @author matta
  */
-public interface TorgoCanvas {
+public interface LogoCanvas {
 
     void backward(double distance);
 

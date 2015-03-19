@@ -24,7 +24,6 @@ import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
-import org.tros.torgo.TorgoCanvas;
 
 /**
  * This is perhaps the most trickily named class. This inherits from LogoBlock,
@@ -41,6 +40,7 @@ class LogoStatement extends LogoBlock {
 
     private static final Logger logger = Logger.getLogger(LogoStatement.class.getName());
     private final String command;
+    private final LogoCanvas canvas;
 
     /**
      * Constructor
@@ -48,9 +48,9 @@ class LogoStatement extends LogoBlock {
      * @param command
      * @param ctx
      */
-    protected LogoStatement(String command, ParserRuleContext ctx) {
+    protected LogoStatement(String command, ParserRuleContext ctx, LogoCanvas canvas) {
         super(ctx);
-
+        this.canvas = canvas;
         this.command = command.trim();
         super.addCommand((LogoBlock) this);
     }
@@ -72,7 +72,7 @@ class LogoStatement extends LogoBlock {
      * @return
      */
     @Override
-    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope) {
         //if the thread has halted, don't process and pop up the stack.
         if (isHalted()) {
             return new ReturnValue(Type.NULL, null, ProcessResult.HALT);
@@ -235,7 +235,7 @@ class LogoStatement extends LogoBlock {
                 CodeBlock lf = getFunction(command, scope);
                 if (lf != null) {
                     scope.push(this);
-                    success = lf.process(scope, canvas);
+                    success = lf.process(scope);
                     scope.pop();
                 } else {
                     success = new ReturnValue(Type.NULL, null, ProcessResult.HALT);

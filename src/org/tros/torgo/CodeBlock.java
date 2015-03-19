@@ -60,10 +60,9 @@ public interface CodeBlock extends InterpreterType, IHaltListener {
      * Process the statement(s)
      *
      * @param scope
-     * @param canvas
      * @return true if we should continue, false otherwise
      */
-    ReturnValue process(Scope scope, TorgoCanvas canvas);
+    ReturnValue process(Scope scope);
 
     /**
      * Add listener to this object

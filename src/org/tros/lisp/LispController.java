@@ -20,9 +20,8 @@ import javax.swing.JToolBar;
 import org.tros.torgo.ControllerBase;
 import org.tros.torgo.Controller;
 import org.tros.torgo.InterpreterThread;
-import org.tros.torgo.TorgoCanvas;
+import org.tros.torgo.TorgoScreen;
 import org.tros.torgo.TorgoTextConsole;
-import org.tros.torgo.swing.SwingCanvas;
 import org.tros.torgo.swing.SwingTextConsole;
 
 /**
@@ -37,12 +36,12 @@ public class LispController extends ControllerBase {
     }
 
     @Override
-    protected SwingCanvas createCanvas(TorgoTextConsole console) {
+    protected TorgoScreen createCanvas(TorgoTextConsole console) {
         return null;
     }
 
     @Override
-    protected InterpreterThread createInterpreterThread(String source, TorgoCanvas canvas) {
+    protected InterpreterThread createInterpreterThread(String source) {
         return null;
     }
 

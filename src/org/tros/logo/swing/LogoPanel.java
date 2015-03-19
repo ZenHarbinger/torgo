@@ -15,8 +15,9 @@
  */
 package org.tros.logo.swing;
 
-import org.tros.torgo.swing.SwingCanvas;
+import org.tros.logo.LogoCanvas;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -26,16 +27,20 @@ import java.awt.event.ComponentListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import org.tros.torgo.TorgoScreen;
 
 import org.tros.torgo.TorgoTextConsole;
 
-public class LogoCanvas extends SwingCanvas {
+public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
 
     private BufferedImage buffer;
     private Graphics2D g2;
@@ -50,7 +55,14 @@ public class LogoCanvas extends SwingCanvas {
     private final TorgoTextConsole console;
     private BufferedImage turtle;
 
-    public LogoCanvas(TorgoTextConsole textOutput) {
+    public static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    }
+
+    public LogoPanel(TorgoTextConsole textOutput) {
         console = textOutput;
         penup = false;
         showTurtle = true;
@@ -60,14 +72,14 @@ public class LogoCanvas extends SwingCanvas {
                 turtle = ImageIO.read(resource);
             }
         } catch (IOException ex) {
-            Logger.getLogger(LogoCanvas.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         addComponentListener(new ComponentListener() {
 
             @Override
             public void componentResized(ComponentEvent e) {
                 if (buffer != null) {
-                    BufferedImage bi = deepCopy(buffer);
+                    BufferedImage bi = LogoPanel.deepCopy(buffer);
                     clear();
                     g2.drawImage(bi, 0, 0, null);
                 }
@@ -112,7 +124,7 @@ public class LogoCanvas extends SwingCanvas {
         try {
             Thread.sleep(time);
         } catch (InterruptedException ex) {
-            Logger.getLogger(LogoCanvas.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -318,7 +330,7 @@ public class LogoCanvas extends SwingCanvas {
     public void warning(String message) {
         console.appendToOutputTextArea(">> " + message + System.getProperty("line.separator"));
     }
-    
+
     @Override
     public double getTurtleX() {
         return penX;
@@ -328,9 +340,42 @@ public class LogoCanvas extends SwingCanvas {
     public double getTurtleY() {
         return penX;
     }
-    
+
     @Override
     public double getTurtleAngle() {
         return angle;
     }
+
+    @Override
+    public void reset() {
+        clear();
+        home();
+        repaint();
+    }
+
+    @Override
+    public void pencolor(int red, int green, int blue, int alpha) {
+        red = Math.min(255, Math.max(0, red));
+        green = Math.min(255, Math.max(0, green));
+        blue = Math.min(255, Math.max(0, blue));
+
+        Color canvasColor = new Color(red, green, blue, alpha);
+        pencolor(canvasColor);
+    }
+
+    @Override
+    public void canvascolor(int red, int green, int blue) {
+        red = Math.min(255, Math.max(0, red));
+        green = Math.min(255, Math.max(0, green));
+        blue = Math.min(255, Math.max(0, blue));
+
+        Color canvasColor = new Color(red, green, blue);
+        canvascolor(canvasColor);
+    }
+
+    @Override
+    public Component getComponent() {
+        return this;
+    }
+
 }

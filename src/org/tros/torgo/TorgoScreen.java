@@ -13,24 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.swing;
+package org.tros.torgo;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
-import javax.swing.JPanel;
-import org.tros.torgo.TorgoCanvas;
+import java.awt.Component;
 
 /**
  *
  * @author matta
  */
-public abstract class SwingCanvas extends JPanel implements TorgoCanvas {
+public interface TorgoScreen {
 
-    public static BufferedImage deepCopy(BufferedImage bi) {
-        ColorModel cm = bi.getColorModel();
-        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = bi.copyData(null);
-        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
-    }
+    void reset();
+
+    Component getComponent();
 }

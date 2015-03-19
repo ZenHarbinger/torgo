@@ -130,13 +130,6 @@ public interface Controller {
     void setSource(String src);
 
     /**
-     * Export the canvas to an image of specified type.
-     * @param type
-     * @param file 
-     */
-    void exportCanvas(String type, String file);
-
-    /**
      * Get the language of the interpreter.
      * @return 
      */

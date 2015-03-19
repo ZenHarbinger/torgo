@@ -21,7 +21,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.Scope;
-import org.tros.torgo.TorgoCanvas;
 
 /**
  * Supports if statements/expressions.
@@ -46,7 +45,7 @@ class LogoIf extends LogoBlock {
      * @return 
      */
     @Override
-    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope) {
         scope.push(this);
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
@@ -66,35 +65,35 @@ class LogoIf extends LogoBlock {
         switch (comparator) {
             case ">":
                 if (val1 > val2) {
-                    success = super.process(scope, canvas);
+                    success = super.process(scope);
                 }
                 break;
             case "<":
                 if (val1 < val2) {
-                    success = super.process(scope, canvas);
+                    success = super.process(scope);
                 }
                 break;
             case ">=":
                 if (val1 >= val2) {
-                    success = super.process(scope, canvas);
+                    success = super.process(scope);
                 }
                 break;
             case "<=":
                 if (val1 <= val2) {
-                    success = super.process(scope, canvas);
+                    success = super.process(scope);
                 }
                 break;
             case "=":
             case "==":
                 if (val1 == val2) {
-                    success = super.process(scope, canvas);
+                    success = super.process(scope);
                 }
                 break;
             case "<>":
             case "!=":
             case "!":
                 if (val1 != val2) {
-                    success = super.process(scope, canvas);
+                    success = super.process(scope);
                 }
                 break;
         }

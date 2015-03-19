@@ -21,18 +21,17 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.tros.logo.antlr.logoLexer;
 import org.tros.logo.antlr.logoParser;
-import org.tros.logo.swing.LogoCanvas;
+import org.tros.logo.swing.LogoPanel;
 import org.tros.logo.swing.LogoMenuBar;
 import org.tros.logo.swing.LogoUserInputPanel;
+import org.tros.torgo.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.ControllerBase;
 import org.tros.torgo.DynamicScope;
 import org.tros.torgo.InterpreterThread;
 import org.tros.torgo.LexicalAnalyzer;
-import org.tros.torgo.Scope;
-import org.tros.torgo.TorgoCanvas;
+import org.tros.torgo.TorgoScreen;
 import org.tros.torgo.TorgoTextConsole;
-import org.tros.torgo.swing.SwingCanvas;
 import org.tros.torgo.swing.SwingTextConsole;
 import org.tros.torgo.swing.TorgoToolBar;
 
@@ -43,6 +42,9 @@ import org.tros.torgo.swing.TorgoToolBar;
  */
 public final class LogoController extends ControllerBase {
 
+    private LogoPanel canvas;
+    private LogoUserInputPanel panel;
+
     /**
      * Constructor, must be public for the ServiceLoader. Only initializes basic
      * object needs.
@@ -52,24 +54,30 @@ public final class LogoController extends ControllerBase {
 
     @Override
     protected SwingTextConsole createConsole(Controller app) {
-        return new LogoUserInputPanel(app);
+        if (panel == null) {
+            panel = new LogoUserInputPanel(app);
+        }
+
+        return panel;
     }
 
     @Override
-    protected SwingCanvas createCanvas(TorgoTextConsole console) {
-        return new LogoCanvas(console);
+    protected TorgoScreen createCanvas(TorgoTextConsole console) {
+        if (canvas == null) {
+            canvas = new LogoPanel(console);
+        }
+
+        return canvas;
     }
 
     @Override
     protected JToolBar createToolBar() {
-        JToolBar toolBar = new TorgoToolBar(super.getWindow(), (Controller) this);
-        return toolBar;
+        return new TorgoToolBar(super.getWindow(), (Controller) this);
     }
 
     @Override
     protected JMenuBar createMenuBar() {
-        JMenuBar menuBar = new LogoMenuBar(super.getWindow(), (Controller) this);
-        return menuBar;
+        return new LogoMenuBar(super.getWindow(), (Controller) this, canvas);
     }
 
     /**
@@ -83,18 +91,12 @@ public final class LogoController extends ControllerBase {
      * Get an interpreter thread.
      *
      * @param source
-     * @param canvas
      * @return
      */
     @Override
-    protected InterpreterThread createInterpreterThread(String source, TorgoCanvas canvas) {
-        return new InterpreterThread(source, canvas) {
+    protected InterpreterThread createInterpreterThread(String source) {
+        return new InterpreterThread(source) {
 
-            @Override
-            protected Scope createScope() {
-                return new DynamicScope();
-            }
-            
             @Override
             protected LexicalAnalyzer getLexicalAnalysis(String source) {
                 //lexical analysis and parsing with ANTLR
@@ -102,7 +104,12 @@ public final class LogoController extends ControllerBase {
                 logoParser parser = new logoParser(new CommonTokenStream(lexer));
                 //get the prog element from the parse tree
                 //the prog element is the root element defined in the logo.g4 grammar.
-                return LexicalListener.lexicalAnalysis(parser.prog());
+                return LexicalListener.lexicalAnalysis(parser.prog(), canvas);
+            }
+
+            @Override
+            protected void process(CodeBlock entryPoint) {
+                entryPoint.process(new DynamicScope());
             }
         };
     }

@@ -16,11 +16,9 @@
 package org.tros.torgo;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,9 +29,6 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
-import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -42,11 +37,9 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
 import org.tros.torgo.swing.Localization;
-import org.tros.torgo.swing.SwingCanvas;
 import org.tros.torgo.swing.SwingTextConsole;
 import org.tros.torgo.swing.TorgoWindow;
 import org.tros.utils.AutoResetEvent;
-import org.tros.utils.GifSequenceWriter;
 
 /**
  * The main application. Controls GUI and interpreting process.
@@ -56,7 +49,7 @@ import org.tros.utils.GifSequenceWriter;
 public abstract class ControllerBase implements Controller {
 
     private JFrame window;
-    protected SwingCanvas torgoCanvas;
+    protected TorgoScreen torgoCanvas;
     protected SwingTextConsole torgoPanel;
     private InterpreterThread interp;
     private String filename;
@@ -99,9 +92,9 @@ public abstract class ControllerBase implements Controller {
 
     protected abstract SwingTextConsole createConsole(Controller app);
 
-    protected abstract SwingCanvas createCanvas(TorgoTextConsole console);
+    protected abstract TorgoScreen createCanvas(TorgoTextConsole console);
 
-    protected abstract InterpreterThread createInterpreterThread(String source, TorgoCanvas canvas);
+    protected abstract InterpreterThread createInterpreterThread(String source);
 
     private void initSwing() {
         this.torgoPanel = createConsole((Controller) this);
@@ -115,45 +108,49 @@ public abstract class ControllerBase implements Controller {
         }
 
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoWindow.class);
-        final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, (Component) torgoCanvas, (Component) torgoPanel);
-        int dividerLocation = prefs.getInt(ControllerBase.class.getName() + "divider-location", window.getWidth() - 200);
-        splitPane.setDividerLocation(dividerLocation);
-        splitPane.addPropertyChangeListener((PropertyChangeEvent evt) -> {
-            prefs.putInt(ControllerBase.class.getName() + "divider-location", splitPane.getDividerLocation());
-        });
+        if (torgoCanvas != null) {
+            final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, torgoCanvas.getComponent(), torgoPanel);
+            int dividerLocation = prefs.getInt(ControllerBase.class.getName() + "divider-location", window.getWidth() - 200);
+            splitPane.setDividerLocation(dividerLocation);
+            splitPane.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+                prefs.putInt(ControllerBase.class.getName() + "divider-location", splitPane.getDividerLocation());
+            });
 
-        window.addWindowListener(new WindowListener() {
+            window.addWindowListener(new WindowListener() {
 
-            @Override
-            public void windowOpened(WindowEvent e) {
-            }
+                @Override
+                public void windowOpened(WindowEvent e) {
+                }
 
-            @Override
-            public void windowClosing(WindowEvent e) {
-                stopInterpreter();
-            }
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    stopInterpreter();
+                }
 
-            @Override
-            public void windowClosed(WindowEvent e) {
-            }
+                @Override
+                public void windowClosed(WindowEvent e) {
+                }
 
-            @Override
-            public void windowIconified(WindowEvent e) {
-            }
+                @Override
+                public void windowIconified(WindowEvent e) {
+                }
 
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
+                @Override
+                public void windowDeiconified(WindowEvent e) {
+                }
 
-            @Override
-            public void windowActivated(WindowEvent e) {
-            }
+                @Override
+                public void windowActivated(WindowEvent e) {
+                }
 
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
-        });
-        contentPane.add(splitPane);
+                @Override
+                public void windowDeactivated(WindowEvent e) {
+                }
+            });
+            contentPane.add(splitPane);
+        } else {
+            contentPane.add(torgoPanel);
+        }
 
         JMenuBar mb = createMenuBar();
         if (mb != null) {
@@ -215,9 +212,9 @@ public abstract class ControllerBase implements Controller {
     private void init() {
         stopInterpreter();
         torgoPanel.reset();
-        torgoCanvas.clear();
-        torgoCanvas.home();
-        torgoCanvas.repaint();
+        if (torgoCanvas != null) {
+            torgoCanvas.reset();
+        }
     }
 
     /**
@@ -322,7 +319,7 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void startInterpreter() {
         String source = torgoPanel.getSource();
-        interp = createInterpreterThread(source, torgoCanvas);
+        interp = createInterpreterThread(source);
 
         interp.addInterpreterListener(new InterpreterListener() {
 
@@ -369,7 +366,7 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void debugInterpreter() {
         String source = torgoPanel.getSource();
-        interp = createInterpreterThread(source, torgoCanvas);
+        interp = createInterpreterThread(source);
         step.reset();
 
         interp.addInterpreterListener(new InterpreterListener() {
@@ -433,7 +430,7 @@ public abstract class ControllerBase implements Controller {
     public void pauseInterpreter() {
         isStepping.set(true);
     }
-    
+
     @Override
     public void resumeInterpreter() {
         isStepping.set(false);
@@ -448,86 +445,6 @@ public abstract class ControllerBase implements Controller {
         if (interp != null) {
             interp.halt();
             step.set();
-        }
-    }
-
-    /**
-     * Export the canvas as an image of the specified format. GIF will generate
-     * an animated gif. Other formats are generated using ImageIO.write(...)
-     *
-     * @param format
-     * @param filename
-     */
-    @Override
-    public void exportCanvas(String format, String filename) {
-        if (format.equals("gif")) {
-            //export animated gif
-            try {
-                ImageOutputStream output = new FileImageOutputStream(new File(filename));
-                GifSequenceWriter writer = new GifSequenceWriter(output, torgoCanvas.getImage().getType(), 1, true);
-
-                String source = torgoPanel.getSource();
-                interp = createInterpreterThread(source, torgoCanvas);
-
-                interp.addInterpreterListener(new InterpreterListener() {
-
-                    @Override
-                    public void started() {
-                        listeners.stream().forEach((l) -> {
-                            l.started();
-                        });
-                    }
-
-                    @Override
-                    public void finished() {
-                        listeners.stream().forEach((l) -> {
-                            l.finished();
-                        });
-                        torgoPanel.highlight(-1, 0, 0);
-                        try {
-                            writer.close();
-                        } catch (IOException ex) {
-                            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-                    @Override
-                    public void error(Exception e) {
-                        listeners.stream().forEach((l) -> {
-                            l.error(e);
-                        });
-                        Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
-                    }
-
-                    @Override
-                    public void message(String msg) {
-                        listeners.stream().forEach((l) -> {
-                            l.message(msg);
-                        });
-                    }
-
-                    @Override
-                    public void currStatement(String statement, int line, int start, int end) {
-                        try {
-                            writer.writeToSequence(SwingCanvas.deepCopy(torgoCanvas.getImage()));
-                        } catch (IOException ex) {
-                            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                });
-                interp.start();
-            } catch (IOException ex) {
-                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                // retrieve image
-                BufferedImage bi = torgoCanvas.getImage();
-                File outputfile = new File(filename);
-                ImageIO.write(bi, format, outputfile);
-            } catch (IOException e) {
-                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
-            }
         }
     }
 

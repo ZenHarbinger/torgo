@@ -30,18 +30,15 @@ public abstract class InterpreterThread extends Thread {
     private final HaltMonitor monitor;
     private CodeBlock script;
     private final String source;
-    private final TorgoCanvas canvas;
     private final ArrayList<InterpreterListener> listeners = new ArrayList<>();
 
     /**
      * Constructor
      *
      * @param source
-     * @param canvas
      */
-    public InterpreterThread(String source, TorgoCanvas canvas) {
+    public InterpreterThread(String source) {
         this.source = source;
-        this.canvas = canvas;
         this.monitor = new HaltMonitor();
     }
 
@@ -128,7 +125,7 @@ public abstract class InterpreterThread extends Thread {
                 monitor.addListener(cb);
             });
             //interpret the script
-            script.process(createScope(), canvas);
+            process(script);
         } catch (Exception ex) {
             listeners.stream().forEach((l) -> {
                 l.error(ex);
@@ -141,8 +138,8 @@ public abstract class InterpreterThread extends Thread {
             l.finished();
         });
     }
-    
-    protected abstract Scope createScope();
+
+    protected abstract void process(CodeBlock entryPoint);
 
     public final void waitForTermination() {
         try {

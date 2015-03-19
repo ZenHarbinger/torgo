@@ -23,7 +23,6 @@ import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
-import org.tros.torgo.TorgoCanvas;
 
 /**
  *
@@ -56,7 +55,7 @@ class LogoRepeat extends LogoBlock {
      * @return
      */
     @Override
-    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope) {
         int repeat = ((Number) ExpressionListener.evaluate(scope, ((logoParser.RepeatContext) ctx).expression()).getValue()).intValue();
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         listeners.stream().forEach((l) -> {
@@ -67,7 +66,7 @@ class LogoRepeat extends LogoBlock {
         ReturnValue success = ReturnValue.SUCCESS;
         for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
             scope.setNew(REPCOUNT_VAR, new InterpreterValue(Type.NUMBER, ii + 1));
-            success = super.process(scope, canvas);
+            success = super.process(scope);
         }
         scope.pop();
         return success;

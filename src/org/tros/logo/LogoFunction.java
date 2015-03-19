@@ -26,7 +26,6 @@ import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
-import org.tros.torgo.TorgoCanvas;
 
 /**
  * Supports functions with parameters.
@@ -66,7 +65,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
      * @return
      */
     @Override
-    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope) {
         ProcedureInvocationContext context = (ProcedureInvocationContext) scope.peek().getParserRuleContext();
 
         logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) ctx;
@@ -97,7 +96,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
                 InterpreterValue value = paramValues.get(ii);
                 Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "param: {0} -> {1}", new Object[]{name, value});
             }
-            ret = super.process(scope, canvas);
+            ret = super.process(scope);
         } catch (Exception ex) {
             Logger.getLogger(LogoFunction.class.getName()).log(Level.WARNING, "{0} -> {1}", new Object[]{ex.getClass().getName(), ex.getMessage()});
         }

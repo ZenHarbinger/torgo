@@ -28,7 +28,6 @@ import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
-import org.tros.torgo.TorgoCanvas;
 import org.tros.utils.IHaltMonitor;
 
 /**
@@ -70,7 +69,7 @@ class LogoBlock implements CodeBlock {
     protected LogoBlock(ParserRuleContext ctx) {
         this.ctx = ctx;
     }
-
+    
     /**
      * Add a command to the list.
      *
@@ -118,17 +117,16 @@ class LogoBlock implements CodeBlock {
      * Process the statement(s)
      *
      * @param scope
-     * @param canvas
      * @return true if we should continue, false otherwise
      */
     @Override
-    public ReturnValue process(Scope scope, TorgoCanvas canvas) {
+    public ReturnValue process(Scope scope) {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
         scope.push(this);
         commands.stream().forEach((lc) -> {
             if (success.get() && !stop.get()) {
-                ReturnValue pr = lc.process(scope, canvas);
+                ReturnValue pr = lc.process(scope);
                 if (pr.getResult() == ReturnValue.ProcessResult.HALT) {
                     success.set(false);
                 } else if (pr.getResult() == ProcessResult.RETURN) {
