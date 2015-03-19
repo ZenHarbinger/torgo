@@ -21,6 +21,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
 import org.tros.torgo.Controller;
+import org.tros.torgo.Main;
 
 public class TorgoWindow extends JFrame {
 
@@ -74,5 +75,6 @@ public class TorgoWindow extends JFrame {
             }
         });
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Main.loadIcon((JFrame) this);
     }
 }

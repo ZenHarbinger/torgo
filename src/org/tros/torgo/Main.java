@@ -15,9 +15,13 @@
  */
 package org.tros.torgo;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -78,5 +82,17 @@ public class Main {
                 controller.run();
             }
         });
+    }
+
+    public static final String IMAGE_ICON_CLASS_PATH = "resources/torgo-48x48.png";
+
+    public static void loadIcon(JFrame frame) {
+        try {
+            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(IMAGE_ICON_CLASS_PATH);
+            ImageIcon ico = new ImageIcon(resources.nextElement());
+            frame.setIconImage(ico.getImage());
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
