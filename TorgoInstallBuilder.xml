@@ -36,7 +36,7 @@
                     <actionList/>
                     <distributionFileList>
                         <distributionDirectory>
-                            <origin>dist</origin>
+                            <origin>target</origin>
                         </distributionDirectory>
                     </distributionFileList>
                     <shortcutList/>
