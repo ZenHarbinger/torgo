@@ -8,13 +8,7 @@ nbactions.xml
 nb-configuration.xml
 
 target/
-
-debian/files
-debian/torgo.debhelper.log
-debian/torgo.substvars
-debian/torgo/
-
-# src/org/tros/torgo/TorgoInfo.properties
+debian/
 
 *.class
 
