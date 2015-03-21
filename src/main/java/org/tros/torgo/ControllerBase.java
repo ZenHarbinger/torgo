@@ -352,10 +352,6 @@ public abstract class ControllerBase implements Controller {
                     l.message(msg);
                 });
             }
-
-            @Override
-            public void currStatement(String statement, int line, int start, int end) {
-            }
         });
         interp.start();
     }
@@ -402,7 +398,7 @@ public abstract class ControllerBase implements Controller {
             }
 
             @Override
-            public void currStatement(String statement, int line, int start, int end) {
+            public void currStatement(CodeBlock block, Scope scope) {//String statement, int line, int start, int end) {
                 try {
                     if (isStepping.get()) {
                         step.waitOne();
@@ -412,6 +408,9 @@ public abstract class ControllerBase implements Controller {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                int line = block.getParserRuleContext().getStart().getLine();
+                int start = block.getParserRuleContext().getStart().getStartIndex();
+                int end = block.getParserRuleContext().getStart().getStopIndex();
                 torgoPanel.highlight(line, start, end);
             }
         });

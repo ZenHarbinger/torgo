@@ -81,7 +81,7 @@ class LogoStatement extends LogoBlock {
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()});
 
         listeners.stream().forEach((l) -> {
-            l.currStatement(command, ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex());
+            l.currStatement(this, scope);
         });
 
         scope.set(TURTLE_X_VAR, new InterpreterValue(Type.NUMBER, canvas.getTurtleX()));

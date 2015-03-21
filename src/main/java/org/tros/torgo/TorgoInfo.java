@@ -25,88 +25,113 @@ import java.io.Serializable;
  */
 public class TorgoInfo extends PropertiesInitializer implements IBuildInfo, Serializable {
 
-//    private String _svn;
-//    private String _build;
     private String _version;
     private String _build_date;
     private String _builder;
     private String _company;
     private String _applicationName;
-    
+
+    /**
+     * Singleton Instance.
+     */
     public final static TorgoInfo Instance = new TorgoInfo();
 
-//    @Override
-//    public String getSvn() {
-//        return _svn;
-//    }
-//
-//    @Override
-//    public void setSvn(String value) {
-//        _svn = value;
-//    }
-//
-//    @Override
-//    public String getBuild() {
-//        return _build;
-//    }
-//
-//    @Override
-//    public void setBuild(String value) {
-//        _build = value;
-//    }
-
+    /**
+     * Version Accessor.
+     * @return 
+     */
     @Override
     public String getVersion() {
         return _version;
     }
 
+    /**
+     * Version Mutator.
+     * @param value 
+     */
     @Override
     public void setVersion(String value) {
         _version = value;
     }
 
+    /**
+     * Build Time Accessor.
+     * @return 
+     */
     @Override
     public String getBuildtime() {
         return _build_date;
     }
 
+    /**
+     * Build Time Mutator.
+     * @param value 
+     */
     @Override
     public void setBuildtime(String value) {
         _build_date = value;
     }
 
+    /**
+     * Get the user that built the last instance.
+     * @return 
+     */
     @Override
     public String getBuilder() {
         return _builder;
     }
 
+    /**
+     * Set the user that built the last instance.
+     * @param value 
+     */
     @Override
     public void setBuilder(String value) {
         _builder = value;
     }
 
+    /**
+     * Get the application name.
+     * @return 
+     */
     @Override
     public String getApplicationName() {
         return _applicationName;
     }
 
+    /**
+     * Set the application name.
+     * @param value 
+     */
     @Override
     public void setApplicationName(String value) {
         _applicationName = value;
     }
 
+    /**
+     * Get the company name.
+     * @return 
+     */
     @Override
     public String getCompany() {
         return _company;
     }
 
+    /**
+     * Set the company name.
+     * @param value 
+     */
     @Override
     public void setCompany(String value) {
         _company = value;
     }
 
+    /**
+     * To string, return version.
+     * @return 
+     */
     @Override
     public String toString() {
-        return _version;// + "." + _svn + "." + _build;
+        return _version;
     }
 }

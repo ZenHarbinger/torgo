@@ -26,10 +26,11 @@ import org.tros.torgo.Scope;
 
 /**
  * Supports for (up-to and down-to) with and without a specified step value.
+ *
  * @author matta
  */
 class LogoFor extends LogoBlock {
-    
+
     private static final Logger logger = Logger.getLogger(LogoFor.class.getName());
 
     /**
@@ -46,7 +47,8 @@ class LogoFor extends LogoBlock {
 
     /**
      * Constructor
-     * @param ctx 
+     *
+     * @param ctx
      */
     protected LogoFor(ParserRuleContext ctx) {
         super(ctx);
@@ -54,20 +56,22 @@ class LogoFor extends LogoBlock {
 
     /**
      * Process the for loop.
+     *
      * @param scope
      * @param canvas
-     * @return 
+     * @return
      */
     @Override
     public ReturnValue process(Scope scope) {
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
-        listeners.stream().forEach((l) -> {
-            l.currStatement("for", ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex());
-        });
 
         logoParser.ForeContext fore = (logoParser.ForeContext) ctx;
         scope.push(this);
+
+        listeners.stream().forEach((l) -> {
+            l.currStatement(this, scope);
+        });
 
         String variable = fore.name().STRING().getText();
 
@@ -116,7 +120,7 @@ class LogoFor extends LogoBlock {
         }
 
         scope.pop();
-        
+
         return ReturnValue.SUCCESS;
     }
 }

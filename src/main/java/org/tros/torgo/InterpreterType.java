@@ -29,7 +29,5 @@ public interface InterpreterType {
         NULL
     }
 
-//    ReturnValue process(Scope scope, TorgoCanvas canvas);
-
     InterpreterValue.Type getType();
 }

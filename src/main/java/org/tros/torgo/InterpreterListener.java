@@ -30,11 +30,9 @@ public interface InterpreterListener {
     void message(String msg);
     
     /**
-     * This will print the current statement being evaluated.
-     * @param statement
-     * @param line  the line of the current statement.
-     * @param start this is the start IN THE DOCUMENT of statement
-     * @param end   this is the end IN THE DOCUMENT of the statement
+     * The current block of code executing with the current state.
+     * @param block 
+     * @param scope 
      */
-    default void currStatement(String statement, int line, int start, int end) {}
+    default void currStatement(CodeBlock block, Scope scope) {}
 }

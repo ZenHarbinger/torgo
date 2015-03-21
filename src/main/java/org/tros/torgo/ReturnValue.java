@@ -24,6 +24,9 @@ public class ReturnValue extends InterpreterValue {
     public static final ReturnValue SUCCESS = new ReturnValue(Type.NULL, null, ProcessResult.SUCCESS);
     public static final ReturnValue HALT = new ReturnValue(Type.NULL, null, ProcessResult.HALT);
 
+    /**
+     * Return type enum.
+     */
     public enum ProcessResult {
 
         SUCCESS,
@@ -33,11 +36,21 @@ public class ReturnValue extends InterpreterValue {
 
     private final ProcessResult result;
 
+    /**
+     * Constructor.
+     * @param type
+     * @param value
+     * @param result 
+     */
     public ReturnValue(Type type, Object value, ProcessResult result) {
         super(type, value);
         this.result = result;
     }
 
+    /**
+     * Return the type of the result.
+     * @return 
+     */
     public ProcessResult getResult() {
         return result;
     }

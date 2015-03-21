@@ -88,6 +88,10 @@ class LogoFunction extends LogoBlock implements CodeFunction {
             }
         }
 
+        listeners.stream().forEach((l) -> {
+            l.currStatement(this, scope);
+        });
+
         ReturnValue ret = null;
         try {
             Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "function: {0}", new Object[]{funcitonName});

@@ -21,25 +21,64 @@ package org.tros.torgo;
  */
 public interface TorgoTextConsole {
 
+    /**
+     * Append to the output text area.
+     * @param message 
+     */
     void appendToOutputTextArea(String message);
 
+    /**
+     * Clear the output text area.
+     */
     void clearOutputTextArea();
     
+    /**
+     * Get the source.
+     * @return 
+     */
     String getSource();
     
+    /**
+     * Set the source.
+     * @param source 
+     */
     void setSource(String source);
     
+    /**
+     * Clear the source.
+     */
     void clearSource();
    
+    /**
+     * Append a string onto the source.
+     * @param source 
+     */
     void appendToSource(String source);
 
+    /**
+     * Insert a string into the source.
+     * @param source 
+     */
     default void insertIntoSource(String source) {
         appendToSource(source);
     }
     
+    /**
+     * Go to position on the console.
+     * @param position 
+     */
     void gotoPosition(int position);
-    
+
+    /**
+     * Highlight a section of text on the console.
+     * @param line
+     * @param startChar
+     * @param endChar 
+     */
     void highlight(int line, int startChar, int endChar);
-    
+
+    /**
+     * Reset the component to initial conditions.
+     */
     void reset();
 }

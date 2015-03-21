@@ -16,10 +16,14 @@
 package org.tros.torgo;
 
 /**
- *
+ * Function representation of a CodeBlock
  * @author matta
  */
 public interface CodeFunction extends CodeBlock {
 
+    /**
+     * The name of the function.
+     * @return 
+     */
     String getFunctionName();
 }

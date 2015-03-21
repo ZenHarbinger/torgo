@@ -124,6 +124,9 @@ class LogoBlock implements CodeBlock {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
         scope.push(this);
+        listeners.stream().forEach((l) -> {
+            l.currStatement(this, scope);
+        });
         commands.stream().forEach((lc) -> {
             if (success.get() && !stop.get()) {
                 ReturnValue pr = lc.process(scope);
@@ -183,6 +186,10 @@ class LogoBlock implements CodeBlock {
         functions.put(function.getFunctionName(), function);
     }
 
+    /**
+     * Called when the halt monitor is halted.
+     * @param monitor 
+     */
     @Override
     public void halted(IHaltMonitor monitor) {
         halted.set(monitor.isHalted());
@@ -193,30 +200,57 @@ class LogoBlock implements CodeBlock {
         return ctx;
     }
 
+    /**
+     * Check for a variable in the block.
+     * @param name
+     * @return 
+     */
     @Override
     public boolean hasVariable(String name) {
         return variables.containsKey(name);
     }
 
+    /**
+     * Set a variable in the block.
+     * @param name
+     * @param value 
+     */
     @Override
     public void setVariable(String name, InterpreterValue value) {
         variables.put(name, value);
     }
 
+    /**
+     * Get the value of a variable in the block.
+     * @param name
+     * @return 
+     */
     @Override
     public InterpreterValue getVariable(String name) {
         return variables.get(name);
     }
 
+    /**
+     * Get the lexical parent.
+     * @return 
+     */
     @Override
     public CodeBlock getParent() {
         return parent;
     }
 
+    /**
+     * Set the lexical parent.
+     * @param value 
+     */
     protected void setParent(CodeBlock value) {
         this.parent = value;
     }
 
+    /**
+     * Get the type.
+     * @return 
+     */
     @Override
     public Type getType() {
         return Type.COMMAND;

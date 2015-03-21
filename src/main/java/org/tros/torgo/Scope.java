@@ -22,25 +22,75 @@ package org.tros.torgo;
  */
 public interface Scope {
 
+    /**
+     * Get the value of a specified variable by name.
+     * @param name
+     * @return 
+     */
     InterpreterValue get(String name);
 
+    /**
+     * Check to see if the specified variable exists in the current scope.
+     * @param name
+     * @return 
+     */
     boolean has(String name);
 
+    /**
+     * Pop a code block off of the scope.
+     */
     void pop();
 
+    /**
+     * Push a code block onto the scope.
+     * @param block 
+     */
     void push(CodeBlock block);
 
+    /**
+     * Set a name value pair in the scope.
+     * @param name
+     * @param value 
+     */
     void set(String name, InterpreterValue value);
 
+    /**
+     * Set a name value pair in the scope at the top level.
+     * @param name
+     * @param value 
+     */
     void setNew(String name, InterpreterValue value);
 
+    /**
+     * Get a function that is in the scope.
+     * @param name
+     * @return 
+     */
     CodeFunction getFunction(String name);
-    
+
+    /**
+     * Check to see if a function exists in the scope.
+     * @param name
+     * @return 
+     */
     boolean hasFunction(String name);
-    
+
+    /**
+     * Peek at the top level of the scope.
+     * @return 
+     */
     CodeBlock peek();
 
+    /**
+     * Peek at an inner level of the scope.
+     * @param val
+     * @return 
+     */
     CodeBlock peek(int val);
-    
+
+    /**
+     * Get the size of the scope.
+     * @return 
+     */
     int size();
 }

@@ -114,9 +114,9 @@ public abstract class InterpreterThread extends Thread {
                 }
 
                 @Override
-                public void currStatement(String statement, int line, int start, int end) {
+                public void currStatement(CodeBlock block, Scope scope) {
                     listeners.stream().forEach((l) -> {
-                        l.currStatement(statement, line, start, end);
+                        l.currStatement(block, scope);
                     });
                 }
             };

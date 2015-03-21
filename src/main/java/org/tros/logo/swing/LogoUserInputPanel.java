@@ -44,6 +44,10 @@ public final class LogoUserInputPanel extends SwingTextConsole {
     private final JPanel inputTab;
     private final JTabbedPane tabs;
 
+    /**
+     * Constructor.
+     * @param controller 
+     */
     public LogoUserInputPanel(Controller controller) {
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
@@ -56,7 +60,6 @@ public final class LogoUserInputPanel extends SwingTextConsole {
         JTextArea area = null;
         JScrollPane inputScrollPane = null;
         try {
-            //TODO: make this check for available type on load?
             Class<?> syntax = Class.forName("org.fife.ui.rsyntaxtextarea.RSyntaxTextArea");
             area = (JTextArea) syntax.newInstance();
             syntax.getMethod("setAntiAliasingEnabled", boolean.class).invoke(area, true);
@@ -104,6 +107,9 @@ public final class LogoUserInputPanel extends SwingTextConsole {
 
         controller.addInterpreterListener(new InterpreterListener() {
 
+            /**
+             * Clears the highlighted areas.
+             */
             @Override
             public void started() {
                 Highlighter hl = inputTextArea.getHighlighter();
@@ -111,6 +117,9 @@ public final class LogoUserInputPanel extends SwingTextConsole {
                 hl.removeAllHighlights();
             }
 
+            /**
+             * Clears the highlighted areas.
+             */
             @Override
             public void finished() {
                 Highlighter hl = inputTextArea.getHighlighter();
@@ -118,6 +127,9 @@ public final class LogoUserInputPanel extends SwingTextConsole {
                 hl.removeAllHighlights();
             }
 
+            /**
+             * Clears the highlighted areas.
+             */
             @Override
             public void error(Exception e) {
                 Highlighter hl = inputTextArea.getHighlighter();
@@ -125,6 +137,10 @@ public final class LogoUserInputPanel extends SwingTextConsole {
                 hl.removeAllHighlights();
             }
 
+            /**
+             * Append a message to the output area.
+             * @param msg 
+             */
             @Override
             public void message(String msg) {
                 appendToOutputTextArea(msg);
@@ -132,33 +148,55 @@ public final class LogoUserInputPanel extends SwingTextConsole {
         });
     }
 
+    /**
+     * Reset the control to initial state.
+     */
     @Override
     public void reset() {
         clearSource();
         clearOutputTextArea();
     }
 
+    /**
+     * Clear the output text area.
+     */
     @Override
     public void clearOutputTextArea() {
         outputTextArea.setText("");
     }
 
+    /**
+     * Append text to the output text area.
+     * @param what 
+     */
     @Override
     public void appendToOutputTextArea(String what) {
         outputTextArea.append(what);
     }
 
+    /**
+     * Get the source to interpret.
+     * @return 
+     */
     @Override
     public String getSource() {
         return (inputTextArea.getText());
     }
 
+    /**
+     * Set the source to interpret.
+     * @param source 
+     */
     @Override
     public void setSource(String source) {
         source = source.replace("\r", "");
         inputTextArea.setText(source);
     }
 
+    /**
+     * Append a string to the source.
+     * @param source 
+     */
     @Override
     public void appendToSource(String source) {
         if (inputTextArea.isEditable()) {
@@ -166,6 +204,10 @@ public final class LogoUserInputPanel extends SwingTextConsole {
         }
     }
 
+    /**
+     * Insert a string into the source at the cursor.
+     * @param source 
+     */
     @Override
     public void insertIntoSource(String source) {
         if (inputTextArea.isEditable()) {
@@ -191,6 +233,9 @@ public final class LogoUserInputPanel extends SwingTextConsole {
         }
     }
 
+    /**
+     * Clear the source.
+     */
     @Override
     public void clearSource() {
         if (inputTextArea.isEditable()) {
@@ -198,11 +243,21 @@ public final class LogoUserInputPanel extends SwingTextConsole {
         }
     }
 
+    /**
+     * To to a position in the source.
+     * @param position 
+     */
     @Override
     public void gotoPosition(int position) {
         inputTextArea.setCaretPosition(position);
     }
 
+    /**
+     * Highlight a section of the source.
+     * @param line
+     * @param startChar
+     * @param endChar 
+     */
     @Override
     public void highlight(int line, int startChar, int endChar) {
         if (line > 0) {

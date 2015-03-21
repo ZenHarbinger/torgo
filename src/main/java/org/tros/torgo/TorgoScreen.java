@@ -23,7 +23,14 @@ import java.awt.Component;
  */
 public interface TorgoScreen {
 
+    /**
+     * Reset the screen to initial conditions.
+     */
     void reset();
 
+    /**
+     * Get a Swing component to put on the screen.
+     * @return 
+     */
     Component getComponent();
 }

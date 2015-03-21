@@ -20,7 +20,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.utils.IHaltListener;
 
 /**
- *
+ * Abstract representation of code to execute.
  * @author matta
  */
 public interface CodeBlock extends InterpreterType, IHaltListener {
@@ -39,6 +39,10 @@ public interface CodeBlock extends InterpreterType, IHaltListener {
      */
     void addCommand(Collection<CodeBlock> commands);
 
+    /**
+     * Add an interpreter listener.
+     * @param listener 
+     */
     void addInterpreterListener(InterpreterListener listener);
 
     /**
@@ -95,12 +99,31 @@ public interface CodeBlock extends InterpreterType, IHaltListener {
      * @return 
      */
     ParserRuleContext getParserRuleContext();
-    
+
+    /**
+     * Check to see if there is a variable in the block.
+     * @param name
+     * @return 
+     */
     boolean hasVariable(String name);
-    
+
+    /**
+     * Set the value of the variable in the block.
+     * @param name
+     * @param value 
+     */
     void setVariable(String name, InterpreterValue value);
-    
+
+    /**
+     * Get the value of a variable in the block.
+     * @param name
+     * @return 
+     */
     InterpreterValue getVariable(String name);
-    
+
+    /**
+     * Get the lexical parent.
+     * @return 
+     */
     CodeBlock getParent();
 }

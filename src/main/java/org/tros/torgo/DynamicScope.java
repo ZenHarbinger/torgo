@@ -73,14 +73,6 @@ public class DynamicScope implements Scope {
             }
         }
 
-//        if (ret == null) {
-//            try {
-//                ret = Double.parseDouble(name);
-//            } catch (Exception ex) {
-//                ret = 0.0;
-//            }
-//        }
-
         return ret;
     }
 
@@ -135,6 +127,11 @@ public class DynamicScope implements Scope {
         scope.get(0).put(name, value);
     }
 
+    /**
+     * Get a function in the scope.
+     * @param name
+     * @return 
+     */
     @Override
     public CodeFunction getFunction(String name) {
         for(CodeBlock cb : callStack) {
@@ -145,21 +142,39 @@ public class DynamicScope implements Scope {
         return null;
     }
 
+    /**
+     * Check for a function in the scope.
+     * @param name
+     * @return 
+     */
     @Override
     public boolean hasFunction(String name) {
         return callStack.stream().anyMatch((cb) -> (cb.hasFunction(name)));
     }
 
+    /**
+     * Look at the current code block.
+     * @return 
+     */
     @Override
     public CodeBlock peek() {
         return callStack.get(0);
     }
-    
+
+    /**
+     * Look at an inner code block.
+     * @param val
+     * @return 
+     */
     @Override
     public CodeBlock peek(int val) {
         return callStack.get(val);
     }
-    
+
+    /**
+     * Get the size of the scope.
+     * @return 
+     */
     @Override
     public int size() {
         return callStack.size();

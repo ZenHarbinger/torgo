@@ -28,11 +28,14 @@ import java.util.logging.Logger;
  * @author matta
  */
 public final class TorgoToolkit {
-    
+
     private static final HashMap<String, Controller> map;
     private static final ServiceLoader<Controller> loader;
     private static final Logger logger = Logger.getLogger(TorgoToolkit.class.getName());
-    
+
+    /**
+     * Static constructor.
+     */
     static {
         map = new HashMap<>();
         loader = ServiceLoader.load(Controller.class);
@@ -48,15 +51,29 @@ public final class TorgoToolkit {
         }
 
     }
-    
+
+    /**
+     * Hidden constructor.
+     */
     private TorgoToolkit() {
-        
+
     }
-    
+
+    /**
+     * Get a desired controller.
+     *
+     * @param name
+     * @return
+     */
     public static Controller getController(String name) {
         return map.get(name);
     }
-    
+
+    /**
+     * Get the name of all available controllers.
+     *
+     * @return
+     */
     public static Set<String> getToolkits() {
         return map.keySet();
     }
