@@ -23,8 +23,16 @@ import javax.swing.JFrame;
 import org.tros.torgo.Controller;
 import org.tros.torgo.Main;
 
+/**
+ * This is a JFrame that will remember position, hight, and width.
+ * @author matta
+ */
 public class TorgoWindow extends JFrame {
 
+    /**
+     * Constructor.
+     * @param controller 
+     */
     public TorgoWindow(Controller controller) {
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoWindow.class);
 

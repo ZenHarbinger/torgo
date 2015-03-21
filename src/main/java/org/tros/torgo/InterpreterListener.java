@@ -21,12 +21,27 @@ package org.tros.torgo;
  */
 public interface InterpreterListener {
 
+    /**
+     * Signal that the interpreter has started.
+     */
     void started();
 
+    /**
+     * Signal that the interpreter has finished.
+     */
     void finished();
 
+    /**
+     * Signal that there was an error with the interpreter.
+     * @param e 
+     */
     void error(Exception e);
 
+    /**
+     * Signal a message from the interpreter.
+     * This could be a print statement.
+     * @param msg 
+     */
     void message(String msg);
     
     /**

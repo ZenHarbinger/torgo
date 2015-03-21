@@ -79,7 +79,13 @@ public abstract class InterpreterThread extends Thread {
             listeners.remove(listener);
         }
     }
-    
+
+    /**
+     * Get the lexical analysis results from the source.
+     * Uses ANTLR to parse and set up for interpreting.
+     * @param source
+     * @return 
+     */
     protected abstract LexicalAnalyzer getLexicalAnalysis(String source);
 
     /**
@@ -113,6 +119,11 @@ public abstract class InterpreterThread extends Thread {
                 public void message(String msg) {
                 }
 
+                /**
+                 * Pass on the currStatement event to any listeners.
+                 * @param block
+                 * @param scope 
+                 */
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
                     listeners.stream().forEach((l) -> {
@@ -139,8 +150,15 @@ public abstract class InterpreterThread extends Thread {
         });
     }
 
+    /**
+     * Start the processing of the script.
+     * @param entryPoint 
+     */
     protected abstract void process(CodeBlock entryPoint);
 
+    /**
+     * Wait for the interpreter thread to terminate.
+     */
     public final void waitForTermination() {
         try {
             join();

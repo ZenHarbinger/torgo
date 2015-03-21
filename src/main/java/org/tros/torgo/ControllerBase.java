@@ -89,12 +89,36 @@ public abstract class ControllerBase implements Controller {
         isStepping = new AtomicBoolean(false);
     }
 
+    /**
+     * Get the console component for user I/O.
+     *
+     * @param app
+     * @return
+     */
     protected abstract TorgoTextConsole createConsole(Controller app);
 
+    /**
+     * Get a canvas for drawing to the screen. This can be null. If this is
+     * null, the canvas portion of the window will not be loaded.
+     *
+     * @param console
+     * @return
+     */
     protected abstract TorgoScreen createCanvas(TorgoTextConsole console);
 
+    /**
+     * Create an interpreter thread for the desired language.
+     *
+     * @param source
+     * @return
+     */
     protected abstract InterpreterThread createInterpreterThread(String source);
 
+    /**
+     * Initialize the window. This is called here from run() and not the
+     * constructor so that the Service Provider doesn't load up all of the
+     * necessary resources when the application loads.
+     */
     private void initSwing() {
         this.torgoPanel = createConsole((Controller) this);
         this.torgoCanvas = createCanvas(torgoPanel);
@@ -115,37 +139,6 @@ public abstract class ControllerBase implements Controller {
                 prefs.putInt(ControllerBase.class.getName() + "divider-location", splitPane.getDividerLocation());
             });
 
-            window.addWindowListener(new WindowListener() {
-
-                @Override
-                public void windowOpened(WindowEvent e) {
-                }
-
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    stopInterpreter();
-                }
-
-                @Override
-                public void windowClosed(WindowEvent e) {
-                }
-
-                @Override
-                public void windowIconified(WindowEvent e) {
-                }
-
-                @Override
-                public void windowDeiconified(WindowEvent e) {
-                }
-
-                @Override
-                public void windowActivated(WindowEvent e) {
-                }
-
-                @Override
-                public void windowDeactivated(WindowEvent e) {
-                }
-            });
             contentPane.add(splitPane);
         } else {
             contentPane.add(torgoPanel.getComponent());
@@ -155,17 +148,57 @@ public abstract class ControllerBase implements Controller {
         if (mb != null) {
             window.setJMenuBar(mb);
         }
+
+        window.addWindowListener(new WindowListener() {
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+
+            /**
+             * We only care if the window is closing so we can kill the
+             * interpreter thread.
+             *
+             * @param e
+             */
+            @Override
+            public void windowClosing(WindowEvent e) {
+                stopInterpreter();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+        });
     }
 
     /**
-     * Create a tool bar for the application.
+     * Create a tool bar for the application. This can return null. If null is
+     * returned, then there is no tool bar added.
      *
      * @return
      */
     protected abstract JToolBar createToolBar();
 
     /**
-     * Create a menu bar for the application.
+     * Create a menu bar for the application. This can return null. If null is
+     * returned, then there is no menu bar added.
      *
      * @return
      */
@@ -206,7 +239,7 @@ public abstract class ControllerBase implements Controller {
     }
 
     /**
-     * Initialize the GUI back to init state.
+     * Initialize the GUI back to initial state.
      */
     private void init() {
         stopInterpreter();
@@ -424,11 +457,17 @@ public abstract class ControllerBase implements Controller {
         step.set();
     }
 
+    /**
+     * Pause running the interpreter. Used in debug mode.
+     */
     @Override
     public void pauseInterpreter() {
         isStepping.set(true);
     }
 
+    /**
+     * Resume the interpreter. Used in debug mode.
+     */
     @Override
     public void resumeInterpreter() {
         isStepping.set(false);
@@ -436,7 +475,7 @@ public abstract class ControllerBase implements Controller {
     }
 
     /**
-     * Stop the interpreter
+     * Stop the interpreter.
      */
     @Override
     public void stopInterpreter() {
@@ -475,7 +514,8 @@ public abstract class ControllerBase implements Controller {
     }
 
     /**
-     * Return the current GUI window.
+     * Return the current GUI window. This is made available for setting parents
+     * for dialog windows.
      *
      * @return
      */

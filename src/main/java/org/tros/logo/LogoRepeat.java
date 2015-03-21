@@ -64,6 +64,7 @@ class LogoRepeat extends LogoBlock {
         scope.push(this);
         ReturnValue success = ReturnValue.SUCCESS;
         for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
+            //this sets the repcount variable for dereferencing in the block.
             scope.setNew(REPCOUNT_VAR, new InterpreterValue(Type.NUMBER, ii + 1));
             success = super.process(scope);
         }

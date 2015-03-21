@@ -91,7 +91,7 @@ class LogoIf extends LogoBlock {
                 break;
             case "<>":
             case "!=":
-            case "!":
+            case "!":   //TODO: this ! operator should probably be unary.
                 if (val1 != val2) {
                     success = super.process(scope);
                 }

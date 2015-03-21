@@ -68,20 +68,24 @@ class LogoFunction extends LogoBlock implements CodeFunction {
     public ReturnValue process(Scope scope) {
         ProcedureInvocationContext context = (ProcedureInvocationContext) scope.peek().getParserRuleContext();
 
+        //get the procedure declaration so we can get the parameter names to set to values from the invocation.
         logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) ctx;
         ArrayList<String> paramNames = new ArrayList<>();
         ArrayList<InterpreterValue> paramValues = new ArrayList<>();
 
+        //get the parameter names
         funct.parameterDeclarations().stream().forEach((param) -> {
             paramNames.add(param.getText().substring(1));
         });
 
+        //get the parameter values
         context.expression().stream().map((exp) -> {
             return ExpressionListener.evaluate(scope, exp);
         }).forEach((el) -> {
             paramValues.add(el);
         });
 
+        //set the named values into the scope for the function/procedure call.
         if (paramNames.size() == paramValues.size()) {
             for (int ii = 0; ii < paramNames.size(); ii++) {
                 scope.setNew(paramNames.get(ii), paramValues.get(ii));
@@ -94,12 +98,14 @@ class LogoFunction extends LogoBlock implements CodeFunction {
 
         ReturnValue ret = null;
         try {
+            //debugging output to see the named/value pairs
             Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "function: {0}", new Object[]{funcitonName});
             for (int ii = 0; ii < paramNames.size(); ii++) {
                 String name = paramNames.get(ii);
                 InterpreterValue value = paramValues.get(ii);
                 Logger.getLogger(LogoFunction.class.getName()).log(Level.FINEST, "param: {0} -> {1}", new Object[]{name, value});
             }
+            //the actual call to process the function
             ret = super.process(scope);
         } catch (Exception ex) {
             Logger.getLogger(LogoFunction.class.getName()).log(Level.WARNING, "{0} -> {1}", new Object[]{ex.getClass().getName(), ex.getMessage()});

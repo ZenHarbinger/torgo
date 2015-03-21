@@ -271,6 +271,10 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
         }
     }
 
+    /**
+     * Get the swing component of the object.
+     * @return 
+     */
     @Override
     public Component getComponent() {
         return this;

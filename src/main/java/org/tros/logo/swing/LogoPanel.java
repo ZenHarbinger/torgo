@@ -55,6 +55,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
     private final TorgoTextConsole console;
     private BufferedImage turtle;
 
+    /**
+     * Create a copy of the buffered image object.
+     * @param bi
+     * @return 
+     */
     public static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
@@ -62,6 +67,10 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 
+    /**
+     * Constructor.
+     * @param textOutput 
+     */
     public LogoPanel(TorgoTextConsole textOutput) {
         console = textOutput;
         penup = false;
@@ -100,6 +109,10 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
         });
     }
 
+    /**
+     * Paint.
+     * @param g 
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
