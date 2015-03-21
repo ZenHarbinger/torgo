@@ -32,7 +32,6 @@ import org.tros.torgo.InterpreterThread;
 import org.tros.torgo.LexicalAnalyzer;
 import org.tros.torgo.TorgoScreen;
 import org.tros.torgo.TorgoTextConsole;
-import org.tros.torgo.swing.SwingTextConsole;
 import org.tros.torgo.swing.TorgoToolBar;
 
 /**
@@ -53,7 +52,7 @@ public final class LogoController extends ControllerBase {
     }
 
     @Override
-    protected SwingTextConsole createConsole(Controller app) {
+    protected TorgoTextConsole createConsole(Controller app) {
         if (panel == null) {
             panel = new LogoUserInputPanel(app);
         }

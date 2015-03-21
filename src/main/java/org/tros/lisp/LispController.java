@@ -22,7 +22,6 @@ import org.tros.torgo.Controller;
 import org.tros.torgo.InterpreterThread;
 import org.tros.torgo.TorgoScreen;
 import org.tros.torgo.TorgoTextConsole;
-import org.tros.torgo.swing.SwingTextConsole;
 
 /**
  *
@@ -31,7 +30,7 @@ import org.tros.torgo.swing.SwingTextConsole;
 public class LispController extends ControllerBase {
 
     @Override
-    protected SwingTextConsole createConsole(Controller app) {
+    protected TorgoTextConsole createConsole(Controller app) {
         return null;
     }
 

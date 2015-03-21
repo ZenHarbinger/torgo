@@ -37,7 +37,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
 import org.tros.torgo.swing.Localization;
-import org.tros.torgo.swing.SwingTextConsole;
 import org.tros.torgo.swing.TorgoWindow;
 import org.tros.utils.AutoResetEvent;
 
@@ -50,7 +49,7 @@ public abstract class ControllerBase implements Controller {
 
     private JFrame window;
     protected TorgoScreen torgoCanvas;
-    protected SwingTextConsole torgoPanel;
+    protected TorgoTextConsole torgoPanel;
     private InterpreterThread interp;
     private String filename;
     protected final AutoResetEvent step;
@@ -90,7 +89,7 @@ public abstract class ControllerBase implements Controller {
         isStepping = new AtomicBoolean(false);
     }
 
-    protected abstract SwingTextConsole createConsole(Controller app);
+    protected abstract TorgoTextConsole createConsole(Controller app);
 
     protected abstract TorgoScreen createCanvas(TorgoTextConsole console);
 
@@ -109,7 +108,7 @@ public abstract class ControllerBase implements Controller {
 
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoWindow.class);
         if (torgoCanvas != null) {
-            final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, torgoCanvas.getComponent(), torgoPanel);
+            final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, torgoCanvas.getComponent(), torgoPanel.getComponent());
             int dividerLocation = prefs.getInt(ControllerBase.class.getName() + "divider-location", window.getWidth() - 200);
             splitPane.setDividerLocation(dividerLocation);
             splitPane.addPropertyChangeListener((PropertyChangeEvent evt) -> {
@@ -149,7 +148,7 @@ public abstract class ControllerBase implements Controller {
             });
             contentPane.add(splitPane);
         } else {
-            contentPane.add(torgoPanel);
+            contentPane.add(torgoPanel.getComponent());
         }
 
         JMenuBar mb = createMenuBar();

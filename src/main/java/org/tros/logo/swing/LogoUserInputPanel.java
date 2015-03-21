@@ -34,9 +34,9 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import org.tros.torgo.Controller;
 import org.tros.torgo.InterpreterListener;
-import org.tros.torgo.swing.SwingTextConsole;
+import org.tros.torgo.TorgoTextConsole;
 
-public final class LogoUserInputPanel extends SwingTextConsole {
+public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole {
 
     protected final JTextArea inputTextArea;
     private final JTextArea outputTextArea;
@@ -269,5 +269,10 @@ public final class LogoUserInputPanel extends SwingTextConsole {
                 Logger.getLogger(LogoUserInputPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    @Override
+    public Component getComponent() {
+        return this;
     }
 }

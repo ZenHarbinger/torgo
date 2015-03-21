@@ -15,6 +15,8 @@
  */
 package org.tros.torgo;
 
+import java.awt.Component;
+
 /**
  * I/O interface.  Get source and print messages.
  * @author matta
@@ -81,4 +83,10 @@ public interface TorgoTextConsole {
      * Reset the component to initial conditions.
      */
     void reset();
+    
+    /**
+     * Return the Swing component for this control.
+     * @return 
+     */
+    Component getComponent();
 }
