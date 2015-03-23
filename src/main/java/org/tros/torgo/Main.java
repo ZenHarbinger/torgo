@@ -43,8 +43,8 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        //force opengl
-        System.setProperty("sun.java2d.opengl", "true");
+//        //force opengl
+//        System.setProperty("sun.java2d.opengl", "true");
         //initialize the logging
         org.tros.utils.logging.Logging.initLogging(TorgoInfo.Instance);
         Options options = new Options();
