@@ -46,9 +46,8 @@ class LogoIf extends LogoBlock {
      */
     @Override
     public ReturnValue process(Scope scope) {
-        scope.push(this);
-
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
+        scope.push(this);
         listeners.stream().forEach((l) -> {
             l.currStatement(this, scope);
         });

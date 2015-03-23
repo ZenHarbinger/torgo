@@ -123,6 +123,7 @@ class LogoBlock implements CodeBlock {
     public ReturnValue process(Scope scope) {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
+
         scope.push(this);
         listeners.stream().forEach((l) -> {
             l.currStatement(this, scope);

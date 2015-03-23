@@ -24,7 +24,6 @@ import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.CodeFunction;
 import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
-import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
 
 /**
@@ -227,6 +226,8 @@ class LogoStatement extends LogoBlock {
                 break;
             }
             case "localmake": {
+                //this is the statement that is why we don't do a scope.push() at the
+                //beginning of this method.
                 String var = ctx.getChild(1).getText().substring(1);
                 scope.setNew(var, ExpressionListener.evaluate(scope, ctx.getChild(2)));
                 break;
@@ -238,6 +239,8 @@ class LogoStatement extends LogoBlock {
                 break;
             }
             default:
+                //if it is not a known value form above, it is probably a funciton,
+                //get the function by name and invoke.
                 CodeFunction lf = getFunction(command, scope);
                 if (lf != null) {
                     //get the procedure declaration so we can get the parameter names to set to values from the invocation.
@@ -249,15 +252,19 @@ class LogoStatement extends LogoBlock {
                     funct.parameterDeclarations().stream().forEach((param) -> {
                         paramNames.add(param.getText().substring(1));
                     });
-                    
+
                     logoParser.ProcedureInvocationContext context = (logoParser.ProcedureInvocationContext) ctx;
 
-                    for(int ii = 0; ii < paramNames.size(); ii++) {
+                    //get the paremeter values
+                    for (int ii = 0; ii < paramNames.size(); ii++) {
                         paramValues.put(paramNames.get(ii), ExpressionListener.evaluate(scope, context.expression(ii)));
                     }
 
+                    //Invoke the procedure w/ the parameters
                     success = lf.process(scope, paramValues);
                 } else {
+                    //no function by that name was found.
+                    //halt interpreting.
                     success = ReturnValue.HALT;
                     canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
                     logger.log(Level.WARNING, "process(): UNKNOWN -> {0}", new Object[]{command});

@@ -58,10 +58,10 @@ class LogoRepeat extends LogoBlock {
     public ReturnValue process(Scope scope) {
         int repeat = ((Number) ExpressionListener.evaluate(scope, ((logoParser.RepeatContext) ctx).expression()).getValue()).intValue();
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
+        scope.push(this);
         listeners.stream().forEach((l) -> {
             l.currStatement(this, scope);
         });
-        scope.push(this);
         ReturnValue success = ReturnValue.SUCCESS;
         for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
             //this sets the repcount variable for dereferencing in the block.

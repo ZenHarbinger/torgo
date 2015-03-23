@@ -33,6 +33,7 @@ import org.tros.torgo.Scope;
 class LogoFunction extends LogoBlock implements CodeFunction {
 
     private final String funcitonName;
+    private static final Logger logger = Logger.getLogger(LogoFunction.class.getName());
 
     /**
      * Constructor
@@ -64,8 +65,9 @@ class LogoFunction extends LogoBlock implements CodeFunction {
      */
     @Override
     public ReturnValue process(Scope scope, Map<String, InterpreterValue> params) {
-
+        logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         scope.push(this);
+
         params.keySet().stream().forEach((key) -> {
             scope.setNew(key, params.get(key));
         });
