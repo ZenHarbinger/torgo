@@ -149,7 +149,7 @@ class LogoBlock implements CodeBlock {
      * @param scope
      * @return
      */
-    public CodeBlock getFunction(String name, Scope scope) {
+    public CodeFunction getFunction(String name, Scope scope) {
         return scope.getFunction(name);
     }
 

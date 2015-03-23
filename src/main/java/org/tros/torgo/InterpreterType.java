@@ -26,6 +26,7 @@ public interface InterpreterType {
         STRING,
         NUMBER,
         COMMAND,
+        BOOLEAN,
         NULL
     }
 

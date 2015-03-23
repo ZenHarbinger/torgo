@@ -38,8 +38,9 @@ public interface Scope {
 
     /**
      * Pop a code block off of the scope.
+     * @return 
      */
-    void pop();
+    CodeBlock pop();
 
     /**
      * Push a code block onto the scope.

@@ -15,11 +15,13 @@
  */
 package org.tros.logo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.CodeBlock;
+import org.tros.torgo.CodeFunction;
 import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
@@ -80,6 +82,10 @@ class LogoStatement extends LogoBlock {
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()});
 
+        //we don't do scope.push(this) here because of the chance we will
+        //be doing a variable creation (localmake) and so it is possible
+        //that we would push onto the stack, create, and the pop the new
+        //value right off of the stack again.
         listeners.stream().forEach((l) -> {
             l.currStatement(this, scope);
         });
@@ -232,11 +238,25 @@ class LogoStatement extends LogoBlock {
                 break;
             }
             default:
-                CodeBlock lf = getFunction(command, scope);
+                CodeFunction lf = getFunction(command, scope);
                 if (lf != null) {
-                    scope.push(this);
-                    success = lf.process(scope);
-                    scope.pop();
+                    //get the procedure declaration so we can get the parameter names to set to values from the invocation.
+                    logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) lf.getParserRuleContext();
+                    ArrayList<String> paramNames = new ArrayList<>();
+                    HashMap<String, InterpreterValue> paramValues = new HashMap<>();
+
+                    //get the parameter names
+                    funct.parameterDeclarations().stream().forEach((param) -> {
+                        paramNames.add(param.getText().substring(1));
+                    });
+                    
+                    logoParser.ProcedureInvocationContext context = (logoParser.ProcedureInvocationContext) ctx;
+
+                    for(int ii = 0; ii < paramNames.size(); ii++) {
+                        paramValues.put(paramNames.get(ii), ExpressionListener.evaluate(scope, context.expression(ii)));
+                    }
+
+                    success = lf.process(scope, paramValues);
                 } else {
                     success = new ReturnValue(Type.NULL, null, ProcessResult.HALT);
                     canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);

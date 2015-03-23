@@ -15,15 +15,27 @@
  */
 package org.tros.torgo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Function representation of a CodeBlock
+ *
  * @author matta
  */
 public interface CodeFunction extends CodeBlock {
 
     /**
      * The name of the function.
-     * @return 
+     *
+     * @return
      */
     String getFunctionName();
+
+    @Override
+    default ReturnValue process(Scope scope) {
+        return process(scope, new HashMap<>());
+    }
+
+    ReturnValue process(Scope scope, Map<String, InterpreterValue> params);
 }

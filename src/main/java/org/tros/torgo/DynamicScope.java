@@ -49,12 +49,13 @@ public class DynamicScope implements Scope {
      * Pop back to the previous scope level.
      */
     @Override
-    public void pop() {
+    public CodeBlock pop() {
         //do not remove the last scope...
         if (scope.size() > 1) {
             scope.remove(0);
-            callStack.remove(0);
+            return callStack.remove(0);
         }
+        return null;
     }
 
     /**
