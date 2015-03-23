@@ -63,8 +63,8 @@ public class LexicalScope implements Scope {
      * Pop the current code block
      */
     @Override
-    public void pop() {
-        stack.remove(0);
+    public CodeBlock pop() {
+        return stack.remove(0);
     }
 
     /**
@@ -115,10 +115,10 @@ public class LexicalScope implements Scope {
     public CodeFunction getFunction(String name) {
         CodeBlock cb = stack.get(0);
         while(cb != null) {
-            cb = cb.getParent();
             if (cb.hasFunction(name)) {
                 return cb.getFunction(name);
             }
+            cb = cb.getParent();
         }
         return null;
     }
