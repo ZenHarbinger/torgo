@@ -164,8 +164,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
                     samplesMenu.add(jmi);
                     jmi.addActionListener((ActionEvent e) -> {
                         String val = e.getActionCommand();
-                        ClassLoader cl = ClassLoader.getSystemClassLoader();
-                        URL resource = cl.getResource(val);
+                        URL resource = ClassLoader.getSystemClassLoader().getResource(val);
                         this.controller.openFile(resource);
                     });
                 }

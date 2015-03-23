@@ -80,8 +80,8 @@ public final class HaltMonitor implements IHaltMonitor {
         _halted = true;
         ArrayList<IHaltListener> list = new ArrayList<>(_listeners);
         _listeners.clear();
-        for (IHaltListener listener : list) {
+        list.stream().forEach((listener) -> {
             listener.halted(this);
-        }
+        });
     }
 }

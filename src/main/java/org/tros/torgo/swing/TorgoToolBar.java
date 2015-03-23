@@ -41,21 +41,21 @@ public class TorgoToolBar extends JToolBar {
 
         setOrientation(SwingConstants.HORIZONTAL);
 
-        final ToolBarAction newAction = new ToolBarAction(Localization.getLocalizedString("FileNew"), "/projectui/newFile.png") {
+        final ToolBarAction newAction = new ToolBarAction(Localization.getLocalizedString("FileNew"), "projectui/newFile.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 controller.newFile();
             }
         };
 
-        final ToolBarAction openAction = new ToolBarAction(Localization.getLocalizedString("FileOpen"), "/projectui/open.png") {
+        final ToolBarAction openAction = new ToolBarAction(Localization.getLocalizedString("FileOpen"), "projectui/open.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 controller.openFile();
             }
         };
 
-        runAction = new ToolBarAction(Localization.getLocalizedString("RunLabel"), "/projectui/runProject.png") {
+        runAction = new ToolBarAction(Localization.getLocalizedString("RunLabel"), "projectui/runProject.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 if (paused) {
@@ -71,21 +71,21 @@ public class TorgoToolBar extends JToolBar {
             }
         };
 
-        final ToolBarAction saveAction = new ToolBarAction(Localization.getLocalizedString("FileSave"), "/actions/save.png") {
+        final ToolBarAction saveAction = new ToolBarAction(Localization.getLocalizedString("FileSave"), "actions/save.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 controller.saveFile();
             }
         };
 
-        final ToolBarAction saveAsAction = new ToolBarAction(Localization.getLocalizedString("FileSaveAs"), "/profiler/actions/icons/saveAs.png") {
+        final ToolBarAction saveAsAction = new ToolBarAction(Localization.getLocalizedString("FileSaveAs"), "profiler/actions/icons/saveAs.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 controller.saveFileAs();
             }
         };
 
-        final ToolBarAction stopAction = new ToolBarAction(Localization.getLocalizedString("StopLabel"), "/projectui/stop.png") {
+        final ToolBarAction stopAction = new ToolBarAction(Localization.getLocalizedString("StopLabel"), "projectui/stop.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 controller.stopInterpreter();
@@ -93,7 +93,7 @@ public class TorgoToolBar extends JToolBar {
         };
 
         //debug actions:
-        final ToolBarAction debugAction = new ToolBarAction("Debug", "/debugging/debugProject.png") {
+        final ToolBarAction debugAction = new ToolBarAction("Debug", "debugging/debugProject.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 pauseAction.setEnabled(true);
@@ -102,26 +102,26 @@ public class TorgoToolBar extends JToolBar {
             }
         };
 
-        stepOverAction = new ToolBarAction("Step Over", "/debugging/actions/StepOver.png") {
+        stepOverAction = new ToolBarAction("Step Over", "debugging/actions/StepOver.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 controller.stepOver();
             }
         };
 
-        final ToolBarAction stepIntoAction = new ToolBarAction("Step Into", "/debugging/actions/StepInto.png") {
+        final ToolBarAction stepIntoAction = new ToolBarAction("Step Into", "debugging/actions/StepInto.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
             }
         };
 
-        final ToolBarAction stepOutAction = new ToolBarAction("Step Out", "/debugging/actions/StepOut.png") {
+        final ToolBarAction stepOutAction = new ToolBarAction("Step Out", "debugging/actions/StepOut.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
             }
         };
 
-        pauseAction = new ToolBarAction("Pause", "/debugging/actions/Pause.png") {
+        pauseAction = new ToolBarAction("Pause", "debugging/actions/Pause.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 paused = true;
@@ -132,7 +132,7 @@ public class TorgoToolBar extends JToolBar {
             }
         };
 
-        final ToolBarAction runToCursorAction = new ToolBarAction("Run To Cursor", "/debugging/actions/RunToCursor.png") {
+        final ToolBarAction runToCursorAction = new ToolBarAction("Run To Cursor", "debugging/actions/RunToCursor.png") {
             @Override
             public void actionPerformed(ActionEvent event) {
             }
@@ -207,7 +207,7 @@ public class TorgoToolBar extends JToolBar {
         }
 
         public ToolBarAction(String name, String iconPath, String toolTip) {
-            URL url = getClass().getResource(iconPath);
+            URL url = ClassLoader.getSystemClassLoader().getResource(iconPath);
             putValue(Action.NAME, name);
             putValue(Action.SMALL_ICON, new ImageIcon(url));
             putValue(Action.SHORT_DESCRIPTION, toolTip);

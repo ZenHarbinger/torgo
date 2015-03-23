@@ -55,7 +55,7 @@ public final class Logging {
         if (!logProp.exists()) {
             try {
                 String prop_file = init.getCanonicalName().replace('.', '/') + ".properties";
-                java.util.Enumeration<URL> resources = Logging.class.getClassLoader()
+                java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader()
                         .getResources(prop_file);
                 if (resources.hasMoreElements()) {
                     URL to_use = resources.nextElement();

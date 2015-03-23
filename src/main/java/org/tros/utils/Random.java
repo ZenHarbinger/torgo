@@ -67,7 +67,7 @@ public final class Random {
         Properties prop = new Properties();
         String prop_file = org.tros.utils.Random.class.getCanonicalName().replace('.', '/') + ".properties";
         try {
-            prop.load(org.tros.utils.Random.class.getClassLoader().getResourceAsStream(prop_file));
+            prop.load(ClassLoader.getSystemClassLoader().getResourceAsStream(prop_file));
             _incrementType = UuidIncrementType.valueOf(prop.getProperty("uuidIncrementType"));
             _doSeed = Boolean.parseBoolean(prop.getProperty("doSeed"));
             _seedValue = Integer.parseInt(prop.getProperty("seedValue"));
