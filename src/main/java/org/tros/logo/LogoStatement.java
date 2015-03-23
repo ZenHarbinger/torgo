@@ -77,7 +77,7 @@ class LogoStatement extends LogoBlock {
     public ReturnValue process(Scope scope) {
         //if the thread has halted, don't process and pop up the stack.
         if (isHalted()) {
-            return new ReturnValue(Type.NULL, null, ProcessResult.HALT);
+            return ReturnValue.HALT;
         }
 
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()});
@@ -124,7 +124,7 @@ class LogoStatement extends LogoBlock {
             case "stop":
                 //note, this is the one time false is returned (except thread halting).
                 //this is used to break out of functions.
-                success = new ReturnValue(Type.NULL, null, ProcessResult.RETURN);
+                success = ReturnValue.RETURN;
                 break;
             case "pc": {
                 logoParser.PcContext fd = (logoParser.PcContext) ctx;
@@ -258,7 +258,7 @@ class LogoStatement extends LogoBlock {
 
                     success = lf.process(scope, paramValues);
                 } else {
-                    success = new ReturnValue(Type.NULL, null, ProcessResult.HALT);
+                    success = ReturnValue.HALT;
                     canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
                     logger.log(Level.WARNING, "process(): UNKNOWN -> {0}", new Object[]{command});
                 }

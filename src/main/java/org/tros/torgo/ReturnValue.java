@@ -21,7 +21,19 @@ package org.tros.torgo;
  */
 public class ReturnValue extends InterpreterValue {
 
+    /**
+     * Singleton RETURN type w/ no value.
+     */
+    public static final ReturnValue RETURN = new ReturnValue(Type.NULL, null, ProcessResult.RETURN);
+
+    /**
+     * Singleton SUCCESS type w/ no value.
+     */
     public static final ReturnValue SUCCESS = new ReturnValue(Type.NULL, null, ProcessResult.SUCCESS);
+
+    /**
+     * Singleton HALT type w/ no value.
+     */
     public static final ReturnValue HALT = new ReturnValue(Type.NULL, null, ProcessResult.HALT);
 
     /**
