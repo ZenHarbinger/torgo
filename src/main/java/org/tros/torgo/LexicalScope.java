@@ -15,25 +15,24 @@
  */
 package org.tros.torgo;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  *
  * @author matta
  */
-public class LexicalScope implements Scope {
-
-    private final ArrayList<CodeBlock> stack = new ArrayList<>();
+public class LexicalScope extends ScopeImpl implements Scope {
 
     /**
      * Looks in the lexical stack for variables to use.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public InterpreterValue get(String name) {
         CodeBlock p = stack.get(0);
-        while(p != null) {
+        while (p != null) {
             if (p.hasVariable(name)) {
                 return p.getVariable(name);
             }
@@ -44,13 +43,14 @@ public class LexicalScope implements Scope {
 
     /**
      * Check the lexical stack for a variable.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public boolean has(String name) {
         CodeBlock p = stack.get(0);
-        while(p != null) {
+        while (p != null) {
             if (p.hasVariable(name)) {
                 return true;
             }
@@ -69,7 +69,8 @@ public class LexicalScope implements Scope {
 
     /**
      * Push a new code block
-     * @param block 
+     *
+     * @param block
      */
     @Override
     public void push(CodeBlock block) {
@@ -78,13 +79,14 @@ public class LexicalScope implements Scope {
 
     /**
      * Set the value of a variable in the scope.
+     *
      * @param name
-     * @param value 
+     * @param value
      */
     @Override
     public void set(String name, InterpreterValue value) {
         CodeBlock p = stack.get(0);
-        while(p != null) {
+        while (p != null) {
             if (p.hasVariable(name)) {
                 p.setVariable(name, value);
                 break;
@@ -98,8 +100,9 @@ public class LexicalScope implements Scope {
 
     /**
      * Set the value of a variable in the current block.
+     *
      * @param name
-     * @param value 
+     * @param value
      */
     @Override
     public void setNew(String name, InterpreterValue value) {
@@ -108,13 +111,14 @@ public class LexicalScope implements Scope {
 
     /**
      * Get a function available in the scope.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public CodeFunction getFunction(String name) {
         CodeBlock cb = stack.get(0);
-        while(cb != null) {
+        while (cb != null) {
             if (cb.hasFunction(name)) {
                 return cb.getFunction(name);
             }
@@ -125,13 +129,14 @@ public class LexicalScope implements Scope {
 
     /**
      * Check to see if a function is in the scope.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public boolean hasFunction(String name) {
         CodeBlock cb = stack.get(0);
-        while(cb != null) {
+        while (cb != null) {
             cb = cb.getParent();
             if (cb.hasFunction(name)) {
                 return true;
@@ -141,30 +146,12 @@ public class LexicalScope implements Scope {
     }
 
     /**
-     * Look at the current block.
-     * @return 
+     * Get the names of local variables.
+     *
+     * @return
      */
     @Override
-    public CodeBlock peek() {
-        return peek(0);
-    }
-
-    /**
-     * Look at an inner code block.
-     * @param val
-     * @return 
-     */
-    @Override
-    public CodeBlock peek(int val) {
-        return stack.get(val);
-    }
-
-    /**
-     * The size of the scope.
-     * @return 
-     */
-    @Override
-    public int size() {
-        return stack.size();
+    public Collection<String> localVariables() {
+        return stack.get(0).localVariables();
     }
 }

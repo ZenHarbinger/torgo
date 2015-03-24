@@ -57,8 +57,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
 
     /**
      * Create a copy of the buffered image object.
+     *
      * @param bi
-     * @return 
+     * @return
      */
     public static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
@@ -69,7 +70,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
 
     /**
      * Constructor.
-     * @param textOutput 
+     *
+     * @param textOutput
      */
     public LogoPanel(TorgoTextConsole textOutput) {
         console = textOutput;
@@ -111,7 +113,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
 
     /**
      * Paint.
-     * @param g 
+     *
+     * @param g
      */
     @Override
     public void paintComponent(Graphics g) {

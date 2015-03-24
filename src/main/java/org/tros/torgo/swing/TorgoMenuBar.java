@@ -26,10 +26,15 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import org.tros.utils.logging.LogConsole;
 
+/**
+ * Builds the base menu.
+ *
+ * @author matta
+ */
 public class TorgoMenuBar extends JMenuBar {
-    
+
     protected final Controller controller;
-    
+
     private JMenuItem fileNew;
     private JMenuItem fileOpen;
     private JMenuItem fileClose;
@@ -37,29 +42,40 @@ public class TorgoMenuBar extends JMenuBar {
     private JMenuItem fileSaveAs;
     private JMenuItem fileQuit;
     private JMenuItem logConsole;
-    
+
     protected final Component parent;
-    
+
+    /**
+     * Constructor.
+     *
+     * @param parent
+     * @param controller
+     */
     public TorgoMenuBar(Component parent, Controller controller) {
         this.controller = controller;
         this.parent = parent;
-        
+
         add(setupFileMenu());
     }
-    
+
+    /**
+     * Initializer.
+     *
+     * @return
+     */
     private JMenu setupFileMenu() {
         LogConsole.CONSOLE.setVisible(false);
         JMenu fileMenu = new JMenu(Localization.getLocalizedString("FileMenu"));
-        
+
         fileNew = new JMenuItem(Localization.getLocalizedString("FileNew"));
         fileOpen = new JMenuItem(Localization.getLocalizedString("FileOpen"));
         fileClose = new JMenuItem(Localization.getLocalizedString("FileClose"));
         fileSave = new JMenuItem(Localization.getLocalizedString("FileSave"));
         fileSaveAs = new JMenuItem(Localization.getLocalizedString("FileSaveAs"));
         fileQuit = new JMenuItem(Localization.getLocalizedString("FileQuit"));
-        
+
         logConsole = new JMenuItem("View Log Console");
-        
+
         fileNew.addActionListener((ActionEvent e) -> {
             controller.newFile();
         });
@@ -78,11 +94,11 @@ public class TorgoMenuBar extends JMenuBar {
         fileQuit.addActionListener((ActionEvent e) -> {
             System.exit(0);
         });
-        
+
         logConsole.addActionListener((ActionEvent e) -> {
             LogConsole.CONSOLE.setVisible(true);
         });
-        
+
         fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK));
         fileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
         fileClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK));
@@ -90,7 +106,7 @@ public class TorgoMenuBar extends JMenuBar {
         fileSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
         fileQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
         logConsole.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
-        
+
         fileNew.setMnemonic('N');
         fileOpen.setMnemonic('O');
         fileClose.setMnemonic('C');
@@ -98,7 +114,7 @@ public class TorgoMenuBar extends JMenuBar {
         fileSaveAs.setMnemonic('A');
         fileQuit.setMnemonic('Q');
         logConsole.setMnemonic('L');
-        
+
         fileMenu.add(fileNew);
         fileMenu.add(fileOpen);
         fileMenu.add(fileClose);
@@ -109,9 +125,9 @@ public class TorgoMenuBar extends JMenuBar {
         fileMenu.add(logConsole);
         fileMenu.addSeparator();
         fileMenu.add(fileQuit);
-        
+
         fileMenu.setMnemonic('F');
-        
+
         return (fileMenu);
     }
 }

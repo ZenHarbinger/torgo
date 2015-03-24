@@ -23,9 +23,16 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import org.tros.torgo.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.InterpreterListener;
+import org.tros.torgo.Scope;
 
+/**
+ * Creates a base Toolbar.
+ *
+ * @author matta
+ */
 public class TorgoToolBar extends JToolBar {
 
     private final ToolBarAction stepOverAction;
@@ -35,6 +42,12 @@ public class TorgoToolBar extends JToolBar {
     private boolean paused;
     private boolean debugging;
 
+    /**
+     * Constructor.
+     *
+     * @param parent
+     * @param controller
+     */
     public TorgoToolBar(final Component parent, final Controller controller) {
         paused = false;
         debugging = false;
@@ -197,10 +210,17 @@ public class TorgoToolBar extends JToolBar {
             @Override
             public void message(String msg) {
             }
+
+            @Override
+            public void currStatement(CodeBlock block, Scope scope) {
+            }
         });
     }
 
-    private abstract class ToolBarAction extends AbstractAction {
+    /**
+     * Inner abstract class that initializes the icons.
+     */
+    protected abstract class ToolBarAction extends AbstractAction {
 
         public ToolBarAction(String name, String iconPath) {
             this(name, iconPath, name);

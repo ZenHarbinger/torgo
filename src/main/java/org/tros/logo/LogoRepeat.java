@@ -25,6 +25,7 @@ import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
 
 /**
+ * Represents a repeating block in Logo.
  *
  * @author matta
  */
@@ -61,7 +62,7 @@ class LogoRepeat extends LogoBlock {
         listeners.stream().forEach((l) -> {
             l.currStatement(this, scope);
         });
- 
+
         int repeat = ((Number) ExpressionListener.evaluate(scope, ((logoParser.RepeatContext) ctx).expression()).getValue()).intValue();
         ReturnValue success = ReturnValue.SUCCESS;
         for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {

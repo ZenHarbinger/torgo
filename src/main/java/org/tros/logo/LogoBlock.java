@@ -259,4 +259,14 @@ abstract class LogoBlock implements CodeBlock {
     public Type getType() {
         return Type.COMMAND;
     }
+
+    /**
+     * Get the names of local variables.
+     *
+     * @return
+     */
+    @Override
+    public Collection<String> localVariables() {
+        return variables.keySet();
+    }
 }

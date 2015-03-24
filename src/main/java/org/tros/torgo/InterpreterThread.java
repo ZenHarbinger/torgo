@@ -23,6 +23,7 @@ import org.tros.utils.logging.LogConsole;
 
 /**
  * Interpreter Thread Interface
+ *
  * @author matta
  */
 public abstract class InterpreterThread extends Thread {
@@ -31,13 +32,16 @@ public abstract class InterpreterThread extends Thread {
     private CodeBlock script;
     private final String source;
     private final ArrayList<InterpreterListener> listeners = new ArrayList<>();
+    protected final Scope scope;
 
     /**
      * Constructor
      *
      * @param source
+     * @param scope
      */
-    public InterpreterThread(String source) {
+    public InterpreterThread(String source, Scope scope) {
+        this.scope = scope;
         this.source = source;
         this.monitor = new HaltMonitor();
     }
@@ -81,10 +85,11 @@ public abstract class InterpreterThread extends Thread {
     }
 
     /**
-     * Get the lexical analysis results from the source.
-     * Uses ANTLR to parse and set up for interpreting.
+     * Get the lexical analysis results from the source. Uses ANTLR to parse and
+     * set up for interpreting.
+     *
      * @param source
-     * @return 
+     * @return
      */
     protected abstract LexicalAnalyzer getLexicalAnalysis(String source);
 
@@ -121,8 +126,9 @@ public abstract class InterpreterThread extends Thread {
 
                 /**
                  * Pass on the currStatement event to any listeners.
+                 *
                  * @param block
-                 * @param scope 
+                 * @param scope
                  */
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
@@ -152,7 +158,8 @@ public abstract class InterpreterThread extends Thread {
 
     /**
      * Start the processing of the script.
-     * @param entryPoint 
+     *
+     * @param entryPoint
      */
     protected abstract void process(CodeBlock entryPoint);
 
@@ -165,5 +172,13 @@ public abstract class InterpreterThread extends Thread {
         } catch (InterruptedException ex) {
             Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public final void addScopeListener(ScopeListener listener) {
+        scope.addScopeListener(listener);
+    }
+
+    public final void removeScopeListener(ScopeListener listener) {
+        scope.removeScopeListener(listener);
     }
 }

@@ -26,20 +26,41 @@ public class InterpreterValue implements InterpreterType {
     private final Object value;
     private final Type type;
 
+    /**
+     * Constructor.
+     *
+     * @param type
+     * @param value
+     */
     public InterpreterValue(Type type, Object value) {
         this.value = value;
         this.type = type;
     }
 
+    /**
+     * Get the object value.
+     *
+     * @return
+     */
     public Object getValue() {
         return value;
     }
 
+    /**
+     * Get the type.
+     *
+     * @return
+     */
     @Override
     public Type getType() {
         return type;
     }
 
+    /**
+     * To String.
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return value.toString();

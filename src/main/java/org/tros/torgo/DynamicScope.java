@@ -16,33 +16,35 @@
 package org.tros.torgo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
- * Implements a dynamic scope which just looks down the call stack for
- * an instance of the named variable.
+ * Implements a dynamic scope which just looks down the call stack for an
+ * instance of the named variable.
+ *
  * @author matta
  */
-public class DynamicScope implements Scope {
+public class DynamicScope extends ScopeImpl implements Scope {
 
     private final ArrayList<HashMap<String, InterpreterValue>> scope = new ArrayList<>();
-    private final ArrayList<CodeBlock> callStack = new ArrayList<>();
 
     /**
-     * Constructor
+     * Constructor.
      */
     public DynamicScope() {
-        scope.add(new HashMap<>());
     }
 
     /**
      * Push a new level onto the scope.
+     *
      * @param block
      */
     @Override
     public void push(CodeBlock block) {
         scope.add(0, new HashMap<>());
-        callStack.add(0, block);
+        stack.add(0, block);
+        firePushed(block);
     }
 
     /**
@@ -51,17 +53,17 @@ public class DynamicScope implements Scope {
     @Override
     public CodeBlock pop() {
         //do not remove the last scope...
-        if (scope.size() > 1) {
-            scope.remove(0);
-            return callStack.remove(0);
-        }
-        return null;
+        scope.remove(0);
+        CodeBlock ret = stack.remove(0);
+        firePopped(ret);
+        return ret;
     }
 
     /**
      * Get the value of a variable at the current scoping level.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public InterpreterValue get(String name) {
@@ -79,8 +81,9 @@ public class DynamicScope implements Scope {
 
     /**
      * Set the value of a variable at a current scoping level.
+     *
      * @param name
-     * @param value 
+     * @param value
      */
     @Override
     public void set(String name, InterpreterValue value) {
@@ -95,12 +98,14 @@ public class DynamicScope implements Scope {
         if (!found) {
             scope.get(0).put(name, value);
         }
+        fireVariableSet(name, value);
     }
 
     /**
      * Check to see if the variable exists at the current scoping level.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public boolean has(String name) {
@@ -117,25 +122,27 @@ public class DynamicScope implements Scope {
     }
 
     /**
-     * Defines a new variable at the top level of the scope.
-     * Once the current level of the scope is popped off, it will
-     * no longer be available.
+     * Defines a new variable at the top level of the scope. Once the current
+     * level of the scope is popped off, it will no longer be available.
+     *
      * @param name
-     * @param value 
+     * @param value
      */
     @Override
     public void setNew(String name, InterpreterValue value) {
         scope.get(0).put(name, value);
+        fireVariableSet(name, value);
     }
 
     /**
      * Get a function in the scope.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public CodeFunction getFunction(String name) {
-        for(CodeBlock cb : callStack) {
+        for (CodeBlock cb : stack) {
             if (cb.hasFunction(name)) {
                 return cb.getFunction(name);
             }
@@ -145,39 +152,22 @@ public class DynamicScope implements Scope {
 
     /**
      * Check for a function in the scope.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public boolean hasFunction(String name) {
-        return callStack.stream().anyMatch((cb) -> (cb.hasFunction(name)));
+        return stack.stream().anyMatch((cb) -> (cb.hasFunction(name)));
     }
 
     /**
-     * Look at the current code block.
-     * @return 
+     * Get the names of local variables.
+     *
+     * @return
      */
     @Override
-    public CodeBlock peek() {
-        return callStack.get(0);
-    }
-
-    /**
-     * Look at an inner code block.
-     * @param val
-     * @return 
-     */
-    @Override
-    public CodeBlock peek(int val) {
-        return callStack.get(val);
-    }
-
-    /**
-     * Get the size of the scope.
-     * @return 
-     */
-    @Override
-    public int size() {
-        return callStack.size();
+    public Collection<String> localVariables() {
+        return scope.get(0).keySet();
     }
 }

@@ -18,14 +18,16 @@ package org.tros.torgo;
 import java.awt.Component;
 
 /**
- * I/O interface.  Get source and print messages.
+ * I/O interface. Get source and print messages.
+ *
  * @author matta
  */
 public interface TorgoTextConsole {
 
     /**
      * Append to the output text area.
-     * @param message 
+     *
+     * @param message
      */
     void appendToOutputTextArea(String message);
 
@@ -33,49 +35,55 @@ public interface TorgoTextConsole {
      * Clear the output text area.
      */
     void clearOutputTextArea();
-    
+
     /**
      * Get the source.
-     * @return 
+     *
+     * @return
      */
     String getSource();
-    
+
     /**
      * Set the source.
-     * @param source 
+     *
+     * @param source
      */
     void setSource(String source);
-    
+
     /**
      * Clear the source.
      */
     void clearSource();
-   
+
     /**
      * Append a string onto the source.
-     * @param source 
+     *
+     * @param source
      */
     void appendToSource(String source);
 
     /**
      * Insert a string into the source.
-     * @param source 
+     *
+     * @param source
      */
     default void insertIntoSource(String source) {
         appendToSource(source);
     }
-    
+
     /**
      * Go to position on the console.
-     * @param position 
+     *
+     * @param position
      */
     void gotoPosition(int position);
 
     /**
      * Highlight a section of text on the console.
+     *
      * @param line
      * @param startChar
-     * @param endChar 
+     * @param endChar
      */
     void highlight(int line, int startChar, int endChar);
 
@@ -83,10 +91,11 @@ public interface TorgoTextConsole {
      * Reset the component to initial conditions.
      */
     void reset();
-    
+
     /**
      * Return the Swing component for this control.
-     * @return 
+     *
+     * @return
      */
     Component getComponent();
 }

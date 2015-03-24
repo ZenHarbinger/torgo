@@ -384,6 +384,11 @@ public abstract class ControllerBase implements Controller {
                     l.message(msg);
                 });
             }
+
+            @Override
+            public void currStatement(CodeBlock block, Scope scope) {
+                //TODO: add stack view...
+            }
         });
         interp.start();
     }
@@ -396,6 +401,9 @@ public abstract class ControllerBase implements Controller {
         String source = torgoPanel.getSource();
         interp = createInterpreterThread(source);
         step.reset();
+        
+//        StackView sv = new StackView(this);
+//        interp.addInterpreterListener(sv);
 
         interp.addInterpreterListener(new InterpreterListener() {
 

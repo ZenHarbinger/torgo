@@ -41,6 +41,7 @@ import org.tros.torgo.swing.TorgoMenuBar;
 
 /**
  * Sets up a menu bar for the Logo application.
+ *
  * @author matta
  */
 public final class LogoMenuBar extends TorgoMenuBar {
@@ -52,9 +53,10 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
     /**
      * Constructor.
+     *
      * @param parent
      * @param controller
-     * @param canvas 
+     * @param canvas
      */
     public LogoMenuBar(Component parent, Controller controller, LogoCanvas canvas) {
         super(parent, controller);
@@ -149,9 +151,10 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
     /**
      * Set up the menus for examples.
+     *
      * @param name
      * @param base
-     * @return 
+     * @return
      */
     private JMenu setupMenu(String name, String base) {
         JMenu samplesMenu = new JMenu(name);
@@ -177,7 +180,8 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
     /**
      * Set up the export menu.
-     * @return 
+     *
+     * @return
      */
     private JMenu setupExportMenu() {
         JMenu exportMenu = new JMenu(Localization.getLocalizedString("ExportMenu"));
@@ -224,7 +228,8 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
     /**
      * Set up the tools menu.
-     * @return 
+     *
+     * @return
      */
     private JMenu setupToolsMenu() {
         JMenu toolsMenu = new JMenu(Localization.getLocalizedString("ToolsMenu"));

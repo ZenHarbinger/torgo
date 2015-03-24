@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Canvas/Drawing Interface
+ *
  * @author matta
  */
 public interface LogoCanvas {
@@ -60,7 +61,7 @@ public interface LogoCanvas {
     void left(double angle);
 
     void pause(int time);
-    
+
     void penDown();
 
     void penUp();
@@ -79,20 +80,20 @@ public interface LogoCanvas {
     void pencolor(Color color);
 
     void repaint();
-    
+
     void message(String message);
 
     void warning(String message);
-    
+
     void right(double angle);
 
     void setXY(double x, double y);
 
     void showTurtle();
-    
+
     double getTurtleX();
-    
+
     double getTurtleY();
-    
+
     double getTurtleAngle();
 }

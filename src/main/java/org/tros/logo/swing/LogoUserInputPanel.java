@@ -32,8 +32,10 @@ import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
+import org.tros.torgo.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.InterpreterListener;
+import org.tros.torgo.Scope;
 import org.tros.torgo.TorgoTextConsole;
 
 public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole {
@@ -46,7 +48,8 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
     /**
      * Constructor.
-     * @param controller 
+     *
+     * @param controller
      */
     public LogoUserInputPanel(Controller controller) {
         BorderLayout layout = new BorderLayout();
@@ -139,11 +142,16 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
             /**
              * Append a message to the output area.
-             * @param msg 
+             *
+             * @param msg
              */
             @Override
             public void message(String msg) {
                 appendToOutputTextArea(msg);
+            }
+
+            @Override
+            public void currStatement(CodeBlock block, Scope scope) {
             }
         });
     }
@@ -167,7 +175,8 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
     /**
      * Append text to the output text area.
-     * @param what 
+     *
+     * @param what
      */
     @Override
     public void appendToOutputTextArea(String what) {
@@ -176,7 +185,8 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
     /**
      * Get the source to interpret.
-     * @return 
+     *
+     * @return
      */
     @Override
     public String getSource() {
@@ -185,7 +195,8 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
     /**
      * Set the source to interpret.
-     * @param source 
+     *
+     * @param source
      */
     @Override
     public void setSource(String source) {
@@ -195,7 +206,8 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
     /**
      * Append a string to the source.
-     * @param source 
+     *
+     * @param source
      */
     @Override
     public void appendToSource(String source) {
@@ -206,7 +218,8 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
     /**
      * Insert a string into the source at the cursor.
-     * @param source 
+     *
+     * @param source
      */
     @Override
     public void insertIntoSource(String source) {
@@ -245,7 +258,8 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
     /**
      * To to a position in the source.
-     * @param position 
+     *
+     * @param position
      */
     @Override
     public void gotoPosition(int position) {
@@ -254,9 +268,10 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
     /**
      * Highlight a section of the source.
+     *
      * @param line
      * @param startChar
-     * @param endChar 
+     * @param endChar
      */
     @Override
     public void highlight(int line, int startChar, int endChar) {
@@ -273,7 +288,8 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
     /**
      * Get the swing component of the object.
-     * @return 
+     *
+     * @return
      */
     @Override
     public Component getComponent() {

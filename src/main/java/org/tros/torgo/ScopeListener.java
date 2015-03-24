@@ -15,34 +15,35 @@
  */
 package org.tros.torgo;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Function representation of a CodeBlock
+ * Events for the scope.
  *
  * @author matta
  */
-public interface CodeFunction extends CodeBlock {
+public interface ScopeListener {
 
     /**
-     * The name of the function.
-     *
-     * @return
-     */
-    String getFunctionName();
-
-    @Override
-    default ReturnValue process(Scope scope) {
-        return process(scope, new HashMap<>());
-    }
-
-    /**
-     * Process with parameters.
+     * Scope was popped.
      *
      * @param scope
-     * @param params
-     * @return
+     * @param block
      */
-    ReturnValue process(Scope scope, Map<String, InterpreterValue> params);
+    void scopePopped(Scope scope, CodeBlock block);
+
+    /**
+     * Scope was pushed.
+     *
+     * @param scope
+     * @param block
+     */
+    void scopePushed(Scope scope, CodeBlock block);
+
+    /**
+     * Variable was set.
+     *
+     * @param scope
+     * @param name
+     * @param value
+     */
+    void variableSet(Scope scope, String name, InterpreterValue value);
 }

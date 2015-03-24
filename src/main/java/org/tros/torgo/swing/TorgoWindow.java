@@ -25,19 +25,21 @@ import org.tros.torgo.Main;
 
 /**
  * This is a JFrame that will remember position, hight, and width.
+ *
  * @author matta
  */
 public class TorgoWindow extends JFrame {
 
     /**
      * Constructor.
-     * @param controller 
+     *
+     * @param controller
      */
     public TorgoWindow(Controller controller) {
-        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoWindow.class);
+        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(this.getClass());
 
-        int width = prefs.getInt(TorgoWindow.class.getName() + "-window-width", 640);
-        int height = prefs.getInt(TorgoWindow.class.getName() + "-window-height", 480);
+        int width = prefs.getInt(this.getClass().getName() + "-window-width", 640);
+        int height = prefs.getInt(this.getClass().getName() + "-window-height", 480);
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
@@ -51,8 +53,8 @@ public class TorgoWindow extends JFrame {
         int x = (int) ((screenSize.getWidth() - width) / 2);
         int y = (int) ((screenSize.getHeight() - height) / 2);
 
-        x = prefs.getInt(TorgoWindow.class.getName() + "-window-x", x);
-        y = prefs.getInt(TorgoWindow.class.getName() + "-window-y", y);
+        x = prefs.getInt(this.getClass().getName() + "-window-x", x);
+        y = prefs.getInt(this.getClass().getName() + "-window-y", y);
 
         setSize(width, height);
         setLocation(x, y);
@@ -60,18 +62,18 @@ public class TorgoWindow extends JFrame {
 
             @Override
             public void componentResized(ComponentEvent e) {
-                prefs.putInt(TorgoWindow.class.getName() + "-window-x", getX());
-                prefs.putInt(TorgoWindow.class.getName() + "-window-y", getY());
-                prefs.putInt(TorgoWindow.class.getName() + "-window-width", getWidth());
-                prefs.putInt(TorgoWindow.class.getName() + "-window-height", getHeight());
+                prefs.putInt(this.getClass().getName() + "-window-x", getX());
+                prefs.putInt(this.getClass().getName() + "-window-y", getY());
+                prefs.putInt(this.getClass().getName() + "-window-width", getWidth());
+                prefs.putInt(this.getClass().getName() + "-window-height", getHeight());
             }
 
             @Override
             public void componentMoved(ComponentEvent e) {
-                prefs.putInt(TorgoWindow.class.getName() + "-window-x", getX());
-                prefs.putInt(TorgoWindow.class.getName() + "-window-y", getY());
-                prefs.putInt(TorgoWindow.class.getName() + "-window-width", getWidth());
-                prefs.putInt(TorgoWindow.class.getName() + "-window-height", getHeight());
+                prefs.putInt(this.getClass().getName() + "-window-x", getX());
+                prefs.putInt(this.getClass().getName() + "-window-y", getY());
+                prefs.putInt(this.getClass().getName() + "-window-width", getWidth());
+                prefs.putInt(this.getClass().getName() + "-window-height", getHeight());
             }
 
             @Override

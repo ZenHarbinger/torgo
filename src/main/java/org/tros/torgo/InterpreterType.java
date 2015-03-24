@@ -30,5 +30,10 @@ public interface InterpreterType {
         NULL
     }
 
+    /**
+     * Get the type.
+     *
+     * @return
+     */
     InterpreterValue.Type getType();
 }

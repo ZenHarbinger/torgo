@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 /**
  * Interface for the main application.
+ *
  * @author matta
  */
 public interface Controller {
@@ -39,7 +40,8 @@ public interface Controller {
 
     /**
      * Open a specified file.
-     * @param file 
+     *
+     * @param file
      */
     default void openFile(File file) {
         try {
@@ -51,7 +53,8 @@ public interface Controller {
 
     /**
      * Open a specified location based on URL.
-     * @param file 
+     *
+     * @param file
      */
     void openFile(URL file);
 
@@ -81,24 +84,29 @@ public interface Controller {
     void stopInterpreter();
 
     /**
-     * Debug interpreter.  Defaults to just start the interpreter.
+     * Debug interpreter. Defaults to just start the interpreter.
      */
-    default void debugInterpreter() { startInterpreter(); }
-    
+    default void debugInterpreter() {
+        startInterpreter();
+    }
+
     /**
      * Step over a statement; default is empty.
      */
-    default void stepOver() {}
+    default void stepOver() {
+    }
 
     /**
      * Pause interpreter; default is empty.
      */
-    default void pauseInterpreter() {}
+    default void pauseInterpreter() {
+    }
 
     /**
      * Resume interpreter; default is empty.
      */
-    default void resumeInterpreter() {}
+    default void resumeInterpreter() {
+    }
 
     /**
      * Close the application/controller.
@@ -107,31 +115,36 @@ public interface Controller {
 
     /**
      * Insert a command into the source.
-     * @param command 
+     *
+     * @param command
      */
     void insertCommand(String command);
 
     /**
      * Add an interpreter listener.
-     * @param listener 
+     *
+     * @param listener
      */
     void addInterpreterListener(InterpreterListener listener);
 
     /**
      * Remove an interpreter listener.
-     * @param listener 
+     *
+     * @param listener
      */
     void removeInterpreterListener(InterpreterListener listener);
 
     /**
      * Set the source for the interpreter.
-     * @param src 
+     *
+     * @param src
      */
     void setSource(String src);
 
     /**
      * Get the language of the interpreter.
-     * @return 
+     *
+     * @return
      */
     String getLang();
 

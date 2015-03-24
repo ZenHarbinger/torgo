@@ -21,6 +21,7 @@ import org.tros.utils.IHaltListener;
 
 /**
  * Abstract representation of code to execute.
+ *
  * @author matta
  */
 public interface CodeBlock extends InterpreterType, IHaltListener {
@@ -41,7 +42,8 @@ public interface CodeBlock extends InterpreterType, IHaltListener {
 
     /**
      * Add an interpreter listener.
-     * @param listener 
+     *
+     * @param listener
      */
     void addInterpreterListener(InterpreterListener listener);
 
@@ -70,60 +72,76 @@ public interface CodeBlock extends InterpreterType, IHaltListener {
 
     /**
      * Add listener to this object
-     * @param listener 
+     *
+     * @param listener
      */
     void removeInterpreterListener(InterpreterListener listener);
 
     /**
      * Check to see if this code block defines a function.
+     *
      * @param name
-     * @return 
+     * @return
      */
     boolean hasFunction(String name);
 
     /**
      * Get a function if it is defined.
+     *
      * @param name
-     * @return 
+     * @return
      */
     CodeFunction getFunction(String name);
 
     /**
      * Add a function to this code block.
-     * @param function 
+     *
+     * @param function
      */
     void addFunction(CodeFunction function);
 
     /**
      * Get the local context of this ANTLR generated parse tree stub.
-     * @return 
+     *
+     * @return
      */
     ParserRuleContext getParserRuleContext();
 
     /**
      * Check to see if there is a variable in the block.
+     *
      * @param name
-     * @return 
+     * @return
      */
     boolean hasVariable(String name);
 
     /**
      * Set the value of the variable in the block.
+     *
      * @param name
-     * @param value 
+     * @param value
      */
     void setVariable(String name, InterpreterValue value);
 
     /**
      * Get the value of a variable in the block.
+     *
      * @param name
-     * @return 
+     * @return
      */
     InterpreterValue getVariable(String name);
 
     /**
+     * Get the names of local variables.
+     *
+     * @return
+     */
+    Collection<String> localVariables();
+
+    /**
      * Get the lexical parent.
-     * @return 
+     *
+     * @return
      */
     CodeBlock getParent();
 }

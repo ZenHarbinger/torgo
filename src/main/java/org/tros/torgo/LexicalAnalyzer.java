@@ -23,7 +23,17 @@ import java.util.Collection;
  */
 public interface LexicalAnalyzer {
 
+    /**
+     * Code block representing the entry point to the interpreted script.
+     *
+     * @return
+     */
     public CodeBlock getEntryPoint();
 
+    /**
+     * A collection of all code blocks defined in the script.
+     *
+     * @return
+     */
     public Collection<CodeBlock> getCodeBlocks();
 }

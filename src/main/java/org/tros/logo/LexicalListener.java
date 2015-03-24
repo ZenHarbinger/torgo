@@ -26,12 +26,13 @@ import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.LexicalAnalyzer;
 
 /**
- * Gets a list of commands to execute.  This does not execute then, but
- * instead builds a tree of commands to run.  Once this tree is built,
- * it will be interpreted.  This is for the Logo language only.
+ * Gets a list of commands to execute. This does not execute then, but instead
+ * builds a tree of commands to run. Once this tree is built, it will be
+ * interpreted. This is for the Logo language only.
+ *
  * @author matta
  */
-class LexicalListener extends logoBaseListener implements LexicalAnalyzer{
+class LexicalListener extends logoBaseListener implements LexicalAnalyzer {
 
     private final Stack<CodeBlock> stack = new Stack<>();
     private final ArrayList<CodeBlock> blocks = new ArrayList<>();
@@ -46,8 +47,9 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer{
 
     /**
      * Walk the parse tree and build a command structure to interpret.
+     *
      * @param tree
-     * @return 
+     * @return
      */
     protected static LexicalAnalyzer lexicalAnalysis(ParseTree tree, LogoCanvas canvas) {
         LexicalListener cl = new LexicalListener(canvas);
@@ -280,7 +282,8 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer{
 
     /**
      * Gets the CodeBlock object that is the beginning of the program.
-     * @return 
+     *
+     * @return
      */
     @Override
     public CodeBlock getEntryPoint() {
@@ -289,7 +292,8 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer{
 
     /**
      * Gets all of the CodeBlock objects defined by the program.
-     * @return 
+     *
+     * @return
      */
     @Override
     public Collection<CodeBlock> getCodeBlocks() {

@@ -35,7 +35,7 @@ import org.tros.torgo.TorgoTextConsole;
 import org.tros.torgo.swing.TorgoToolBar;
 
 /**
- * The main application. Controls GUI and interpreting process.
+ * The Logo factory/controller.
  *
  * @author matta
  */
@@ -94,7 +94,7 @@ public final class LogoController extends ControllerBase {
      */
     @Override
     protected InterpreterThread createInterpreterThread(String source) {
-        return new InterpreterThread(source) {
+        return new InterpreterThread(source, new DynamicScope()) {
 
             @Override
             protected LexicalAnalyzer getLexicalAnalysis(String source) {
@@ -108,7 +108,7 @@ public final class LogoController extends ControllerBase {
 
             @Override
             protected void process(CodeBlock entryPoint) {
-                entryPoint.process(new DynamicScope());
+                entryPoint.process(scope);
             }
         };
     }

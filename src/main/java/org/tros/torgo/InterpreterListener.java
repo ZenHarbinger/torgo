@@ -17,6 +17,7 @@ package org.tros.torgo;
 
 /**
  * Listener for interpreter events.
+ *
  * @author matta
  */
 public interface InterpreterListener {
@@ -33,21 +34,23 @@ public interface InterpreterListener {
 
     /**
      * Signal that there was an error with the interpreter.
-     * @param e 
+     *
+     * @param e
      */
     void error(Exception e);
 
     /**
-     * Signal a message from the interpreter.
-     * This could be a print statement.
-     * @param msg 
+     * Signal a message from the interpreter. This could be a print statement.
+     *
+     * @param msg
      */
     void message(String msg);
-    
+
     /**
      * The current block of code executing with the current state.
-     * @param block 
-     * @param scope 
+     *
+     * @param block
+     * @param scope
      */
-    default void currStatement(CodeBlock block, Scope scope) {}
+    void currStatement(CodeBlock block, Scope scope);
 }
