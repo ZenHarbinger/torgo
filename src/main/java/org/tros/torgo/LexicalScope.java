@@ -64,7 +64,9 @@ public class LexicalScope extends ScopeImpl implements Scope {
      */
     @Override
     public CodeBlock pop() {
-        return stack.remove(0);
+        CodeBlock ret = stack.remove(0);
+        firePopped(ret);
+        return ret;
     }
 
     /**
@@ -75,6 +77,7 @@ public class LexicalScope extends ScopeImpl implements Scope {
     @Override
     public void push(CodeBlock block) {
         stack.add(0, block);
+        firePushed(block);
     }
 
     /**
@@ -96,6 +99,7 @@ public class LexicalScope extends ScopeImpl implements Scope {
         if (p == null) {
             stack.get(0).setVariable(name, value);
         }
+        fireVariableSet(name, value);
     }
 
     /**
@@ -107,6 +111,7 @@ public class LexicalScope extends ScopeImpl implements Scope {
     @Override
     public void setNew(String name, InterpreterValue value) {
         stack.get(0).setVariable(name, value);
+        fireVariableSet(name, value);
     }
 
     /**

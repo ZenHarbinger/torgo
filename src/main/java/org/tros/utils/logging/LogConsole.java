@@ -18,9 +18,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
+import org.tros.torgo.Main;
 
 /**
  * Singleton GUI log console for viewing log output.
+ *
  * @author matta
  */
 public final class LogConsole extends JFrame {
@@ -33,15 +35,20 @@ public final class LogConsole extends JFrame {
     /**
      * Constructor.
      */
+    @SuppressWarnings("LeakingThisInConstructor")
     private LogConsole() {
         this(Level.FINER);
+        Main.loadIcon(this);
     }
 
     /**
      * Constructor.
-     * @param level 
+     *
+     * @param level
      */
+    @SuppressWarnings("LeakingThisInConstructor")
     private LogConsole(Level level) {
+        Main.loadIcon(this);
         JMenuBar main_menu = new JMenuBar();
         this.setJMenuBar(main_menu);
 
