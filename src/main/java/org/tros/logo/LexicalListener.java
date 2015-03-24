@@ -113,7 +113,7 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer{
 
     @Override
     public void enterProg(logoParser.ProgContext ctx) {
-        stack.push(new LogoBlock(ctx));
+        stack.push(new LogoProg(ctx));
     }
 
     @Override

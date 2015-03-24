@@ -24,15 +24,17 @@ import org.tros.torgo.Scope;
 
 /**
  * Supports if statements/expressions.
+ *
  * @author matta
  */
 class LogoIf extends LogoBlock {
 
     private static final Logger logger = Logger.getLogger(LogoIf.class.getName());
-    
+
     /**
      * Constructor
-     * @param ctx 
+     *
+     * @param ctx
      */
     protected LogoIf(ParserRuleContext ctx) {
         super(ctx);
@@ -40,9 +42,10 @@ class LogoIf extends LogoBlock {
 
     /**
      * Process the if statement.
+     *
      * @param scope
      * @param canvas
-     * @return 
+     * @return
      */
     @Override
     public ReturnValue process(Scope scope) {

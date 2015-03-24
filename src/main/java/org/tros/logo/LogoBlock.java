@@ -36,7 +36,7 @@ import org.tros.utils.IHaltMonitor;
  *
  * @author matta
  */
-class LogoBlock implements CodeBlock {
+abstract class LogoBlock implements CodeBlock {
 
     protected final ParserRuleContext ctx;
     private final ArrayList<CodeBlock> commands = new ArrayList<>();
@@ -69,7 +69,7 @@ class LogoBlock implements CodeBlock {
     protected LogoBlock(ParserRuleContext ctx) {
         this.ctx = ctx;
     }
-    
+
     /**
      * Add a command to the list.
      *
@@ -124,10 +124,6 @@ class LogoBlock implements CodeBlock {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
 
-        scope.push(this);
-        listeners.stream().forEach((l) -> {
-            l.currStatement(this, scope);
-        });
         commands.stream().forEach((lc) -> {
             if (success.get() && !stop.get()) {
                 ReturnValue pr = lc.process(scope);
@@ -138,7 +134,7 @@ class LogoBlock implements CodeBlock {
                 }
             }
         });
-        scope.pop();
+
         ReturnValue.ProcessResult res = success.get() ? (stop.get() ? ReturnValue.ProcessResult.RETURN : ReturnValue.ProcessResult.SUCCESS) : ReturnValue.ProcessResult.HALT;
         return new ReturnValue(Type.NULL, null, res);
     }
@@ -189,7 +185,8 @@ class LogoBlock implements CodeBlock {
 
     /**
      * Called when the halt monitor is halted.
-     * @param monitor 
+     *
+     * @param monitor
      */
     @Override
     public void halted(IHaltMonitor monitor) {
@@ -203,8 +200,9 @@ class LogoBlock implements CodeBlock {
 
     /**
      * Check for a variable in the block.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public boolean hasVariable(String name) {
@@ -213,8 +211,9 @@ class LogoBlock implements CodeBlock {
 
     /**
      * Set a variable in the block.
+     *
      * @param name
-     * @param value 
+     * @param value
      */
     @Override
     public void setVariable(String name, InterpreterValue value) {
@@ -223,8 +222,9 @@ class LogoBlock implements CodeBlock {
 
     /**
      * Get the value of a variable in the block.
+     *
      * @param name
-     * @return 
+     * @return
      */
     @Override
     public InterpreterValue getVariable(String name) {
@@ -233,7 +233,8 @@ class LogoBlock implements CodeBlock {
 
     /**
      * Get the lexical parent.
-     * @return 
+     *
+     * @return
      */
     @Override
     public CodeBlock getParent() {
@@ -242,7 +243,8 @@ class LogoBlock implements CodeBlock {
 
     /**
      * Set the lexical parent.
-     * @param value 
+     *
+     * @param value
      */
     protected void setParent(CodeBlock value) {
         this.parent = value;
@@ -250,7 +252,8 @@ class LogoBlock implements CodeBlock {
 
     /**
      * Get the type.
-     * @return 
+     *
+     * @return
      */
     @Override
     public Type getType() {
