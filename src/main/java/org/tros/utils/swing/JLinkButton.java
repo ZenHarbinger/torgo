@@ -3,96 +3,121 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils.swing;
 
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.net.URL;
-
 import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalButtonUI;
 
-public class JLinkButton extends JButton {
+/**
+ * Adds a button which acts as a hyper-link.
+ *
+ * @author matta
+ */
+public final class JLinkButton extends JButton {
 
-    private static final String uiString = "LinkButtonUI";
+    public enum LinkBehavior {
 
-    public static final int ALWAYS_UNDERLINE = 0;
-
-    public static final int HOVER_UNDERLINE = 1;
-
-    public static final int NEVER_UNDERLINE = 2;
-
-    public static final int SYSTEM_DEFAULT = 3;
-
-    private int linkBehavior;
-
-    private Color linkColor;
-
-    private Color colorPressed;
-
-    private Color visitedLinkColor;
-
-    private Color disabledLinkColor;
-
-    private URL buttonURL;
-
-    private Action defaultAction;
-
-    private boolean isLinkVisited;
-
-    public static void main(String[] a) {
-        JFrame f = new JFrame();
-        f.getContentPane().setLayout(new GridLayout(0, 2));
-        f.getContentPane().add(new JLinkButton("www.java2s.com"));
-        f.getContentPane().add(new JLinkButton("www.java2s.com/ExampleCode/CatalogExampleCode.htm"));
-        f.setSize(600, 200);
-        f.setVisible(true);
+        ALWAYS_UNDERLINE,
+        HOVER_UNDERLINE,
+        NEVER_UNDERLINE,
+        SYSTEM_DEFAULT
     }
 
+    private LinkBehavior linkBehavior;
+    private Color linkColor;
+    private Color colorPressed;
+    private Color visitedLinkColor;
+    private Color disabledLinkColor;
+    private URL buttonURL;
+    private Action defaultAction;
+    private boolean isLinkVisited;
+
+    /**
+     * Default Constructor.
+     */
     public JLinkButton() {
         this(null, null, null);
     }
 
+    /**
+     * Constructor with action.
+     *
+     * @param action
+     */
     public JLinkButton(Action action) {
         this();
         setAction(action);
     }
 
+    /**
+     * Constructor with icon.
+     *
+     * @param icon
+     */
     public JLinkButton(Icon icon) {
         this(null, icon, null);
     }
 
+    /**
+     * Constructor with text.
+     *
+     * @param s
+     */
     public JLinkButton(String s) {
         this(s, null, null);
     }
 
+    /**
+     * Constructor with URL.
+     *
+     * @param url
+     */
     public JLinkButton(URL url) {
         this(null, null, url);
     }
 
+    /**
+     * Constructor with text and url.
+     *
+     * @param s
+     * @param url
+     */
     public JLinkButton(String s, URL url) {
         this(s, null, url);
     }
 
+    /**
+     * Constructor with icon and url.
+     *
+     * @param icon
+     * @param url
+     */
     public JLinkButton(Icon icon, URL url) {
         this(null, icon, url);
     }
 
+    /**
+     * Constructor with text, icon, and url.
+     *
+     * @param text
+     * @param icon
+     * @param url
+     */
     public JLinkButton(String text, Icon icon, URL url) {
         super(text, icon);
-        linkBehavior = SYSTEM_DEFAULT;
+        linkBehavior = LinkBehavior.SYSTEM_DEFAULT;
         linkColor = Color.blue;
         colorPressed = Color.red;
         visitedLinkColor = new Color(128, 0, 128);
@@ -112,10 +137,6 @@ public class JLinkButton extends JButton {
         setUI(BasicLinkButtonUI.createUI(this));
     }
 
-    private void setDefault() {
-        UIManager.getDefaults().put("LinkButtonUI", "BasicLinkButtonUI");
-    }
-
     @Override
     public String getUIClassID() {
         return "LinkButtonUI";
@@ -129,24 +150,14 @@ public class JLinkButton extends JButton {
         setToolTipText(tip);
     }
 
-    public void setLinkBehavior(int bnew) {
-        checkLinkBehaviour(bnew);
-        int old = linkBehavior;
+    public void setLinkBehavior(LinkBehavior bnew) {
+        LinkBehavior old = linkBehavior;
         linkBehavior = bnew;
         firePropertyChange("linkBehavior", old, bnew);
         repaint();
     }
 
-    private void checkLinkBehaviour(int beha) {
-        if (beha != ALWAYS_UNDERLINE && beha != HOVER_UNDERLINE
-                && beha != NEVER_UNDERLINE && beha != SYSTEM_DEFAULT) {
-            throw new IllegalArgumentException("Not a legal LinkBehavior");
-        } else {
-            return;
-        }
-    }
-
-    public int getLinkBehavior() {
+    public LinkBehavior getLinkBehavior() {
         return linkBehavior;
     }
 
@@ -233,15 +244,21 @@ public class JLinkButton extends JButton {
     @Override
     protected String paramString() {
         String str;
-        if (linkBehavior == ALWAYS_UNDERLINE) {
-            str = "ALWAYS_UNDERLINE";
-        } else if (linkBehavior == HOVER_UNDERLINE) {
-            str = "HOVER_UNDERLINE";
-        } else if (linkBehavior == NEVER_UNDERLINE) {
-            str = "NEVER_UNDERLINE";
-        } else {
-            str = "SYSTEM_DEFAULT";
+        switch (linkBehavior) {
+            case ALWAYS_UNDERLINE:
+                str = "ALWAYS_UNDERLINE";
+                break;
+            case HOVER_UNDERLINE:
+                str = "HOVER_UNDERLINE";
+                break;
+            case NEVER_UNDERLINE:
+                str = "NEVER_UNDERLINE";
+                break;
+            default:
+                str = "SYSTEM_DEFAULT";
+                break;
         }
+
         String colorStr = linkColor == null ? "" : linkColor.toString();
         String colorPressStr = colorPressed == null ? "" : colorPressed
                 .toString();
@@ -291,13 +308,13 @@ class BasicLinkButtonUI extends MetalButtonUI {
             }
         }
         super.paintText(g, com, rect, s);
-        int behaviour = bn.getLinkBehavior();
+        JLinkButton.LinkBehavior behaviour = bn.getLinkBehavior();
         boolean drawLine = false;
-        if (behaviour == JLinkButton.HOVER_UNDERLINE) {
+        if (behaviour == JLinkButton.LinkBehavior.HOVER_UNDERLINE) {
             if (bnModel.isRollover()) {
                 drawLine = true;
             }
-        } else if (behaviour == JLinkButton.ALWAYS_UNDERLINE || behaviour == JLinkButton.SYSTEM_DEFAULT) {
+        } else if (behaviour == JLinkButton.LinkBehavior.ALWAYS_UNDERLINE || behaviour == JLinkButton.LinkBehavior.SYSTEM_DEFAULT) {
             drawLine = true;
         }
         if (!drawLine) {
