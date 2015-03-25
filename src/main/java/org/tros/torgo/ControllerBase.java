@@ -17,6 +17,7 @@ package org.tros.torgo;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
@@ -31,11 +32,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
+import org.tros.torgo.swing.AboutWindow;
 import org.tros.torgo.swing.Localization;
 import org.tros.torgo.swing.TorgoWindow;
 import org.tros.utils.AutoResetEvent;
@@ -147,6 +151,14 @@ public abstract class ControllerBase implements Controller {
         JMenuBar mb = createMenuBar();
         if (mb != null) {
             window.setJMenuBar(mb);
+            JMenu helpMenu = new JMenu("Help");
+            JMenuItem aboutMenu = new JMenuItem("About Torgo");
+            aboutMenu.addActionListener((ActionEvent ae) -> {
+                AboutWindow aw = new AboutWindow();
+                aw.setVisible(true);
+            });
+            helpMenu.add(aboutMenu);
+            mb.add(helpMenu);
         }
 
         window.addWindowListener(new WindowListener() {
@@ -402,7 +414,7 @@ public abstract class ControllerBase implements Controller {
         interp = createInterpreterThread(source);
         step.reset();
         
-//        StackView sv = new StackView(this);
+//        StackView sv = new StackView(this, interp);
 //        interp.addInterpreterListener(sv);
 
         interp.addInterpreterListener(new InterpreterListener() {

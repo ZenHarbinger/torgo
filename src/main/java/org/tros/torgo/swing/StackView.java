@@ -17,6 +17,8 @@ package org.tros.torgo.swing;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.tros.torgo.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.InterpreterListener;
@@ -34,6 +36,7 @@ public class StackView extends TorgoWindow implements InterpreterListener {
 
     private boolean isFinished;
     private final InterpreterThread interpreter;
+    private static final Logger logger = Logger.getLogger(StackView.class.getName());
 
     /**
      * Constructor.
@@ -44,19 +47,25 @@ public class StackView extends TorgoWindow implements InterpreterListener {
     public StackView(Controller controller, InterpreterThread interpreter) {
         super(controller);
         this.interpreter = interpreter;
+        this.setTitle(controller.getLang() + " - Stack View");
 
         this.interpreter.addScopeListener(new ScopeListener() {
 
             @Override
             public void scopePopped(Scope scope, CodeBlock block) {
+                logger.log(Level.FINEST, "Scope Popped: {0}", new Object[]{block.getClass().getName()});
             }
 
             @Override
             public void scopePushed(Scope scope, CodeBlock block) {
+                logger.log(Level.FINEST, "Scope Pushed: {0}", new Object[]{block.getClass().getName()});
             }
 
             @Override
             public void variableSet(Scope scope, String name, InterpreterValue value) {
+                if (!name.contains("%")) {
+                    logger.log(Level.FINEST, "Variable Set: {0} -> {1}", new Object[]{name, value.toString()});
+                }
             }
         });
 
