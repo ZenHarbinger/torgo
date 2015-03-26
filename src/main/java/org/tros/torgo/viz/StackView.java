@@ -13,41 +13,95 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.swing;
+package org.tros.torgo.viz;
 
+import org.tros.utils.swing.NamedWindow;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 import org.tros.torgo.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.InterpreterListener;
 import org.tros.torgo.InterpreterThread;
 import org.tros.torgo.InterpreterValue;
+import org.tros.torgo.InterpreterVisualization;
+import org.tros.torgo.Main;
 import org.tros.torgo.Scope;
 import org.tros.torgo.ScopeListener;
 
 /**
  * Allows viewing a call stack w/ variables as code is executed.
+ * (Still under development.)
  *
  * @author matta
  */
-public class StackView extends TorgoWindow implements InterpreterListener {
+public class StackView implements InterpreterVisualization {
+
+    public static final int DEFAULT_WIDTH = 640;
+    public static final int DEFAULT_HEIGHT = 480;
 
     private boolean isFinished;
-    private final InterpreterThread interpreter;
+    private InterpreterThread interpreter;
     private static final Logger logger = Logger.getLogger(StackView.class.getName());
+    private NamedWindow window;
 
     /**
      * Constructor.
      *
-     * @param controller
-     * @param interpreter
      */
-    public StackView(Controller controller, InterpreterThread interpreter) {
-        super(controller);
+    public StackView() {
+    }
+
+    @Override
+    public InterpreterVisualization create() {
+        return new StackView();
+    }
+
+    @Override
+    public String getName() {
+        return StackView.class.getSimpleName();
+    }
+
+    @Override
+    public void watch(String name, Controller controller, InterpreterThread interpreter) {
         this.interpreter = interpreter;
-        this.setTitle(controller.getLang() + " - Stack View");
+        this.interpreter.addInterpreterListener(new InterpreterListener() {
+
+            @Override
+            public void started() {
+                window.setVisible(true);
+            }
+
+            @Override
+            public void finished() {
+                isFinished = true;
+            }
+
+            @Override
+            public void error(Exception e) {
+            }
+
+            @Override
+            public void message(String msg) {
+            }
+
+            /**
+             * This is where the bulk of the code will go.
+             *
+             * @param block
+             * @param scope
+             */
+            @Override
+            public void currStatement(CodeBlock block, Scope scope) {
+                logger.log(Level.FINEST, "Curr Statement: {0}", new Object[]{block.getParserRuleContext().getClass().getName()});
+            }
+        });
+
+        window = new NamedWindow(name + "-" + this.getClass().getSimpleName(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        window.setTitle(controller.getLang() + " - Stack View");
+        Main.loadIcon(window);
 
         this.interpreter.addScopeListener(new ScopeListener() {
 
@@ -69,10 +123,10 @@ public class StackView extends TorgoWindow implements InterpreterListener {
             }
         });
 
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
+        window.setDefaultCloseOperation(HIDE_ON_CLOSE);
         isFinished = false;
 
-        addWindowListener(new WindowListener() {
+        window.addWindowListener(new WindowListener() {
 
             @Override
             public void windowOpened(WindowEvent we) {
@@ -81,7 +135,7 @@ public class StackView extends TorgoWindow implements InterpreterListener {
             @Override
             public void windowClosing(WindowEvent we) {
                 if (isFinished) {
-                    dispose();
+                    window.dispose();
                 }
             }
 
@@ -105,33 +159,5 @@ public class StackView extends TorgoWindow implements InterpreterListener {
             public void windowDeactivated(WindowEvent we) {
             }
         });
-    }
-
-    @Override
-    public void started() {
-        this.setVisible(true);
-    }
-
-    @Override
-    public void finished() {
-        isFinished = true;
-    }
-
-    @Override
-    public void error(Exception e) {
-    }
-
-    @Override
-    public void message(String msg) {
-    }
-
-    /**
-     * This is where the bulk of the code will go.
-     *
-     * @param block
-     * @param scope
-     */
-    @Override
-    public void currStatement(CodeBlock block, Scope scope) {
     }
 }

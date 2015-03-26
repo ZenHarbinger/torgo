@@ -29,27 +29,42 @@ import java.util.logging.Logger;
  */
 public final class TorgoToolkit {
 
-    private static final HashMap<String, Controller> map;
-    private static final ServiceLoader<Controller> loader;
+    private static final HashMap<String, Controller> controllersMap;
+    private static final ServiceLoader<Controller> controllers;
+
+    private static final HashMap<String, InterpreterVisualization> vizMap;
+    private static final ServiceLoader<InterpreterVisualization> vizualizers;
+
     private static final Logger logger = Logger.getLogger(TorgoToolkit.class.getName());
 
     /**
      * Static constructor.
      */
     static {
-        map = new HashMap<>();
-        loader = ServiceLoader.load(Controller.class);
+        controllersMap = new HashMap<>();
+        controllers = ServiceLoader.load(Controller.class);
         try {
-            Iterator<Controller> controllers = loader.iterator();
-            while (controllers.hasNext()) {
-                Controller c = controllers.next();
+            Iterator<Controller> controllers_it = controllers.iterator();
+            while (controllers_it.hasNext()) {
+                Controller c = controllers_it.next();
                 logger.log(Level.INFO, "Loaded: {0}", c.getClass().getName());
-                map.put(c.getLang(), c);
+                controllersMap.put(c.getLang(), c);
             }
         } catch (ServiceConfigurationError serviceError) {
             logger.log(Level.WARNING, null, serviceError);
         }
-
+        vizMap = new HashMap<>();
+        vizualizers = ServiceLoader.load(InterpreterVisualization.class);
+        try {
+            Iterator<InterpreterVisualization> controllers_it = vizualizers.iterator();
+            while (controllers_it.hasNext()) {
+                InterpreterVisualization c = controllers_it.next();
+                logger.log(Level.INFO, "Loaded: {0}", c.getClass().getName());
+                vizMap.put(c.getName(), c);
+            }
+        } catch (ServiceConfigurationError serviceError) {
+            logger.log(Level.WARNING, null, serviceError);
+        }
     }
 
     /**
@@ -66,7 +81,7 @@ public final class TorgoToolkit {
      * @return
      */
     public static Controller getController(String name) {
-        return map.get(name);
+        return controllersMap.get(name);
     }
 
     /**
@@ -75,6 +90,25 @@ public final class TorgoToolkit {
      * @return
      */
     public static Set<String> getToolkits() {
-        return map.keySet();
+        return controllersMap.keySet();
+    }
+
+    /**
+     * Get the name of all available visualizers.
+     *
+     * @return
+     */
+    public static Set<String> getVisualizers() {
+        return vizMap.keySet();
+    }
+
+    /**
+     * Get a desired visualizer.
+     *
+     * @param name
+     * @return
+     */
+    public static InterpreterVisualization getVisualization(String name) {
+        return vizMap.get(name);
     }
 }

@@ -10,7 +10,6 @@ nb-configuration.xml
 target/
 debian/
 
-nb*.xml
 *.class
 
 # Mobile Tools for Java (J2ME)

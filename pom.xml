@@ -67,6 +67,7 @@
                 <configuration>
                     <services>
                         <param>org.tros.torgo.Controller</param>
+                        <!--<param>org.tros.torgo.InterpreterVisualization</param>-->
                     </services>
                 </configuration>
                 <executions>
