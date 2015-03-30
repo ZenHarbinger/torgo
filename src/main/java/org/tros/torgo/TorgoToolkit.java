@@ -44,11 +44,9 @@ public final class TorgoToolkit {
         controllersMap = new HashMap<>();
         controllers = ServiceLoader.load(Controller.class);
         try {
-            Iterator<Controller> controllers_it = controllers.iterator();
-            while (controllers_it.hasNext()) {
-                Controller c = controllers_it.next();
-                logger.log(Level.INFO, "Loaded: {0}", c.getClass().getName());
-                controllersMap.put(c.getLang(), c);
+            for(Controller controller : controllers) {
+                logger.log(Level.INFO, "Loaded: {0}", controller.getClass().getName());
+                controllersMap.put(controller.getLang(), controller);
             }
         } catch (ServiceConfigurationError serviceError) {
             logger.log(Level.WARNING, null, serviceError);
@@ -57,10 +55,9 @@ public final class TorgoToolkit {
         vizualizers = ServiceLoader.load(InterpreterVisualization.class);
         try {
             Iterator<InterpreterVisualization> controllers_it = vizualizers.iterator();
-            while (controllers_it.hasNext()) {
-                InterpreterVisualization c = controllers_it.next();
-                logger.log(Level.INFO, "Loaded: {0}", c.getClass().getName());
-                vizMap.put(c.getName(), c);
+            for(InterpreterVisualization viz : vizualizers) {
+                logger.log(Level.INFO, "Loaded: {0}", viz.getClass().getName());
+                vizMap.put(viz.getName(), viz);
             }
         } catch (ServiceConfigurationError serviceError) {
             logger.log(Level.WARNING, null, serviceError);
