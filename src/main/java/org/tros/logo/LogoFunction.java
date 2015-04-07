@@ -72,9 +72,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
             scope.setNew(key, params.get(key));
         });
 
-        listeners.stream().forEach((l) -> {
-            l.currStatement(this, scope);
-        });
+        listeners.fire().currStatement(this, scope);
 
         ReturnValue ret = null;
         try {

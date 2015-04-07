@@ -21,9 +21,26 @@ package org.tros.torgo;
  */
 public interface InterpreterVisualization {
 
+    /**
+     * Do the visualization.
+     * 
+     * @param name
+     * @param controller
+     * @param interpreter 
+     */
     void watch(String name, Controller controller, InterpreterThread interpreter);
 
+    /**
+     * Abstract Factory Method.
+     * 
+     * @return 
+     */
     InterpreterVisualization create();
 
+    /**
+     * The name of the visualization.
+     * 
+     * @return 
+     */
     String getName();
 }

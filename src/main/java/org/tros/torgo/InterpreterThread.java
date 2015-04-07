@@ -15,9 +15,9 @@
  */
 package org.tros.torgo;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.utils.HaltMonitor;
 import org.tros.utils.logging.LogConsole;
 
@@ -31,7 +31,8 @@ public abstract class InterpreterThread extends Thread {
     private final HaltMonitor monitor;
     private CodeBlock script;
     private final String source;
-    private final ArrayList<InterpreterListener> listeners = new ArrayList<>();
+    private final EventListenerSupport<InterpreterListener> listeners
+            = EventListenerSupport.create(InterpreterListener.class);
     protected final Scope scope;
 
     /**
@@ -68,9 +69,7 @@ public abstract class InterpreterThread extends Thread {
      * @param listener
      */
     public final void addInterpreterListener(InterpreterListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
-        }
+        listeners.addListener(listener);
     }
 
     /**
@@ -79,9 +78,7 @@ public abstract class InterpreterThread extends Thread {
      * @param listener
      */
     public final void removeInterpreterListener(InterpreterListener listener) {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        }
+        listeners.removeListener(listener);
     }
 
     /**
@@ -98,9 +95,7 @@ public abstract class InterpreterThread extends Thread {
      */
     @Override
     public final void run() {
-        listeners.stream().forEach((l) -> {
-            l.started();
-        });
+        listeners.fire().started();
         try {
             //walk the parse tree and build the execution map
             LexicalAnalyzer l = getLexicalAnalysis(source);
@@ -132,9 +127,7 @@ public abstract class InterpreterThread extends Thread {
                  */
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
-                    listeners.stream().forEach((l) -> {
-                        l.currStatement(block, scope);
-                    });
+                    listeners.fire().currStatement(block, scope);
                 }
             };
             l.getCodeBlocks().stream().forEach((cb) -> {
@@ -144,16 +137,12 @@ public abstract class InterpreterThread extends Thread {
             //interpret the script
             process(script);
         } catch (Exception ex) {
-            listeners.stream().forEach((l) -> {
-                l.error(ex);
-                Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
-            });
+            listeners.fire().error(ex);
+            Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
             Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
             LogConsole.CONSOLE.setVisible(true);
         }
-        listeners.stream().forEach((l) -> {
-            l.finished();
-        });
+        listeners.fire().finished();
     }
 
     /**

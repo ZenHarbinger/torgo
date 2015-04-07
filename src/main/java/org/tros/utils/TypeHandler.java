@@ -10,6 +10,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 /**
  *
@@ -17,7 +19,7 @@ import java.util.logging.Logger;
  */
 public final class TypeHandler {
 
-    public static final java.text.SimpleDateFormat DEFAULT_DATE_FORMAT = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    public static final FastDateFormat DEFAULT_DATE_FORMAT = DateFormatUtils.ISO_DATETIME_FORMAT;
 
     private static final java.util.Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
     private static final java.util.HashMap<Class<?>, Class<?>> WRAPPER_LOOKUP = getWrapperTypes2();

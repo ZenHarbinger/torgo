@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.torgo.CodeBlock;
 import org.tros.torgo.CodeFunction;
 import org.tros.torgo.InterpreterListener;
@@ -41,7 +42,8 @@ abstract class LogoBlock implements CodeBlock {
     protected final ParserRuleContext ctx;
     private final ArrayList<CodeBlock> commands = new ArrayList<>();
     private final HashMap<String, CodeFunction> functions = new HashMap<>();
-    protected final ArrayList<InterpreterListener> listeners = new ArrayList<>();
+    protected final EventListenerSupport<InterpreterListener> listeners
+            = EventListenerSupport.create(InterpreterListener.class);
     private final AtomicBoolean halted = new AtomicBoolean(false);
 
     private final HashMap<String, InterpreterValue> variables = new HashMap<>();
@@ -49,16 +51,12 @@ abstract class LogoBlock implements CodeBlock {
 
     @Override
     public void addInterpreterListener(InterpreterListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
-        }
+        listeners.addListener(listener);
     }
 
     @Override
     public void removeInterpreterListener(InterpreterListener listener) {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        }
+        listeners.removeListener(listener);
     }
 
     /**

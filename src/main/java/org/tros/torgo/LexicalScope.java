@@ -60,7 +60,7 @@ public class LexicalScope extends ScopeImpl implements Scope {
     }
 
     /**
-     * Pop the current code block
+     * Pop the current code block.
      */
     @Override
     public CodeBlock pop() {
@@ -70,7 +70,7 @@ public class LexicalScope extends ScopeImpl implements Scope {
     }
 
     /**
-     * Push a new code block
+     * Push a new code block.
      *
      * @param block
      */

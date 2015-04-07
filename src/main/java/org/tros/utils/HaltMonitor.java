@@ -3,19 +3,22 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils;
 
 import java.util.ArrayList;
+import org.apache.commons.lang3.event.EventListenerSupport;
 
 /**
  * Can be used to monitor when a thread is halted/exits
+ *
  * @author matta
  */
 public final class HaltMonitor implements IHaltMonitor {
 
     private boolean _halted;
-    private final ArrayList<IHaltListener> _listeners;
+    private final EventListenerSupport<IHaltListener> _listeners
+            = EventListenerSupport.create(IHaltListener.class);
     private String _name;
 
     /**
@@ -23,12 +26,12 @@ public final class HaltMonitor implements IHaltMonitor {
      */
     public HaltMonitor() {
         _halted = false;
-        _listeners = new ArrayList<>();
         _name = "";
     }
 
     /**
      * Get the name of the monitor.
+     *
      * @return the name of the monitor.
      */
     @Override
@@ -38,6 +41,7 @@ public final class HaltMonitor implements IHaltMonitor {
 
     /**
      * Set the name of the monitor.
+     *
      * @param value the name of the monitor.
      */
     public void setName(final String value) {
@@ -46,26 +50,25 @@ public final class HaltMonitor implements IHaltMonitor {
 
     /**
      * Add a new listener.
+     *
      * @param listener The listener to add.
      */
     public synchronized void addListener(final IHaltListener listener) {
-        if (!_halted && !_listeners.contains(listener)) {
-            _listeners.add(listener);
-        }
+        _listeners.addListener(listener);
     }
 
     /**
      * Remove a listener.
+     *
      * @param listener The listener to remove.
      */
     public synchronized void removeListener(final IHaltListener listener) {
-        if (!_halted && _listeners.contains(listener)) {
-            _listeners.remove(listener);
-        }
+        _listeners.removeListener(listener);
     }
 
     /**
      * Is the thread halted?
+     *
      * @return Is the thread halted?
      */
     @Override
@@ -78,10 +81,9 @@ public final class HaltMonitor implements IHaltMonitor {
      */
     public synchronized void halt() {
         _halted = true;
-        ArrayList<IHaltListener> list = new ArrayList<>(_listeners);
-        _listeners.clear();
-        list.stream().forEach((listener) -> {
-            listener.halted(this);
-        });
+        _listeners.fire().halted(this);
+        for(IHaltListener l : _listeners.getListeners()) {
+            _listeners.removeListener(l);
+        }
     }
 }

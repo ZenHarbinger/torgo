@@ -32,6 +32,11 @@ public interface CodeFunction extends CodeBlock {
      */
     String getFunctionName();
 
+    /**
+     * Run function w/o any parameters
+     * @param scope
+     * @return 
+     */
     @Override
     default ReturnValue process(Scope scope) {
         return process(scope, new HashMap<>());

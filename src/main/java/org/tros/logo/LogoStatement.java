@@ -85,9 +85,7 @@ class LogoStatement extends LogoBlock {
         //be doing a variable creation (localmake) and so it is possible
         //that we would push onto the stack, create, and the pop the new
         //value right off of the stack again.
-        listeners.stream().forEach((l) -> {
-            l.currStatement(this, scope);
-        });
+        listeners.fire().currStatement(this, scope);
 
         scope.set(TURTLE_X_VAR, new InterpreterValue(Type.NUMBER, canvas.getTurtleX()));
         scope.set(TURTLE_Y_VAR, new InterpreterValue(Type.NUMBER, canvas.getTurtleY()));

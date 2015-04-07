@@ -65,9 +65,7 @@ class LogoFor extends LogoBlock {
     public ReturnValue process(Scope scope) {
         logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
         scope.push(this);
-        listeners.stream().forEach((l) -> {
-            l.currStatement(this, scope);
-        });
+        listeners.fire().currStatement(this, scope);
 
         logoParser.ForeContext fore = (logoParser.ForeContext) ctx;
         String variable = fore.name().STRING().getText();

@@ -16,6 +16,7 @@
 package org.tros.torgo;
 
 import java.util.ArrayList;
+import org.apache.commons.lang3.event.EventListenerSupport;
 
 /**
  * Basic scope implementation.
@@ -25,7 +26,8 @@ import java.util.ArrayList;
 abstract class ScopeImpl implements Scope {
 
     protected final ArrayList<CodeBlock> stack = new ArrayList<>();
-    private final ArrayList<ScopeListener> listeners = new ArrayList<>();
+    private final EventListenerSupport<ScopeListener> listeners
+            = EventListenerSupport.create(ScopeListener.class);
 
     /**
      * Look at the current code block.
@@ -65,10 +67,7 @@ abstract class ScopeImpl implements Scope {
      */
     @Override
     public void addScopeListener(ScopeListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
-        }
-
+        listeners.addListener(listener);
     }
 
     /**
@@ -78,9 +77,7 @@ abstract class ScopeImpl implements Scope {
      */
     @Override
     public void removeScopeListener(ScopeListener listener) {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        }
+        listeners.removeListener(listener);
     }
 
     /**
@@ -89,9 +86,7 @@ abstract class ScopeImpl implements Scope {
      * @param block
      */
     protected final void firePopped(CodeBlock block) {
-        listeners.stream().forEach((l) -> {
-            l.scopePopped(this, block);
-        });
+        listeners.fire().scopePopped(this, block);
     }
 
     /**
@@ -100,9 +95,7 @@ abstract class ScopeImpl implements Scope {
      * @param block
      */
     protected final void firePushed(CodeBlock block) {
-        listeners.stream().forEach((l) -> {
-            l.scopePushed(this, block);
-        });
+        listeners.fire().scopePushed(this, block);
     }
 
     /**
@@ -111,8 +104,6 @@ abstract class ScopeImpl implements Scope {
      * @param block
      */
     protected final void fireVariableSet(String name, InterpreterValue value) {
-        listeners.stream().forEach((l) -> {
-            l.variableSet(this, name, value);
-        });
+        listeners.fire().variableSet(this, name, value);
     }
 }

@@ -40,6 +40,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.torgo.swing.AboutWindow;
 import org.tros.torgo.swing.Localization;
 import org.tros.torgo.swing.TorgoMenuBar;
@@ -63,7 +64,8 @@ public abstract class ControllerBase implements Controller {
 
     private final ArrayList<JCheckBoxMenuItem> viz = new ArrayList<>();
 
-    protected final ArrayList<InterpreterListener> listeners = new ArrayList<>();
+    protected final EventListenerSupport<InterpreterListener> listeners
+            = EventListenerSupport.create(InterpreterListener.class);
 
     /**
      * Add a listener
@@ -72,9 +74,7 @@ public abstract class ControllerBase implements Controller {
      */
     @Override
     public void addInterpreterListener(InterpreterListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
-        }
+        listeners.addListener(listener);
     }
 
     /**
@@ -84,9 +84,7 @@ public abstract class ControllerBase implements Controller {
      */
     @Override
     public void removeInterpreterListener(InterpreterListener listener) {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        }
+        listeners.removeListener(listener);
     }
 
     /**
@@ -387,10 +385,10 @@ public abstract class ControllerBase implements Controller {
             visualization.watch(this.getLang(), this, interp);
         });
 
-        listeners.stream().forEach((l) -> {
+        for(InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);
-        });
-        
+        }
+
         interp.addInterpreterListener(new InterpreterListener() {
 
             @Override
@@ -426,15 +424,15 @@ public abstract class ControllerBase implements Controller {
         String source = torgoPanel.getSource();
         interp = createInterpreterThread(source);
         step.reset();
-        
+
         viz.stream().filter((item) -> (item.getState())).map((item) -> TorgoToolkit.getVisualization(item.getText()).create()).forEach((visualization) -> {
             visualization.watch(this.getLang(), this, interp);
         });
 
-        listeners.stream().forEach((l) -> {
+        for(InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);
-        });
-        
+        }
+
         interp.addInterpreterListener(new InterpreterListener() {
 
             @Override
