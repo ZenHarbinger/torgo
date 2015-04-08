@@ -15,8 +15,8 @@ import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.MessageFormat;
+import org.apache.commons.logging.LogFactory;
 import javax.swing.ImageIcon;
 
 /**
@@ -38,7 +38,7 @@ public final class ImageUtils {
         if (imgURL != null) {
             return new ImageIcon(imgURL, description);
         } else {
-            Logger.getLogger(ImageUtils.class.getName()).log(Level.WARNING, "Couldn''t find file: {0}", path);
+            LogFactory.getLog(ImageUtils.class).warn(MessageFormat.format("Couldn''t find file: {0}", path));
             return null;
         }
     }

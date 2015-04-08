@@ -15,10 +15,11 @@
  */
 package org.tros.logo;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.CodeFunction;
@@ -39,7 +40,7 @@ class LogoStatement extends LogoBlock {
     public static final String TURTLE_Y_VAR = "1_turtley%";
     public static final String TURTLE_ANGLE_VAR = "1_turtlea%";
 
-    private static final Logger logger = Logger.getLogger(LogoStatement.class.getName());
+    private static final Log logger = LogFactory.getLog(LogoStatement.class);
     private final String command;
     private final LogoCanvas canvas;
 
@@ -79,7 +80,7 @@ class LogoStatement extends LogoBlock {
             return ReturnValue.HALT;
         }
 
-        logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()});
+        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()}));
 
         //we don't do scope.push(this) here because of the chance we will
         //be doing a variable creation (localmake) and so it is possible
@@ -192,7 +193,7 @@ class LogoStatement extends LogoBlock {
                         canvas.fontStyle(0);
                         break;
                     default:
-                        logger.log(Level.WARNING, "Unknown {0}: {1}", new Object[]{"fontstyle", styleString});
+                        logger.warn(MessageFormat.format("Unknown {0}: {1}", new Object[]{"fontstyle", styleString}));
                         break;
                 }
                 break;
@@ -265,7 +266,7 @@ class LogoStatement extends LogoBlock {
                     //halt interpreting.
                     success = ReturnValue.HALT;
                     canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
-                    logger.log(Level.WARNING, "process(): UNKNOWN -> {0}", new Object[]{command});
+                    logger.warn(MessageFormat.format("process(): UNKNOWN -> {0}", new Object[]{command}));
                 }
                 break;
         }

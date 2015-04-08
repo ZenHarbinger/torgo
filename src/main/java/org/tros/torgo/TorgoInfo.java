@@ -15,7 +15,7 @@
  */
 package org.tros.torgo;
 
-import org.tros.utils.IBuildInfo;
+import org.tros.utils.BuildInfo;
 import org.tros.utils.PropertiesInitializer;
 import java.io.Serializable;
 
@@ -23,7 +23,7 @@ import java.io.Serializable;
  * Stores application info.
  * @author matta
  */
-public class TorgoInfo extends PropertiesInitializer implements IBuildInfo, Serializable {
+public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Serializable {
 
     private String _version;
     private String _build_date;

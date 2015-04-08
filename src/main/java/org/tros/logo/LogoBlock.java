@@ -29,7 +29,7 @@ import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
-import org.tros.utils.IHaltMonitor;
+import org.tros.utils.ImmutableHaltMonitor;
 
 /**
  * Base component of Logo. This is a grouping of commands to run. A LogoBlock
@@ -187,7 +187,7 @@ abstract class LogoBlock implements CodeBlock {
      * @param monitor
      */
     @Override
-    public void halted(IHaltMonitor monitor) {
+    public void halted(ImmutableHaltMonitor monitor) {
         halted.set(monitor.isHalted());
     }
 

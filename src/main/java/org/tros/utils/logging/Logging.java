@@ -3,10 +3,10 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils.logging;
 
-import org.tros.utils.IBuildInfo;
+import org.tros.utils.BuildInfo;
 import static org.tros.utils.PathUtils.getApplicationEtcDirectory;
 import static org.tros.utils.PathUtils.getLogDirectory;
 import java.io.BufferedInputStream;
@@ -18,9 +18,8 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Scanner;
 import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -32,18 +31,18 @@ public final class Logging {
     private Logging() {
     }
 
-    public static void initLogging(IBuildInfo binfo) {
+    public static void initLogging(BuildInfo binfo) {
         initLogging(binfo, Logging.class);
     }
 
-    public static void initLogging(IBuildInfo binfo, Class init) {
+    public static void initLogging(BuildInfo binfo, Class init) {
         try {
             //hack to get this logger to shut up
             Class<?> forName = Class.forName("org.reflections.Reflections");
             Field f = forName.getField("log");
             f.set(null, null);
         } catch (ClassNotFoundException | NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+            LogFactory.getLog(Logging.class).debug("org.reflections.Reflections not in CLASSPATH...");
         }
 
         //make logs directory
@@ -62,13 +61,13 @@ public final class Logging {
                     try (FileOutputStream fis = new FileOutputStream(logProp)) {
                         IOUtils.copy(to_use.openStream(), fis);
                     } catch (FileNotFoundException ex) {
-                        Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                        LogFactory.getLog(Logging.class).warn(null, ex);
                     } catch (IOException ex) {
-                        Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                        LogFactory.getLog(Logging.class).warn(null, ex);
                     }
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                LogFactory.getLog(Logging.class).warn(null, ex);
             }
         }
 
@@ -84,9 +83,9 @@ public final class Logging {
                             && lineFromFile.contains("java.util.logging.FileHandler")) {
                         lookForFile = true;
                     }
-                    if (lookForFile &&
-                            definedLogFile != null &&
-                            lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
+                    if (lookForFile
+                            && definedLogFile != null
+                            && lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
                         lineFromFile = "java.util.logging.FileHandler.pattern = " + definedLogFile;
                     }
                     sb.append(lineFromFile).append(System.getProperty("line.separator"));
@@ -95,19 +94,19 @@ public final class Logging {
                 try (BufferedInputStream fis = new BufferedInputStream(IOUtils.toInputStream(sb.toString(), "UTF-8"))) {
                     LogManager.getLogManager().readConfiguration(fis);
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                    LogFactory.getLog(Logging.class).warn(null, ex);
                 } catch (IOException | SecurityException ex) {
-                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                    LogFactory.getLog(Logging.class).warn(null, ex);
                 }
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                LogFactory.getLog(Logging.class).warn(null, ex);
             }
         }
 
         //Small hack to close SwingComponentHandler which should only be used by a GUI
         //however, if the logging.properties file is already set with this handler, remove
         //it and then the GUI will manually re-add it in the LogConsole constructor.
-        Logger logger = Logger.getLogger("");
+        java.util.logging.Logger logger = java.util.logging.Logger.getLogger("");
         for (Handler h : logger.getHandlers()) {
             if (SwingComponentHandler.class.isAssignableFrom(h.getClass())) {
                 logger.removeHandler(h);

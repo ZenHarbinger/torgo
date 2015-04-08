@@ -10,7 +10,7 @@ package org.tros.utils;
  *
  * @author matta
  */
-public interface IHaltListener {
+public interface HaltListener {
 
-    void halted(IHaltMonitor monitor);
+    void halted(ImmutableHaltMonitor monitor);
 }

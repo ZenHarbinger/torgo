@@ -17,14 +17,14 @@ package org.tros.torgo;
 
 import java.util.Collection;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.tros.utils.IHaltListener;
+import org.tros.utils.HaltListener;
 
 /**
  * Abstract representation of code to execute.
  *
  * @author matta
  */
-public interface CodeBlock extends InterpreterType, IHaltListener {
+public interface CodeBlock extends InterpreterType, HaltListener {
 
     /**
      * Add a command to the list.

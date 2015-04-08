@@ -15,8 +15,9 @@
  */
 package org.tros.logo;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.MessageFormat;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.ReturnValue;
@@ -29,7 +30,7 @@ import org.tros.torgo.Scope;
  */
 class LogoIf extends LogoBlock {
 
-    private static final Logger logger = Logger.getLogger(LogoIf.class.getName());
+    private static final Log logger = LogFactory.getLog(LogoIf.class);
 
     /**
      * Constructor
@@ -49,7 +50,7 @@ class LogoIf extends LogoBlock {
      */
     @Override
     public ReturnValue process(Scope scope) {
-        logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
+        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()}));
         scope.push(this);
         listeners.fire().currStatement(this, scope);
 

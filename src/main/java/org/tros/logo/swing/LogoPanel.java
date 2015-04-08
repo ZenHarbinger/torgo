@@ -32,8 +32,8 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import org.tros.torgo.TorgoScreen;
@@ -83,7 +83,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
                 turtle = ImageIO.read(resource);
             }
         } catch (IOException ex) {
-            Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(LogoPanel.class).fatal(null, ex);
         }
         addComponentListener(new ComponentListener() {
 
@@ -140,7 +140,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
         try {
             Thread.sleep(time);
         } catch (InterruptedException ex) {
-            Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(LogoPanel.class).fatal(null, ex);
         }
     }
 

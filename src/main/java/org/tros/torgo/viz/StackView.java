@@ -18,8 +18,9 @@ package org.tros.torgo.viz;
 import org.tros.utils.swing.NamedWindow;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.MessageFormat;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 import org.tros.torgo.CodeBlock;
 import org.tros.torgo.Controller;
@@ -44,7 +45,7 @@ public class StackView implements InterpreterVisualization {
 
     private boolean isFinished;
     private InterpreterThread interpreter;
-    private static final Logger logger = Logger.getLogger(StackView.class.getName());
+    private static final Log logger = LogFactory.getLog(StackView.class);
     private NamedWindow window;
 
     /**
@@ -95,7 +96,7 @@ public class StackView implements InterpreterVisualization {
              */
             @Override
             public void currStatement(CodeBlock block, Scope scope) {
-                logger.log(Level.FINEST, "Curr Statement: {0}", new Object[]{block.getParserRuleContext().getClass().getName()});
+                logger.trace(MessageFormat.format("Curr Statement: {0}", new Object[]{block.getParserRuleContext().getClass().getName()}));
             }
         });
 
@@ -107,18 +108,18 @@ public class StackView implements InterpreterVisualization {
 
             @Override
             public void scopePopped(Scope scope, CodeBlock block) {
-                logger.log(Level.FINEST, "Scope Popped: {0}", new Object[]{block.getClass().getName()});
+                logger.trace(MessageFormat.format("Scope Popped: {0}", new Object[]{block.getClass().getName()}));
             }
 
             @Override
             public void scopePushed(Scope scope, CodeBlock block) {
-                logger.log(Level.FINEST, "Scope Pushed: {0}", new Object[]{block.getClass().getName()});
+                logger.trace(MessageFormat.format("Scope Pushed: {0}", new Object[]{block.getClass().getName()}));
             }
 
             @Override
             public void variableSet(Scope scope, String name, InterpreterValue value) {
                 if (!name.contains("%")) {
-                    logger.log(Level.FINEST, "Variable Set: {0} -> {1}", new Object[]{name, value.toString()});
+                    logger.trace(MessageFormat.format("Variable Set: {0} -> {1}", new Object[]{name, value.toString()}));
                 }
             }
         });

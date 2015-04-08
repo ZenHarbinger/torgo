@@ -3,7 +3,7 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils;
 
 import java.beans.IntrospectionException;
@@ -16,11 +16,12 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tros.torgo.TorgoInfo;
 
 /**
@@ -32,17 +33,18 @@ public abstract class PropertiesInitializer {
     private static Object mapper;
     private static final Object lock = new Object();
     private static boolean _loading = false;
+    private static final Log logger = LogFactory.getLog(PropertiesInitializer.class);
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     protected PropertiesInitializer() {
         synchronized (lock) {
             this.initializeHelper();
-            
+
             String dir = null;
-            if (!IBuildInfo.class.isAssignableFrom(this.getClass())) {
+            if (!BuildInfo.class.isAssignableFrom(this.getClass())) {
                 dir = PathUtils.getApplicationConfigDirectory(TorgoInfo.Instance);
             }
-            
+
             if (!_loading) {
                 _loading = true;
                 this.initializeFromJson();
@@ -56,7 +58,7 @@ public abstract class PropertiesInitializer {
             Class<?> forName = Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
             mapper = forName.newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.FINER, "com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
+            logger.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
         }
     }
 
@@ -65,7 +67,7 @@ public abstract class PropertiesInitializer {
             Method method = mapper.getClass().getMethod("readValue", InputStream.class, Class.class);
             return method.invoke(mapper, fis, clazz);
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.SEVERE, null, ex);
+            logger.warn(null, ex);
         }
         return null;
     }
@@ -75,7 +77,7 @@ public abstract class PropertiesInitializer {
             Method method = mapper.getClass().getMethod("readValue", String.class, Class.class);
             return method.invoke(mapper, fis, clazz);
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.SEVERE, null, ex);
+            logger.warn(null, ex);
         }
         return null;
     }
@@ -103,9 +105,9 @@ public abstract class PropertiesInitializer {
                     }
                 }
             } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
-                Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.FINEST, null, ex);
+                logger.debug(null, ex);
             } catch (IntrospectionException ex) {
-                Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.SEVERE, null, ex);
+                logger.warn(null, ex);
             }
         }
     }
@@ -158,11 +160,11 @@ public abstract class PropertiesInitializer {
                         }
                     }
                 } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
-                    Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.FINEST, null, ex);
+                    logger.debug(null, ex);
                 }
             });
         } catch (IOException | IntrospectionException ex) {
-            Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.SEVERE, null, ex);
+            logger.warn(null, ex);
         }
     }
 
@@ -194,9 +196,8 @@ public abstract class PropertiesInitializer {
                                     o = readValue(val, p.getPropertyType());
                                 } catch (Exception ex) {
                                     o = null;
-                                    //Logger.getLogger(ConfigBase.class.getName()).log(Level.SEVERE, null, ex);
-                                    Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.WARNING, null, ex);
-                                    Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.WARNING, "PropertyName: {0}", new Object[]{val});
+                                    logger.warn(null, ex);
+                                    logger.warn(MessageFormat.format("PropertyName: {0}", new Object[]{val}));
                                 }
                             }
                             if (o != null) {
@@ -218,9 +219,9 @@ public abstract class PropertiesInitializer {
                     setNameValuePair(key, value);
                 });
             } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
-                Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.FINEST, null, ex);
+                logger.debug(null, ex);
             } catch (IntrospectionException ex) {
-                Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.SEVERE, null, ex);
+                logger.warn(null, ex);
             }
         }
     }
@@ -278,9 +279,8 @@ public abstract class PropertiesInitializer {
                                         o = readValue(val, p.getPropertyType());
                                     } catch (Exception ex) {
                                         o = null;
-                                        //Logger.getLogger(ConfigBase.class.getName()).log(Level.SEVERE, null, ex);
-                                        Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.WARNING, null, ex);
-                                        Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.WARNING, "PropertyName: {0}", new Object[]{val});
+                                        logger.warn(null, ex);
+                                        logger.warn(MessageFormat.format("PropertyName: {0}", new Object[]{val}));
                                     }
                                 }
                                 if (o != null) {
@@ -305,11 +305,11 @@ public abstract class PropertiesInitializer {
                         setNameValuePair(key, value);
                     });
                 } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
-                    Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.warn(null, ex);
                 }
             });
         } catch (IOException | IntrospectionException ex) {
-            Logger.getLogger(PropertiesInitializer.class.getName()).log(Level.SEVERE, null, ex);
+            logger.warn(null, ex);
         }
     }
 

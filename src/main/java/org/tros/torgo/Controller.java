@@ -18,8 +18,7 @@ package org.tros.torgo;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Interface for the main application.
@@ -47,7 +46,7 @@ public interface Controller {
         try {
             openFile(file.toURI().toURL());
         } catch (MalformedURLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(Controller.class).fatal(null, ex);
         }
     }
 

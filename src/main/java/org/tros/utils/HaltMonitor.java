@@ -6,7 +6,6 @@
  */
 package org.tros.utils;
 
-import java.util.ArrayList;
 import org.apache.commons.lang3.event.EventListenerSupport;
 
 /**
@@ -14,11 +13,11 @@ import org.apache.commons.lang3.event.EventListenerSupport;
  *
  * @author matta
  */
-public final class HaltMonitor implements IHaltMonitor {
+public final class HaltMonitor implements ImmutableHaltMonitor {
 
     private boolean _halted;
-    private final EventListenerSupport<IHaltListener> _listeners
-            = EventListenerSupport.create(IHaltListener.class);
+    private final EventListenerSupport<HaltListener> _listeners
+            = EventListenerSupport.create(HaltListener.class);
     private String _name;
 
     /**
@@ -53,7 +52,7 @@ public final class HaltMonitor implements IHaltMonitor {
      *
      * @param listener The listener to add.
      */
-    public synchronized void addListener(final IHaltListener listener) {
+    public synchronized void addHaltListener(final HaltListener listener) {
         _listeners.addListener(listener);
     }
 
@@ -62,7 +61,7 @@ public final class HaltMonitor implements IHaltMonitor {
      *
      * @param listener The listener to remove.
      */
-    public synchronized void removeListener(final IHaltListener listener) {
+    public synchronized void removeHaltListener(final HaltListener listener) {
         _listeners.removeListener(listener);
     }
 
@@ -82,7 +81,7 @@ public final class HaltMonitor implements IHaltMonitor {
     public synchronized void halt() {
         _halted = true;
         _listeners.fire().halted(this);
-        for(IHaltListener l : _listeners.getListeners()) {
+        for(HaltListener l : _listeners.getListeners()) {
             _listeners.removeListener(l);
         }
     }

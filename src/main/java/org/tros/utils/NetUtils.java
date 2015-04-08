@@ -12,8 +12,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -28,7 +28,7 @@ public class NetUtils {
         try {
             _ip = getIP();
         } catch (SocketException ex) {
-            Logger.getLogger(NetUtils.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(NetUtils.class).warn(null, ex);
         }
     }
 

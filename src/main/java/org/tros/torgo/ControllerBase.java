@@ -28,8 +28,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.LogFactory;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -295,7 +294,7 @@ public abstract class ControllerBase implements Controller {
             this.window.setTitle("Torgo - " + split[split.length - 1]);
         } catch (IOException ex) {
             init();
-            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(ControllerBase.class).fatal(null, ex);
         }
     }
 
@@ -355,8 +354,8 @@ public abstract class ControllerBase implements Controller {
 
             out.write(sourceArray);
             window.setTitle("Torgo - " + filename);
-        } catch (Exception e) {
-            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
+        } catch (Exception ex) {
+            LogFactory.getLog(ControllerBase.class).fatal(null, ex);
         }
     }
 
@@ -365,7 +364,7 @@ public abstract class ControllerBase implements Controller {
      */
     @Override
     public void printCanvas() {
-        Logger.getLogger(ControllerBase.class.getName()).log(Level.FINER, "printCanvas() called");
+        LogFactory.getLog(ControllerBase.class).debug("printCanvas() called");
         /*
          PrinterJob printJob = PrinterJob.getPrinterJob();
          PageFormat pageFormat = printJob.defaultPage();
@@ -385,7 +384,7 @@ public abstract class ControllerBase implements Controller {
             visualization.watch(this.getLang(), this, interp);
         });
 
-        for(InterpreterListener l : listeners.getListeners()) {
+        for (InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);
         }
 
@@ -401,7 +400,7 @@ public abstract class ControllerBase implements Controller {
 
             @Override
             public void error(Exception e) {
-                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
+                LogFactory.getLog(ControllerBase.class).fatal(null, e);
             }
 
             @Override
@@ -429,7 +428,7 @@ public abstract class ControllerBase implements Controller {
             visualization.watch(this.getLang(), this, interp);
         });
 
-        for(InterpreterListener l : listeners.getListeners()) {
+        for (InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);
         }
 
@@ -446,7 +445,7 @@ public abstract class ControllerBase implements Controller {
 
             @Override
             public void error(Exception e) {
-                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
+                LogFactory.getLog(ControllerBase.class).fatal(null, e);
             }
 
             @Override
@@ -462,7 +461,7 @@ public abstract class ControllerBase implements Controller {
                     //TODO: this needs to be configurable
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                    LogFactory.getLog(ControllerBase.class).fatal(null, ex);
                 }
                 int line = block.getParserRuleContext().getStart().getLine();
                 int start = block.getParserRuleContext().getStart().getStartIndex();

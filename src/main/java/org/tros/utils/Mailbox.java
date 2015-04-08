@@ -7,8 +7,8 @@
 package org.tros.utils;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Mailbox: A synchronized class for high-performance message handling. Since
@@ -22,10 +22,10 @@ public class Mailbox<T> {
 
     private final java.util.ArrayList<T> m_msgs;
     private boolean m_halt;
-    private final static Logger log;
+    private final static Log log;
 
     static {
-        log = Logger.getLogger(Mailbox.class.getName());
+        log = LogFactory.getLog(Mailbox.class);
     }
 
     public Mailbox() {
@@ -70,7 +70,7 @@ public class Mailbox<T> {
             try {
                 wait();
             } catch (InterruptedException e) {
-                log.log(Level.SEVERE, null, e);
+                log.warn(null, e);
                 continue;
             }
             if (m_halt) {
@@ -89,7 +89,7 @@ public class Mailbox<T> {
             try {
                 wait();
             } catch (InterruptedException e) {
-                log.log(Level.SEVERE, null, e);
+                log.warn(null, e);
                 continue;
             }
             if (m_halt) {

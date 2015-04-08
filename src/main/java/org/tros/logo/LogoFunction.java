@@ -15,9 +15,10 @@
  */
 package org.tros.logo;
 
+import java.text.MessageFormat;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.torgo.CodeFunction;
 import org.tros.torgo.InterpreterValue;
@@ -33,7 +34,7 @@ import org.tros.torgo.Scope;
 class LogoFunction extends LogoBlock implements CodeFunction {
 
     private final String funcitonName;
-    private static final Logger logger = Logger.getLogger(LogoFunction.class.getName());
+    private static final Log logger = LogFactory.getLog(LogoFunction.class);
 
     /**
      * Constructor
@@ -65,7 +66,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
      */
     @Override
     public ReturnValue process(Scope scope, Map<String, InterpreterValue> params) {
-        logger.log(Level.FINEST, "[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()});
+        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()}));
         scope.push(this);
 
         params.keySet().stream().forEach((key) -> {
@@ -78,7 +79,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
         try {
             ret = super.process(scope);
         } catch (Exception ex) {
-            Logger.getLogger(LogoFunction.class.getName()).log(Level.WARNING, "{0} -> {1}", new Object[]{ex.getClass().getName(), ex.getMessage()});
+            logger.warn(MessageFormat.format("{0} -> {1}", new Object[]{ex.getClass().getName(), ex.getMessage()}), ex);
         }
         if (ret != null && ret.getResult() != ProcessResult.HALT) {
             //NOT HALT!

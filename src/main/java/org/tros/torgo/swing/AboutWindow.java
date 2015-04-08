@@ -23,8 +23,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.LogFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -32,7 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import org.tros.torgo.Main;
 import org.tros.torgo.TorgoInfo;
-import org.tros.utils.IBuildInfo;
+import org.tros.utils.BuildInfo;
 import org.tros.utils.ImageUtils;
 import org.tros.utils.swing.JLinkButton;
 
@@ -72,7 +71,7 @@ public class AboutWindow extends JDialog {
                 URI uri = new URI(APACHE_LICENSE_ADDRESS);
                 Desktop.getDesktop().browse(uri);
             } catch (URISyntaxException | IOException ex) {
-                Logger.getLogger(AboutWindow.class.getName()).log(Level.SEVERE, null, ex);
+                LogFactory.getLog(AboutWindow.class).warn(null, ex);
             }
         });
         //create torgo/source link button
@@ -82,7 +81,7 @@ public class AboutWindow extends JDialog {
                 URI uri = new URI(TORGO_ADDRESS);
                 Desktop.getDesktop().browse(uri);
             } catch (URISyntaxException | IOException ex) {
-                Logger.getLogger(AboutWindow.class.getName()).log(Level.SEVERE, null, ex);
+                LogFactory.getLog(AboutWindow.class).warn(null, ex);
             }
         });
 
@@ -104,7 +103,7 @@ public class AboutWindow extends JDialog {
         JPanel text_panel = new JPanel();
         text_panel.setLayout(new GridLayout(6, 1));
 
-        IBuildInfo toroInfo = TorgoInfo.Instance;
+        BuildInfo toroInfo = TorgoInfo.Instance;
         torgoButton.setText(String.format("Torgo %s", toroInfo.getVersion()));
         torgoButton.setBorderPainted(false);
         torgoButton.setOpaque(false);

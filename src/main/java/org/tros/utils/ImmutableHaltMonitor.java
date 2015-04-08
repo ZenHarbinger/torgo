@@ -10,7 +10,7 @@ package org.tros.utils;
  *
  * @author matta
  */
-public interface IHaltMonitor {
+public interface ImmutableHaltMonitor {
 
     boolean isHalted();
 

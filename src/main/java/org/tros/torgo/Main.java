@@ -19,8 +19,8 @@ import java.awt.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -65,14 +65,14 @@ public class Main {
                 lang = null;
             }
         } catch (ParseException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(Main.class).fatal(null, ex);
         }
 
         try {
             //set look and feel (laf) to that of the system.
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(Main.class).fatal(null, ex);
         }
 
         final String controlLang = lang;
@@ -92,7 +92,7 @@ public class Main {
             ImageIcon ico = new ImageIcon(resources.nextElement());
             frame.setIconImage(ico.getImage());
         } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(Main.class).fatal(null, ex);
         }
     }
 }

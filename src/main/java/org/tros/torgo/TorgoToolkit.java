@@ -15,13 +15,14 @@
  */
 package org.tros.torgo;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -35,7 +36,7 @@ public final class TorgoToolkit {
     private static final HashMap<String, InterpreterVisualization> vizMap;
     private static final ServiceLoader<InterpreterVisualization> vizualizers;
 
-    private static final Logger logger = Logger.getLogger(TorgoToolkit.class.getName());
+    private static final Log logger = LogFactory.getLog(TorgoToolkit.class);
 
     /**
      * Static constructor.
@@ -45,22 +46,22 @@ public final class TorgoToolkit {
         controllers = ServiceLoader.load(Controller.class);
         try {
             for(Controller controller : controllers) {
-                logger.log(Level.INFO, "Loaded: {0}", controller.getClass().getName());
+                logger.info(MessageFormat.format("Loaded: {0}", controller.getClass().getName()));
                 controllersMap.put(controller.getLang(), controller);
             }
         } catch (ServiceConfigurationError serviceError) {
-            logger.log(Level.WARNING, null, serviceError);
+            logger.warn(null, serviceError);
         }
         vizMap = new HashMap<>();
         vizualizers = ServiceLoader.load(InterpreterVisualization.class);
         try {
             Iterator<InterpreterVisualization> controllers_it = vizualizers.iterator();
             for(InterpreterVisualization viz : vizualizers) {
-                logger.log(Level.INFO, "Loaded: {0}", viz.getClass().getName());
+                logger.info(MessageFormat.format("Loaded: {0}", viz.getClass().getName()));
                 vizMap.put(viz.getName(), viz);
             }
         } catch (ServiceConfigurationError serviceError) {
-            logger.log(Level.WARNING, null, serviceError);
+            logger.warn(null, serviceError);
         }
     }
 

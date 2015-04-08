@@ -10,7 +10,7 @@ package org.tros.utils;
  *
  * @author matta
  */
-public interface IBuildInfo {
+public interface BuildInfo {
 
 //    String getBuild();
 

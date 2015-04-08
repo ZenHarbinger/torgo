@@ -56,7 +56,7 @@ public final class PathUtils {
      * @return A string value for a path that can be written to for application
      * specific data.
      */
-    public static String getApplicationDirectory(IBuildInfo bi) {
+    public static String getApplicationDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.home");
         String ret;
         if (home == null) {
@@ -74,7 +74,7 @@ public final class PathUtils {
         return ret;
     }
 
-    public static String getApplicationEtcDirectory(IBuildInfo bi) {
+    public static String getApplicationEtcDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.etc");
         String ret;
         if (home == null) {
@@ -92,7 +92,7 @@ public final class PathUtils {
         return ret;
     }
 
-    public static String getApplicationLibDirectory(IBuildInfo bi) {
+    public static String getApplicationLibDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.lib");
         String ret;
         if (home == null) {
@@ -117,7 +117,7 @@ public final class PathUtils {
      * @param bi Application description.
      * @return A string value for a path that can be written to for log files.
      */
-    public static String getApplicationConfigDirectory(IBuildInfo bi) {
+    public static String getApplicationConfigDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.conf");
         String ret;
         if (home == null) {
@@ -142,7 +142,7 @@ public final class PathUtils {
      * @param bi Application description.
      * @return A string value for a path that can be written to for log files.
      */
-    public static String getLogDirectory(IBuildInfo bi) {
+    public static String getLogDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.log");
         String ret;
         if (home == null) {

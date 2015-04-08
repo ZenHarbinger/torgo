@@ -3,13 +3,12 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 
@@ -23,7 +22,7 @@ public final class TypeHandler {
 
     private static final java.util.Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
     private static final java.util.HashMap<Class<?>, Class<?>> WRAPPER_LOOKUP = getWrapperTypes2();
-    
+
     private TypeHandler() {
     }
 
@@ -98,7 +97,7 @@ public final class TypeHandler {
         if (type == String.class) {
             return val;
         }
-        
+
         //handle Calendar
         if (type == java.util.Calendar.class) {
             java.util.Calendar inst = java.util.Calendar.getInstance();
@@ -106,14 +105,14 @@ public final class TypeHandler {
                 inst.setTime(DEFAULT_DATE_FORMAT.parse(val));
                 return inst;
             } catch (ParseException ex) {
-                Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
+                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
         } else if (type == java.util.Date.class) {
             try {
                 java.util.Date inst = DEFAULT_DATE_FORMAT.parse(val);
                 return inst;
             } catch (ParseException ex) {
-                Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
+                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
         } else if (type == java.awt.Color.class) {
             try {
@@ -122,14 +121,14 @@ public final class TypeHandler {
                 return java.awt.Color.decode(val);
                 //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-                Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
+                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
             return java.awt.Color.decode(val);
         } else if (type == Class.class) {
             try {
                 return Class.forName(val);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
+                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
         }
 
@@ -149,16 +148,16 @@ public final class TypeHandler {
             } catch (NoSuchMethodException ex1) {
                 //Logger.getLogger(TypeHandler.class.getName()).log(Level.FINEST, null, ex1);
             } catch (SecurityException ex1) {
-                Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex1);
+                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
         } catch (SecurityException ex) {
-            Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(TypeHandler.class).fatal(null, ex);
         }
         if (method != null) {
             try {
                 return method.invoke(null, val);
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
+                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
         } else {
             try {

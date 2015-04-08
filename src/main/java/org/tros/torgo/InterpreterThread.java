@@ -15,8 +15,7 @@
  */
 package org.tros.torgo;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.utils.HaltMonitor;
 import org.tros.utils.logging.LogConsole;
@@ -132,14 +131,13 @@ public abstract class InterpreterThread extends Thread {
             };
             l.getCodeBlocks().stream().forEach((cb) -> {
                 cb.addInterpreterListener(listener);
-                monitor.addListener(cb);
+                monitor.addHaltListener(cb);
             });
             //interpret the script
             process(script);
         } catch (Exception ex) {
             listeners.fire().error(ex);
-            Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
-            Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(InterpreterThread.class).fatal(null, ex);
             LogConsole.CONSOLE.setVisible(true);
         }
         listeners.fire().finished();
@@ -159,7 +157,7 @@ public abstract class InterpreterThread extends Thread {
         try {
             join();
         } catch (InterruptedException ex) {
-            Logger.getLogger(InterpreterThread.class.getName()).log(Level.SEVERE, null, ex);
+            LogFactory.getLog(InterpreterThread.class).fatal(null, ex);
         }
     }
 
