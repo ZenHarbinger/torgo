@@ -34,8 +34,8 @@ import org.tros.torgo.LexicalAnalyzer;
  */
 class LexicalListener extends logoBaseListener implements LexicalAnalyzer {
 
-    private final Stack<CodeBlock> stack = new Stack<>();
-    private final ArrayList<CodeBlock> blocks = new ArrayList<>();
+    private final Stack<CodeBlock> stack = new Stack<CodeBlock>();
+    private final ArrayList<CodeBlock> blocks = new ArrayList<CodeBlock>();
     private final LogoCanvas canvas;
 
     /**

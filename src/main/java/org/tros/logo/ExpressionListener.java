@@ -21,7 +21,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.tros.logo.antlr.logoBaseListener;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.InterpreterType;
 import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.Scope;
 import org.tros.torgo.types.NumberType;
@@ -37,7 +36,7 @@ import org.tros.torgo.types.StringType;
 class ExpressionListener extends logoBaseListener {
 
     private final Scope scope;
-    private final Stack<ArrayList<InterpreterValue>> value = new Stack<>();
+    private final Stack<ArrayList<InterpreterValue>> value = new Stack<ArrayList<InterpreterValue>>();
 
     /**
      * Evaluate an expression as defined in the logo.g4 grammar.
@@ -59,41 +58,33 @@ class ExpressionListener extends logoBaseListener {
      */
     private ExpressionListener(Scope scope) {
         this.scope = scope;
-        value.push(new ArrayList<>());
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     private InterpreterValue mathExpression(InterpreterValue val1, InterpreterValue val2, String op) {
         double num1 = ((Number) val1.getValue()).doubleValue();
         double num2 = ((Number) val2.getValue()).doubleValue();
-        switch (op) {
-            case "-":
-                num1 = num1 - num2;
-                break;
-            case "+":
-                num1 = num1 + num2;
-                break;
-            case "*":
-                num1 = num1 * num2;
-                break;
-            case "%":
-                num1 = num1 % num2;
-                break;
-            case "/":
-                num1 = num1 / num2;
-                break;
-            case "\\":
-                num1 = (int) (num1 / num2);
-                break;
-            case "^":
-                num1 = Math.pow(num1, num2);
-                break;
+        if ("-".equals(op)) {
+            num1 = num1 - num2;
+        } else if ("+".equals(op)) {
+            num1 = num1 + num2;
+        } else if ("*".equals(op)) {
+            num1 = num1 * num2;
+        } else if ("%".equals(op)) {
+            num1 = num1 % num2;
+        } else if ("/".equals(op)) {
+            num1 = num1 / num2;
+        } else if ("\\".equals(op)) {
+            num1 = (int) (num1 / num2);
+        } else if ("^".equals(op)) {
+            num1 = Math.pow(num1, num2);
         }
         return new InterpreterValue(NumberType.Instance, num1);
     }
 
     @Override
     public void enterExpression(logoParser.ExpressionContext ctx) {
-        value.push(new ArrayList<>());
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
@@ -119,7 +110,7 @@ class ExpressionListener extends logoBaseListener {
 
     @Override
     public void enterMultiplyingExpression(logoParser.MultiplyingExpressionContext ctx) {
-        value.push(new ArrayList<>());
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
@@ -134,7 +125,7 @@ class ExpressionListener extends logoBaseListener {
     @Override
     public void enterPowerExpression(logoParser.PowerExpressionContext ctx) {
         if (ctx.getChildCount() > 1) {
-            value.push(new ArrayList<>());
+            value.push(new ArrayList<InterpreterValue>());
         }
     }
 
@@ -151,7 +142,7 @@ class ExpressionListener extends logoBaseListener {
 
     @Override
     public void enterRandom(logoParser.RandomContext ctx) {
-        value.push(new ArrayList<>());
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override

@@ -25,7 +25,7 @@ import org.apache.commons.lang3.event.EventListenerSupport;
  */
 abstract class ScopeImpl implements Scope {
 
-    protected final ArrayList<CodeBlock> stack = new ArrayList<>();
+    protected final ArrayList<CodeBlock> stack = new ArrayList<CodeBlock>();
     private final EventListenerSupport<ScopeListener> listeners
             = EventListenerSupport.create(ScopeListener.class);
 

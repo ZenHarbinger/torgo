@@ -20,6 +20,7 @@ import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -66,22 +67,32 @@ public class AboutWindow extends JDialog {
 
         //create copyright/apache link button
         JLinkButton apacheButton = new JLinkButton();
-        apacheButton.addActionListener((ActionEvent ae) -> {
-            try {
-                URI uri = new URI(APACHE_LICENSE_ADDRESS);
-                Desktop.getDesktop().browse(uri);
-            } catch (URISyntaxException | IOException ex) {
-                LogFactory.getLog(AboutWindow.class).warn(null, ex);
+        apacheButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    URI uri = new URI(APACHE_LICENSE_ADDRESS);
+                    Desktop.getDesktop().browse(uri);
+                } catch (URISyntaxException ex) {
+                    LogFactory.getLog(AboutWindow.class).warn(null, ex);
+                } catch (IOException ex) {
+                    LogFactory.getLog(AboutWindow.class).warn(null, ex);
+                }
             }
         });
         //create torgo/source link button
         JLinkButton torgoButton = new JLinkButton();
-        torgoButton.addActionListener((ActionEvent ae) -> {
-            try {
-                URI uri = new URI(TORGO_ADDRESS);
-                Desktop.getDesktop().browse(uri);
-            } catch (URISyntaxException | IOException ex) {
-                LogFactory.getLog(AboutWindow.class).warn(null, ex);
+        torgoButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    URI uri = new URI(TORGO_ADDRESS);
+                    Desktop.getDesktop().browse(uri);
+                } catch (URISyntaxException ex) {} catch (IOException ex) {
+                    LogFactory.getLog(AboutWindow.class).warn(null, ex);
+                }
             }
         });
 

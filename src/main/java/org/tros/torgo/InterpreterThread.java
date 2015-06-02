@@ -129,10 +129,10 @@ public abstract class InterpreterThread extends Thread {
                     listeners.fire().currStatement(block, scope);
                 }
             };
-            l.getCodeBlocks().stream().forEach((cb) -> {
+            for (CodeBlock cb : l.getCodeBlocks()) {
                 cb.addInterpreterListener(listener);
                 monitor.addHaltListener(cb);
-            });
+            }
             //interpret the script
             process(script);
         } catch (Exception ex) {

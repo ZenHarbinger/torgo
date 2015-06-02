@@ -57,9 +57,9 @@ public class Main {
                 lang = cmd.getOptionValue("lang");
             } else if (cmd.hasOption("i") || cmd.hasOption("list")) {
                 Set<String> toolkits = TorgoToolkit.getToolkits();
-                toolkits.stream().forEach((name) -> {
+                for (String name : toolkits) {
                     System.out.println(name);
-                });
+                }
                 //will force an exit
                 lang = null;
             }
@@ -70,15 +70,24 @@ public class Main {
         try {
             //set look and feel (laf) to that of the system.
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException ex) {
+            LogFactory.getLog(Main.class).fatal(null, ex);
+        } catch (InstantiationException ex) {
+            LogFactory.getLog(Main.class).fatal(null, ex);
+        } catch (IllegalAccessException ex) {
+            LogFactory.getLog(Main.class).fatal(null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
             LogFactory.getLog(Main.class).fatal(null, ex);
         }
 
         final String controlLang = lang;
-        SwingUtilities.invokeLater(() -> {
-            Controller controller = TorgoToolkit.getController(controlLang);
-            if (controller != null) {
-                controller.run();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Controller controller = TorgoToolkit.getController(controlLang);
+                if (controller != null) {
+                    controller.run();
+                }
             }
         });
     }

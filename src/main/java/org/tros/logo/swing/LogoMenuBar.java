@@ -21,6 +21,7 @@ import org.tros.torgo.Controller;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.JColorChooser;
@@ -160,16 +161,21 @@ public final class LogoMenuBar extends TorgoMenuBar {
             InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(base + "/resource.manifest");
             List<String> readLines = IOUtils.readLines(resourceAsStream);
             Collections.sort(readLines);
-            readLines.stream().map((line) -> new JMenuItem(base + "/" + line)).forEach((jmi) -> {
+            for(String line : readLines) {
+                JMenuItem jmi = new JMenuItem(base + "/" + line);
                 if (!jmi.getText().endsWith("manifest")) {
                     samplesMenu.add(jmi);
-                    jmi.addActionListener((ActionEvent e) -> {
-                        String val = e.getActionCommand();
-                        URL resource = ClassLoader.getSystemClassLoader().getResource(val);
-                        this.controller.openFile(resource);
+                    jmi.addActionListener(new ActionListener() {
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String val = e.getActionCommand();
+                            URL resource = ClassLoader.getSystemClassLoader().getResource(val);
+                            LogoMenuBar.this.controller.openFile(resource);
+                        }
                     });
                 }
-            });
+            };
         } catch (IOException ex) {
             LogFactory.getLog(LogoMenuBar.class.getName()).fatal(null, ex);
         }
@@ -187,34 +193,42 @@ public final class LogoMenuBar extends TorgoMenuBar {
         JMenuItem exportGif = new JMenuItem(Localization.getLocalizedString("ExportGIF"));
         JMenuItem exportPng = new JMenuItem(Localization.getLocalizedString("ExportPNG"));
 
-        exportGif.addActionListener((ActionEvent e) -> {
-            JFileChooser chooser = new JFileChooser();
-            chooser.setMultiSelectionEnabled(false);
-            java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
-            chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
+        exportGif.addActionListener(new ActionListener() {
 
-            chooser.setVisible(true);
-            int result = chooser.showSaveDialog(parent);
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setMultiSelectionEnabled(false);
+                java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+                chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
 
-            if (result == JFileChooser.APPROVE_OPTION) {
-                String filename = chooser.getSelectedFile().getPath();
-                prefs.put("export-directory", chooser.getSelectedFile().getParent());
-                exportCanvas("gif", filename);
+                chooser.setVisible(true);
+                int result = chooser.showSaveDialog(parent);
+
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    String filename = chooser.getSelectedFile().getPath();
+                    prefs.put("export-directory", chooser.getSelectedFile().getParent());
+                    exportCanvas("gif", filename);
+                }
             }
         });
-        exportPng.addActionListener((ActionEvent e) -> {
-            JFileChooser chooser = new JFileChooser();
-            chooser.setMultiSelectionEnabled(false);
-            java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
-            chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
+        exportPng.addActionListener(new ActionListener() {
 
-            chooser.setVisible(true);
-            int result = chooser.showSaveDialog(parent);
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setMultiSelectionEnabled(false);
+                java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+                chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
 
-            if (result == JFileChooser.APPROVE_OPTION) {
-                String filename = chooser.getSelectedFile().getPath();
-                prefs.put("export-directory", chooser.getSelectedFile().getParent());
-                exportCanvas("png", filename);
+                chooser.setVisible(true);
+                int result = chooser.showSaveDialog(parent);
+
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    String filename = chooser.getSelectedFile().getPath();
+                    prefs.put("export-directory", chooser.getSelectedFile().getParent());
+                    exportCanvas("png", filename);
+                }
             }
         });
 
@@ -238,24 +252,32 @@ public final class LogoMenuBar extends TorgoMenuBar {
         toolsPenColorChooser.setMnemonic('P');
         toolsCanvasColorChooser.setMnemonic('C');
 
-        toolsPenColorChooser.addActionListener((ActionEvent e) -> {
-            Color selected = JColorChooser.showDialog(parent, Localization.getLocalizedString("ColorChooser"), null);
-            if (selected != null) {
-                int red = selected.getRed();
-                int green = selected.getGreen();
-                int blue = selected.getBlue();
-                String hex = String.format("#%02x%02x%02x", red, green, blue);
-                controller.insertCommand("pencolor" + " " + hex);
+        toolsPenColorChooser.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                Color selected = JColorChooser.showDialog(parent, Localization.getLocalizedString("ColorChooser"), null);
+                if (selected != null) {
+                    int red = selected.getRed();
+                    int green = selected.getGreen();
+                    int blue = selected.getBlue();
+                    String hex = String.format("#%02x%02x%02x", red, green, blue);
+                    controller.insertCommand("pencolor" + " " + hex);
+                }
             }
         });
-        toolsCanvasColorChooser.addActionListener((ActionEvent e) -> {
-            Color selected = JColorChooser.showDialog(parent, Localization.getLocalizedString("ColorChooser"), null);
-            if (selected != null) {
-                int red = selected.getRed();
-                int green = selected.getGreen();
-                int blue = selected.getBlue();
-                String hex = String.format("#%02x%02x%02x", red, green, blue);
-                controller.insertCommand("canvascolor" + " " + hex);
+        toolsCanvasColorChooser.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                Color selected = JColorChooser.showDialog(parent, Localization.getLocalizedString("ColorChooser"), null);
+                if (selected != null) {
+                    int red = selected.getRed();
+                    int green = selected.getGreen();
+                    int blue = selected.getBlue();
+                    String hex = String.format("#%02x%02x%02x", red, green, blue);
+                    controller.insertCommand("canvascolor" + " " + hex);
+                }
             }
         });
 

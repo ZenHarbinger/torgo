@@ -38,7 +38,7 @@ public final class TypeHandler {
     }
 
     private static java.util.Set<Class<?>> getWrapperTypes() {
-        java.util.Set<Class<?>> ret = new java.util.HashSet<>();
+        java.util.Set<Class<?>> ret = new java.util.HashSet<Class<?>>();
         ret.add(Boolean.class);
         ret.add(Character.class);
         ret.add(Byte.class);
@@ -53,7 +53,7 @@ public final class TypeHandler {
     }
 
     private static java.util.HashMap<Class<?>, Class<?>> getWrapperTypes2() {
-        java.util.HashMap<Class<?>, Class<?>> ret = new java.util.HashMap<>();
+        java.util.HashMap<Class<?>, Class<?>> ret = new java.util.HashMap<Class<?>, Class<?>>();
         ret.put(boolean.class, Boolean.class);
         ret.put(char.class, Character.class);
         ret.put(byte.class, Byte.class);
@@ -120,7 +120,11 @@ public final class TypeHandler {
             } catch (NoSuchFieldException ex) {
                 return java.awt.Color.decode(val);
                 //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            } catch (SecurityException ex) {
+                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+            } catch (IllegalArgumentException ex) {
+                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+            } catch (IllegalAccessException ex) {
                 LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
             return java.awt.Color.decode(val);
@@ -156,20 +160,20 @@ public final class TypeHandler {
         if (method != null) {
             try {
                 return method.invoke(null, val);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            } catch (IllegalAccessException ex) {} catch (IllegalArgumentException ex) {} catch (InvocationTargetException ex) {
                 LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
         } else {
             try {
                 return type.getConstructor(String.class).newInstance(val);
-            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            } catch (NoSuchMethodException ex) {} catch (SecurityException ex) {} catch (InstantiationException ex) {} catch (IllegalAccessException ex) {} catch (IllegalArgumentException ex) {} catch (InvocationTargetException ex) {
                 //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
         try {
             return Class.forName(val).newInstance();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        } catch (ClassNotFoundException ex) {} catch (InstantiationException ex) {} catch (IllegalAccessException ex) {
             //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

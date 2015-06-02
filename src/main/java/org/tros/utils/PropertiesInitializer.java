@@ -57,7 +57,11 @@ public abstract class PropertiesInitializer {
         try {
             Class<?> forName = Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
             mapper = forName.newInstance();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        } catch (ClassNotFoundException ex) {
+            logger.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
+        } catch (InstantiationException ex) {
+            logger.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
+        } catch (IllegalAccessException ex) {
             logger.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
         }
     }
@@ -66,7 +70,15 @@ public abstract class PropertiesInitializer {
         try {
             Method method = mapper.getClass().getMethod("readValue", InputStream.class, Class.class);
             return method.invoke(mapper, fis, clazz);
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (NoSuchMethodException ex) {
+            logger.warn(null, ex);
+        } catch (SecurityException ex) {
+            logger.warn(null, ex);
+        } catch (IllegalAccessException ex) {
+            logger.warn(null, ex);
+        } catch (IllegalArgumentException ex) {
+            logger.warn(null, ex);
+        } catch (InvocationTargetException ex) {
             logger.warn(null, ex);
         }
         return null;
@@ -76,7 +88,15 @@ public abstract class PropertiesInitializer {
         try {
             Method method = mapper.getClass().getMethod("readValue", String.class, Class.class);
             return method.invoke(mapper, fis, clazz);
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (NoSuchMethodException ex) {
+            logger.warn(null, ex);
+        } catch (SecurityException ex) {
+            logger.warn(null, ex);
+        } catch (IllegalAccessException ex) {
+            logger.warn(null, ex);
+        } catch (IllegalArgumentException ex) {
+            logger.warn(null, ex);
+        } catch (InvocationTargetException ex) {
             logger.warn(null, ex);
         }
         return null;
@@ -90,7 +110,8 @@ public abstract class PropertiesInitializer {
         File f = new File(propFile);
         if (f.exists()) {
 
-            try (FileInputStream fis = new FileInputStream(f)) {
+            try {
+                FileInputStream fis = new FileInputStream(f);
                 PropertyDescriptor[] props = Introspector.getBeanInfo(this.getClass()).getPropertyDescriptors();
                 PropertiesInitializer obj = (PropertiesInitializer) readValue(fis, this.getClass());
 
@@ -104,7 +125,16 @@ public abstract class PropertiesInitializer {
                         }
                     }
                 }
-            } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
+                fis.close();
+            } catch (NullPointerException ex) {
+                logger.debug(null, ex);
+            } catch (IOException ex) {
+                logger.debug(null, ex);
+            } catch (IllegalArgumentException ex) {
+                logger.debug(null, ex);
+            } catch (InvocationTargetException ex) {
+                logger.debug(null, ex);
+            } catch (IllegalAccessException ex) {
                 logger.debug(null, ex);
             } catch (IntrospectionException ex) {
                 logger.warn(null, ex);
@@ -116,7 +146,7 @@ public abstract class PropertiesInitializer {
         try {
             java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader()
                     .getResources(this.getClass().getCanonicalName().replace('.', '/') + ".json");
-            ArrayList<URL> urls = new ArrayList<>();
+            ArrayList<URL> urls = new ArrayList<URL>();
 
             //HACK: semi sort classpath to put "files" first and "jars" second.
             //this has an impact once we are workin in tomcat where
@@ -145,7 +175,7 @@ public abstract class PropertiesInitializer {
             Collections.reverse(urls);
 
             PropertyDescriptor[] props = Introspector.getBeanInfo(this.getClass()).getPropertyDescriptors();
-            urls.stream().forEach((url) -> {
+            for (URL url : urls) {
                 try {
                     PropertiesInitializer obj = (PropertiesInitializer) readValue(url.openStream(), this.getClass());
 
@@ -159,11 +189,16 @@ public abstract class PropertiesInitializer {
                             }
                         }
                     }
-                } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
+                } catch (NullPointerException ex) {
+                } catch (IOException ex) {
+                } catch (IllegalArgumentException ex) {
+                } catch (InvocationTargetException ex) {
+                } catch (IllegalAccessException ex) {
                     logger.debug(null, ex);
                 }
-            });
-        } catch (IOException | IntrospectionException ex) {
+            }
+        } catch (IOException ex) {
+        } catch (IntrospectionException ex) {
             logger.warn(null, ex);
         }
     }
@@ -178,11 +213,12 @@ public abstract class PropertiesInitializer {
         File f = new File(propFile);
         if (f.exists()) {
 
-            try (FileInputStream fis = new FileInputStream(f)) {
+            try {
+                FileInputStream fis = new FileInputStream(f);
                 PropertyDescriptor[] props = Introspector.getBeanInfo(this.getClass()).getPropertyDescriptors();
                 prop.load(fis);
 
-                ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
+                ArrayList<String> propKeys = new ArrayList<String>(prop.stringPropertyNames());
                 for (PropertyDescriptor p : props) {
                     if (p.getWriteMethod() != null
                             && p.getReadMethod() != null
@@ -214,11 +250,16 @@ public abstract class PropertiesInitializer {
                         }
                     }
                 }
-                propKeys.stream().forEach((key) -> {
+                for (String key : propKeys) {
                     String value = prop.getProperty(key);
                     setNameValuePair(key, value);
-                });
-            } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
+                }
+                fis.close();
+            } catch (NullPointerException ex) {
+            } catch (IOException ex) {
+            } catch (IllegalArgumentException ex) {
+            } catch (InvocationTargetException ex) {
+            } catch (IllegalAccessException ex) {
                 logger.debug(null, ex);
             } catch (IntrospectionException ex) {
                 logger.warn(null, ex);
@@ -232,7 +273,7 @@ public abstract class PropertiesInitializer {
 
             String propFile = this.getClass().getPackage().getName().replace('.', '/') + '/' + this.getClass().getSimpleName() + ".properties";
             java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(propFile);
-            ArrayList<URL> urls = new ArrayList<>();
+            ArrayList<URL> urls = new ArrayList<URL>();
 
             //HACK: semi sort classpath to put "files" first and "jars" second.
             //this has an impact once we are workin in tomcat where
@@ -261,10 +302,10 @@ public abstract class PropertiesInitializer {
             Collections.reverse(urls);
 
             PropertyDescriptor[] props = Introspector.getBeanInfo(this.getClass()).getPropertyDescriptors();
-            urls.stream().forEach((url) -> {
+            for (URL url : urls) {
                 try {
                     prop.load(url.openStream());
-                    ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
+                    ArrayList<String> propKeys = new ArrayList<String>(prop.stringPropertyNames());
 
                     for (PropertyDescriptor p : props) {
                         if (p.getWriteMethod() != null
@@ -300,15 +341,20 @@ public abstract class PropertiesInitializer {
                             }
                         }
                     }
-                    propKeys.stream().forEach((key) -> {
+                    for (String key : propKeys) {
                         String value = prop.getProperty(key);
                         setNameValuePair(key, value);
-                    });
-                } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
+                    }
+                } catch (NullPointerException ex) {
+                } catch (IOException ex) {
+                } catch (IllegalArgumentException ex) {
+                } catch (InvocationTargetException ex) {
+                } catch (IllegalAccessException ex) {
                     logger.warn(null, ex);
                 }
-            });
-        } catch (IOException | IntrospectionException ex) {
+            }
+        } catch (IOException ex) {
+        } catch (IntrospectionException ex) {
             logger.warn(null, ex);
         }
     }

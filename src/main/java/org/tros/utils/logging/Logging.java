@@ -42,7 +42,15 @@ public final class Logging {
             Class<?> forName = Class.forName("org.reflections.Reflections");
             Field f = forName.getField("log");
             f.set(null, null);
-        } catch (ClassNotFoundException | NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+        } catch (NoSuchFieldException ex) {
+            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+        } catch (SecurityException ex) {
+            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+        } catch (IllegalAccessException ex) {
             Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
         }
 
@@ -59,8 +67,10 @@ public final class Logging {
                         .getResources(prop_file);
                 if (resources.hasMoreElements()) {
                     URL to_use = resources.nextElement();
-                    try (FileOutputStream fis = new FileOutputStream(logProp)) {
+                    try {
+                        FileOutputStream fis = new FileOutputStream(logProp);
                         IOUtils.copy(to_use.openStream(), fis);
+                        fis.close();
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -92,11 +102,13 @@ public final class Logging {
                     sb.append(lineFromFile).append(System.getProperty("line.separator"));
                 }
 
-                try (BufferedInputStream fis = new BufferedInputStream(IOUtils.toInputStream(sb.toString(), "UTF-8"))) {
+                try {
+                    BufferedInputStream fis = new BufferedInputStream(IOUtils.toInputStream(sb.toString(), "UTF-8"));
                     LogManager.getLogManager().readConfiguration(fis);
+                    fis.close();
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException | SecurityException ex) {
+                } catch (IOException ex) {} catch (SecurityException ex) {
                     Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (FileNotFoundException ex) {

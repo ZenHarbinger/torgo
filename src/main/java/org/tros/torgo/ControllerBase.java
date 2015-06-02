@@ -18,9 +18,11 @@ package org.tros.torgo;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -61,7 +63,7 @@ public abstract class ControllerBase implements Controller {
     protected final AutoResetEvent step;
     protected final AtomicBoolean isStepping;
 
-    private final ArrayList<JCheckBoxMenuItem> viz = new ArrayList<>();
+    private final ArrayList<JCheckBoxMenuItem> viz = new ArrayList<JCheckBoxMenuItem>();
 
     protected final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
@@ -140,8 +142,12 @@ public abstract class ControllerBase implements Controller {
             final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, torgoCanvas.getComponent(), torgoPanel.getComponent());
             int dividerLocation = prefs.getInt(this.getClass().getName() + "divider-location", window.getWidth() - 300);
             splitPane.setDividerLocation(dividerLocation);
-            splitPane.addPropertyChangeListener((PropertyChangeEvent evt) -> {
-                prefs.putInt(this.getClass().getName() + "divider-location", splitPane.getDividerLocation());
+            splitPane.addPropertyChangeListener(new PropertyChangeListener() {
+
+                @Override
+                public void propertyChange(PropertyChangeEvent pce) {
+                    prefs.putInt(this.getClass().getName() + "divider-location", splitPane.getDividerLocation());
+                }
             });
 
             contentPane.add(splitPane);
@@ -156,17 +162,22 @@ public abstract class ControllerBase implements Controller {
         window.setJMenuBar(mb);
         JMenu helpMenu = new JMenu("Help");
         JMenuItem aboutMenu = new JMenuItem("About Torgo");
-        aboutMenu.addActionListener((ActionEvent ae) -> {
-            AboutWindow aw = new AboutWindow();
-            aw.setVisible(true);
+        aboutMenu.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                AboutWindow aw = new AboutWindow();
+                aw.setVisible(true);
+            }
         });
         helpMenu.add(aboutMenu);
 
         JMenu vizMenu = new JMenu("Vizualization");
-        TorgoToolkit.getVisualizers().stream().map((name) -> new JCheckBoxMenuItem(name)).forEach((item) -> {
+        for (String name : TorgoToolkit.getVisualizers()) {
+            JCheckBoxMenuItem item = new JCheckBoxMenuItem(name);
             viz.add(item);
             vizMenu.add(item);
-        });
+        }
         if (vizMenu.getItemCount() > 0) {
             mb.add(vizMenu);
         }
@@ -253,9 +264,13 @@ public abstract class ControllerBase implements Controller {
         initSwing();
         this.window.setVisible(true);
 
-        SwingUtilities.invokeLater(() -> {
-            newFile();
-            runHelper();
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                newFile();
+                runHelper();
+            }
         });
     }
 
@@ -344,7 +359,8 @@ public abstract class ControllerBase implements Controller {
             return;
         }
 
-        try (FileOutputStream out = new FileOutputStream(filename)) {
+        try {
+            FileOutputStream out = new FileOutputStream(filename);
             String source = torgoPanel.getSource();
             byte[] sourceArray = new byte[source.length()];
 
@@ -354,6 +370,8 @@ public abstract class ControllerBase implements Controller {
 
             out.write(sourceArray);
             window.setTitle("Torgo - " + filename);
+            out.flush();
+            out.close();
         } catch (Exception ex) {
             LogFactory.getLog(ControllerBase.class).fatal(null, ex);
         }
@@ -380,9 +398,14 @@ public abstract class ControllerBase implements Controller {
         String source = torgoPanel.getSource();
         interp = createInterpreterThread(source);
 
-        viz.stream().filter((item) -> (item.getState())).map((item) -> TorgoToolkit.getVisualization(item.getText()).create()).forEach((visualization) -> {
-            visualization.watch(this.getLang(), this, interp);
-        });
+        for (JCheckBoxMenuItem item : viz) {
+            if (item.getState()) {
+                TorgoToolkit.getVisualization(item.getText()).create().watch(this.getLang(), this, interp);
+            }
+        }
+//        viz.stream().filter((item) -> (item.getState())).map((item) -> TorgoToolkit.getVisualization(item.getText()).create()).forEach((visualization) -> {
+//            visualization.watch(this.getLang(), this, interp);
+//        });
 
         for (InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);
@@ -424,9 +447,14 @@ public abstract class ControllerBase implements Controller {
         interp = createInterpreterThread(source);
         step.reset();
 
-        viz.stream().filter((item) -> (item.getState())).map((item) -> TorgoToolkit.getVisualization(item.getText()).create()).forEach((visualization) -> {
-            visualization.watch(this.getLang(), this, interp);
-        });
+        for (JCheckBoxMenuItem item : viz) {
+            if (item.getState()) {
+                TorgoToolkit.getVisualization(item.getText()).create().watch(this.getLang(), this, interp);
+            }
+        }
+//        viz.stream().filter((item) -> (item.getState())).map((item) -> TorgoToolkit.getVisualization(item.getText()).create()).forEach((visualization) -> {
+//            visualization.watch(this.getLang(), this, interp);
+//        });
 
         for (InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);

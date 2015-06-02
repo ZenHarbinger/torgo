@@ -74,7 +74,7 @@ public class TraceLogger implements InterpreterVisualization {
      * @param interpreter
      */
     @Override
-    public void watch(String name, Controller controller, InterpreterThread interpreter) {
+    public void watch(final String name, final Controller controller, final InterpreterThread interpreter) {
         this.interpreter = interpreter;
         this.interpreter.addInterpreterListener(new InterpreterListener() {
 

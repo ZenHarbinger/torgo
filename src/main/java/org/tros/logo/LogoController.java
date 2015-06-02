@@ -15,10 +15,13 @@
  */
 package org.tros.logo;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.apache.commons.logging.LogFactory;
 import org.tros.logo.antlr.logoLexer;
 import org.tros.logo.antlr.logoParser;
 import org.tros.logo.swing.LogoPanel;
@@ -121,5 +124,14 @@ public final class LogoController extends ControllerBase {
     @Override
     public String getLang() {
         return "logo";
+    }
+
+    @Override
+    public void openFile(File file) {
+        try {
+            openFile(file.toURI().toURL());
+        } catch (MalformedURLException ex) {
+            LogFactory.getLog(LogoController.class).fatal(null, ex);
+        }
     }
 }

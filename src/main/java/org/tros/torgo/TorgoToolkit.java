@@ -42,7 +42,7 @@ public final class TorgoToolkit {
      * Static constructor.
      */
     static {
-        controllersMap = new HashMap<>();
+        controllersMap = new HashMap<String, Controller>();
         controllers = ServiceLoader.load(Controller.class);
         try {
             for(Controller controller : controllers) {
@@ -52,7 +52,7 @@ public final class TorgoToolkit {
         } catch (ServiceConfigurationError serviceError) {
             logger.warn(null, serviceError);
         }
-        vizMap = new HashMap<>();
+        vizMap = new HashMap<String, InterpreterVisualization>();
         vizualizers = ServiceLoader.load(InterpreterVisualization.class);
         try {
             Iterator<InterpreterVisualization> controllers_it = vizualizers.iterator();

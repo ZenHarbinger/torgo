@@ -29,7 +29,7 @@ public class Mailbox<T> {
     }
 
     public Mailbox() {
-        m_msgs = new ArrayList<>();
+        m_msgs = new ArrayList<T>();
         m_halt = false;
     }
     
@@ -96,7 +96,7 @@ public class Mailbox<T> {
                 return null;
             }
         }
-        ArrayList<T> ret = new ArrayList<>(m_msgs);
+        ArrayList<T> ret = new ArrayList<T>(m_msgs);
         m_msgs.clear();
         return ret;
     }

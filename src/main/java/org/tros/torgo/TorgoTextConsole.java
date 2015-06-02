@@ -67,9 +67,10 @@ public interface TorgoTextConsole {
      *
      * @param source
      */
-    default void insertIntoSource(String source) {
-        appendToSource(source);
-    }
+    void insertIntoSource(String source);
+//    default void insertIntoSource(String source) {
+//        appendToSource(source);
+//    }
 
     /**
      * Go to position on the console.

@@ -40,13 +40,13 @@ import org.tros.utils.ImmutableHaltMonitor;
 abstract class LogoBlock implements CodeBlock {
 
     protected final ParserRuleContext ctx;
-    private final ArrayList<CodeBlock> commands = new ArrayList<>();
-    private final HashMap<String, CodeFunction> functions = new HashMap<>();
+    private final ArrayList<CodeBlock> commands = new ArrayList<CodeBlock>();
+    private final HashMap<String, CodeFunction> functions = new HashMap<String, CodeFunction>();
     protected final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
     private final AtomicBoolean halted = new AtomicBoolean(false);
 
-    private final HashMap<String, InterpreterValue> variables = new HashMap<>();
+    private final HashMap<String, InterpreterValue> variables = new HashMap<String, InterpreterValue>();
     private CodeBlock parent;
 
     @Override
@@ -122,7 +122,7 @@ abstract class LogoBlock implements CodeBlock {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
 
-        commands.stream().forEach((lc) -> {
+        for(CodeBlock lc : commands) {
             if (success.get() && !stop.get()) {
                 ReturnValue pr = lc.process(scope);
                 if (pr.getResult() == ReturnValue.ProcessResult.HALT) {
@@ -131,7 +131,7 @@ abstract class LogoBlock implements CodeBlock {
                     stop.set(true);
                 }
             }
-        });
+        }
 
         ReturnValue.ProcessResult res = success.get() ? (stop.get() ? ReturnValue.ProcessResult.RETURN : ReturnValue.ProcessResult.SUCCESS) : ReturnValue.ProcessResult.HALT;
         return new ReturnValue(NullType.Instance, null, res);

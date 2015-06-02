@@ -27,7 +27,7 @@ import java.util.HashMap;
  */
 public class DynamicScope extends ScopeImpl implements Scope {
 
-    private final ArrayList<HashMap<String, InterpreterValue>> scope = new ArrayList<>();
+    private final ArrayList<HashMap<String, InterpreterValue>> scope = new ArrayList<HashMap<String, InterpreterValue>>();
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class DynamicScope extends ScopeImpl implements Scope {
      */
     @Override
     public void push(CodeBlock block) {
-        scope.add(0, new HashMap<>());
+        scope.add(0, new HashMap<String, InterpreterValue>());
         stack.add(0, block);
         firePushed(block);
     }
@@ -158,7 +158,7 @@ public class DynamicScope extends ScopeImpl implements Scope {
      */
     @Override
     public boolean hasFunction(String name) {
-        return stack.stream().anyMatch((cb) -> (cb.hasFunction(name)));
+        return getFunction(name) != null;
     }
 
     /**

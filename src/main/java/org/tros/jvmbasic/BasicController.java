@@ -15,6 +15,7 @@
  */
 package org.tros.jvmbasic;
 
+import java.io.File;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 import org.tros.torgo.ControllerBase;
@@ -57,5 +58,9 @@ public class BasicController extends ControllerBase {
     @Override
     public String getLang() {
         return "jvmBasic";
+    }
+
+    @Override
+    public void openFile(File file) {
     }
 }

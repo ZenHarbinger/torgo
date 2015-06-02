@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     http.equals(op))//www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import org.tros.torgo.Scope;
 class ExpressionListener extends jvmBasicBaseListener {
 
     private final Scope scope;
-    private final Stack<ArrayList<Object>> value = new Stack<>();
+    private final Stack<ArrayList<Object>> value = new Stack<ArrayList<Object>>();
 
     /**
      * Evaluate an expression as defined in the jvmBasic.g4 grammar.
@@ -55,32 +55,24 @@ class ExpressionListener extends jvmBasicBaseListener {
      */
     private ExpressionListener(Scope scope) {
         this.scope = scope;
-        value.push(new ArrayList<>());
+        value.push(new ArrayList<Object>());
     }
 
     private double mathExpression(Double val1, Double val2, String op) {
-        switch (op) {
-            case "-":
-                val1 = val1 - val2;
-                break;
-            case "+":
-                val1 = val1 + val2;
-                break;
-            case "*":
-                val1 = val1 * val2;
-                break;
-            case "%":
-                val1 = val1 % val2;
-                break;
-            case "/":
-                val1 = val1 / val2;
-                break;
-            case "\\":
-                val1 = new Double((int) (val1 / val2));
-                break;
-            case "^":
-                val1 = Math.pow(val1, val2);
-                break;
+        if ("-".equals(op)) {
+            val1 = val1 - val2;
+        } else if ("+".equals(op)) {
+            val1 = val1 + val2;
+        } else if ("*".equals(op)) {
+            val1 = val1 * val2;
+        } else if ("%".equals(op)) {
+            val1 = val1 % val2;
+        } else if ("/".equals(op)) {
+            val1 = val1 / val2;
+        } else if ("\\".equals(op)) {
+            val1 = new Double((int) (val1 / val2));
+        } else if ("^".equals(op)) {
+            val1 = Math.pow(val1, val2);
         }
         return val1;
     }

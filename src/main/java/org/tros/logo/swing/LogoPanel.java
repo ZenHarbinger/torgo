@@ -32,7 +32,6 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -259,23 +258,25 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
         try {
             Field field = Color.class.getField(color);
             return (Color) field.get(null);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+        } catch (NoSuchFieldException ex) {
+        } catch (SecurityException ex) {
+        } catch (IllegalArgumentException ex) {
+        } catch (IllegalAccessException ex) {
         }
-        switch (color) {
-            case "darkgray":
-                return (Color.darkGray);
-            case "lightgray":
-                return (Color.lightGray);
-            default:
-                try {
-                    if (!color.startsWith("#") || !color.startsWith(color)) {
-                        color = "#" + color;
-                    }
-                    Color c = java.awt.Color.decode(color);
-                    return c == null ? Color.black : c;
-                } catch (Exception ex) {
-                    return Color.black;
+        if ("darkgray".equals(color)) {
+            return (Color.darkGray);
+        } else if ("lightgray".equals(color)) {
+            return (Color.lightGray);
+        } else {
+            try {
+                if (!color.startsWith("#") || !color.startsWith(color)) {
+                    color = "#" + color;
                 }
+                Color c = java.awt.Color.decode(color);
+                return c == null ? Color.black : c;
+            } catch (Exception ex) {
+                return Color.black;
+            }
         }
     }
 

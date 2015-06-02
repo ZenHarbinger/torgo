@@ -27,14 +27,15 @@ public interface LogoCanvas {
 
     void backward(double distance);
 
-    default void canvascolor(int red, int green, int blue) {
-        red = Math.min(255, Math.max(0, red));
-        green = Math.min(255, Math.max(0, green));
-        blue = Math.min(255, Math.max(0, blue));
-
-        Color canvasColor = new Color(red, green, blue);
-        canvascolor(canvasColor);
-    }
+    void canvascolor(int red, int green, int blue);
+//    default void canvascolor(int red, int green, int blue) {
+//        red = Math.min(255, Math.max(0, red));
+//        green = Math.min(255, Math.max(0, green));
+//        blue = Math.min(255, Math.max(0, blue));
+//
+//        Color canvasColor = new Color(red, green, blue);
+//        canvascolor(canvasColor);
+//    }
 
     void canvascolor(String color);
 
@@ -66,14 +67,15 @@ public interface LogoCanvas {
 
     void penUp();
 
-    default void pencolor(int red, int green, int blue, int alpha) {
-        red = Math.min(255, Math.max(0, red));
-        green = Math.min(255, Math.max(0, green));
-        blue = Math.min(255, Math.max(0, blue));
-
-        Color canvasColor = new Color(red, green, blue, alpha);
-        pencolor(canvasColor);
-    }
+    void pencolor(int red, int green, int blue, int alpha);
+//    default void pencolor(int red, int green, int blue, int alpha) {
+//        red = Math.min(255, Math.max(0, red));
+//        green = Math.min(255, Math.max(0, green));
+//        blue = Math.min(255, Math.max(0, blue));
+//
+//        Color canvasColor = new Color(red, green, blue, alpha);
+//        pencolor(canvasColor);
+//    }
 
     void pencolor(String color);
 

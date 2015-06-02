@@ -69,9 +69,9 @@ class LogoFunction extends LogoBlock implements CodeFunction {
         logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()}));
         scope.push(this);
 
-        params.keySet().stream().forEach((key) -> {
+        for (String key : params.keySet()) {
             scope.setNew(key, params.get(key));
-        });
+        }
 
         listeners.fire().currStatement(this, scope);
 

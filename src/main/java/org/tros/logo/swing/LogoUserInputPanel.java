@@ -20,6 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.logging.LogFactory;
 import javax.swing.JLabel;
@@ -68,7 +69,19 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
             syntax.getMethod("setCodeFoldingEnabled", boolean.class).invoke(area, true);
             Class<?> syntaxScroll = Class.forName("org.fife.ui.rtextarea.RTextScrollPane");
             inputScrollPane = (JScrollPane) syntaxScroll.getConstructor(Component.class).newInstance(area);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (ClassNotFoundException ex) {
+            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+        } catch (InstantiationException ex) {
+            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+        } catch (IllegalAccessException ex) {
+            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+        } catch (NoSuchMethodException ex) {
+            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+        } catch (SecurityException ex) {
+            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+        } catch (IllegalArgumentException ex) {
+            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+        } catch (InvocationTargetException ex) {
             LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
         }
         inputTextArea = area == null ? new JTextArea() : area;
@@ -102,8 +115,12 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
         int dividerLocation = prefs.getInt(LogoUserInputPanel.class.getName() + "divider-location", 0);
         dividerLocation = dividerLocation == 0 ? 400 : dividerLocation;
         splitPane.setDividerLocation(dividerLocation);
-        splitPane.addPropertyChangeListener((PropertyChangeEvent evt) -> {
-            prefs.putInt(LogoUserInputPanel.class.getName() + "divider-location", splitPane.getDividerLocation());
+        splitPane.addPropertyChangeListener(new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent pce) {
+                prefs.putInt(LogoUserInputPanel.class.getName() + "divider-location", splitPane.getDividerLocation());
+            }
         });
         this.add(splitPane);
 
@@ -227,10 +244,18 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
             boolean success = false;
             try {
                 if (inputTextArea.getClass().getMethod("getCaretOffsetFromLineStart") != null) {
-                    c = (int) inputTextArea.getClass().getMethod("getCaretOffsetFromLineStart").invoke(inputTextArea);
+                    c = ((Integer) inputTextArea.getClass().getMethod("getCaretOffsetFromLineStart").invoke(inputTextArea));
                     success = true;
                 }
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            } catch (NoSuchMethodException ex) {
+                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (SecurityException ex) {
+                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (IllegalAccessException ex) {
+                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (IllegalArgumentException ex) {
+                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (InvocationTargetException ex) {
                 LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
             }
 

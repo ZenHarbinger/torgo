@@ -3,7 +3,7 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils.logging;
 
 import java.io.PrintWriter;
@@ -46,7 +46,7 @@ public final class SwingComponentHandler extends Handler {
                 timer();
             }
         }, 500, 500);
-        records = new ArrayList<>();
+        records = new ArrayList<LogRecord>();
         Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.FINE, "Started...");
     }
 
@@ -111,7 +111,7 @@ public final class SwingComponentHandler extends Handler {
             return;
         }
 
-        final ArrayList<LogRecord> rec = new ArrayList<>();
+        final ArrayList<LogRecord> rec = new ArrayList<LogRecord>();
         synchronized (records) {
             rec.addAll(records);
             records.clear();
@@ -122,36 +122,40 @@ public final class SwingComponentHandler extends Handler {
         }
         final java.util.logging.Formatter f = getFormatter();
 
-        SwingUtilities.invokeLater(() -> {
-            StringWriter text = new StringWriter();
-            PrintWriter out = new PrintWriter(text);
-            int lc = textArea.getLineCount();
-            if (lc + rec.size() > _maxSize) {
-                if (_maxSize - rec.size() > 0) {
-                    String[] lines = textArea.getText().split(nl);
-                    String[] output = new String[_maxSize - rec.size()];
-                    System.arraycopy(lines, lines.length - _maxSize + rec.size(), output, 0, output.length);
-                    text = new StringWriter();
-                    out = new PrintWriter(text);
-                    for (String output1 : output) {
-                        out.printf(output1 + nl);
-                    }
-                    for (LogRecord record : rec) {
-                        out.printf(f.format(record));
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                StringWriter text = new StringWriter();
+                PrintWriter out = new PrintWriter(text);
+                int lc = textArea.getLineCount();
+                if (lc + rec.size() > _maxSize) {
+                    if (_maxSize - rec.size() > 0) {
+                        String[] lines = textArea.getText().split(nl);
+                        String[] output = new String[_maxSize - rec.size()];
+                        System.arraycopy(lines, lines.length - _maxSize + rec.size(), output, 0, output.length);
+                        text = new StringWriter();
+                        out = new PrintWriter(text);
+                        for (String output1 : output) {
+                            out.printf(output1 + nl);
+                        }
+                        for (LogRecord record : rec) {
+                            out.printf(f.format(record));
+                        }
+                    } else {
+                        for (LogRecord record : rec) {
+                            out.printf(f.format(record));
+                        }
                     }
                 } else {
+                    out.printf(textArea.getText());
                     for (LogRecord record : rec) {
                         out.printf(f.format(record));
                     }
                 }
-            } else {
-                out.printf(textArea.getText());
-                for (LogRecord record : rec) {
-                    out.printf(f.format(record));
-                }
-            }
 
-            textArea.setText(text.toString());
+                textArea.setText(text.toString());
+            }
         });
     }
 }

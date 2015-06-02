@@ -16,9 +16,7 @@
 package org.tros.torgo;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Interface for the main application.
@@ -42,13 +40,14 @@ public interface Controller {
      *
      * @param file
      */
-    default void openFile(File file) {
-        try {
-            openFile(file.toURI().toURL());
-        } catch (MalformedURLException ex) {
-            LogFactory.getLog(Controller.class).fatal(null, ex);
-        }
-    }
+    void openFile(File file);
+//    default void openFile(File file) {
+//        try {
+//            openFile(file.toURI().toURL());
+//        } catch (MalformedURLException ex) {
+//            LogFactory.getLog(Controller.class).fatal(null, ex);
+//        }
+//    }
 
     /**
      * Open a specified location based on URL.
@@ -85,27 +84,31 @@ public interface Controller {
     /**
      * Debug interpreter. Defaults to just start the interpreter.
      */
-    default void debugInterpreter() {
-        startInterpreter();
-    }
+    void debugInterpreter();
+//    default void debugInterpreter() {
+//        startInterpreter();
+//    }
 
     /**
      * Step over a statement; default is empty.
      */
-    default void stepOver() {
-    }
+    void stepOver();
+//    default void stepOver() {
+//    }
 
     /**
      * Pause interpreter; default is empty.
      */
-    default void pauseInterpreter() {
-    }
+    void pauseInterpreter();
+//    default void pauseInterpreter() {
+//    }
 
     /**
      * Resume interpreter; default is empty.
      */
-    default void resumeInterpreter() {
-    }
+    void resumeInterpreter();
+//    default void resumeInterpreter() {
+//    }
 
     /**
      * Close the application/controller.

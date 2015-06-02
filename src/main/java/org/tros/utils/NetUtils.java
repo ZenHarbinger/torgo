@@ -12,7 +12,6 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
@@ -65,7 +64,7 @@ public class NetUtils {
 
         Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
         NetworkInterface ni;
-        ArrayList<InetAddress> ret = new ArrayList<>();
+        ArrayList<InetAddress> ret = new ArrayList<InetAddress>();
         while (nis.hasMoreElements()) {
             ni = nis.nextElement();
             if (!ni.isLoopback()/*not loopback*/ && ni.isUp()/*it works now*/) {

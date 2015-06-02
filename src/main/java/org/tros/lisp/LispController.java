@@ -15,6 +15,7 @@
  */
 package org.tros.lisp;
 
+import java.io.File;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 import org.tros.torgo.ControllerBase;
@@ -57,6 +58,10 @@ public class LispController extends ControllerBase {
     @Override
     public String getLang() {
         return "lisp";
+    }
+
+    @Override
+    public void openFile(File file) {
     }
     
 }

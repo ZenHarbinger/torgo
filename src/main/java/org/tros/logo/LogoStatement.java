@@ -94,182 +94,144 @@ class LogoStatement extends LogoBlock {
         scope.set(TURTLE_ANGLE_VAR, new InterpreterValue(NumberType.Instance, canvas.getTurtleAngle()));
 
         ReturnValue success = ReturnValue.SUCCESS;
-        switch (command) {
-            case "fd":
-                canvas.forward(((Number) ExpressionListener.evaluate(scope, ((logoParser.FdContext) ctx).expression()).getValue()).doubleValue());
-                break;
-            case "bk":
-                canvas.backward(((Number) ExpressionListener.evaluate(scope, ((logoParser.BkContext) ctx).expression()).getValue()).doubleValue());
-                break;
-            case "lt":
-                canvas.left(((Number) ExpressionListener.evaluate(scope, ((logoParser.LtContext) ctx).expression()).getValue()).doubleValue());
-                break;
-            case "rt":
-                canvas.right(((Number) ExpressionListener.evaluate(scope, ((logoParser.RtContext) ctx).expression()).getValue()).doubleValue());
-                break;
-            case "setxy": {
-                logoParser.SetxyContext fd = (logoParser.SetxyContext) ctx;
-                double x = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).doubleValue();
-                double y = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).doubleValue();
-                canvas.setXY(x, y);
-                break;
-            }
-            case "pd":
-                canvas.penDown();
-                break;
-            case "pu":
-                canvas.penUp();
-                break;
-            case "stop":
-                //note, this is the one time false is returned (except thread halting).
-                //this is used to break out of functions.
-                success = ReturnValue.RETURN;
-                break;
-            case "pc": {
-                logoParser.PcContext fd = (logoParser.PcContext) ctx;
-                if (fd.expression().size() >= 3) {
-                    int a = 255;
-                    int r = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).intValue();
-                    int g = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).intValue();
-                    int b = ((Number) ExpressionListener.evaluate(scope, fd.expression(2)).getValue()).intValue();
-                    if (fd.expression().size() > 3) {
-                        a = ((Number) ExpressionListener.evaluate(scope, fd.expression(3)).getValue()).intValue();
-                    }
-                    canvas.pencolor(r, g, b, a);
-                } else if (fd.hexcolor() != null) {
-                    canvas.pencolor(fd.hexcolor().HEX().toString());
-                } else {
-                    String name = fd.name().STRING().getText();
-                    canvas.pencolor(name);
+        if ("fd".equals(command)) {
+            canvas.forward(((Number) ExpressionListener.evaluate(scope, ((logoParser.FdContext) ctx).expression()).getValue()).doubleValue());
+        } else if ("bk".equals(command)) {
+            canvas.backward(((Number) ExpressionListener.evaluate(scope, ((logoParser.BkContext) ctx).expression()).getValue()).doubleValue());
+        } else if ("lt".equals(command)) {
+            canvas.left(((Number) ExpressionListener.evaluate(scope, ((logoParser.LtContext) ctx).expression()).getValue()).doubleValue());
+        } else if ("rt".equals(command)) {
+            canvas.right(((Number) ExpressionListener.evaluate(scope, ((logoParser.RtContext) ctx).expression()).getValue()).doubleValue());
+        } else if ("setxy".equals(command)) {
+            logoParser.SetxyContext fd = (logoParser.SetxyContext) ctx;
+            double x = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).doubleValue();
+            double y = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).doubleValue();
+            canvas.setXY(x, y);
+        } else if ("pd".equals(command)) {
+            canvas.penDown();
+        } else if ("pu".equals(command)) {
+            canvas.penUp();
+        } else if ("stop".equals(command)) {
+            //note, this is the one time false is returned (except thread halting).
+            //this is used to break out of functions.
+            success = ReturnValue.RETURN;
+        } else if ("pc".equals(command)) {
+            logoParser.PcContext fd = (logoParser.PcContext) ctx;
+            if (fd.expression().size() >= 3) {
+                int a = 255;
+                int r = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).intValue();
+                int g = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).intValue();
+                int b = ((Number) ExpressionListener.evaluate(scope, fd.expression(2)).getValue()).intValue();
+                if (fd.expression().size() > 3) {
+                    a = ((Number) ExpressionListener.evaluate(scope, fd.expression(3)).getValue()).intValue();
                 }
-                break;
+                canvas.pencolor(r, g, b, a);
+            } else if (fd.hexcolor() != null) {
+                canvas.pencolor(fd.hexcolor().HEX().toString());
+            } else {
+                String name = fd.name().STRING().getText();
+                canvas.pencolor(name);
             }
-            case "cc": {
-                logoParser.CcContext fd = (logoParser.CcContext) ctx;
-                if (fd.expression().size() == 3) {
-                    int r = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).intValue();
-                    int g = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).intValue();
-                    int b = ((Number) ExpressionListener.evaluate(scope, fd.expression(2)).getValue()).intValue();
-                    canvas.canvascolor(r, g, b);
-                } else if (fd.hexcolor() != null) {
-                    canvas.canvascolor(fd.hexcolor().HEX().toString());
-                } else {
-                    String name = fd.name().STRING().getText();
-                    canvas.canvascolor(name);
-                }
-                break;
+        } else if ("cc".equals(command)) {
+            logoParser.CcContext fd = (logoParser.CcContext) ctx;
+            if (fd.expression().size() == 3) {
+                int r = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).intValue();
+                int g = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).intValue();
+                int b = ((Number) ExpressionListener.evaluate(scope, fd.expression(2)).getValue()).intValue();
+                canvas.canvascolor(r, g, b);
+            } else if (fd.hexcolor() != null) {
+                canvas.canvascolor(fd.hexcolor().HEX().toString());
+            } else {
+                String name = fd.name().STRING().getText();
+                canvas.canvascolor(name);
             }
-            case "ds": {
-                logoParser.DsContext fd = (logoParser.DsContext) ctx;
-                String str = null;
-                if (fd.value().STRINGLITERAL() != null) {
-                    str = fd.value().STRINGLITERAL().getText().substring(1);
-                } else if (fd.value().deref() != null) {
-                    //this doesn't seem to be called during dref, instead it is
-                    //evaluated as an expression...
+        } else if ("ds".equals(command)) {
+            logoParser.DsContext fd = (logoParser.DsContext) ctx;
+            String str = null;
+            if (fd.value().STRINGLITERAL() != null) {
+                str = fd.value().STRINGLITERAL().getText().substring(1);
+            } else if (fd.value().deref() != null) {
+                //this doesn't seem to be called during dref, instead it is
+                //evaluated as an expression...
 //                    String n = fd.value().deref().name().STRING().toString();
 //                    str = Double.toString(scope.get(n));
-                } else if (fd.value().expression() != null) {
-                    str = ExpressionListener.evaluate(scope, fd).toString();
-                }
-                if (str != null) {
-                    canvas.drawString(str);
-                }
-                break;
+            } else if (fd.value().expression() != null) {
+                str = ExpressionListener.evaluate(scope, fd).toString();
             }
-            case "fontsize":
-                canvas.fontSize(((Number) ExpressionListener.evaluate(scope, ((logoParser.FontsizeContext) ctx).expression()).getValue()).intValue());
-                break;
-            case "fontstyle": {
-                logoParser.FontstyleContext fd = (logoParser.FontstyleContext) ctx;
-                String styleString = fd.style().getText();
-                switch (styleString) {
-                    case "bold":
-                        canvas.fontStyle(1);
-                        break;
-                    case "italic":
-                        canvas.fontStyle(2);
-                        break;
-                    case "plain":
-                        canvas.fontStyle(0);
-                        break;
-                    default:
-                        logger.warn(MessageFormat.format("Unknown {0}: {1}", new Object[]{"fontstyle", styleString}));
-                        break;
-                }
-                break;
+            if (str != null) {
+                canvas.drawString(str);
             }
-            case "fontname": {
-                logoParser.FontnameContext fd = (logoParser.FontnameContext) ctx;
-                String name = fd.name().STRING().getText();
-                canvas.fontName(name);
-                break;
+        } else if ("fontsize".equals(command)) {
+            canvas.fontSize(((Number) ExpressionListener.evaluate(scope, ((logoParser.FontsizeContext) ctx).expression()).getValue()).intValue());
+        } else if ("fontstyle".equals(command)) {
+            logoParser.FontstyleContext fd = (logoParser.FontstyleContext) ctx;
+            String styleString = fd.style().getText();
+            if ("bold".equals(command)) {
+                canvas.fontStyle(1);
+            } else if ("italic".equals(command)) {
+                canvas.fontStyle(2);
+            } else if ("plain".equals(command)) {
+                canvas.fontStyle(0);
+            } else {
+                logger.warn(MessageFormat.format("Unknown {0}: {1}", new Object[]{"fontstyle", styleString}));
             }
-            case "pause":
-                canvas.pause(((Number) ExpressionListener.evaluate(scope, ((logoParser.PauseContext) ctx).expression()).getValue()).intValue());
-                break;
-            case "cs":
-                canvas.clear();
-                break;
-            case "home":
-                canvas.home();
-                break;
-            case "ht":
-                canvas.hideTurtle();
-                break;
-            case "st":
-                canvas.showTurtle();
-                break;
-            case "make": {
-                String var = ctx.getChild(1).getText().substring(1);
-                scope.set(var, ExpressionListener.evaluate(scope, ctx.getChild(2)));
-                break;
-            }
-            case "localmake": {
+        } else if ("fontname".equals(command)) {
+            logoParser.FontnameContext fd = (logoParser.FontnameContext) ctx;
+            String name = fd.name().STRING().getText();
+            canvas.fontName(name);
+        } else if ("pause".equals(command)) {
+            canvas.pause(((Number) ExpressionListener.evaluate(scope, ((logoParser.PauseContext) ctx).expression()).getValue()).intValue());
+        } else if ("cs".equals(command)) {
+            canvas.clear();
+        } else if ("home".equals(command)) {
+            canvas.home();
+        } else if ("ht".equals(command)) {
+            canvas.hideTurtle();
+        } else if ("st".equals(command)) {
+            canvas.showTurtle();
+        } else if ("make".equals(command)) {
+            String var = ctx.getChild(1).getText().substring(1);
+            scope.set(var, ExpressionListener.evaluate(scope, ctx.getChild(2)));
+        } else if ("localmake".equals(command)) {
                 //this is the statement that is why we don't do a scope.push() at the
-                //beginning of this method.
-                String var = ctx.getChild(1).getText().substring(1);
-                scope.setNew(var, ExpressionListener.evaluate(scope, ctx.getChild(2)));
-                break;
-            }
-            case "print": {
-                //will need to support strings...
-                InterpreterValue evaluate = ExpressionListener.evaluate(scope, ctx.getChild(1));
-                canvas.message(this.getClass().getName() + " -> " + evaluate.getValue().toString());
-                break;
-            }
-            default:
-                //if it is not a known value form above, it is probably a funciton,
-                //get the function by name and invoke.
-                CodeFunction lf = getFunction(command, scope);
-                if (lf != null) {
-                    //get the procedure declaration so we can get the parameter names to set to values from the invocation.
-                    logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) lf.getParserRuleContext();
-                    ArrayList<String> paramNames = new ArrayList<>();
-                    HashMap<String, InterpreterValue> paramValues = new HashMap<>();
+            //beginning of this method.
+            String var = ctx.getChild(1).getText().substring(1);
+            scope.setNew(var, ExpressionListener.evaluate(scope, ctx.getChild(2)));
+        } else if ("print".equals(command)) {
+            //will need to support strings...
+            InterpreterValue evaluate = ExpressionListener.evaluate(scope, ctx.getChild(1));
+            canvas.message(this.getClass().getName() + " -> " + evaluate.getValue().toString());
+        } else {
+            //if it is not a known value form above, it is probably a funciton,
+            //get the function by name and invoke.
+            CodeFunction lf = getFunction(command, scope);
+            if (lf != null) {
+                //get the procedure declaration so we can get the parameter names to set to values from the invocation.
+                logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) lf.getParserRuleContext();
+                ArrayList<String> paramNames = new ArrayList<String>();
+                HashMap<String, InterpreterValue> paramValues = new HashMap<String, InterpreterValue>();
 
-                    //get the parameter names
-                    funct.parameterDeclarations().stream().forEach((param) -> {
-                        paramNames.add(param.getText().substring(1));
-                    });
-
-                    logoParser.ProcedureInvocationContext context = (logoParser.ProcedureInvocationContext) ctx;
-
-                    //get the paremeter values
-                    for (int ii = 0; ii < paramNames.size(); ii++) {
-                        paramValues.put(paramNames.get(ii), ExpressionListener.evaluate(scope, context.expression(ii)));
-                    }
-
-                    //Invoke the procedure w/ the parameters
-                    success = lf.process(scope, paramValues);
-                } else {
-                    //no function by that name was found.
-                    //halt interpreting.
-                    success = ReturnValue.HALT;
-                    canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
-                    logger.warn(MessageFormat.format("process(): UNKNOWN -> {0}", new Object[]{command}));
+                //get the parameter names
+                for (logoParser.ParameterDeclarationsContext param : funct.parameterDeclarations()) {
+                    paramNames.add(param.getText().substring(1));
                 }
-                break;
+
+                logoParser.ProcedureInvocationContext context = (logoParser.ProcedureInvocationContext) ctx;
+
+                //get the paremeter values
+                for (int ii = 0; ii < paramNames.size(); ii++) {
+                    paramValues.put(paramNames.get(ii), ExpressionListener.evaluate(scope, context.expression(ii)));
+                }
+
+                //Invoke the procedure w/ the parameters
+                success = lf.process(scope, paramValues);
+            } else {
+                //no function by that name was found.
+                //halt interpreting.
+                success = ReturnValue.HALT;
+                canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
+                logger.warn(MessageFormat.format("process(): UNKNOWN -> {0}", new Object[]{command}));
+            }
         }
         canvas.repaint();
 

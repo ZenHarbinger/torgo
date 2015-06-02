@@ -18,6 +18,7 @@ package org.tros.torgo.swing;
 import org.tros.torgo.Controller;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
@@ -76,27 +77,55 @@ public class TorgoMenuBar extends JMenuBar {
 
         logConsole = new JMenuItem("View Log Console");
 
-        fileNew.addActionListener((ActionEvent e) -> {
-            controller.newFile();
+        fileNew.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                controller.newFile();
+            }
         });
-        fileOpen.addActionListener((ActionEvent e) -> {
-            controller.openFile();
+        fileOpen.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                controller.openFile();
+            }
         });
-        fileClose.addActionListener((ActionEvent e) -> {
-            controller.close();
+        fileClose.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                controller.close();
+            }
         });
-        fileSave.addActionListener((ActionEvent e) -> {
-            controller.saveFile();
+        fileSave.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                controller.saveFile();
+            }
         });
-        fileSaveAs.addActionListener((ActionEvent e) -> {
-            controller.saveFileAs();
+        fileSaveAs.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                controller.saveFileAs();
+            }
         });
-        fileQuit.addActionListener((ActionEvent e) -> {
-            System.exit(0);
+        fileQuit.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                System.exit(0);
+            }
         });
 
-        logConsole.addActionListener((ActionEvent e) -> {
-            LogConsole.CONSOLE.setVisible(true);
+        logConsole.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                LogConsole.CONSOLE.setVisible(true);
+            }
         });
 
         fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK));

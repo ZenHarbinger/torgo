@@ -15,7 +15,6 @@
  */
 package org.tros.torgo;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,9 +37,10 @@ public interface CodeFunction extends CodeBlock {
      * @return 
      */
     @Override
-    default ReturnValue process(Scope scope) {
-        return process(scope, new HashMap<>());
-    }
+    ReturnValue process(Scope scope);
+//    default ReturnValue process(Scope scope) {
+//        return process(scope, new HashMap<>());
+//    }
 
     /**
      * Process with parameters.
