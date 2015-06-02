@@ -24,11 +24,11 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.torgo.CodeBlock;
 import org.tros.torgo.CodeFunction;
 import org.tros.torgo.InterpreterListener;
-import org.tros.torgo.InterpreterType.Type;
 import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
+import org.tros.torgo.types.NullType;
 import org.tros.utils.ImmutableHaltMonitor;
 
 /**
@@ -134,7 +134,7 @@ abstract class LogoBlock implements CodeBlock {
         });
 
         ReturnValue.ProcessResult res = success.get() ? (stop.get() ? ReturnValue.ProcessResult.RETURN : ReturnValue.ProcessResult.SUCCESS) : ReturnValue.ProcessResult.HALT;
-        return new ReturnValue(Type.NULL, null, res);
+        return new ReturnValue(NullType.Instance, null, res);
     }
 
     /**
@@ -246,16 +246,6 @@ abstract class LogoBlock implements CodeBlock {
      */
     protected void setParent(CodeBlock value) {
         this.parent = value;
-    }
-
-    /**
-     * Get the type.
-     *
-     * @return
-     */
-    @Override
-    public Type getType() {
-        return Type.COMMAND;
     }
 
     /**

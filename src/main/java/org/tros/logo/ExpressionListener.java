@@ -24,6 +24,8 @@ import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.InterpreterType;
 import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.Scope;
+import org.tros.torgo.types.NumberType;
+import org.tros.torgo.types.StringType;
 
 /**
  * Evaluates expressions. Builds a stack/tree of expressions and evaluates them
@@ -86,7 +88,7 @@ class ExpressionListener extends logoBaseListener {
                 num1 = Math.pow(num1, num2);
                 break;
         }
-        return new InterpreterValue(InterpreterType.Type.NUMBER, num1);
+        return new InterpreterValue(NumberType.Instance, num1);
     }
 
     @Override
@@ -112,7 +114,7 @@ class ExpressionListener extends logoBaseListener {
     @Override
     public void enterNumber(logoParser.NumberContext ctx) {
         Double d = Double.parseDouble(ctx.NUMBER().getSymbol().getText());
-        value.peek().add(new InterpreterValue(InterpreterType.Type.NUMBER, d));
+        value.peek().add(new InterpreterValue(NumberType.Instance, d));
     }
 
     @Override
@@ -156,7 +158,7 @@ class ExpressionListener extends logoBaseListener {
     public void exitRandom(logoParser.RandomContext ctx) {
         ArrayList<InterpreterValue> values = value.pop();
         int max = ((Number) values.get(0).getValue()).intValue();
-        InterpreterValue v = new InterpreterValue(InterpreterType.Type.NUMBER, org.tros.utils.Random.nextInt(max));
+        InterpreterValue v = new InterpreterValue(NumberType.Instance, org.tros.utils.Random.nextInt(max));
         value.peek().add(v);
     }
 
@@ -165,14 +167,14 @@ class ExpressionListener extends logoBaseListener {
         String x = ctx.getChild(0).getText();
         ArrayList<InterpreterValue> peek = this.value.peek();
         int index = peek.size() - 1;
-        if (peek.get(index).getType() == InterpreterType.Type.NUMBER) {
+        if (peek.get(index).getType().equals(NumberType.Instance)) {
             InterpreterValue val = peek.remove(index);
             Object o = val.getValue();
             double n = ((Number) val.getValue()).doubleValue();
             if ("-".equals(x)) {
                 n *= -1;
             }
-            peek.add(index, new InterpreterValue(InterpreterType.Type.NUMBER, n));
+            peek.add(index, new InterpreterValue(NumberType.Instance, n));
         }
     }
 
@@ -199,7 +201,7 @@ class ExpressionListener extends logoBaseListener {
     @Override
     public void enterValue(logoParser.ValueContext ctx) {
         if (ctx.STRINGLITERAL() != null) {
-            value.peek().add(new InterpreterValue(InterpreterType.Type.STRING, ctx.STRINGLITERAL().getText().substring(1)));
+            value.peek().add(new InterpreterValue(StringType.Instance, ctx.STRINGLITERAL().getText().substring(1)));
         }
     }
 

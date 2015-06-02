@@ -15,6 +15,8 @@
  */
 package org.tros.torgo;
 
+import org.tros.torgo.types.NullType;
+
 /**
  *
  * @author matta
@@ -24,17 +26,17 @@ public class ReturnValue extends InterpreterValue {
     /**
      * Singleton RETURN type w/ no value.
      */
-    public static final ReturnValue RETURN = new ReturnValue(Type.NULL, null, ProcessResult.RETURN);
+    public static final ReturnValue RETURN = new ReturnValue(NullType.Instance, null, ProcessResult.RETURN);
 
     /**
      * Singleton SUCCESS type w/ no value.
      */
-    public static final ReturnValue SUCCESS = new ReturnValue(Type.NULL, null, ProcessResult.SUCCESS);
+    public static final ReturnValue SUCCESS = new ReturnValue(NullType.Instance, null, ProcessResult.SUCCESS);
 
     /**
      * Singleton HALT type w/ no value.
      */
-    public static final ReturnValue HALT = new ReturnValue(Type.NULL, null, ProcessResult.HALT);
+    public static final ReturnValue HALT = new ReturnValue(NullType.Instance, null, ProcessResult.HALT);
 
     /**
      * Return type enum.
@@ -55,7 +57,7 @@ public class ReturnValue extends InterpreterValue {
      * @param value
      * @param result
      */
-    public ReturnValue(Type type, Object value, ProcessResult result) {
+    public ReturnValue(InterpreterType type, Object value, ProcessResult result) {
         super(type, value);
         this.result = result;
     }

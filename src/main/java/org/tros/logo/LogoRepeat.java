@@ -24,6 +24,7 @@ import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
+import org.tros.torgo.types.NumberType;
 
 /**
  * Represents a repeating block in Logo.
@@ -66,7 +67,7 @@ class LogoRepeat extends LogoBlock {
         ReturnValue success = ReturnValue.SUCCESS;
         for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
             //this sets the repcount variable for dereferencing in the block.
-            scope.setNew(REPCOUNT_VAR, new InterpreterValue(Type.NUMBER, ii + 1));
+            scope.setNew(REPCOUNT_VAR, new InterpreterValue(NumberType.Instance, ii + 1));
             success = super.process(scope);
         }
 

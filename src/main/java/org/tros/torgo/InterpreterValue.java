@@ -15,16 +15,18 @@
  */
 package org.tros.torgo;
 
+import org.tros.torgo.types.NullType;
+
 /**
  *
  * @author matta
  */
-public class InterpreterValue implements InterpreterType {
+public class InterpreterValue {
 
-    public static final InterpreterValue NULL = new InterpreterValue(Type.NULL, null);
+    public static final InterpreterValue NULL = new InterpreterValue(NullType.Instance, null);
 
     private final Object value;
-    private final Type type;
+    private final InterpreterType type;
 
     /**
      * Constructor.
@@ -32,7 +34,7 @@ public class InterpreterValue implements InterpreterType {
      * @param type
      * @param value
      */
-    public InterpreterValue(Type type, Object value) {
+    public InterpreterValue(InterpreterType type, Object value) {
         this.value = value;
         this.type = type;
     }
@@ -51,8 +53,7 @@ public class InterpreterValue implements InterpreterType {
      *
      * @return
      */
-    @Override
-    public Type getType() {
+    public InterpreterType getType() {
         return type;
     }
 

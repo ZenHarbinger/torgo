@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo;
+package org.tros.torgo.types;
+
+import org.tros.torgo.InterpreterType;
 
 /**
  *
  * @author matta
  */
-public interface InterpreterType {
+class InterpreterTypeImpl implements InterpreterType {
 
-//    public enum Type {
-//
-//        STRING,
-//        NUMBER,
-//        COMMAND,
-//        BOOLEAN,
-//        NULL
-//    }
+    @Override
+    public boolean equals(Object o) {
+        return (o.getClass() == this.getClass());
+    }
 
-//    /**
-//     * Get the type.
-//     *
-//     * @return
-//     */
-//    InterpreterValue getType();
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

@@ -19,7 +19,6 @@ import java.awt.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;

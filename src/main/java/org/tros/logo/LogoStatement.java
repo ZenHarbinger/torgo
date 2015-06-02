@@ -26,6 +26,7 @@ import org.tros.torgo.CodeFunction;
 import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.Scope;
+import org.tros.torgo.types.NumberType;
 
 /**
  * This is perhaps the most trickily named class. This inherits from LogoBlock,
@@ -88,9 +89,9 @@ class LogoStatement extends LogoBlock {
         //value right off of the stack again.
         listeners.fire().currStatement(this, scope);
 
-        scope.set(TURTLE_X_VAR, new InterpreterValue(Type.NUMBER, canvas.getTurtleX()));
-        scope.set(TURTLE_Y_VAR, new InterpreterValue(Type.NUMBER, canvas.getTurtleY()));
-        scope.set(TURTLE_ANGLE_VAR, new InterpreterValue(Type.NUMBER, canvas.getTurtleAngle()));
+        scope.set(TURTLE_X_VAR, new InterpreterValue(NumberType.Instance, canvas.getTurtleX()));
+        scope.set(TURTLE_Y_VAR, new InterpreterValue(NumberType.Instance, canvas.getTurtleY()));
+        scope.set(TURTLE_ANGLE_VAR, new InterpreterValue(NumberType.Instance, canvas.getTurtleAngle()));
 
         ReturnValue success = ReturnValue.SUCCESS;
         switch (command) {

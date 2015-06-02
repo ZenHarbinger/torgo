@@ -24,6 +24,7 @@ import org.tros.torgo.InterpreterValue;
 import org.tros.torgo.ReturnValue;
 import org.tros.torgo.ReturnValue.ProcessResult;
 import org.tros.torgo.Scope;
+import org.tros.torgo.types.NumberType;
 
 /**
  * Supports for (up-to and down-to) with and without a specified step value.
@@ -99,7 +100,7 @@ class LogoFor extends LogoBlock {
             //not sure if this should be <=
             boolean doMore = type == ForType.INCREASE ? start < stop : stop < start;
             while (success && doMore) {
-                scope.setNew(variable, new InterpreterValue(Type.NUMBER, start));
+                scope.setNew(variable, new InterpreterValue(NumberType.Instance, start));
                 success = success && super.process(scope).getResult() == ProcessResult.SUCCESS;
 
                 switch (type) {
