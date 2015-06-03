@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *     http.equals(op))//www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,63 +79,63 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterExpression(jvmBasicParser.ExpressionContext ctx) {
-        super.enterExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.enterExpression(ctx);
     }
 
     @Override
     public void exitExpression(jvmBasicParser.ExpressionContext ctx) {
         scope.pop();
-        super.exitExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.exitExpression(ctx);
     }
 
     @Override
     public void enterRelationalExpression(jvmBasicParser.RelationalExpressionContext ctx) {
-        super.enterRelationalExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.enterRelationalExpression(ctx);
     }
 
     @Override
     public void exitRelationalExpression(jvmBasicParser.RelationalExpressionContext ctx) {
-        super.exitRelationalExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.exitRelationalExpression(ctx);
     }
 
     @Override
     public void enterAddingExpression(jvmBasicParser.AddingExpressionContext ctx) {
-        super.enterAddingExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.enterAddingExpression(ctx);
     }
 
     @Override
     public void exitAddingExpression(jvmBasicParser.AddingExpressionContext ctx) {
-        super.exitAddingExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.exitAddingExpression(ctx);
     }
 
     @Override
     public void enterMultiplyingExpression(jvmBasicParser.MultiplyingExpressionContext ctx) {
-        super.enterMultiplyingExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.enterMultiplyingExpression(ctx);
     }
 
     @Override
     public void exitMultiplyingExpression(jvmBasicParser.MultiplyingExpressionContext ctx) {
-        super.exitMultiplyingExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.exitMultiplyingExpression(ctx);
     }
 
     @Override
     public void enterExponentExpression(jvmBasicParser.ExponentExpressionContext ctx) {
-        super.enterExponentExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.enterExponentExpression(ctx);
     }
 
     @Override
     public void exitExponentExpression(jvmBasicParser.ExponentExpressionContext ctx) {
-        super.exitExponentExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.exitExponentExpression(ctx);
     }
 
     @Override
     public void enterSignExpression(jvmBasicParser.SignExpressionContext ctx) {
-        super.enterSignExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.enterSignExpression(ctx);
     }
 
     @Override
     public void exitSignExpression(jvmBasicParser.SignExpressionContext ctx) {
-        super.exitSignExpression(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.exitSignExpression(ctx);
     }
 
     @Override
@@ -148,12 +148,12 @@ class ExpressionListener extends jvmBasicBaseListener {
             value.peek().add(ctx.getText());
         } else {
         }
-        super.enterFunc(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.enterFunc(ctx);
     }
 
     @Override
     public void exitFunc(jvmBasicParser.FuncContext ctx) {
-        super.exitFunc(ctx); //To change body of generated methods, choose Tools | Templates.
+        super.exitFunc(ctx);
     }
 
     public Object getValue() {

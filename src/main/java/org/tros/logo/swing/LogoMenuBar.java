@@ -161,7 +161,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(base + "/resource.manifest");
             List<String> readLines = IOUtils.readLines(resourceAsStream);
             Collections.sort(readLines);
-            for(String line : readLines) {
+            for (String line : readLines) {
                 JMenuItem jmi = new JMenuItem(base + "/" + line);
                 if (!jmi.getText().endsWith("manifest")) {
                     samplesMenu.add(jmi);
@@ -175,7 +175,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
                         }
                     });
                 }
-            };
+            }
         } catch (IOException ex) {
             LogFactory.getLog(LogoMenuBar.class.getName()).fatal(null, ex);
         }

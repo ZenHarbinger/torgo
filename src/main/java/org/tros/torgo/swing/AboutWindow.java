@@ -90,7 +90,8 @@ public class AboutWindow extends JDialog {
                 try {
                     URI uri = new URI(TORGO_ADDRESS);
                     Desktop.getDesktop().browse(uri);
-                } catch (URISyntaxException ex) {} catch (IOException ex) {
+                } catch (URISyntaxException ex) {
+                } catch (IOException ex) {
                     LogFactory.getLog(AboutWindow.class).warn(null, ex);
                 }
             }

@@ -18,15 +18,15 @@ package org.tros.jvmbasic;
 import org.tros.jvmbasic.antlr.jvmBasicBaseListener;
 
 /**
- * Gets a list of commands to execute.  This does not execute then, but
- * instead builds a tree of commands to run.  Once this tree is built,
- * it will be interpreted.
+ * Gets a list of commands to execute. This does not execute then, but instead
+ * builds a tree of commands to run. Once this tree is built, it will be
+ * interpreted.
+ *
  * @author matta
  */
 class LexcialListener extends jvmBasicBaseListener {
 
 //    private final Stack<LogoBlock> stack = new Stack<>();
-
     /**
      * Hidden constructor, force use of "lexicalAnalysis" method.
      */

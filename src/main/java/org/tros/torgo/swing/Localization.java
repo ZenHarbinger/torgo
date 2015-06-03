@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 public class Localization {
 
     private static ResourceBundle resources;
+
     static {
         try {
             resources = ResourceBundle.getBundle("LocalizedStrings");

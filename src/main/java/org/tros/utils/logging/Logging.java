@@ -3,7 +3,7 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils.logging;
 
 import org.tros.utils.BuildInfo;
@@ -94,9 +94,9 @@ public final class Logging {
                             && lineFromFile.contains("java.util.logging.FileHandler")) {
                         lookForFile = true;
                     }
-                    if (lookForFile &&
-                            definedLogFile != null &&
-                            lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
+                    if (lookForFile
+                            && definedLogFile != null
+                            && lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
                         lineFromFile = "java.util.logging.FileHandler.pattern = " + definedLogFile;
                     }
                     sb.append(lineFromFile).append(System.getProperty("line.separator"));
@@ -108,7 +108,8 @@ public final class Logging {
                     fis.close();
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {} catch (SecurityException ex) {
+                } catch (IOException ex) {
+                } catch (SecurityException ex) {
                     Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (FileNotFoundException ex) {

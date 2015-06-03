@@ -3,7 +3,7 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils;
 
 import java.net.InetAddress;
@@ -19,10 +19,10 @@ import org.apache.commons.logging.LogFactory;
  * @author matta
  */
 public class NetUtils {
-    
+
     private static InetAddress _ip;
     private static InetAddress[] _ips;
-    
+
     static {
         try {
             _ip = getIP();

@@ -33,8 +33,9 @@ public interface CodeFunction extends CodeBlock {
 
     /**
      * Run function w/o any parameters
+     *
      * @param scope
-     * @return 
+     * @return
      */
     @Override
     ReturnValue process(Scope scope);

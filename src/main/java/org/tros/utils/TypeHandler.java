@@ -160,20 +160,29 @@ public final class TypeHandler {
         if (method != null) {
             try {
                 return method.invoke(null, val);
-            } catch (IllegalAccessException ex) {} catch (IllegalArgumentException ex) {} catch (InvocationTargetException ex) {
+            } catch (IllegalAccessException ex) {
+            } catch (IllegalArgumentException ex) {
+            } catch (InvocationTargetException ex) {
                 LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
         } else {
             try {
                 return type.getConstructor(String.class).newInstance(val);
-            } catch (NoSuchMethodException ex) {} catch (SecurityException ex) {} catch (InstantiationException ex) {} catch (IllegalAccessException ex) {} catch (IllegalArgumentException ex) {} catch (InvocationTargetException ex) {
+            } catch (NoSuchMethodException ex) {
+            } catch (SecurityException ex) {
+            } catch (InstantiationException ex) {
+            } catch (IllegalAccessException ex) {
+            } catch (IllegalArgumentException ex) {
+            } catch (InvocationTargetException ex) {
                 //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
         try {
             return Class.forName(val).newInstance();
-        } catch (ClassNotFoundException ex) {} catch (InstantiationException ex) {} catch (IllegalAccessException ex) {
+        } catch (ClassNotFoundException ex) {
+        } catch (InstantiationException ex) {
+        } catch (IllegalAccessException ex) {
             //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

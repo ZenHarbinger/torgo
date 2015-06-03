@@ -3,7 +3,7 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class Mailbox<T> {
         m_msgs = new ArrayList<T>();
         m_halt = false;
     }
-    
+
     public synchronized int size() {
         return m_msgs.size();
     }
@@ -100,7 +100,7 @@ public class Mailbox<T> {
         m_msgs.clear();
         return ret;
     }
-    
+
     public boolean isHalted() {
         return m_halt;
     }

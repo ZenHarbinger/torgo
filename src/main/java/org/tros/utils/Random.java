@@ -3,7 +3,7 @@
  * License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
  * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-*/
+ */
 package org.tros.utils;
 
 import java.io.IOException;
@@ -16,13 +16,14 @@ import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * This is a utility class for accessing random members of a
- * collection and also generating random numbers/values.
+ * This is a utility class for accessing random members of a collection and also
+ * generating random numbers/values.
  *
  * In this class, there are PUID values which is for pseudo-unique-ID values.
  * These values are unique within a given simulation, but can be duplicated for
  * repeatability.
- * @author matta 
+ *
+ * @author matta
  */
 public final class Random {
 

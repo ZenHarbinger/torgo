@@ -18,7 +18,7 @@ import javax.swing.JFrame;
  * @author matta
  */
 public class NamedWindow extends JFrame {
-    
+
     public static final int DEFAULT_WIDTH = 1152;
     public static final int DEFAULT_HEIGHT = 864;
 

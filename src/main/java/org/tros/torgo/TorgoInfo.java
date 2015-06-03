@@ -21,6 +21,7 @@ import java.io.Serializable;
 
 /**
  * Stores application info.
+ *
  * @author matta
  */
 public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Serializable {
@@ -38,7 +39,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Version Accessor.
-     * @return 
+     *
+     * @return
      */
     @Override
     public String getVersion() {
@@ -47,7 +49,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Version Mutator.
-     * @param value 
+     *
+     * @param value
      */
     @Override
     public void setVersion(String value) {
@@ -56,7 +59,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Build Time Accessor.
-     * @return 
+     *
+     * @return
      */
     @Override
     public String getBuildtime() {
@@ -65,7 +69,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Build Time Mutator.
-     * @param value 
+     *
+     * @param value
      */
     @Override
     public void setBuildtime(String value) {
@@ -74,7 +79,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Get the user that built the last instance.
-     * @return 
+     *
+     * @return
      */
     @Override
     public String getBuilder() {
@@ -83,7 +89,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Set the user that built the last instance.
-     * @param value 
+     *
+     * @param value
      */
     @Override
     public void setBuilder(String value) {
@@ -92,7 +99,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Get the application name.
-     * @return 
+     *
+     * @return
      */
     @Override
     public String getApplicationName() {
@@ -101,7 +109,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Set the application name.
-     * @param value 
+     *
+     * @param value
      */
     @Override
     public void setApplicationName(String value) {
@@ -110,7 +119,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Get the company name.
-     * @return 
+     *
+     * @return
      */
     @Override
     public String getCompany() {
@@ -119,7 +129,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * Set the company name.
-     * @param value 
+     *
+     * @param value
      */
     @Override
     public void setCompany(String value) {
@@ -128,7 +139,8 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
 
     /**
      * To string, return version.
-     * @return 
+     *
+     * @return
      */
     @Override
     public String toString() {

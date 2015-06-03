@@ -122,7 +122,7 @@ abstract class LogoBlock implements CodeBlock {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
 
-        for(CodeBlock lc : commands) {
+        for (CodeBlock lc : commands) {
             if (success.get() && !stop.get()) {
                 ReturnValue pr = lc.process(scope);
                 if (pr.getResult() == ReturnValue.ProcessResult.HALT) {

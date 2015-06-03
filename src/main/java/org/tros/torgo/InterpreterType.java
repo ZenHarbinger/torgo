@@ -29,7 +29,6 @@ public interface InterpreterType {
 //        BOOLEAN,
 //        NULL
 //    }
-
 //    /**
 //     * Get the type.
 //     *

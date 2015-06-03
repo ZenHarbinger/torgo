@@ -33,8 +33,8 @@ import org.tros.torgo.Scope;
 import org.tros.torgo.ScopeListener;
 
 /**
- * Allows viewing a call stack w/ variables as code is executed.
- * (Still under development.)
+ * Allows viewing a call stack w/ variables as code is executed. (Still under
+ * development.)
  *
  * @author matta
  */

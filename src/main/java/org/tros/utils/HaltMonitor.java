@@ -81,7 +81,7 @@ public final class HaltMonitor implements ImmutableHaltMonitor {
     public synchronized void halt() {
         _halted = true;
         _listeners.fire().halted(this);
-        for(HaltListener l : _listeners.getListeners()) {
+        for (HaltListener l : _listeners.getListeners()) {
             _listeners.removeListener(l);
         }
     }

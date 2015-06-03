@@ -45,7 +45,7 @@ public final class TorgoToolkit {
         controllersMap = new HashMap<String, Controller>();
         controllers = ServiceLoader.load(Controller.class);
         try {
-            for(Controller controller : controllers) {
+            for (Controller controller : controllers) {
                 logger.info(MessageFormat.format("Loaded: {0}", controller.getClass().getName()));
                 controllersMap.put(controller.getLang(), controller);
             }
@@ -56,7 +56,7 @@ public final class TorgoToolkit {
         vizualizers = ServiceLoader.load(InterpreterVisualization.class);
         try {
             Iterator<InterpreterVisualization> controllers_it = vizualizers.iterator();
-            for(InterpreterVisualization viz : vizualizers) {
+            for (InterpreterVisualization viz : vizualizers) {
                 logger.info(MessageFormat.format("Loaded: {0}", viz.getClass().getName()));
                 vizMap.put(viz.getName(), viz);
             }

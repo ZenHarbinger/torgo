@@ -63,5 +63,5 @@ public class LispController extends ControllerBase {
     @Override
     public void openFile(File file) {
     }
-    
+
 }

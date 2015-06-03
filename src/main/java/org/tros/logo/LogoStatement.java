@@ -193,7 +193,7 @@ class LogoStatement extends LogoBlock {
             String var = ctx.getChild(1).getText().substring(1);
             scope.set(var, ExpressionListener.evaluate(scope, ctx.getChild(2)));
         } else if ("localmake".equals(command)) {
-                //this is the statement that is why we don't do a scope.push() at the
+            //this is the statement that is why we don't do a scope.push() at the
             //beginning of this method.
             String var = ctx.getChild(1).getText().substring(1);
             scope.setNew(var, ExpressionListener.evaluate(scope, ctx.getChild(2)));
