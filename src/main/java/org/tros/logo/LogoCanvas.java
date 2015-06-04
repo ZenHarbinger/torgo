@@ -15,9 +15,6 @@
  */
 package org.tros.logo;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-
 /**
  * Canvas/Drawing Interface
  *
@@ -28,18 +25,8 @@ public interface LogoCanvas {
     void backward(double distance);
 
     void canvascolor(int red, int green, int blue);
-//    default void canvascolor(int red, int green, int blue) {
-//        red = Math.min(255, Math.max(0, red));
-//        green = Math.min(255, Math.max(0, green));
-//        blue = Math.min(255, Math.max(0, blue));
-//
-//        Color canvasColor = new Color(red, green, blue);
-//        canvascolor(canvasColor);
-//    }
 
     void canvascolor(String color);
-
-    void canvascolor(Color color);
 
     void clear();
 
@@ -52,8 +39,6 @@ public interface LogoCanvas {
     void fontStyle(int style);
 
     void forward(double distance);
-
-    BufferedImage getImage();
 
     void hideTurtle();
 
@@ -68,18 +53,8 @@ public interface LogoCanvas {
     void penUp();
 
     void pencolor(int red, int green, int blue, int alpha);
-//    default void pencolor(int red, int green, int blue, int alpha) {
-//        red = Math.min(255, Math.max(0, red));
-//        green = Math.min(255, Math.max(0, green));
-//        blue = Math.min(255, Math.max(0, blue));
-//
-//        Color canvasColor = new Color(red, green, blue, alpha);
-//        pencolor(canvasColor);
-//    }
 
     void pencolor(String color);
-
-    void pencolor(Color color);
 
     void repaint();
 

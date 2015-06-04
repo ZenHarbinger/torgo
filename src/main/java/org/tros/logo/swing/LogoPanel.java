@@ -15,6 +15,7 @@
  */
 package org.tros.logo.swing;
 
+import org.tros.torgo.swing.BufferedImageProvider;
 import org.tros.logo.LogoCanvas;
 import java.awt.Color;
 import java.awt.Component;
@@ -39,7 +40,7 @@ import org.tros.torgo.TorgoScreen;
 
 import org.tros.torgo.TorgoTextConsole;
 
-public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
+public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, BufferedImageProvider {
 
     private BufferedImage buffer;
     private Graphics2D g2;
@@ -234,15 +235,13 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
         g2.setColor(penColor);
     }
 
-    @Override
-    public void canvascolor(Color color) {
+    private void canvascolor(Color color) {
         g2.setColor(color);
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.setColor(penColor);
     }
 
-    @Override
-    public void pencolor(Color color) {
+    private void pencolor(Color color) {
         penColor = color;
         g2.setColor(penColor);
     }
@@ -324,7 +323,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas {
     }
 
     @Override
-    public BufferedImage getImage() {
+    public BufferedImage getBufferedImage() {
         return buffer;
     }
 

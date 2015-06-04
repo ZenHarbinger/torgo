@@ -15,6 +15,7 @@
  */
 package org.tros.logo.swing;
 
+import org.tros.torgo.swing.BufferedImageProvider;
 import org.tros.logo.LogoCanvas;
 import org.tros.torgo.swing.Localization;
 import org.tros.torgo.Controller;
@@ -139,9 +140,12 @@ public final class LogoMenuBar extends TorgoMenuBar {
 //        } else {
         try {
             // retrieve image
-            BufferedImage bi = canvas.getImage();
-            File outputfile = new File(filename);
-            ImageIO.write(bi, format, outputfile);
+            if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
+                BufferedImageProvider bip = (BufferedImageProvider)canvas;
+                BufferedImage bi = bip.getBufferedImage();
+                File outputfile = new File(filename);
+                ImageIO.write(bi, format, outputfile);
+            }
         } catch (IOException e) {
             LogFactory.getLog(LogoMenuBar.class).fatal(null, e);
         }
