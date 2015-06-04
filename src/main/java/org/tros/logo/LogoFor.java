@@ -60,12 +60,11 @@ class LogoFor extends LogoBlock {
      * Process the for loop.
      *
      * @param scope
-     * @param canvas
      * @return
      */
     @Override
     public ReturnValue process(Scope scope) {
-        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()}));
+        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
         listeners.fire().currStatement(this, scope);
 

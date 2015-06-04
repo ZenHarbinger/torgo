@@ -71,7 +71,6 @@ class LogoStatement extends LogoBlock {
      * Process the statement.
      *
      * @param scope
-     * @param canvas
      * @return
      */
     @Override
@@ -81,7 +80,7 @@ class LogoStatement extends LogoBlock {
             return ReturnValue.HALT;
         }
 
-        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", new Object[]{ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()}));
+        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()));
 
         //we don't do scope.push(this) here because of the chance we will
         //be doing a variable creation (localmake) and so it is possible
@@ -173,7 +172,7 @@ class LogoStatement extends LogoBlock {
             } else if ("plain".equals(command)) {
                 canvas.fontStyle(0);
             } else {
-                logger.warn(MessageFormat.format("Unknown {0}: {1}", new Object[]{"fontstyle", styleString}));
+                logger.warn(MessageFormat.format("Unknown {0}: {1}", "fontstyle", styleString));
             }
         } else if ("fontname".equals(command)) {
             logoParser.FontnameContext fd = (logoParser.FontnameContext) ctx;
@@ -230,7 +229,7 @@ class LogoStatement extends LogoBlock {
                 //halt interpreting.
                 success = ReturnValue.HALT;
                 canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
-                logger.warn(MessageFormat.format("process(): UNKNOWN -> {0}", new Object[]{command}));
+                logger.warn(MessageFormat.format("process(): UNKNOWN -> {0}", command));
             }
         }
         canvas.repaint();
