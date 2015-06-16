@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo;
+package org.tros.torgo.interpreter;
 
-import org.tros.torgo.types.NullType;
+import org.tros.torgo.interpreter.types.NullType;
 
 /**
  *

@@ -20,11 +20,11 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.tros.torgo.CodeFunction;
-import org.tros.torgo.InterpreterValue;
-import org.tros.torgo.ReturnValue;
-import org.tros.torgo.ReturnValue.ProcessResult;
-import org.tros.torgo.Scope;
+import org.tros.torgo.interpreter.CodeFunction;
+import org.tros.torgo.interpreter.InterpreterValue;
+import org.tros.torgo.interpreter.ReturnValue;
+import org.tros.torgo.interpreter.ReturnValue.ProcessResult;
+import org.tros.torgo.interpreter.Scope;
 
 /**
  * Supports functions with parameters.

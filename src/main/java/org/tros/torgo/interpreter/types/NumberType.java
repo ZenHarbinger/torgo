@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.types;
+package org.tros.torgo.interpreter.types;
 
-import org.tros.torgo.InterpreterType;
+import org.tros.torgo.interpreter.InterpreterType;
 
 /**
  *
  * @author matta
  */
-class InterpreterTypeImpl implements InterpreterType {
+public class NumberType extends InterpreterTypeImpl implements InterpreterType {
 
-    @Override
-    public boolean equals(Object o) {
-        return (o.getClass() == this.getClass());
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
+    public static final InterpreterType Instance = new NumberType();
 }

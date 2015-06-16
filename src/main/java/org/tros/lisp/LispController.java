@@ -20,7 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 import org.tros.torgo.ControllerBase;
 import org.tros.torgo.Controller;
-import org.tros.torgo.InterpreterThread;
+import org.tros.torgo.interpreter.InterpreterThread;
 import org.tros.torgo.TorgoScreen;
 import org.tros.torgo.TorgoTextConsole;
 

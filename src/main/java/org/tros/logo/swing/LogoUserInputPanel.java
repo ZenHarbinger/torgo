@@ -32,10 +32,10 @@ import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
-import org.tros.torgo.CodeBlock;
+import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
-import org.tros.torgo.InterpreterListener;
-import org.tros.torgo.Scope;
+import org.tros.torgo.interpreter.InterpreterListener;
+import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.TorgoTextConsole;
 
 public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole {

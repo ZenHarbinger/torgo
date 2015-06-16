@@ -23,10 +23,10 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
-import org.tros.torgo.CodeBlock;
+import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
-import org.tros.torgo.InterpreterListener;
-import org.tros.torgo.Scope;
+import org.tros.torgo.interpreter.InterpreterListener;
+import org.tros.torgo.interpreter.Scope;
 
 /**
  * Creates a base Toolbar.

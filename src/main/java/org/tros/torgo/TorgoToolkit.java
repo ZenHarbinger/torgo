@@ -55,7 +55,6 @@ public final class TorgoToolkit {
         vizMap = new HashMap<String, InterpreterVisualization>();
         vizualizers = ServiceLoader.load(InterpreterVisualization.class);
         try {
-            Iterator<InterpreterVisualization> controllers_it = vizualizers.iterator();
             for (InterpreterVisualization viz : vizualizers) {
                 logger.info(MessageFormat.format("Loaded: {0}", viz.getClass().getName()));
                 vizMap.put(viz.getName(), viz);
@@ -75,8 +74,8 @@ public final class TorgoToolkit {
     /**
      * Get a desired controller.
      *
-     * @param name
-     * @return
+     * @param name The desired language controller to get.
+     * @return Controller of the desired type.
      */
     public static Controller getController(String name) {
         return controllersMap.get(name);
@@ -85,7 +84,7 @@ public final class TorgoToolkit {
     /**
      * Get the name of all available controllers.
      *
-     * @return
+     * @return Get a list of controllers available.
      */
     public static Set<String> getToolkits() {
         return controllersMap.keySet();
@@ -94,7 +93,7 @@ public final class TorgoToolkit {
     /**
      * Get the name of all available visualizers.
      *
-     * @return
+     * @return Get a list of visualizers available.
      */
     public static Set<String> getVisualizers() {
         return vizMap.keySet();
@@ -103,8 +102,8 @@ public final class TorgoToolkit {
     /**
      * Get a desired visualizer.
      *
-     * @param name
-     * @return
+     * @param name The desired visualizer to get.
+     * @return The desired visualizer.
      */
     public static InterpreterVisualization getVisualization(String name) {
         return vizMap.get(name);

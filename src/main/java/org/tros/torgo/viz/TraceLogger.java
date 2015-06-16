@@ -19,14 +19,14 @@ import java.text.MessageFormat;
 import java.util.Calendar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.tros.torgo.CodeBlock;
+import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
-import org.tros.torgo.InterpreterListener;
-import org.tros.torgo.InterpreterThread;
-import org.tros.torgo.InterpreterValue;
+import org.tros.torgo.interpreter.InterpreterListener;
+import org.tros.torgo.interpreter.InterpreterThread;
+import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.InterpreterVisualization;
-import org.tros.torgo.Scope;
-import org.tros.torgo.ScopeListener;
+import org.tros.torgo.interpreter.Scope;
+import org.tros.torgo.interpreter.ScopeListener;
 import org.tros.utils.TypeHandler;
 
 /**

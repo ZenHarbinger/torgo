@@ -21,10 +21,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.tros.logo.antlr.logoBaseListener;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.InterpreterValue;
-import org.tros.torgo.Scope;
-import org.tros.torgo.types.NumberType;
-import org.tros.torgo.types.StringType;
+import org.tros.torgo.interpreter.InterpreterValue;
+import org.tros.torgo.interpreter.Scope;
+import org.tros.torgo.interpreter.types.NumberType;
+import org.tros.torgo.interpreter.types.StringType;
 
 /**
  * Evaluates expressions. Builds a stack/tree of expressions and evaluates them

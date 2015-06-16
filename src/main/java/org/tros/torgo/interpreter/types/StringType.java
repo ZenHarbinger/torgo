@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.types;
+package org.tros.torgo.interpreter.types;
 
-import org.tros.torgo.InterpreterType;
+import org.tros.torgo.interpreter.InterpreterType;
 
 /**
  *
  * @author matta
  */
-public class BooleanType extends InterpreterTypeImpl implements InterpreterType {
+public class StringType extends InterpreterTypeImpl implements InterpreterType {
 
-    public static final InterpreterType Instance = new BooleanType();
+    public static final InterpreterType Instance = new StringType();
 }

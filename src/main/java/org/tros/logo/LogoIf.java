@@ -20,8 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.ReturnValue;
-import org.tros.torgo.Scope;
+import org.tros.torgo.interpreter.ReturnValue;
+import org.tros.torgo.interpreter.Scope;
 
 /**
  * Supports if statements/expressions.

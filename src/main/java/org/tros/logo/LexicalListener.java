@@ -15,7 +15,7 @@
  */
 package org.tros.logo;
 
-import org.tros.torgo.CodeBlock;
+import org.tros.torgo.interpreter.CodeBlock;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
@@ -23,7 +23,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.tros.logo.antlr.logoBaseListener;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.LexicalAnalyzer;
+import org.tros.torgo.interpreter.LexicalAnalyzer;
 
 /**
  * Gets a list of commands to execute. This does not execute then, but instead

@@ -15,6 +15,8 @@
  */
 package org.tros.torgo;
 
+import org.tros.torgo.interpreter.InterpreterThread;
+
 /**
  *
  * @author matta

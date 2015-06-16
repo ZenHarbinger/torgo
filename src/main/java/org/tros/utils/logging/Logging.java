@@ -121,11 +121,16 @@ public final class Logging {
         //however, if the logging.properties file is already set with this handler, remove
         //it and then the GUI will manually re-add it in the LogConsole constructor.
         Logger logger = Logger.getLogger("");
-        for (Handler h : logger.getHandlers()) {
-            if (SwingComponentHandler.class.isAssignableFrom(h.getClass())) {
-                logger.removeHandler(h);
-                h.close();
+        try {
+            Class<?> swingLogger = Class.forName("org.tros.utils.logging.SwingComponentHandler");
+            for (Handler h : logger.getHandlers()) {
+                if (swingLogger.isAssignableFrom(h.getClass())) {
+                    logger.removeHandler(h);
+                    h.close();
+                }
             }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

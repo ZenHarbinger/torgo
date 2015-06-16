@@ -13,15 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.types;
+package org.tros.torgo.interpreter;
 
-import org.tros.torgo.InterpreterType;
+import java.util.Collection;
 
 /**
  *
  * @author matta
  */
-public class NumberType extends InterpreterTypeImpl implements InterpreterType {
+public interface LexicalAnalyzer {
 
-    public static final InterpreterType Instance = new NumberType();
+    /**
+     * Code block representing the entry point to the interpreted script.
+     *
+     * @return
+     */
+    CodeBlock getEntryPoint();
+
+    /**
+     * A collection of all code blocks defined in the script.
+     *
+     * @return
+     */
+    Collection<CodeBlock> getCodeBlocks();
 }

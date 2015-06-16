@@ -19,8 +19,8 @@ import java.text.MessageFormat;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.tros.torgo.ReturnValue;
-import org.tros.torgo.Scope;
+import org.tros.torgo.interpreter.ReturnValue;
+import org.tros.torgo.interpreter.Scope;
 
 /**
  * Represents the entrypoint of execution for the Logo script.

@@ -21,7 +21,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.tros.jvmbasic.antlr.jvmBasicBaseListener;
 import org.tros.jvmbasic.antlr.jvmBasicParser;
-import org.tros.torgo.Scope;
+import org.tros.torgo.interpreter.Scope;
 
 /**
  * Evaluates expressions. Builds a stack/tree of expressions and evaluates them

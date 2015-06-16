@@ -13,27 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo;
-
-import java.util.Collection;
+package org.tros.torgo.interpreter;
 
 /**
  *
  * @author matta
  */
-public interface LexicalAnalyzer {
+public interface InterpreterType {
 
-    /**
-     * Code block representing the entry point to the interpreted script.
-     *
-     * @return
-     */
-    public CodeBlock getEntryPoint();
-
-    /**
-     * A collection of all code blocks defined in the script.
-     *
-     * @return
-     */
-    public Collection<CodeBlock> getCodeBlocks();
 }

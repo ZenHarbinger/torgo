@@ -13,44 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo;
+package org.tros.torgo.interpreter;
 
 /**
- * Listener for interpreter events.
+ * Events for the scope.
  *
  * @author matta
  */
-public interface InterpreterListener {
+public interface ScopeListener {
 
     /**
-     * Signal that the interpreter has started.
-     */
-    void started();
-
-    /**
-     * Signal that the interpreter has finished.
-     */
-    void finished();
-
-    /**
-     * Signal that there was an error with the interpreter.
+     * Scope was popped.
      *
-     * @param e
-     */
-    void error(Exception e);
-
-    /**
-     * Signal a message from the interpreter. This could be a print statement.
-     *
-     * @param msg
-     */
-    void message(String msg);
-
-    /**
-     * The current block of code executing with the current state.
-     *
-     * @param block
      * @param scope
+     * @param block
      */
-    void currStatement(CodeBlock block, Scope scope);
+    void scopePopped(Scope scope, CodeBlock block);
+
+    /**
+     * Scope was pushed.
+     *
+     * @param scope
+     * @param block
+     */
+    void scopePushed(Scope scope, CodeBlock block);
+
+    /**
+     * Variable was set.
+     *
+     * @param scope
+     * @param name
+     * @param value
+     */
+    void variableSet(Scope scope, String name, InterpreterValue value);
 }

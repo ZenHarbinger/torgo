@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo;
+package org.tros.torgo.interpreter;
 
 import java.util.Map;
 
@@ -39,9 +39,6 @@ public interface CodeFunction extends CodeBlock {
      */
     @Override
     ReturnValue process(Scope scope);
-//    default ReturnValue process(Scope scope) {
-//        return process(scope, new HashMap<>());
-//    }
 
     /**
      * Process with parameters.

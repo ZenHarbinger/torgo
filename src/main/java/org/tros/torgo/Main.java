@@ -17,8 +17,12 @@ package org.tros.torgo;
 
 import java.awt.Window;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.logging.LogFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
@@ -28,6 +32,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.tros.torgo.interpreter.InterpreterThread;
 
 /**
  * Main entry point for torgo

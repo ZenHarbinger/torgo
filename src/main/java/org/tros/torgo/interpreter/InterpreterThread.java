@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo;
+package org.tros.torgo.interpreter;
 
-import org.apache.commons.logging.LogFactory;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.utils.HaltMonitor;
-import org.tros.utils.logging.LogConsole;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Interpreter Thread Interface
@@ -138,7 +139,20 @@ public abstract class InterpreterThread extends Thread {
         } catch (Exception ex) {
             listeners.fire().error(ex);
             LogFactory.getLog(InterpreterThread.class).fatal(null, ex);
-            LogConsole.CONSOLE.setVisible(true);
+            try {
+                Class<?> lc = Class.forName("org.tros.utils.logging.LogConsole");
+                Field field = lc.getField("CONSOLE");
+                java.lang.reflect.Method m = field.getType().getMethod("setVisible", boolean.class);
+                Object fieldInstance = field.get(null);
+                m.invoke(fieldInstance, true);
+            } catch (ClassNotFoundException ex1) {
+            } catch (NoSuchFieldException ex1) {
+            } catch (SecurityException ex1) {
+            } catch (NoSuchMethodException ex1) {
+            } catch (IllegalAccessException ex1) {
+            } catch (IllegalArgumentException ex1) {
+            } catch (InvocationTargetException ex1) {
+            }
         }
         listeners.fire().finished();
     }

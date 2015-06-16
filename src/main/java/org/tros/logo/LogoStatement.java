@@ -22,11 +22,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
-import org.tros.torgo.CodeFunction;
-import org.tros.torgo.InterpreterValue;
-import org.tros.torgo.ReturnValue;
-import org.tros.torgo.Scope;
-import org.tros.torgo.types.NumberType;
+import org.tros.torgo.interpreter.CodeFunction;
+import org.tros.torgo.interpreter.InterpreterValue;
+import org.tros.torgo.interpreter.ReturnValue;
+import org.tros.torgo.interpreter.Scope;
+import org.tros.torgo.interpreter.types.NumberType;
 
 /**
  * This is perhaps the most trickily named class. This inherits from LogoBlock,

@@ -15,6 +15,10 @@
  */
 package org.tros.torgo;
 
+import org.tros.torgo.interpreter.CodeBlock;
+import org.tros.torgo.interpreter.InterpreterListener;
+import org.tros.torgo.interpreter.InterpreterThread;
+import org.tros.torgo.interpreter.Scope;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
