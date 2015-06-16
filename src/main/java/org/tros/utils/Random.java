@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -61,13 +62,15 @@ public final class Random {
     }
 
     static {
+        ServiceLoader<ResourceAccessor> accessors = ServiceLoader.load(ResourceAccessor.class);
+        ResourceAccessor accessor = accessors.iterator().next();
         boolean legacy = false;
 
         _counters = new HashMap<String, AtomicLong>();
         Properties prop = new Properties();
         String prop_file = org.tros.utils.Random.class.getCanonicalName().replace('.', '/') + ".properties";
         try {
-            prop.load(ClassLoader.getSystemClassLoader().getResourceAsStream(prop_file));
+            prop.load(accessor.open(prop_file));
             _incrementType = UuidIncrementType.valueOf(prop.getProperty("uuidIncrementType"));
             _doSeed = Boolean.parseBoolean(prop.getProperty("doSeed"));
             _seedValue = Integer.parseInt(prop.getProperty("seedValue"));

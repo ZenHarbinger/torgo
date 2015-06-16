@@ -1,0 +1,4 @@
+org.tros.torgo.interpreter.types.BooleanType
+org.tros.torgo.interpreter.types.StringType
+org.tros.torgo.interpreter.types.NullType
+org.tros.torgo.interpreter.types.NumberType

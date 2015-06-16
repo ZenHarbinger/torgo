@@ -150,7 +150,7 @@ public final class TypeHandler {
                 //HACK: Integer isn't parseInteger, it's parseInt
                 method = wrap.getMethod("parseInt", String.class);
             } catch (NoSuchMethodException ex1) {
-                //Logger.getLogger(TypeHandler.class.getName()).log(Level.FINEST, null, ex1);
+//                Logger.getLogger(TypeHandler.class.getName()).log(Level.FINEST, null, ex1);
             } catch (SecurityException ex1) {
                 LogFactory.getLog(TypeHandler.class).fatal(null, ex);
             }
