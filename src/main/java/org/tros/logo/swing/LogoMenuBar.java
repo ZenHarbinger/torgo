@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-import org.apache.commons.logging.LogFactory;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import org.apache.commons.io.IOUtils;
@@ -147,7 +146,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
                 ImageIO.write(bi, format, outputfile);
             }
         } catch (IOException e) {
-            LogFactory.getLog(LogoMenuBar.class).fatal(null, e);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).fatal(null, e);
         }
 //        }
     }
@@ -181,7 +180,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
                 }
             }
         } catch (IOException ex) {
-            LogFactory.getLog(LogoMenuBar.class.getName()).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).fatal(null, ex);
         }
         return samplesMenu;
     }

@@ -18,8 +18,6 @@ package org.tros.logo;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.interpreter.CodeFunction;
@@ -41,7 +39,7 @@ class LogoStatement extends LogoBlock {
     public static final String TURTLE_Y_VAR = "1_turtley%";
     public static final String TURTLE_ANGLE_VAR = "1_turtlea%";
 
-    private static final Log logger = LogFactory.getLog(LogoStatement.class);
+    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoStatement.class);
     private final String command;
     private final LogoCanvas canvas;
 
@@ -80,7 +78,7 @@ class LogoStatement extends LogoBlock {
             return ReturnValue.HALT;
         }
 
-        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()));
+        logger.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()));
 
         //we don't do scope.push(this) here because of the chance we will
         //be doing a variable creation (localmake) and so it is possible

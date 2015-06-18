@@ -16,8 +16,6 @@
 package org.tros.logo;
 
 import java.text.MessageFormat;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.logoParser;
 import org.tros.torgo.interpreter.InterpreterValue;
@@ -39,7 +37,7 @@ class LogoRepeat extends LogoBlock {
      * declared.
      */
     public static final String REPCOUNT_VAR = "1_repcount%";
-    private final static Log logger = LogFactory.getLog(LogoRepeat.class);
+    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoRepeat.class);
 
     /**
      * Constructor
@@ -58,7 +56,7 @@ class LogoRepeat extends LogoBlock {
      */
     @Override
     public ReturnValue process(Scope scope) {
-        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
+        logger.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
         listeners.fire().currStatement(this, scope);
 

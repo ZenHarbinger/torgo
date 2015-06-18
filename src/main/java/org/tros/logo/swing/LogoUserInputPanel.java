@@ -22,7 +22,6 @@ import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
-import org.apache.commons.logging.LogFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -70,19 +69,19 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
             Class<?> syntaxScroll = Class.forName("org.fife.ui.rtextarea.RTextScrollPane");
             inputScrollPane = (JScrollPane) syntaxScroll.getConstructor(Component.class).newInstance(area);
         } catch (ClassNotFoundException ex) {
-            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
         } catch (InstantiationException ex) {
-            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
         } catch (IllegalAccessException ex) {
-            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
         } catch (NoSuchMethodException ex) {
-            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
         } catch (SecurityException ex) {
-            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
         } catch (IllegalArgumentException ex) {
-            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
         } catch (InvocationTargetException ex) {
-            LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
         }
         inputTextArea = area == null ? new JTextArea() : area;
         inputScrollPane = inputScrollPane == null ? new JScrollPane(inputTextArea) : inputScrollPane;
@@ -248,15 +247,15 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
                     success = true;
                 }
             } catch (NoSuchMethodException ex) {
-                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
             } catch (SecurityException ex) {
-                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
             } catch (IllegalAccessException ex) {
-                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
             } catch (IllegalArgumentException ex) {
-                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
             } catch (InvocationTargetException ex) {
-                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
             }
 
             if (success) {
@@ -305,7 +304,7 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
             try {
                 hl.addHighlight(startChar, endChar + 1, DefaultHighlighter.DefaultPainter);
             } catch (BadLocationException ex) {
-                LogFactory.getLog(LogoUserInputPanel.class).fatal(null, ex);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
             }
         }
     }

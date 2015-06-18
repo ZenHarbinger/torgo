@@ -16,7 +16,6 @@
 package org.tros.torgo.swing;
 
 import java.util.ResourceBundle;
-import org.apache.commons.logging.LogFactory;
 
 public class Localization {
 
@@ -26,7 +25,7 @@ public class Localization {
         try {
             resources = ResourceBundle.getBundle("LocalizedStrings");
         } catch (Exception e) {
-            LogFactory.getLog(Localization.class).fatal(null, e);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Localization.class).fatal(null, e);
         }
     }
 

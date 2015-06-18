@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.ServiceLoader;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -29,6 +30,13 @@ import org.apache.commons.io.IOUtils;
  */
 public final class Logging {
 
+    private static final LogFactory logFactory;
+    
+    static {
+        ServiceLoader<LogFactory> logFactories = ServiceLoader.load(LogFactory.class);
+        logFactory = logFactories.iterator().next();
+    }
+    
     private Logging() {
     }
 
@@ -132,5 +140,9 @@ public final class Logging {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static LogFactory getLogFactory() {
+        return logFactory;
     }
 }

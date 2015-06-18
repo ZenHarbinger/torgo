@@ -24,7 +24,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import org.apache.commons.logging.LogFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -75,9 +74,9 @@ public class AboutWindow extends JDialog {
                     URI uri = new URI(APACHE_LICENSE_ADDRESS);
                     Desktop.getDesktop().browse(uri);
                 } catch (URISyntaxException ex) {
-                    LogFactory.getLog(AboutWindow.class).warn(null, ex);
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
                 } catch (IOException ex) {
-                    LogFactory.getLog(AboutWindow.class).warn(null, ex);
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
                 }
             }
         });
@@ -92,7 +91,7 @@ public class AboutWindow extends JDialog {
                     Desktop.getDesktop().browse(uri);
                 } catch (URISyntaxException ex) {
                 } catch (IOException ex) {
-                    LogFactory.getLog(AboutWindow.class).warn(null, ex);
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
                 }
             }
         });

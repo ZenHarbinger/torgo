@@ -34,7 +34,6 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.apache.commons.logging.LogFactory;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -313,7 +312,7 @@ public abstract class ControllerBase implements Controller {
             this.window.setTitle("Torgo - " + split[split.length - 1]);
         } catch (IOException ex) {
             init();
-            LogFactory.getLog(ControllerBase.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
         }
     }
 
@@ -377,7 +376,7 @@ public abstract class ControllerBase implements Controller {
             out.flush();
             out.close();
         } catch (Exception ex) {
-            LogFactory.getLog(ControllerBase.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
         }
     }
 
@@ -386,7 +385,7 @@ public abstract class ControllerBase implements Controller {
      */
     @Override
     public void printCanvas() {
-        LogFactory.getLog(ControllerBase.class).debug("printCanvas() called");
+        org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).debug("printCanvas() called");
         /*
          PrinterJob printJob = PrinterJob.getPrinterJob();
          PageFormat pageFormat = printJob.defaultPage();
@@ -427,7 +426,7 @@ public abstract class ControllerBase implements Controller {
 
             @Override
             public void error(Exception e) {
-                LogFactory.getLog(ControllerBase.class).fatal(null, e);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, e);
             }
 
             @Override
@@ -477,7 +476,7 @@ public abstract class ControllerBase implements Controller {
 
             @Override
             public void error(Exception e) {
-                LogFactory.getLog(ControllerBase.class).fatal(null, e);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, e);
             }
 
             @Override
@@ -493,7 +492,7 @@ public abstract class ControllerBase implements Controller {
                     //TODO: this needs to be configurable
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
-                    LogFactory.getLog(ControllerBase.class).fatal(null, ex);
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
                 }
                 int line = block.getParserRuleContext().getStart().getLine();
                 int start = block.getParserRuleContext().getStart().getStartIndex();

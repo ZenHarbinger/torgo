@@ -7,8 +7,6 @@
 package org.tros.utils;
 
 import java.util.ArrayList;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Mailbox: A synchronized class for high-performance message handling. Since
@@ -22,11 +20,7 @@ public class Mailbox<T> {
 
     private final java.util.ArrayList<T> m_msgs;
     private boolean m_halt;
-    private final static Log log;
-
-    static {
-        log = LogFactory.getLog(Mailbox.class);
-    }
+    private final static org.tros.utils.logging.Logger log = org.tros.utils.logging.Logging.getLogFactory().getLogger(Mailbox.class);
 
     public Mailbox() {
         m_msgs = new ArrayList<T>();

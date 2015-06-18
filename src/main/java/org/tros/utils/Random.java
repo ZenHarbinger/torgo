@@ -9,7 +9,6 @@ package org.tros.utils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
-import org.apache.commons.logging.LogFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -76,9 +75,9 @@ public final class Random {
             _seedValue = Integer.parseInt(prop.getProperty("seedValue"));
             legacy = Boolean.parseBoolean(prop.getProperty("useLegacy"));
         } catch (NullPointerException ex) {
-            LogFactory.getLog(Random.class).warn(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).warn(null, ex);
         } catch (IOException ex) {
-            LogFactory.getLog(Random.class).warn(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).warn(null, ex);
         }
         _legacy = legacy;
         _randoms = new HashMap<Thread, java.util.Random>();
@@ -369,7 +368,7 @@ public final class Random {
         } else {
             final T elem = getRandom(list);
             if (elem != null && elem.equals(not)) {
-                LogFactory.getLog(Random.class).debug("Creating array copy for finding random item.");
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).debug("Creating array copy for finding random item.");
                 ArrayList<T> l = new ArrayList<T>(list);
                 l.remove(not);
                 return getRandom(l);

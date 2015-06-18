@@ -17,8 +17,6 @@ package org.tros.torgo.viz;
 
 import java.text.MessageFormat;
 import java.util.Calendar;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.interpreter.InterpreterListener;
@@ -37,7 +35,8 @@ import org.tros.utils.TypeHandler;
 public class TraceLogger implements InterpreterVisualization {
 
     private InterpreterThread interpreter;
-    private static final Log logger = LogFactory.getLog(TraceLogger.class);
+    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(TraceLogger.class);
+
 
     /**
      * Constructor.

@@ -20,8 +20,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.tros.torgo.TorgoInfo;
 
 /**
@@ -33,7 +31,8 @@ public abstract class PropertiesInitializer {
     private static Object mapper;
     private static final Object lock = new Object();
     private static boolean _loading = false;
-    private static final Log logger = LogFactory.getLog(PropertiesInitializer.class);
+    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(PropertiesInitializer.class);
+
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     protected PropertiesInitializer() {

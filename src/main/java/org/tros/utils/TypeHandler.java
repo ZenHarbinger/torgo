@@ -8,7 +8,6 @@ package org.tros.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 
@@ -22,6 +21,9 @@ public final class TypeHandler {
 
     private static final java.util.Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
     private static final java.util.HashMap<Class<?>, Class<?>> WRAPPER_LOOKUP = getWrapperTypes2();
+    
+    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(TypeHandler.class);
+
 
     private TypeHandler() {
     }
@@ -105,14 +107,14 @@ public final class TypeHandler {
                 inst.setTime(DEFAULT_DATE_FORMAT.parse(val));
                 return inst;
             } catch (ParseException ex) {
-                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+                logger.fatal(null, ex);
             }
         } else if (type == java.util.Date.class) {
             try {
                 java.util.Date inst = DEFAULT_DATE_FORMAT.parse(val);
                 return inst;
             } catch (ParseException ex) {
-                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+                logger.fatal(null, ex);
             }
         } else if (type == java.awt.Color.class) {
             try {
@@ -121,18 +123,18 @@ public final class TypeHandler {
                 return java.awt.Color.decode(val);
                 //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SecurityException ex) {
-                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+                logger.fatal(null, ex);
             } catch (IllegalArgumentException ex) {
-                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+                logger.fatal(null, ex);
             } catch (IllegalAccessException ex) {
-                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+                logger.fatal(null, ex);
             }
             return java.awt.Color.decode(val);
         } else if (type == Class.class) {
             try {
                 return Class.forName(val);
             } catch (ClassNotFoundException ex) {
-                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+                logger.fatal(null, ex);
             }
         }
 
@@ -152,10 +154,10 @@ public final class TypeHandler {
             } catch (NoSuchMethodException ex1) {
 //                Logger.getLogger(TypeHandler.class.getName()).log(Level.FINEST, null, ex1);
             } catch (SecurityException ex1) {
-                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+                logger.fatal(null, ex);
             }
         } catch (SecurityException ex) {
-            LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+            logger.fatal(null, ex);
         }
         if (method != null) {
             try {
@@ -163,7 +165,7 @@ public final class TypeHandler {
             } catch (IllegalAccessException ex) {
             } catch (IllegalArgumentException ex) {
             } catch (InvocationTargetException ex) {
-                LogFactory.getLog(TypeHandler.class).fatal(null, ex);
+                logger.fatal(null, ex);
             }
         } else {
             try {

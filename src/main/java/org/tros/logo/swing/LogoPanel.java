@@ -33,7 +33,6 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
-import org.apache.commons.logging.LogFactory;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import org.tros.torgo.TorgoScreen;
@@ -83,7 +82,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 turtle = ImageIO.read(resource);
             }
         } catch (IOException ex) {
-            LogFactory.getLog(LogoPanel.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
         }
         addComponentListener(new ComponentListener() {
 
@@ -140,7 +139,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         try {
             Thread.sleep(time);
         } catch (InterruptedException ex) {
-            LogFactory.getLog(LogoPanel.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
         }
     }
 

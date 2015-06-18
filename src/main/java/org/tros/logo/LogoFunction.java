@@ -17,8 +17,6 @@ package org.tros.logo;
 
 import java.text.MessageFormat;
 import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.torgo.interpreter.CodeFunction;
 import org.tros.torgo.interpreter.InterpreterValue;
@@ -34,7 +32,7 @@ import org.tros.torgo.interpreter.Scope;
 class LogoFunction extends LogoBlock implements CodeFunction {
 
     private final String funcitonName;
-    private static final Log logger = LogFactory.getLog(LogoFunction.class);
+    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoFunction.class);
 
     /**
      * Constructor
@@ -65,7 +63,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
      */
     @Override
     public ReturnValue process(Scope scope, Map<String, InterpreterValue> params) {
-        logger.trace(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
+        logger.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
 
         for (String key : params.keySet()) {

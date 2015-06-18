@@ -17,12 +17,9 @@ package org.tros.torgo;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -36,7 +33,7 @@ public final class TorgoToolkit {
     private static final HashMap<String, InterpreterVisualization> vizMap;
     private static final ServiceLoader<InterpreterVisualization> vizualizers;
 
-    private static final Log logger = LogFactory.getLog(TorgoToolkit.class);
+    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoToolkit.class);
 
     /**
      * Static constructor.

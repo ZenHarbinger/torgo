@@ -19,7 +19,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.utils.HaltMonitor;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Interpreter Thread Interface
@@ -138,7 +137,7 @@ public abstract class InterpreterThread extends Thread {
             process(script);
         } catch (Exception ex) {
             listeners.fire().error(ex);
-            LogFactory.getLog(InterpreterThread.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(InterpreterThread.class).fatal(null, ex);
             try {
                 Class<?> lc = Class.forName("org.tros.utils.logging.LogConsole");
                 Field field = lc.getField("CONSOLE");
@@ -171,7 +170,7 @@ public abstract class InterpreterThread extends Thread {
         try {
             join();
         } catch (InterruptedException ex) {
-            LogFactory.getLog(InterpreterThread.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(InterpreterThread.class).fatal(null, ex);
         }
     }
 
