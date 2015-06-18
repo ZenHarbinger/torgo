@@ -236,8 +236,8 @@
             <version>4.0</version>
         </dependency>
         <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
+            <groupId>org.tros</groupId>
+            <artifactId>antlr4-runtime-android</artifactId>
             <version>4.5</version>
         </dependency>
         <dependency>
