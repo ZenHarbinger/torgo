@@ -57,7 +57,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         void draw(Graphics2D g2);
     }
 
-    private final ArrayList<GraphicCommand> graphicCommands = new ArrayList<GraphicCommand>();
+    private final ArrayList<GraphicCommand> queuedCommands = new ArrayList<GraphicCommand>();
+    private final ArrayList<GraphicCommand> commands = new ArrayList<GraphicCommand>();
 
     /**
      * Constructor.
@@ -110,10 +111,12 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             return;
         }
 
-        ArrayList<GraphicCommand> copy = new ArrayList<GraphicCommand>();
-        copy.addAll(graphicCommands);
+        synchronized (queuedCommands) {
+            commands.addAll(queuedCommands);
+            queuedCommands.clear();
+        }
 
-        for (GraphicCommand command : copy) {
+        for (GraphicCommand command : commands) {
             command.draw(g2d);
         }
     }
@@ -145,7 +148,13 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 penY = newy;
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
+    }
+
+    private void submitCommand(GraphicCommand command) {
+        synchronized (queuedCommands) {
+            queuedCommands.add(command);
+        }
     }
 
     @Override
@@ -166,7 +175,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 penY = newy;
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -178,7 +187,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 LogoPanel.this.angle -= Math.PI * angle / 180.0;
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -190,7 +199,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 LogoPanel.this.angle += Math.PI * angle / 180.0;
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -210,7 +219,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 penY = y2;
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -222,7 +231,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 penup = true;
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -234,7 +243,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 penup = false;
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -257,7 +266,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 }
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -271,7 +280,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 angle = -1.0 * (Math.PI / 2.0);
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -287,7 +296,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 g2.setColor(penColor);
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     private void canvascolor(final Color color) {
@@ -300,7 +309,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 g2.setColor(penColor);
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     private void pencolor(final Color color) {
@@ -312,7 +321,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 g2.setColor(penColor);
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -325,7 +334,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 g2.setColor(penColor);
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     private Color getColorByName(String color) {
@@ -375,7 +384,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 }
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -392,7 +401,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 g2.setFont(font);
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -409,7 +418,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 g2.setFont(font);
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -426,7 +435,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 g2.setFont(font);
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -446,7 +455,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 showTurtle = false;
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -458,7 +467,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 showTurtle = true;
             }
         };
-        graphicCommands.add(command);
+        submitCommand(command);
     }
 
     @Override
@@ -490,7 +499,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     final public void reset() {
         penup = false;
         showTurtle = true;
-        graphicCommands.clear();
+        queuedCommands.clear();
+        commands.clear();
         clear();
         home();
         repaint();
@@ -516,9 +526,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 } catch (InvocationTargetException ex) {
                     Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            else {
-                super.repaint();
+            } else {
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        LogoPanel.super.repaint();
+                    }
+                });
             }
         }
     }
