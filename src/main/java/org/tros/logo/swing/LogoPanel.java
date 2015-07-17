@@ -23,26 +23,24 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.tros.torgo.TorgoScreen;
 
 import org.tros.torgo.TorgoTextConsole;
 
 public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, BufferedImageProvider {
-
-    private BufferedImage buffer;
-    private Graphics2D g2;
 
     private Color penColor;
     private Font font;
@@ -54,18 +52,12 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     private final TorgoTextConsole console;
     private BufferedImage turtle;
 
-    /**
-     * Create a copy of the buffered image object.
-     *
-     * @param bi
-     * @return
-     */
-    public static BufferedImage deepCopy(BufferedImage bi) {
-        ColorModel cm = bi.getColorModel();
-        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = bi.copyData(null);
-        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    private interface GraphicCommand {
+
+        void draw(Graphics2D g2);
     }
+
+    private final ArrayList<GraphicCommand> graphicCommands = new ArrayList<GraphicCommand>();
 
     /**
      * Constructor.
@@ -84,30 +76,6 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         } catch (IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
         }
-        addComponentListener(new ComponentListener() {
-
-            @Override
-            public void componentResized(ComponentEvent e) {
-                if (buffer != null) {
-                    BufferedImage bi = LogoPanel.deepCopy(buffer);
-                    clear();
-                    g2.drawImage(bi, 0, 0, null);
-                }
-                repaint();
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent e) {
-            }
-
-            @Override
-            public void componentShown(ComponentEvent e) {
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent e) {
-            }
-        });
     }
 
     /**
@@ -120,22 +88,38 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D) g;
+//        buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+//        Graphics2D g2 = (Graphics2D) buffer.createGraphics();
 
-        g2d.drawImage(buffer, 0, 0, null);
+        draw(g2d);
 
-        if (g2 != null && showTurtle && turtle != null) {
+//        g2d.drawImage(buffer, 0, 0, null);
+        if (showTurtle && turtle != null) {
             double x = penX - (turtle.getWidth() / 2.0);
             double y = penY - (turtle.getHeight() / 2.0);
             AffineTransform translateInstance = AffineTransform.getRotateInstance(angle + (Math.PI / 2.0), penX, penY);
-            AffineTransform saveXform = g2.getTransform();
+            AffineTransform saveXform = g2d.getTransform();
             g2d.transform(translateInstance);
             g2d.drawImage(turtle, (int) x, (int) y, null);
             g2d.setTransform(saveXform);
         }
     }
 
+    private void draw(Graphics2D g2d) {
+        if (g2d == null) {
+            return;
+        }
+
+        ArrayList<GraphicCommand> copy = new ArrayList<GraphicCommand>();
+        copy.addAll(graphicCommands);
+
+        for (GraphicCommand command : copy) {
+            command.draw(g2d);
+        }
+    }
+
     @Override
-    public void pause(int time) {
+    public void pause(final int time) {
         try {
             Thread.sleep(time);
         } catch (InterruptedException ex) {
@@ -144,118 +128,214 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     }
 
     @Override
-    public void forward(double distance) {
-        double newx = penX + (distance * Math.cos(angle));
-        double newy = penY + (distance * Math.sin(angle));
+    public void forward(final double distance) {
+        GraphicCommand command = new GraphicCommand() {
 
-        if (!penup) {
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.draw(new Line2D.Double(penX, penY, newx, newy));
-        }
+            @Override
+            public void draw(Graphics2D g2) {
+                double newx = penX + (distance * Math.cos(angle));
+                double newy = penY + (distance * Math.sin(angle));
 
-        penX = newx;
-        penY = newy;
+                if (!penup) {
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2.draw(new Line2D.Double(penX, penY, newx, newy));
+                }
+
+                penX = newx;
+                penY = newy;
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
-    public void backward(double distance) {
-        double newx = penX - (distance * Math.cos(angle));
-        double newy = penY - (distance * Math.sin(angle));
+    public void backward(final double distance) {
+        GraphicCommand command = new GraphicCommand() {
 
-        if (!penup) {
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.draw(new Line2D.Double(penX, penY, newx, newy));
-        }
+            @Override
+            public void draw(Graphics2D g2) {
+                double newx = penX - (distance * Math.cos(angle));
+                double newy = penY - (distance * Math.sin(angle));
 
-        penX = newx;
-        penY = newy;
+                if (!penup) {
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2.draw(new Line2D.Double(penX, penY, newx, newy));
+                }
+
+                penX = newx;
+                penY = newy;
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
-    public void left(double angle) {
-        this.angle -= Math.PI * angle / 180.0;
+    public void left(final double angle) {
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                LogoPanel.this.angle -= Math.PI * angle / 180.0;
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
-    public void right(double angle) {
-        this.angle += Math.PI * angle / 180.0;
+    public void right(final double angle) {
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                LogoPanel.this.angle += Math.PI * angle / 180.0;
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
-    public void setXY(double x, double y) {
-        x = (getWidth()) / 2.0 + x;
-        y = (getHeight()) / 2.0 + y;
+    public void setXY(final double x, final double y) {
+        GraphicCommand command = new GraphicCommand() {
 
-        if (!penup) {
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.draw(new Line2D.Double(penX, penY, x, y));
-        }
-        penX = x;
-        penY = y;
+            @Override
+            public void draw(Graphics2D g2) {
+                double x2 = (getWidth()) / 2.0 + x;
+                double y2 = (getHeight()) / 2.0 + y;
+
+                if (!penup) {
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2.draw(new Line2D.Double(penX, penY, x2, y2));
+                }
+                penX = x2;
+                penY = y2;
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
     public void penUp() {
-        this.penup = true;
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                penup = true;
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
     public void penDown() {
-        this.penup = false;
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                penup = false;
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
     public void clear() {
-        buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-        g2 = (Graphics2D) buffer.createGraphics();
-        g2.setColor(Color.white);
-        g2.fillRect(0, 0, getWidth(), getHeight());
-        penColor = Color.black;
-        g2.setColor(penColor);
+        GraphicCommand command = new GraphicCommand() {
 
-        font = new Font(null, 0, 12);
+            @Override
+            public void draw(Graphics2D g) {
+                try {
+                    g.setColor(Color.white);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                    penColor = Color.black;
+                    g.setColor(penColor);
 
-        g2.setFont(font);
+                    font = new Font(null, 0, 12);
+
+                    g.setFont(font);
+                } catch (Exception ex) {
+
+                }
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
     public void home() {
-        penX = getWidth() / 2.0;
-        penY = getHeight() / 2.0;
-        angle = -1.0 * (Math.PI / 2.0);
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                penX = getWidth() / 2.0;
+                penY = getHeight() / 2.0;
+                angle = -1.0 * (Math.PI / 2.0);
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
-    public void canvascolor(String color) {
-        Color canvasColor = getColorByName(color);
+    public void canvascolor(final String color) {
+        GraphicCommand command = new GraphicCommand() {
 
-        g2.setColor(canvasColor);
-        g2.fillRect(0, 0, getWidth(), getHeight());
-        g2.setColor(penColor);
+            @Override
+            public void draw(Graphics2D g2) {
+                Color canvasColor = getColorByName(color);
+
+                g2.setColor(canvasColor);
+                g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.setColor(penColor);
+            }
+        };
+        graphicCommands.add(command);
     }
 
-    private void canvascolor(Color color) {
-        g2.setColor(color);
-        g2.fillRect(0, 0, getWidth(), getHeight());
-        g2.setColor(penColor);
+    private void canvascolor(final Color color) {
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                g2.setColor(color);
+                g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.setColor(penColor);
+            }
+        };
+        graphicCommands.add(command);
     }
 
-    private void pencolor(Color color) {
-        penColor = color;
-        g2.setColor(penColor);
+    private void pencolor(final Color color) {
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                penColor = color;
+                g2.setColor(penColor);
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
-    public void pencolor(String color) {
-        penColor = getColorByName(color);
-        g2.setColor(penColor);
+    public void pencolor(final String color) {
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                penColor = getColorByName(color);
+                g2.setColor(penColor);
+            }
+        };
+        graphicCommands.add(command);
     }
 
     private Color getColorByName(String color) {
         color = color.toLowerCase();
+
         try {
-            Field field = Color.class.getField(color);
-            return (Color) field.get(null);
+            Field field = Color.class
+                    .getField(color);
+            return (Color) field.get(
+                    null);
         } catch (NoSuchFieldException ex) {
         } catch (SecurityException ex) {
         } catch (IllegalArgumentException ex) {
@@ -279,61 +359,106 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     }
 
     @Override
-    public void drawString(String message) {
-        if (!penup) {
-            AffineTransform saveXform = g2.getTransform();
-            //double offsetAngle = (Math.PI / 2.0);
-            double offsetAngle = 0;
-            g2.setTransform(AffineTransform.getRotateInstance(angle + offsetAngle, penX, penY));
-            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-            g2.drawString(message, (int) penX, (int) penY);
-            g2.setTransform(saveXform);
-        }
+    public void drawString(final String message) {
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                if (!penup) {
+                    AffineTransform saveXform = g2.getTransform();
+                    //double offsetAngle = (Math.PI / 2.0);
+                    double offsetAngle = 0;
+                    g2.setTransform(AffineTransform.getRotateInstance(angle + offsetAngle, penX, penY));
+                    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+                    g2.drawString(message, (int) penX, (int) penY);
+                    g2.setTransform(saveXform);
+                }
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
-    public void fontSize(int size) {
-        String fontName = font.getFontName();
-        int style = font.getStyle();
+    public void fontSize(final int size) {
+        GraphicCommand command = new GraphicCommand() {
 
-        font = new Font(fontName, style, size);
+            @Override
+            public void draw(Graphics2D g2) {
+                String fontName = font.getFontName();
+                int style = font.getStyle();
 
-        g2.setFont(font);
+                font = new Font(fontName, style, size);
+
+                g2.setFont(font);
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
-    public void fontName(String fontFace) {
-        int style = font.getStyle();
-        int size = font.getSize();
+    public void fontName(final String fontFace) {
+        GraphicCommand command = new GraphicCommand() {
 
-        font = new Font(fontFace, style, size);
+            @Override
+            public void draw(Graphics2D g2) {
+                int style = font.getStyle();
+                int size = font.getSize();
 
-        g2.setFont(font);
+                font = new Font(fontFace, style, size);
+
+                g2.setFont(font);
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
-    public void fontStyle(int style) {
-        String fontName = font.getFontName();
-        int size = font.getSize();
+    public void fontStyle(final int style) {
+        GraphicCommand command = new GraphicCommand() {
 
-        font = new Font(fontName, style, size);
+            @Override
+            public void draw(Graphics2D g2) {
+                String fontName = font.getFontName();
+                int size = font.getSize();
 
-        g2.setFont(font);
+                font = new Font(fontName, style, size);
+
+                g2.setFont(font);
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
     public BufferedImage getBufferedImage() {
+        BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = (Graphics2D) buffer.createGraphics();
+        draw(g2d);
         return buffer;
     }
 
     @Override
     public void hideTurtle() {
-        showTurtle = false;
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                showTurtle = false;
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
     public void showTurtle() {
-        showTurtle = true;
+        GraphicCommand command = new GraphicCommand() {
+
+            @Override
+            public void draw(Graphics2D g2) {
+                showTurtle = true;
+            }
+        };
+        graphicCommands.add(command);
     }
 
     @Override
@@ -362,10 +487,34 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     }
 
     @Override
-    public void reset() {
+    final public void reset() {
+        penup = false;
+        showTurtle = true;
+        graphicCommands.clear();
         clear();
         home();
         repaint();
+    }
+
+    @Override
+    public void repaint() {
+        if (SwingUtilities.isEventDispatchThread()) {
+            LogoPanel.super.repaint();
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        LogoPanel.super.repaint();
+                    }
+                });
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvocationTargetException ex) {
+                Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override
@@ -392,5 +541,4 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     public Component getComponent() {
         return this;
     }
-
 }
