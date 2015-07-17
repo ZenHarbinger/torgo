@@ -501,18 +501,24 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         if (SwingUtilities.isEventDispatchThread()) {
             LogoPanel.super.repaint();
         } else {
-            try {
-                SwingUtilities.invokeAndWait(new Runnable() {
+            java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+            if (prefs.getBoolean(LogoMenuBar.WAIT_FOR_REPAINT, true)) {
+                try {
+                    SwingUtilities.invokeAndWait(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        LogoPanel.super.repaint();
-                    }
-                });
-            } catch (InterruptedException ex) {
-                Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvocationTargetException ex) {
-                Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        @Override
+                        public void run() {
+                            LogoPanel.super.repaint();
+                        }
+                    });
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InvocationTargetException ex) {
+                    Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else {
+                super.repaint();
             }
         }
     }

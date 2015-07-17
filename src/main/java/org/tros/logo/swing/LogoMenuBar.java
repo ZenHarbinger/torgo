@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import org.apache.commons.io.IOUtils;
 import org.tros.torgo.swing.TorgoMenuBar;
@@ -49,6 +50,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
     private JMenuItem toolsCanvasColorChooser;
 
     private final LogoCanvas canvas;
+    protected static final String WAIT_FOR_REPAINT = "wait-for-repaint";
 
     /**
      * Constructor.
@@ -63,9 +65,22 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         add(setupExportMenu());
         add(setupToolsMenu());
-        JMenu menu = new JMenu("Examples");
-        menu.add(setupMenu("From Tortue", "logo/examples/tortue"));
-        menu.add(setupMenu("From ANTLR", "logo/examples/antlr"));
+        JMenu menu = new JMenu("Logo Options");
+        menu.add(setupMenu("Examples From Tortue", "logo/examples/tortue"));
+        menu.add(setupMenu("Examples From ANTLR", "logo/examples/antlr"));
+
+        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+        final JCheckBoxMenuItem speedMenu = new JCheckBoxMenuItem("Wait for Repaint");
+        boolean checked = prefs.getBoolean(WAIT_FOR_REPAINT, true);
+        speedMenu.setSelected(checked);
+        speedMenu.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                prefs.putBoolean(WAIT_FOR_REPAINT, speedMenu.isSelected());
+            }
+        });
+        menu.add(speedMenu);
         add(menu);
     }
 
