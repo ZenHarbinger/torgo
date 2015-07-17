@@ -101,6 +101,9 @@ public final class LogoController extends ControllerBase {
 
             @Override
             protected LexicalAnalyzer getLexicalAnalysis(String source) {
+                if (canvas != null) {
+                    canvas.reset();
+                }
                 //lexical analysis and parsing with ANTLR
                 logoLexer lexer = new logoLexer(new ANTLRInputStream(source));
                 logoParser parser = new logoParser(new CommonTokenStream(lexer));
