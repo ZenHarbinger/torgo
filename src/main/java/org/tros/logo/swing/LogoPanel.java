@@ -111,13 +111,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             return;
         }
 
-        synchronized (queuedCommands) {
-            commands.addAll(queuedCommands);
-            queuedCommands.clear();
-        }
-
-        for (GraphicCommand command : commands) {
-            command.draw(g2d);
+        //since this list can be written to, do not swith to for-each
+        for(int ii = 0; ii < queuedCommands.size(); ii++) {
+            queuedCommands.get(ii).draw(g2d);
         }
     }
 
@@ -152,9 +148,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     }
 
     private void submitCommand(GraphicCommand command) {
-        synchronized (queuedCommands) {
-            queuedCommands.add(command);
-        }
+        queuedCommands.add(command);
     }
 
     @Override
