@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=Torgo
+GenericName=Torgo
+Comment=Logo Interpreter
+Exec=java -jar /opt/torgo/torgo-1.0.jar
+TryExec=
+Icon=/opt/torgo/torgo-64x64.ico
+Terminal=false
+Type=Application
+Categories=Interpreter;Development;Application
+MimeType=
+X-KDE-Protocols=
+Keywords=Interpreter;Logo
