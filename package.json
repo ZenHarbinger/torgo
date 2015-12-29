@@ -1,0 +1,16 @@
+{
+  "name": "torgo",
+  "version": "1.0.0",
+  "description": "Logo interpreter implemented in Java.",
+  "keywords": [
+    "interpreter",
+    "logo"
+  ],
+  "preferGlobal": true,
+  "homepage": "http://tros.org/torgo/",
+  "author": "Matthew Aguirre <matt.aguirre@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZenHarbinger/torgo.git"
+  }
+}
