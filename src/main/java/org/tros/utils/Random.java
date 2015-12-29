@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public final class Random {
 
-    private final static boolean _legacy;
+    private final static boolean LEGACY;
 
     /**
      * Enumeration for a 3 state system
@@ -49,12 +49,12 @@ public final class Random {
         usePackage
     }
 
-    private final static HashMap<Thread, java.util.Random> _randoms;
-    private final static HashMap<Object, java.util.Random> _specificRandoms;
+    private final static HashMap<Thread, java.util.Random> RANDOMS;
+    private final static HashMap<Object, java.util.Random> SPECIFIC_RANDOMS;
     private static UuidIncrementType _incrementType = UuidIncrementType.useClass;
     private static boolean _doSeed;
     private static int _seedValue;
-    private final static HashMap<String, AtomicLong> _counters;
+    private final static HashMap<String, AtomicLong> COUNTERS;
     private static final String DEFAULT_KEY = "puid";
 
     private Random() {
@@ -65,7 +65,7 @@ public final class Random {
         ResourceAccessor accessor = accessors.iterator().next();
         boolean legacy = false;
 
-        _counters = new HashMap<String, AtomicLong>();
+        COUNTERS = new HashMap<String, AtomicLong>();
         Properties prop = new Properties();
         String prop_file = org.tros.utils.Random.class.getCanonicalName().replace('.', '/') + ".properties";
         try {
@@ -79,32 +79,32 @@ public final class Random {
         } catch (IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).warn(null, ex);
         }
-        _legacy = legacy;
-        _randoms = new HashMap<Thread, java.util.Random>();
-        _specificRandoms = new HashMap<Object, java.util.Random>();
+        LEGACY = legacy;
+        RANDOMS = new HashMap<Thread, java.util.Random>();
+        SPECIFIC_RANDOMS = new HashMap<Object, java.util.Random>();
     }
 
     private static java.util.Random getInstance() {
         Thread curr = Thread.currentThread();
-        if (!_randoms.containsKey(curr)) {
+        if (!RANDOMS.containsKey(curr)) {
             if (_doSeed) {
-                _randoms.put(curr, new java.util.Random(_seedValue));
+                RANDOMS.put(curr, new java.util.Random(_seedValue));
             } else {
-                _randoms.put(curr, new java.util.Random());
+                RANDOMS.put(curr, new java.util.Random());
             }
         }
-        return _randoms.get(curr);
+        return RANDOMS.get(curr);
     }
 
     private static java.util.Random getInstance(final Object key) {
-        if (!_specificRandoms.containsKey(key)) {
+        if (!SPECIFIC_RANDOMS.containsKey(key)) {
             if (_doSeed) {
-                _specificRandoms.put(key, new java.util.Random(_seedValue));
+                SPECIFIC_RANDOMS.put(key, new java.util.Random(_seedValue));
             } else {
-                _specificRandoms.put(key, new java.util.Random());
+                SPECIFIC_RANDOMS.put(key, new java.util.Random());
             }
         }
-        return _specificRandoms.get(key);
+        return SPECIFIC_RANDOMS.get(key);
     }
 
     /**
@@ -125,10 +125,10 @@ public final class Random {
                 key = c.getPackage().getName();
                 break;
         }
-        if (!_counters.containsKey(key)) {
-            _counters.put(key, new AtomicLong(1));
+        if (!COUNTERS.containsKey(key)) {
+            COUNTERS.put(key, new AtomicLong(1));
         }
-        AtomicLong l = _counters.get(key);
+        AtomicLong l = COUNTERS.get(key);
         l.set(value + 1);
     }
 
@@ -140,10 +140,10 @@ public final class Random {
      * @param clear_count specify if we want to clear the UUID values.
      */
     public synchronized static void reset(final boolean clear_count) {
-        _randoms.clear();
-        _specificRandoms.clear();
+        RANDOMS.clear();
+        SPECIFIC_RANDOMS.clear();
         if (clear_count) {
-            _counters.clear();
+            COUNTERS.clear();
         }
     }
 
@@ -167,10 +167,10 @@ public final class Random {
                 key = c.getPackage().getName();
                 break;
         }
-        if (!_counters.containsKey(key)) {
-            _counters.put(key, new AtomicLong(1));
+        if (!COUNTERS.containsKey(key)) {
+            COUNTERS.put(key, new AtomicLong(1));
         }
-        AtomicLong l = _counters.get(key);
+        AtomicLong l = COUNTERS.get(key);
 
         Long l2 = l.getAndIncrement();
         return key + "-" + l2.toString();
@@ -361,7 +361,7 @@ public final class Random {
         if (list.isEmpty()) {
             return null;
         }
-        if (_legacy) {
+        if (LEGACY) {
             Collection<T> not_list = new ArrayList<T>();
             not_list.add(not);
             return getRandomNotInList(list, not_list);
@@ -389,7 +389,7 @@ public final class Random {
      * specified value
      */
     public static <T> T getRandomNotInList(final Collection<T> list, final Collection<T> not) {
-        if (_legacy) {
+        if (LEGACY) {
             ArrayList<T> l = new ArrayList<T>(list);
             l.removeAll(not);
             return getRandom(l);
@@ -409,7 +409,7 @@ public final class Random {
         if (list.isEmpty()) {
             return null;
         }
-        if (_legacy) {
+        if (LEGACY) {
             int index = org.tros.utils.Random.nextInt(list.size());
             Iterator<T> it = list.iterator();
             int count = 0;
@@ -423,7 +423,7 @@ public final class Random {
             return null;
         } else {
             final int index = org.tros.utils.Random.nextInt(list.size());
-            return org.apache.commons.collections4.CollectionUtils.get(list, index);
+            return org.apache.commons.collections4.IterableUtils.get(list, index);
         }
     }
 

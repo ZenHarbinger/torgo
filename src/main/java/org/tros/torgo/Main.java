@@ -50,7 +50,7 @@ public class Main {
         options.addOption("i", "list", false, "List available languages.");
         String lang = "logo";
         try {
-            CommandLineParser parser = new org.apache.commons.cli.BasicParser();
+            CommandLineParser parser = new org.apache.commons.cli.DefaultParser();
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption("lang") || cmd.hasOption("l")) {
                 lang = cmd.getOptionValue("lang");

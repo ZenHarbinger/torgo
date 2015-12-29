@@ -6,6 +6,6 @@ Priority: optional
 Architecture: all
 Depends: openjdk-7-jre | oracle-java7-installer | openjdk-8-jre | oracle-java8-installer
 Maintainer: Matthew Aguirre <matt.aguirre+torgo@gmail.com>
-Homepage: http://tros.org/torgo.html
-Distribution: development
+Homepage: http://tros.org/torgo/
+Distribution: wily
 Description: Logo application implemented in Java

@@ -1,0 +1,49 @@
+Changelog for matt-aguirre's ppa PPA (series utopic) since 1990-01-01 00:00:00
+
+ torgo (0~201503192316-33~ubuntu14.10.1) utopic; urgency=low
+ 
+   * Auto build.
+
+  -- Matthew Aguirre <matt.aguirre@gmail.com>  Thu, 19 Mar 2015 23:16:16 +0000
+
+ torgo (0~201503182316-31~ubuntu14.10.1) utopic; urgency=low
+ 
+   * Auto build.
+
+  -- Matthew Aguirre <matt.aguirre@gmail.com>  Wed, 18 Mar 2015 23:16:36 +0000
+
+ torgo (0~201503172319-28~ubuntu14.10.1) utopic; urgency=low
+ 
+   * Auto build.
+
+  -- Matthew Aguirre <matt.aguirre@gmail.com>  Tue, 17 Mar 2015 23:19:59 +0000
+
+ torgo (0~201503172036-27~ubuntu14.10.1) utopic; urgency=low
+ 
+   * Auto build.
+
+  -- Matthew Aguirre <matt.aguirre@gmail.com>  Tue, 17 Mar 2015 20:36:16 +0000
+
+ torgo (0~201503172002-24~ubuntu14.10.1) utopic; urgency=low
+ 
+   * Auto build.
+
+  -- Matthew Aguirre <matt.aguirre@gmail.com>  Tue, 17 Mar 2015 20:02:25 +0000
+
+ torgo (0~201503131430-6~ubuntu14.10.1) utopic; urgency=low
+ 
+   * Auto build.
+
+  -- Matthew Aguirre <matt.aguirre@gmail.com>  Fri, 13 Mar 2015 14:30:37 +0000
+
+ torgo (0~201503130204~ubuntu14.10.1) utopic; urgency=low
+ 
+   * Auto build.
+
+  -- Matthew Aguirre <matt.aguirre@gmail.com>  Fri, 13 Mar 2015 02:04:48 +0000
+
+ torgo (0~54~ubuntu14.10.1) utopic; urgency=low
+ 
+   * Auto build.
+
+  -- Matthew Aguirre <matt.aguirre@gmail.com>  Fri, 13 Mar 2015 00:00:10 +0000

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.tros</groupId>
     <artifactId>torgo</artifactId>
-    <version>1.0</version>
+    <version>1.0.6</version>
     <packaging>jar</packaging>
     <name>torgo</name>
     <url>http://tros.org/torgo/</url>
@@ -12,7 +12,7 @@
         <developer>
             <id>ZenHarbinger</id>
             <name>Matthew Aguirre</name>
-            <email>matt.aguirre+torgo@gmail.com</email>
+            <email>matt.aguirre@gmail.com</email>
             <url>https://github.com/ZenHarbinger/</url>
             <organization>tros</organization>
             <organizationUrl>http://tros.org/</organizationUrl>
@@ -109,14 +109,14 @@
                                     <goal>jdeb</goal>
                                 </goals>
                                 <configuration>
-                                    <deb>${project.build.directory}/${project.artifactId}_${project.version}.deb</deb>
-                                    <changesOut>${project.build.directory}/${project.artifactId}_${project.version}.changes</changesOut>
+                                    <deb>${project.build.directory}/${project.artifactId}_${project.version}_all.deb</deb>
+                                    <changesOut>${project.build.directory}/${project.artifactId}_${project.version}_all.changes</changesOut>
                                     <signPackage>${torgo.gnupg.signPackage}</signPackage>
                                     <signMethod>dpkg-sig</signMethod>
                                     <signRole>builder</signRole>
                                     <keyring>${torgo.gnupg.keyring}</keyring>
                                     <key>${torgo.gnupg.key}</key>
-                                    <passphrase>${torgo.gnupg.passphrase}</passphrase>                                    
+                                    <passphrase>${torgo.gnupg.passphrase}</passphrase>
                                     <dataSet>
                                         <data>
                                             <src>${project.build.directory}/${project.build.finalName}.${project.packaging}</src>
