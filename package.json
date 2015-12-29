@@ -12,5 +12,15 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ZenHarbinger/torgo.git"
-  }
+  },
+  "bugs": {
+    "mail": "matt.aguirre@gmail.com",
+    "url": "http://github.com/ZenHarbinger/torgo/issues"
+  },
+  "licenses": [
+    {
+      "type": "Apache License, Version 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ]
 }
