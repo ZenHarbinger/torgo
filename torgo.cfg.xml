@@ -1,7 +1,7 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>target/torgo-1.0-SNAPSHOT.jar</jar>
+  <jar>target/torgo-1.0.6.jar</jar>
   <outfile>torgo.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
@@ -15,9 +15,9 @@
   <jre>
     <path></path>
     <bundledJre64Bit>false</bundledJre64Bit>
-    <minVersion>1.8.0</minVersion>
+    <minVersion>1.6.0</minVersion>
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
-    <opt>-jar target/torgo-1.0-SNAPSHOT.jar</opt>
+    <opt>-jar target/torgo-1.0.6.jar</opt>
   </jre>
 </launch4jConfig>
