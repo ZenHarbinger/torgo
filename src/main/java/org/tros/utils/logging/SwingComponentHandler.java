@@ -6,17 +6,25 @@
  */
 package org.tros.utils.logging;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TimerTask;
+import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import javax.swing.JTextArea;
+import java.util.logging.SimpleFormatter;
+import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 /**
  *
@@ -24,19 +32,41 @@ import javax.swing.SwingUtilities;
  */
 public final class SwingComponentHandler extends Handler {
 
-    private static final JTextArea textArea = new JTextArea(50, 50);
+    private static final JTextPane TEXT_AREA;
     private int _maxSize;
-    private static final String nl = System.getProperty("line.separator");
     private final ArrayList<LogRecord> records;
     private final java.util.Timer timer;
     private static boolean paused;
+    private static final DefaultStyledDocument DOC;
+    private static final HashMap<java.util.logging.Level, Style> STYLE_MAP;
+    private static final Style DEFAULT_STYLE;// = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
+    private int time_field;
 
     static {
-        textArea.setEditable(false);
+        STYLE_MAP = new HashMap<java.util.logging.Level, Style>();
+
+        StyleContext sc = new StyleContext();
+        DOC = new DefaultStyledDocument(sc);
+        TEXT_AREA = new JTextPane(DOC);
+        TEXT_AREA.setEditable(false);
+
+        Style warning = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
+        StyleConstants.setForeground(warning, new Color(255, 102, 0));
+        STYLE_MAP.put(Level.WARNING, warning);
+        Style severe = TEXT_AREA.addStyle(java.util.logging.Level.SEVERE.toString(), null);
+        StyleConstants.setForeground(severe, new Color(102, 0, 0));
+        STYLE_MAP.put(Level.SEVERE, severe);
+
+        Style info = TEXT_AREA.addStyle(java.util.logging.Level.INFO.toString(), null);
+        StyleConstants.setForeground(info, new Color(48, 80, 32));
+        STYLE_MAP.put(Level.INFO, info);
+
+        DEFAULT_STYLE = TEXT_AREA.addStyle(java.util.logging.Level.ALL.toString(), null);
+        StyleConstants.setForeground(DEFAULT_STYLE, Color.BLACK);
     }
 
     public SwingComponentHandler() {
-        _maxSize = 50000;
+        configure();
         paused = false;
         timer = new java.util.Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -45,29 +75,81 @@ public final class SwingComponentHandler extends Handler {
             public void run() {
                 timer();
             }
-        }, 500, 500);
+        }, time_field, time_field);
         records = new ArrayList<LogRecord>();
         Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.FINE, "Started...");
     }
 
-    @Override
-    public void setFormatter(Formatter frmtr) throws SecurityException {
-        super.setFormatter(frmtr);
-    }
+    private void configure() {
+        LogManager manager = LogManager.getLogManager();
+        String cname = getClass().getName();
 
-    @Override
-    public Formatter getFormatter() {
-        return super.getFormatter(); //To change body of generated methods, choose Tools | Templates.
-    }
+        String level = manager.getProperty(cname + ".level");
+        String filter = manager.getProperty(cname + ".filter");
+        String formatter = manager.getProperty(cname + ".formatter");
+        String size = manager.getProperty(cname + ".limit");
+        String timer_prop = manager.getProperty(cname + ".timer");
 
-    @Override
-    public synchronized void setLevel(Level level) throws SecurityException {
-        super.setLevel(level); //To change body of generated methods, choose Tools | Templates.
-    }
+        int s = 50000;
+        if (size != null) {
+            try {
+                s = Integer.parseInt(size);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.setLimit(s);
 
-    @Override
-    public synchronized Level getLevel() {
-        return super.getLevel(); //To change body of generated methods, choose Tools | Templates.
+        int time = 500;
+        if (timer != null) {
+            try {
+                time = Integer.parseInt(timer_prop);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.time_field = time;
+
+        Level def = Level.INFO;
+        if (level != null) {
+            try {
+                def = Level.parse(level);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.setLevel(def);
+
+        Formatter fmmt = null;
+        if (formatter != null) {
+            try {
+                fmmt = (Formatter) Class.forName(formatter).newInstance();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (fmmt == null) {
+            fmmt = new SimpleFormatter();
+        }
+        this.setFormatter(fmmt);
+
+        Filter filt = null;
+        if (filter != null) {
+            try {
+                filt = (Filter) Class.forName(filter).newInstance();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.setFilter(filt);
     }
 
     public void setLimit(int value) {
@@ -80,24 +162,23 @@ public final class SwingComponentHandler extends Handler {
 
     @Override
     public void publish(final LogRecord record) {
-        synchronized (records) {
-            records.add(record);
+        if (record.getLevel().intValue() >= this.getLevel().intValue()) {
+            synchronized (records) {
+                records.add(record);
+            }
         }
     }
 
-    public static JTextArea getTextArea() {
-        return textArea;
+    public static JTextPane getTextArea() {
+        return TEXT_AREA;
     }
 
     @Override
     public void flush() {
     }
 
-    private boolean halt = false;
-
     @Override
     public void close() throws SecurityException {
-        halt = true;
         timer.purge();
         timer.cancel();
     }
@@ -116,46 +197,30 @@ public final class SwingComponentHandler extends Handler {
             rec.addAll(records);
             records.clear();
         }
-        java.util.logging.Formatter formatter = this.getFormatter();
-        if (formatter == null) {
-            this.setFormatter(new org.tros.utils.logging.SimpleLogFormatter());
-        }
+
         final java.util.logging.Formatter f = getFormatter();
 
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                StringWriter text = new StringWriter();
-                PrintWriter out = new PrintWriter(text);
-                int lc = textArea.getLineCount();
-                if (lc + rec.size() > _maxSize) {
-                    if (_maxSize - rec.size() > 0) {
-                        String[] lines = textArea.getText().split(nl);
-                        String[] output = new String[_maxSize - rec.size()];
-                        System.arraycopy(lines, lines.length - _maxSize + rec.size(), output, 0, output.length);
-                        text = new StringWriter();
-                        out = new PrintWriter(text);
-                        for (String output1 : output) {
-                            out.printf(output1 + nl);
-                        }
-                        for (LogRecord record : rec) {
-                            out.printf(f.format(record));
-                        }
-                    } else {
-                        for (LogRecord record : rec) {
-                            out.printf(f.format(record));
-                        }
-                    }
-                } else {
-                    out.printf(textArea.getText());
-                    for (LogRecord record : rec) {
-                        out.printf(f.format(record));
+                for (LogRecord record : rec) {
+                    try {
+                        Style s = STYLE_MAP.containsKey(record.getLevel()) ? STYLE_MAP.get(record.getLevel()) : DEFAULT_STYLE;
+
+                        String[] names = record.getLoggerName().split("\\.");
+                        String name = names[names.length - 1];
+                        StyleConstants.setBold(s, true);
+                        DOC.insertString(DOC.getLength(), record.getLevel() + ": [" + name + "] ", s);
+                        StyleConstants.setBold(s, false);
+                        DOC.insertString(DOC.getLength(), f.format(record), s);
+                        TEXT_AREA.select(DOC.getLength(), DOC.getLength());
+                    } catch (BadLocationException ex) {
+                        Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-
-                textArea.setText(text.toString());
             }
+
         });
     }
 }

@@ -22,14 +22,8 @@ public final class SimpleLogFormatter extends Formatter {
     @Override
     public String format(LogRecord record) {
         StringBuilder sb = new StringBuilder();
-        String[] names = record.getLoggerName().split("\\.");
-        String name = names[names.length - 1];
 
-        sb.append("[")
-                .append(name)
-                .append("] ")
-                .append(formatMessage(record))
-                .append(LINE_SEPARATOR);
+        sb.append(formatMessage(record)).append(LINE_SEPARATOR);
 
         if (record.getThrown() != null) {
             try {
