@@ -92,9 +92,7 @@ public final class LogConsole extends JFrame {
         int width = (int) (height * 1.61803398875);
         this.setSize(width, height);
 
-        JScrollPane sp = new JScrollPane(SwingComponentHandler.getTextArea());
-
-        this.add(sp);
+        this.add(new JScrollPane(SwingComponentHandler.getComponent()));
 
         final Preferences prefs = Preferences.userNodeForPackage(LogConsole.class);
         this.addComponentListener(new ComponentListener() {

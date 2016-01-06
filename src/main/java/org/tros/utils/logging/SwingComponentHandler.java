@@ -18,6 +18,7 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import javax.swing.JComponent;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
@@ -169,7 +170,7 @@ public final class SwingComponentHandler extends Handler {
         }
     }
 
-    public static JTextPane getTextArea() {
+    public static JComponent getComponent() {
         return TEXT_AREA;
     }
 
@@ -214,11 +215,11 @@ public final class SwingComponentHandler extends Handler {
                         DOC.insertString(DOC.getLength(), record.getLevel() + ": [" + name + "] ", s);
                         StyleConstants.setBold(s, false);
                         DOC.insertString(DOC.getLength(), f.format(record), s);
-                        TEXT_AREA.select(DOC.getLength(), DOC.getLength());
                     } catch (BadLocationException ex) {
                         Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                TEXT_AREA.select(DOC.getLength(), DOC.getLength());
             }
 
         });
