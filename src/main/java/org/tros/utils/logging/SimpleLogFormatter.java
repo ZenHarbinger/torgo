@@ -12,31 +12,58 @@ package org.tros.utils.logging;
  */
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.logging.Formatter;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
+//import sun.util.logging.LoggingSupport;
 
 public final class SimpleLogFormatter extends Formatter {
 
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private final String format;
+    private final Date dat = new Date();
 
+    public SimpleLogFormatter() {
+        String property = LogManager.getLogManager().getProperty(SimpleLogFormatter.class.getName() + ".format");
+        format = property == null ? "[%1$tc] %4$s: %2$s - %5$s %6$s%n" : property;
+    }
+    
     @Override
     public String format(LogRecord record) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder nameBuilder = new StringBuilder();
 
-        sb.append(formatMessage(record)).append(LINE_SEPARATOR);
-
-        if (record.getThrown() != null) {
-            try {
-                StringWriter sw = new StringWriter();
-                PrintWriter pw = new PrintWriter(sw);
-                record.getThrown().printStackTrace(pw);
-                pw.close();
-                sb.append(sw.toString());
-            } catch (Exception ex) {
-                // ignore
-            }
+        String[] names = record.getLoggerName().split("\\.");
+        for (int ii = 0; ii < names.length - 1; ii++) {
+            nameBuilder.append(names[ii].charAt(0));
         }
+        nameBuilder.append(".").append(names[names.length - 1]);
 
-        return sb.toString();
+        dat.setTime(record.getMillis());
+        String source;
+        if (record.getSourceClassName() != null) {
+            source = record.getSourceClassName();
+            if (record.getSourceMethodName() != null) {
+                source += " " + record.getSourceMethodName();
+            }
+        } else {
+            source = record.getLoggerName();
+        }
+        String message = formatMessage(record);
+        String throwable = "";
+        if (record.getThrown() != null) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            pw.println();
+            record.getThrown().printStackTrace(pw);
+            pw.close();
+            throwable = sw.toString();
+        }
+        return String.format(format,
+                dat,
+                source,
+                nameBuilder.toString(),
+                record.getLevel().getLocalizedName(),
+                message,
+                throwable);
     }
 }

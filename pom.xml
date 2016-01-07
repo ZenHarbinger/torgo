@@ -221,6 +221,8 @@
                         <param>org.tros.torgo.interpreter.InterpreterType</param>
                         <param>org.tros.utils.ResourceAccessor</param>
                         <param>org.tros.utils.logging.LogFactory</param>
+                        <param>org.apache.commons.beanutils.Converter</param>
+                        <param>org.tros.utils.converters.ConverterRegister</param>
                         <!--<param>org.tros.torgo.InterpreterVisualization</param>-->
                     </services>
                 </configuration>
@@ -317,6 +319,11 @@
             <groupId>com.fifesoft</groupId>
             <artifactId>rsyntaxtextarea</artifactId>
             <version>2.5.8</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.2</version>
         </dependency>
     </dependencies>
     <properties>

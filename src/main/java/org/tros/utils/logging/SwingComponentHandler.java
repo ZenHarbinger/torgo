@@ -7,7 +7,10 @@
 package org.tros.utils.logging;
 
 import java.awt.Color;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.TimerTask;
 import java.util.logging.Filter;
@@ -26,6 +29,7 @@ import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import org.tros.utils.TypeHandler;
 
 /**
  *
@@ -43,6 +47,8 @@ public final class SwingComponentHandler extends Handler {
     private static final Style DEFAULT_STYLE;// = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
     private int time_field;
 
+    private final static String FORMAT;
+
     static {
         STYLE_MAP = new HashMap<java.util.logging.Level, Style>();
 
@@ -51,19 +57,67 @@ public final class SwingComponentHandler extends Handler {
         TEXT_AREA = new JTextPane(DOC);
         TEXT_AREA.setEditable(false);
 
-        Style warning = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
-        StyleConstants.setForeground(warning, new Color(255, 102, 0));
-        STYLE_MAP.put(Level.WARNING, warning);
-        Style severe = TEXT_AREA.addStyle(java.util.logging.Level.SEVERE.toString(), null);
-        StyleConstants.setForeground(severe, new Color(102, 0, 0));
-        STYLE_MAP.put(Level.SEVERE, severe);
+        LogManager manager = LogManager.getLogManager();
+        String cname = SwingComponentHandler.class.getName();
 
-        Style info = TEXT_AREA.addStyle(java.util.logging.Level.INFO.toString(), null);
-        StyleConstants.setForeground(info, new Color(48, 80, 32));
-        STYLE_MAP.put(Level.INFO, info);
+        String format = manager.getProperty(cname + ".format");
+        String warning = manager.getProperty(cname + ".warning");
+        String severe = manager.getProperty(cname + ".severe");
+        String info = manager.getProperty(cname + ".info");
+        String all = manager.getProperty(cname + ".all");
+        String config = manager.getProperty(cname + ".config");
+        String fine = manager.getProperty(cname + ".fine");
+        String finer = manager.getProperty(cname + ".finer");
+        String finest = manager.getProperty(cname + ".finest");
+        String off = manager.getProperty(cname + ".off");
+        
+        String def = manager.getProperty(cname + ".default");
+
+        FORMAT = format == null ? "" : format;
+
+        Color defColor = def != null ? (Color) TypeHandler.fromString(Color.class, def) : Color.BLACK;
+        defColor = defColor == null ? Color.BLACK : defColor;
+
+        Color warnColor = warning != null ? (Color) TypeHandler.fromString(Color.class, warning) : defColor;
+        Color severeColor = severe != null ? (Color) TypeHandler.fromString(Color.class, severe) : defColor;
+        Color infoColor = info != null ? (Color) TypeHandler.fromString(Color.class, info) : defColor;
+        Color allColor = all != null ? (Color) TypeHandler.fromString(Color.class, all) : defColor;
+        Color configColor = config != null ? (Color) TypeHandler.fromString(Color.class, config) : defColor;
+        Color fineColor = fine != null ? (Color) TypeHandler.fromString(Color.class, fine) : defColor;
+        Color finerColor = finer != null ? (Color) TypeHandler.fromString(Color.class, finer) : defColor;
+        Color finestColor = finest != null ? (Color) TypeHandler.fromString(Color.class, finest) : defColor;
+        Color offColor = off != null ? (Color) TypeHandler.fromString(Color.class, off) : defColor;
+       
+        Style warning2 = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
+        StyleConstants.setForeground(warning2, warnColor == null ? defColor : warnColor);
+        STYLE_MAP.put(Level.WARNING, warning2);
+        Style severe2 = TEXT_AREA.addStyle(java.util.logging.Level.SEVERE.toString(), null);
+        StyleConstants.setForeground(severe2, severeColor == null ? defColor : severeColor);
+        STYLE_MAP.put(Level.SEVERE, severe2);
+        Style info2 = TEXT_AREA.addStyle(java.util.logging.Level.INFO.toString(), null);
+        StyleConstants.setForeground(info2, infoColor == null ? defColor : infoColor);
+        STYLE_MAP.put(Level.INFO, info2);
+        Style all2 = TEXT_AREA.addStyle(java.util.logging.Level.ALL.toString(), null);
+        StyleConstants.setForeground(all2, allColor == null ? defColor : allColor);
+        STYLE_MAP.put(Level.ALL, all2);
+        Style config2 = TEXT_AREA.addStyle(java.util.logging.Level.CONFIG.toString(), null);
+        StyleConstants.setForeground(config2, configColor == null ? defColor : configColor);
+        STYLE_MAP.put(Level.CONFIG, config2);
+        Style fine2 = TEXT_AREA.addStyle(java.util.logging.Level.FINE.toString(), null);
+        StyleConstants.setForeground(fine2, fineColor == null ? defColor : fineColor);
+        STYLE_MAP.put(Level.FINE, fine2);
+        Style finer2 = TEXT_AREA.addStyle(java.util.logging.Level.FINER.toString(), null);
+        StyleConstants.setForeground(finer2, finerColor == null ? defColor : finerColor);
+        STYLE_MAP.put(Level.FINER, finer2);
+        Style finest2 = TEXT_AREA.addStyle(java.util.logging.Level.FINEST.toString(), null);
+        StyleConstants.setForeground(finest2, finestColor == null ? defColor : finestColor);
+        STYLE_MAP.put(Level.FINEST, finest2);
+        Style off2 = TEXT_AREA.addStyle(java.util.logging.Level.OFF.toString(), null);
+        StyleConstants.setForeground(off2, offColor == null ? defColor : offColor);
+        STYLE_MAP.put(Level.OFF, off2);
 
         DEFAULT_STYLE = TEXT_AREA.addStyle(java.util.logging.Level.ALL.toString(), null);
-        StyleConstants.setForeground(DEFAULT_STYLE, Color.BLACK);
+        StyleConstants.setForeground(DEFAULT_STYLE, defColor);
     }
 
     public SwingComponentHandler() {
@@ -200,6 +254,7 @@ public final class SwingComponentHandler extends Handler {
         }
 
         final java.util.logging.Formatter f = getFormatter();
+        final Date dat = new Date();
 
         SwingUtilities.invokeLater(new Runnable() {
 
@@ -209,10 +264,43 @@ public final class SwingComponentHandler extends Handler {
                     try {
                         Style s = STYLE_MAP.containsKey(record.getLevel()) ? STYLE_MAP.get(record.getLevel()) : DEFAULT_STYLE;
 
+                        dat.setTime(record.getMillis());
+                        String source;
+                        if (record.getSourceClassName() != null) {
+                            source = record.getSourceClassName();
+                            if (record.getSourceMethodName() != null) {
+                                source += " " + record.getSourceMethodName();
+                            }
+                        } else {
+                            source = record.getLoggerName();
+                        }
+                        StringBuilder nameBuilder = new StringBuilder();
+
                         String[] names = record.getLoggerName().split("\\.");
-                        String name = names[names.length - 1];
+                        for (int ii = 0; ii < names.length - 1; ii++) {
+                            nameBuilder.append(names[ii].charAt(0));
+                        }
+                        nameBuilder.append(".").append(names[names.length - 1]);
+
+                        String throwable = "";
+                        if (record.getThrown() != null) {
+                            StringWriter sw = new StringWriter();
+                            PrintWriter pw = new PrintWriter(sw);
+                            pw.println();
+                            record.getThrown().printStackTrace(pw);
+                            pw.close();
+                            throwable = sw.toString();
+                        }
+                        String toInsert = String.format(FORMAT,
+                                dat,
+                                source,
+                                nameBuilder.toString(),
+                                record.getLevel().getLocalizedName(),
+                                record.getMessage(),
+                                throwable);
+
                         StyleConstants.setBold(s, true);
-                        DOC.insertString(DOC.getLength(), record.getLevel() + ": [" + name + "] ", s);
+                        DOC.insertString(DOC.getLength(), toInsert + " ", s);
                         StyleConstants.setBold(s, false);
                         DOC.insertString(DOC.getLength(), f.format(record), s);
                     } catch (BadLocationException ex) {

@@ -6,10 +6,13 @@
  */
 package org.tros.utils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.tros.utils.converters.UtilsBeanFactory;
 
 /**
  *
@@ -22,7 +25,7 @@ public final class TypeHandler {
     private static final java.util.Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
     private static final java.util.HashMap<Class<?>, Class<?>> WRAPPER_LOOKUP = getWrapperTypes2();
     
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(TypeHandler.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(TypeHandler.class);
 
 
     private TypeHandler() {
@@ -91,102 +94,31 @@ public final class TypeHandler {
     }
 
     public static String colorToHex(final java.awt.Color color) {
-        return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+        return toString(color);
     }
 
     public static Object fromString(final Class<?> type, final String val) {
-        //handle/pass-through string
-        if (type == String.class) {
-            return val;
+        Object o = convert(type, val);
+        if (o == null) {
+            Logger.getLogger(TypeHandler.class.getName()).log(Level.WARNING, "Cannot convert {0} to {1}", new Object[]{val, type.getName()});
+        }
+        return o;
+    }
+
+    public static String toString(final Object val) {
+        String o = (String) convert(String.class, val);
+        if (o == null) {
+            Logger.getLogger(TypeHandler.class.getName()).log(Level.WARNING, "Cannot convert {0} to {1}", new Object[]{val, String.class.getName()});
+        }
+        return o;
+    }
+
+    public static <T> T convert(Class<T> to, Object val) {
+        Converter lookup = UtilsBeanFactory.getConverter(val.getClass(), to);
+        if (lookup != null) {
+            return lookup.convert(to, val);
         }
 
-        //handle Calendar
-        if (type == java.util.Calendar.class) {
-            java.util.Calendar inst = java.util.Calendar.getInstance();
-            try {
-                inst.setTime(DEFAULT_DATE_FORMAT.parse(val));
-                return inst;
-            } catch (ParseException ex) {
-                logger.fatal(null, ex);
-            }
-        } else if (type == java.util.Date.class) {
-            try {
-                java.util.Date inst = DEFAULT_DATE_FORMAT.parse(val);
-                return inst;
-            } catch (ParseException ex) {
-                logger.fatal(null, ex);
-            }
-        } else if (type == java.awt.Color.class) {
-            try {
-                return (java.awt.Color) java.awt.Color.class.getField(val).get(null);
-            } catch (NoSuchFieldException ex) {
-                return java.awt.Color.decode(val);
-                //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                logger.fatal(null, ex);
-            } catch (IllegalArgumentException ex) {
-                logger.fatal(null, ex);
-            } catch (IllegalAccessException ex) {
-                logger.fatal(null, ex);
-            }
-            return java.awt.Color.decode(val);
-        } else if (type == Class.class) {
-            try {
-                return Class.forName(val);
-            } catch (ClassNotFoundException ex) {
-                logger.fatal(null, ex);
-            }
-        }
-
-        Class<?> wrap = getWrapperType(type);
-        if (wrap == null) {
-            wrap = type;
-        }
-
-        String name = wrap.getSimpleName();
-        java.lang.reflect.Method method = null;
-        try {
-            method = wrap.getMethod("parse" + name, String.class);
-        } catch (NoSuchMethodException ex) {
-            try {
-                //HACK: Integer isn't parseInteger, it's parseInt
-                method = wrap.getMethod("parseInt", String.class);
-            } catch (NoSuchMethodException ex1) {
-//                Logger.getLogger(TypeHandler.class.getName()).log(Level.FINEST, null, ex1);
-            } catch (SecurityException ex1) {
-                logger.fatal(null, ex);
-            }
-        } catch (SecurityException ex) {
-            logger.fatal(null, ex);
-        }
-        if (method != null) {
-            try {
-                return method.invoke(null, val);
-            } catch (IllegalAccessException ex) {
-            } catch (IllegalArgumentException ex) {
-            } catch (InvocationTargetException ex) {
-                logger.fatal(null, ex);
-            }
-        } else {
-            try {
-                return type.getConstructor(String.class).newInstance(val);
-            } catch (NoSuchMethodException ex) {
-            } catch (SecurityException ex) {
-            } catch (InstantiationException ex) {
-            } catch (IllegalAccessException ex) {
-            } catch (IllegalArgumentException ex) {
-            } catch (InvocationTargetException ex) {
-                //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        try {
-            return Class.forName(val).newInstance();
-        } catch (ClassNotFoundException ex) {
-        } catch (InstantiationException ex) {
-        } catch (IllegalAccessException ex) {
-            //Logger.getLogger(TypeHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return null;
     }
 }
