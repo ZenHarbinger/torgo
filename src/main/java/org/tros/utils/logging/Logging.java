@@ -31,17 +31,74 @@ import org.apache.commons.io.IOUtils;
 public final class Logging {
 
     private static final LogFactory logFactory;
-    
+
     static {
         ServiceLoader<LogFactory> logFactories = ServiceLoader.load(LogFactory.class);
         logFactory = logFactories.iterator().next();
     }
-    
+
     private Logging() {
     }
 
     public static void initLogging(BuildInfo binfo) {
         initLogging(binfo, Logging.class);
+    }
+
+    private static void copyFile(BuildInfo binfo, Class init, File logProp) {
+        try {
+            String prop_file = init.getCanonicalName().replace('.', '/') + ".properties";
+            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader()
+                    .getResources(prop_file);
+            if (resources.hasMoreElements()) {
+                URL to_use = resources.nextElement();
+                try {
+                    FileOutputStream fis = new FileOutputStream(logProp);
+                    IOUtils.copy(to_use.openStream(), fis);
+                    fis.close();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void loadFile(File logProp) {
+        String definedLogFile = System.getProperty("torgo.logfile");
+        StringBuilder sb = new StringBuilder();
+        try {
+            final Scanner scanner = new Scanner(logProp);
+            boolean lookForFile = false;
+            while (scanner.hasNextLine()) {
+                String lineFromFile = scanner.nextLine();
+                if (lineFromFile.startsWith("handlers")
+                        && lineFromFile.contains("java.util.logging.FileHandler")) {
+                    lookForFile = true;
+                }
+                if (lookForFile
+                        && definedLogFile != null
+                        && lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
+                    lineFromFile = "java.util.logging.FileHandler.pattern = " + definedLogFile;
+                }
+                sb.append(lineFromFile).append(System.getProperty("line.separator"));
+            }
+
+            try {
+                BufferedInputStream fis = new BufferedInputStream(IOUtils.toInputStream(sb.toString(), "UTF-8"));
+                LogManager.getLogManager().readConfiguration(fis);
+                fis.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+            } catch (SecurityException ex) {
+                Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void initLogging(BuildInfo binfo, Class init) {
@@ -51,15 +108,15 @@ public final class Logging {
             Field f = forName.getField("log");
             f.set(null, null);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+            Logger.getLogger(Logging.class.getName()).log(Level.FINEST, "org.reflections.Reflections not in CLASSPATH...");
         } catch (NoSuchFieldException ex) {
-            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+            Logger.getLogger(Logging.class.getName()).log(Level.FINEST, "org.reflections.Reflections not in CLASSPATH...");
         } catch (SecurityException ex) {
-            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+            Logger.getLogger(Logging.class.getName()).log(Level.FINEST, "org.reflections.Reflections not in CLASSPATH...");
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+            Logger.getLogger(Logging.class.getName()).log(Level.FINEST, "org.reflections.Reflections not in CLASSPATH...");
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(Logging.class.getName()).log(Level.FINER, "org.reflections.Reflections not in CLASSPATH...");
+            Logger.getLogger(Logging.class.getName()).log(Level.FINEST, "org.reflections.Reflections not in CLASSPATH...");
         }
 
         //make logs directory
@@ -69,60 +126,23 @@ public final class Logging {
         String dir = getApplicationEtcDirectory(binfo) + "/logging.properties";
         File logProp = new File(dir);
         if (!logProp.exists()) {
-            try {
-                String prop_file = init.getCanonicalName().replace('.', '/') + ".properties";
-                java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader()
-                        .getResources(prop_file);
-                if (resources.hasMoreElements()) {
-                    URL to_use = resources.nextElement();
-                    try {
-                        FileOutputStream fis = new FileOutputStream(logProp);
-                        IOUtils.copy(to_use.openStream(), fis);
-                        fis.close();
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            copyFile(binfo, init, logProp);
         }
 
         if (logProp.exists()) {
-            String definedLogFile = System.getProperty("torgo.logfile");
-            StringBuilder sb = new StringBuilder();
-            try {
-                final Scanner scanner = new Scanner(logProp);
-                boolean lookForFile = false;
-                while (scanner.hasNextLine()) {
-                    String lineFromFile = scanner.nextLine();
-                    if (lineFromFile.startsWith("handlers")
-                            && lineFromFile.contains("java.util.logging.FileHandler")) {
-                        lookForFile = true;
-                    }
-                    if (lookForFile
-                            && definedLogFile != null
-                            && lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
-                        lineFromFile = "java.util.logging.FileHandler.pattern = " + definedLogFile;
-                    }
-                    sb.append(lineFromFile).append(System.getProperty("line.separator"));
-                }
+            loadFile(logProp);
+        }
 
-                try {
-                    BufferedInputStream fis = new BufferedInputStream(IOUtils.toInputStream(sb.toString(), "UTF-8"));
-                    LogManager.getLogManager().readConfiguration(fis);
-                    fis.close();
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                } catch (SecurityException ex) {
-                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        LogManager lm = LogManager.getLogManager();
+        String property = lm.getProperty("version");
+        if (property == null || !property.equals(binfo.getVersion().replace("-SNAPSHOT", ""))) {
+            //backup old file
+            File backup = new File(logProp.getAbsolutePath() + "." + (property == null ? "old" : property));
+            logProp.renameTo(backup);
+            //copy new file
+            copyFile(binfo, init, logProp);
+            //re-load new file
+            loadFile(logProp);
         }
 
         //Small hack to close SwingComponentHandler which should only be used by a GUI
@@ -141,7 +161,7 @@ public final class Logging {
             Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static LogFactory getLogFactory() {
         return logFactory;
     }

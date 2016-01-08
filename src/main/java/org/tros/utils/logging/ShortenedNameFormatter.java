@@ -1,8 +1,5 @@
 /*
- * This work is licensed under the Creative Commons Attribution 3.0 Unported
- * License. To view a copy of this license, visit
- * http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
- * Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
+ * Copyright 2015 ArtisTech, Inc.
  */
 package org.tros.utils.logging;
 
@@ -17,14 +14,20 @@ import java.util.logging.Formatter;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
-public class SingleLineFormatter extends Formatter {
+public class ShortenedNameFormatter extends Formatter {
 
-    private final String format;
-    private final Date dat = new Date();
+    protected String FORMAT;
+    protected Date DATE;
+    private static final String DEFAULT_FORMAT = "[%1$tc] %4$s: %2$s - %5$s %6$s%n";
 
-    public SingleLineFormatter() {
-        String property = LogManager.getLogManager().getProperty(SingleLineFormatter.class.getName() + ".format");
-        format = property == null ? "[%1$tc] %4$s: %2$s - %5$s %6$s%n" : property;
+    public ShortenedNameFormatter() {
+        this(DEFAULT_FORMAT);
+    }
+
+    public ShortenedNameFormatter(String defaultFormat) {
+        DATE = new Date();
+        String property = LogManager.getLogManager().getProperty(this.getClass().getName() + ".format");
+        FORMAT = property == null ? defaultFormat : property;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class SingleLineFormatter extends Formatter {
         }
         nameBuilder.append(".").append(names[names.length - 1]);
 
-        dat.setTime(record.getMillis());
+        DATE.setTime(record.getMillis());
         String source;
         if (record.getSourceClassName() != null) {
             source = record.getSourceClassName();
@@ -57,8 +60,8 @@ public class SingleLineFormatter extends Formatter {
             pw.close();
             throwable = sw.toString();
         }
-        return String.format(format,
-                dat,
+        return String.format(FORMAT,
+                DATE,
                 source,
                 nameBuilder.toString(),
                 record.getLevel().getLocalizedName(),
