@@ -1,7 +1,7 @@
 # torgo
+[![Join the chat at https://gitter.im/ZenHarbinger/torgo](https://badges.gitter.im/ZenHarbinger/torgo.svg)](https://gitter.im/ZenHarbinger/torgo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ##Logo Interpreter in Java
 
-[![Join the chat at https://gitter.im/ZenHarbinger/torgo](https://badges.gitter.im/ZenHarbinger/torgo.svg)](https://gitter.im/ZenHarbinger/torgo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Torgo is a Logo interpreter written in Java.  It uses [ANTLR](http://www.antlr.org/) as a language parser and for lexical analysis.  The parsed scripts are then walked to interpret the commands.
 
 Torgo is built using Java6.
