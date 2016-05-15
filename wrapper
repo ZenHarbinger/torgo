@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$SNAP/jre-8u91/bin/java -Dsnapd=true -Dsun.java2d.opengl=true -jar $SNAP/jar/torgo-1.0.6.jar

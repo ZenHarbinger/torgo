@@ -33,6 +33,7 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.TorgoTextConsole;
@@ -50,6 +51,7 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
      *
      * @param controller
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public LogoUserInputPanel(Controller controller) {
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
@@ -61,27 +63,30 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
 
         JTextArea area = null;
         JScrollPane inputScrollPane = null;
-        try {
-            Class<?> syntax = Class.forName("org.fife.ui.rsyntaxtextarea.RSyntaxTextArea");
-            area = (JTextArea) syntax.newInstance();
-            syntax.getMethod("setAntiAliasingEnabled", boolean.class).invoke(area, true);
-            syntax.getMethod("setCodeFoldingEnabled", boolean.class).invoke(area, true);
-            Class<?> syntaxScroll = Class.forName("org.fife.ui.rtextarea.RTextScrollPane");
-            inputScrollPane = (JScrollPane) syntaxScroll.getConstructor(Component.class).newInstance(area);
-        } catch (ClassNotFoundException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
-        } catch (InstantiationException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
-        } catch (IllegalAccessException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
-        } catch (NoSuchMethodException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
-        } catch (SecurityException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
-        } catch (IllegalArgumentException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
-        } catch (InvocationTargetException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
+        //currently commented out for working with snapd
+        if (!TorgoInfo.INSTANCE.isSnapd()) {
+            try {
+                Class<?> syntax = Class.forName("org.fife.ui.rsyntaxtextarea.RSyntaxTextArea");
+                area = (JTextArea) syntax.newInstance();
+                syntax.getMethod("setAntiAliasingEnabled", boolean.class).invoke(area, true);
+                syntax.getMethod("setCodeFoldingEnabled", boolean.class).invoke(area, true);
+                Class<?> syntaxScroll = Class.forName("org.fife.ui.rtextarea.RTextScrollPane");
+                inputScrollPane = (JScrollPane) syntaxScroll.getConstructor(Component.class).newInstance(area);
+            } catch (ClassNotFoundException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (InstantiationException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (IllegalAccessException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (NoSuchMethodException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (SecurityException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (IllegalArgumentException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
+            } catch (InvocationTargetException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoUserInputPanel.class).fatal(null, ex);
+            }
         }
         inputTextArea = area == null ? new JTextArea() : area;
         inputScrollPane = inputScrollPane == null ? new JScrollPane(inputTextArea) : inputScrollPane;

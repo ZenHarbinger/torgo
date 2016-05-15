@@ -31,11 +31,40 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
     private String _builder;
     private String _company;
     private String _applicationName;
+    private boolean _snapd;
 
     /**
      * Singleton Instance.
      */
-    public final static TorgoInfo Instance = new TorgoInfo();
+    public final static TorgoInfo INSTANCE = new TorgoInfo();
+
+    /**
+     * Get if the app is being run from within snap. This value is able to be
+     * read from two different places. The properties file set at build time as
+     * well as on the command line at run time using -Dsnapd=true when invoking
+     * java.
+     *
+     * @return
+     */
+    public boolean isSnapd() {
+        String snapd = System.getProperty("snapd");
+        boolean ret = _snapd;
+        if (snapd != null) {
+            ret = ret || Boolean.parseBoolean(snapd);
+        }
+        return ret;
+    }
+
+    /**
+     * Set if the app is being run from within snap. This value is read in from
+     * the properties file and so is optimally set at build time using
+     * -Dsnapd=true when invoking maven.
+     *
+     * @param value
+     */
+    public void setSnapd(boolean value) {
+        _snapd = value;
+    }
 
     /**
      * Version Accessor.

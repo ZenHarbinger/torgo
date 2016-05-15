@@ -44,7 +44,7 @@ public class Main {
 //        //force opengl
 //        System.setProperty("sun.java2d.opengl", "true");
         //initialize the logging
-        org.tros.utils.logging.Logging.initLogging(TorgoInfo.Instance);
+        org.tros.utils.logging.Logging.initLogging(TorgoInfo.INSTANCE);
         Options options = new Options();
         options.addOption("l", "lang", true, "Open using the desired language. [default is 'logo']");
         options.addOption("i", "list", false, "List available languages.");
@@ -66,17 +66,20 @@ public class Main {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
         }
 
-        try {
-            //set look and feel (laf) to that of the system.
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
-        } catch (InstantiationException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
-        } catch (IllegalAccessException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
+        //currently commented out for working with snapd
+        if (!TorgoInfo.INSTANCE.isSnapd()) {
+            try {
+                //set look and feel (laf) to that of the system.
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (ClassNotFoundException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
+            } catch (InstantiationException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
+            } catch (IllegalAccessException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
+            } catch (UnsupportedLookAndFeelException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
+            }
         }
 
         final String controlLang = lang;

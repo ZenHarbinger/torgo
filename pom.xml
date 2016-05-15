@@ -338,5 +338,6 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <INSTALL_BUILDER_HOME>/opt/installbuilder-15.10.1</INSTALL_BUILDER_HOME>
         <LAUNCH4J_HOME>/opt/launch4j</LAUNCH4J_HOME>
+        <snapd>false</snapd>
     </properties>
 </project>

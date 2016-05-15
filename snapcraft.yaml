@@ -1,0 +1,43 @@
+name: torgo
+version: 1.0.6
+summary: A Logo interpreter written in Java.
+description: A Logo interpreter written in Java.
+
+#license: LICENSE
+#icon: src/main/resources/torgo-256x256.png
+
+apps:
+  torgo:
+    command: bin/wrapper
+    plugs: [x11, opengl]
+
+parts:
+  torgo-mvn:
+    plugin: maven
+    source: .
+  torgo-dep:
+    plugin: copy
+    files:
+      ../../torgo-mvn/build/target/lib: jar/lib
+    after:
+      - torgo-mvn
+  wrapper:
+      plugin: make
+      source: .
+  jre:
+    plugin: tar-content
+    source: jre-8u91-linux-x64.tar.gz
+    destination: jre-8u91
+  # jre-swing:
+  #   plugin: copy
+  #   files:
+  #     ../../../stage/usr/lib/x86_64-linux-gnu/libXext.so.6: jre-8u91/lib/amd64/libXext.so.6
+  #     ../../../stage/usr/lib/x86_64-linux-gnu/libX11.so.6: jre-8u91/lib/amd64/libX11.so.6
+  #     ../../../stage/usr/lib/x86_64-linux-gnu/libXrender.so.1: jre-8u91/lib/amd64/libXrender.so.1
+  #     ../../../stage/usr/lib/x86_64-linux-gnu/libXtst.so.6: jre-8u91/lib/amd64/libXtst.so.6
+  #     ../../../stage/usr/lib/x86_64-linux-gnu/libXi.so.6: jre-8u91/lib/amd64/libXi.so.6
+  #     ../../../stage/usr/lib/x86_64-linux-gnu/libxcb.so.1: jre-8u91/lib/amd64/libxcb.so.1
+  #     ../../../stage/usr/lib/x86_64-linux-gnu/libXau.so.6: jre-8u91/lib/amd64/libXau.so.6
+  #     ../../../stage/usr/lib/x86_64-linux-gnu/libXdmcp.so.6: jre-8u91/lib/amd64/libXdmcp.so.6
+  #   after:
+  #     - jre

@@ -41,7 +41,7 @@ public abstract class PropertiesInitializer {
 
             String dir = null;
             if (!BuildInfo.class.isAssignableFrom(this.getClass())) {
-                dir = PathUtils.getApplicationConfigDirectory(TorgoInfo.Instance);
+                dir = PathUtils.getApplicationConfigDirectory(TorgoInfo.INSTANCE);
             }
 
             if (!_loading) {

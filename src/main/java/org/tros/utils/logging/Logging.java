@@ -30,11 +30,11 @@ import org.apache.commons.io.IOUtils;
  */
 public final class Logging {
 
-    private static final LogFactory logFactory;
+    private static final LogFactory LOG_FACTORY;
 
     static {
         ServiceLoader<LogFactory> logFactories = ServiceLoader.load(LogFactory.class);
-        logFactory = logFactories.iterator().next();
+        LOG_FACTORY = logFactories.iterator().next();
     }
 
     private Logging() {
@@ -163,6 +163,6 @@ public final class Logging {
     }
 
     public static LogFactory getLogFactory() {
-        return logFactory;
+        return LOG_FACTORY;
     }
 }

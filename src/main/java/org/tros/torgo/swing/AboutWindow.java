@@ -114,7 +114,7 @@ public class AboutWindow extends JDialog {
         JPanel text_panel = new JPanel();
         text_panel.setLayout(new GridLayout(6, 1));
 
-        BuildInfo toroInfo = TorgoInfo.Instance;
+        BuildInfo toroInfo = TorgoInfo.INSTANCE;
         torgoButton.setText(String.format("Torgo %s", toroInfo.getVersion()));
         torgoButton.setBorderPainted(false);
         torgoButton.setOpaque(false);
