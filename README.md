@@ -21,4 +21,4 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
   2. `mvn clean package`
 
 ##Run
-  1. `java -jar target/torgo-1.0-SNAPSHOT.jar`
+  1. `java -jar target/torgo-1.0.6.jar`
