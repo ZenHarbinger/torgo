@@ -26,17 +26,17 @@ public class ReturnValue extends InterpreterValue {
     /**
      * Singleton RETURN type w/ no value.
      */
-    public static final ReturnValue RETURN = new ReturnValue(NullType.Instance, null, ProcessResult.RETURN);
+    public static final ReturnValue RETURN = new ReturnValue(NullType.INSTANCE, null, ProcessResult.RETURN);
 
     /**
      * Singleton SUCCESS type w/ no value.
      */
-    public static final ReturnValue SUCCESS = new ReturnValue(NullType.Instance, null, ProcessResult.SUCCESS);
+    public static final ReturnValue SUCCESS = new ReturnValue(NullType.INSTANCE, null, ProcessResult.SUCCESS);
 
     /**
      * Singleton HALT type w/ no value.
      */
-    public static final ReturnValue HALT = new ReturnValue(NullType.Instance, null, ProcessResult.HALT);
+    public static final ReturnValue HALT = new ReturnValue(NullType.INSTANCE, null, ProcessResult.HALT);
 
     /**
      * Return type enum.

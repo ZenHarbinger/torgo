@@ -134,7 +134,7 @@ abstract class LogoBlock implements CodeBlock {
         }
 
         ReturnValue.ProcessResult res = success.get() ? (stop.get() ? ReturnValue.ProcessResult.RETURN : ReturnValue.ProcessResult.SUCCESS) : ReturnValue.ProcessResult.HALT;
-        return new ReturnValue(NullType.Instance, null, res);
+        return new ReturnValue(NullType.INSTANCE, null, res);
     }
 
     /**

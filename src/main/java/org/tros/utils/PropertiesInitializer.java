@@ -29,14 +29,14 @@ import org.tros.torgo.TorgoInfo;
 public abstract class PropertiesInitializer {
 
     private static Object mapper;
-    private static final Object lock = new Object();
+    private static final Object LOCK = new Object();
     private static boolean _loading = false;
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(PropertiesInitializer.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(PropertiesInitializer.class);
 
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     protected PropertiesInitializer() {
-        synchronized (lock) {
+        synchronized (LOCK) {
             this.initializeHelper();
 
             String dir = null;
@@ -57,11 +57,11 @@ public abstract class PropertiesInitializer {
             Class<?> forName = Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
             mapper = forName.newInstance();
         } catch (ClassNotFoundException ex) {
-            logger.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
+            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
         } catch (InstantiationException ex) {
-            logger.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
+            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
         } catch (IllegalAccessException ex) {
-            logger.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
+            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
         }
     }
 
@@ -70,15 +70,15 @@ public abstract class PropertiesInitializer {
             Method method = mapper.getClass().getMethod("readValue", InputStream.class, Class.class);
             return method.invoke(mapper, fis, clazz);
         } catch (NoSuchMethodException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         } catch (SecurityException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         } catch (IllegalAccessException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         } catch (IllegalArgumentException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         } catch (InvocationTargetException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         }
         return null;
     }
@@ -88,15 +88,15 @@ public abstract class PropertiesInitializer {
             Method method = mapper.getClass().getMethod("readValue", String.class, Class.class);
             return method.invoke(mapper, fis, clazz);
         } catch (NoSuchMethodException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         } catch (SecurityException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         } catch (IllegalAccessException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         } catch (IllegalArgumentException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         } catch (InvocationTargetException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         }
         return null;
     }
@@ -126,17 +126,17 @@ public abstract class PropertiesInitializer {
                 }
                 fis.close();
             } catch (NullPointerException ex) {
-                logger.debug(null, ex);
+                LOGGER.debug(null, ex);
             } catch (IOException ex) {
-                logger.debug(null, ex);
+                LOGGER.debug(null, ex);
             } catch (IllegalArgumentException ex) {
-                logger.debug(null, ex);
+                LOGGER.debug(null, ex);
             } catch (InvocationTargetException ex) {
-                logger.debug(null, ex);
+                LOGGER.debug(null, ex);
             } catch (IllegalAccessException ex) {
-                logger.debug(null, ex);
+                LOGGER.debug(null, ex);
             } catch (IntrospectionException ex) {
-                logger.warn(null, ex);
+                LOGGER.warn(null, ex);
             }
         }
     }
@@ -193,12 +193,12 @@ public abstract class PropertiesInitializer {
                 } catch (IllegalArgumentException ex) {
                 } catch (InvocationTargetException ex) {
                 } catch (IllegalAccessException ex) {
-                    logger.debug(null, ex);
+                    LOGGER.debug(null, ex);
                 }
             }
         } catch (IOException ex) {
         } catch (IntrospectionException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         }
     }
 
@@ -231,8 +231,8 @@ public abstract class PropertiesInitializer {
                                     o = readValue(val, p.getPropertyType());
                                 } catch (Exception ex) {
                                     o = null;
-                                    logger.warn(null, ex);
-                                    logger.warn(MessageFormat.format("PropertyName: {0}", new Object[]{val}));
+                                    LOGGER.warn(null, ex);
+                                    LOGGER.warn(MessageFormat.format("PropertyName: {0}", new Object[]{val}));
                                 }
                             }
                             if (o != null) {
@@ -259,9 +259,9 @@ public abstract class PropertiesInitializer {
             } catch (IllegalArgumentException ex) {
             } catch (InvocationTargetException ex) {
             } catch (IllegalAccessException ex) {
-                logger.debug(null, ex);
+                LOGGER.debug(null, ex);
             } catch (IntrospectionException ex) {
-                logger.warn(null, ex);
+                LOGGER.warn(null, ex);
             }
         }
     }
@@ -319,8 +319,8 @@ public abstract class PropertiesInitializer {
                                         o = readValue(val, p.getPropertyType());
                                     } catch (Exception ex) {
                                         o = null;
-                                        logger.warn(null, ex);
-                                        logger.warn(MessageFormat.format("PropertyName: {0}", new Object[]{val}));
+                                        LOGGER.warn(null, ex);
+                                        LOGGER.warn(MessageFormat.format("PropertyName: {0}", new Object[]{val}));
                                     }
                                 }
                                 if (o != null) {
@@ -349,12 +349,12 @@ public abstract class PropertiesInitializer {
                 } catch (IllegalArgumentException ex) {
                 } catch (InvocationTargetException ex) {
                 } catch (IllegalAccessException ex) {
-                    logger.warn(null, ex);
+                    LOGGER.warn(null, ex);
                 }
             }
         } catch (IOException ex) {
         } catch (IntrospectionException ex) {
-            logger.warn(null, ex);
+            LOGGER.warn(null, ex);
         }
     }
 

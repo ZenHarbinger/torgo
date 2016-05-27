@@ -39,7 +39,7 @@ class LogoStatement extends LogoBlock {
     public static final String TURTLE_Y_VAR = "1_turtley%";
     public static final String TURTLE_ANGLE_VAR = "1_turtlea%";
 
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoStatement.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoStatement.class);
     private final String command;
     private final LogoCanvas canvas;
 
@@ -78,7 +78,7 @@ class LogoStatement extends LogoBlock {
             return ReturnValue.HALT;
         }
 
-        logger.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()));
+        LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()));
 
         //we don't do scope.push(this) here because of the chance we will
         //be doing a variable creation (localmake) and so it is possible
@@ -86,9 +86,9 @@ class LogoStatement extends LogoBlock {
         //value right off of the stack again.
         listeners.fire().currStatement(this, scope);
 
-        scope.set(TURTLE_X_VAR, new InterpreterValue(NumberType.Instance, canvas.getTurtleX()));
-        scope.set(TURTLE_Y_VAR, new InterpreterValue(NumberType.Instance, canvas.getTurtleY()));
-        scope.set(TURTLE_ANGLE_VAR, new InterpreterValue(NumberType.Instance, canvas.getTurtleAngle()));
+        scope.set(TURTLE_X_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleX()));
+        scope.set(TURTLE_Y_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleY()));
+        scope.set(TURTLE_ANGLE_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleAngle()));
 
         ReturnValue success = ReturnValue.SUCCESS;
         if ("fd".equals(command)) {
@@ -170,7 +170,7 @@ class LogoStatement extends LogoBlock {
             } else if ("plain".equals(command)) {
                 canvas.fontStyle(0);
             } else {
-                logger.warn(MessageFormat.format("Unknown {0}: {1}", "fontstyle", styleString));
+                LOGGER.warn(MessageFormat.format("Unknown {0}: {1}", "fontstyle", styleString));
             }
         } else if ("fontname".equals(command)) {
             logoParser.FontnameContext fd = (logoParser.FontnameContext) ctx;
@@ -227,7 +227,7 @@ class LogoStatement extends LogoBlock {
                 //halt interpreting.
                 success = ReturnValue.HALT;
                 canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
-                logger.warn(MessageFormat.format("process(): UNKNOWN -> {0}", command));
+                LOGGER.warn(MessageFormat.format("process(): UNKNOWN -> {0}", command));
             }
         }
         canvas.repaint();

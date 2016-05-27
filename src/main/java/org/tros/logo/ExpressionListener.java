@@ -79,7 +79,7 @@ class ExpressionListener extends logoBaseListener {
         } else if ("^".equals(op)) {
             num1 = Math.pow(num1, num2);
         }
-        return new InterpreterValue(NumberType.Instance, num1);
+        return new InterpreterValue(NumberType.INSTANCE, num1);
     }
 
     @Override
@@ -105,7 +105,7 @@ class ExpressionListener extends logoBaseListener {
     @Override
     public void enterNumber(logoParser.NumberContext ctx) {
         Double d = Double.parseDouble(ctx.NUMBER().getSymbol().getText());
-        value.peek().add(new InterpreterValue(NumberType.Instance, d));
+        value.peek().add(new InterpreterValue(NumberType.INSTANCE, d));
     }
 
     @Override
@@ -149,7 +149,7 @@ class ExpressionListener extends logoBaseListener {
     public void exitRandom(logoParser.RandomContext ctx) {
         ArrayList<InterpreterValue> values = value.pop();
         int max = ((Number) values.get(0).getValue()).intValue();
-        InterpreterValue v = new InterpreterValue(NumberType.Instance, org.tros.utils.Random.nextInt(max));
+        InterpreterValue v = new InterpreterValue(NumberType.INSTANCE, org.tros.utils.Random.nextInt(max));
         value.peek().add(v);
     }
 
@@ -158,14 +158,14 @@ class ExpressionListener extends logoBaseListener {
         String x = ctx.getChild(0).getText();
         ArrayList<InterpreterValue> peek = this.value.peek();
         int index = peek.size() - 1;
-        if (peek.get(index).getType().equals(NumberType.Instance)) {
+        if (peek.get(index).getType().equals(NumberType.INSTANCE)) {
             InterpreterValue val = peek.remove(index);
             Object o = val.getValue();
             double n = ((Number) val.getValue()).doubleValue();
             if ("-".equals(x)) {
                 n *= -1;
             }
-            peek.add(index, new InterpreterValue(NumberType.Instance, n));
+            peek.add(index, new InterpreterValue(NumberType.INSTANCE, n));
         }
     }
 
@@ -192,7 +192,7 @@ class ExpressionListener extends logoBaseListener {
     @Override
     public void enterValue(logoParser.ValueContext ctx) {
         if (ctx.STRINGLITERAL() != null) {
-            value.peek().add(new InterpreterValue(StringType.Instance, ctx.STRINGLITERAL().getText().substring(1)));
+            value.peek().add(new InterpreterValue(StringType.INSTANCE, ctx.STRINGLITERAL().getText().substring(1)));
         }
     }
 

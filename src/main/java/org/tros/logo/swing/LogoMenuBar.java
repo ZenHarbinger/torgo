@@ -59,6 +59,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
      * @param controller
      * @param canvas
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public LogoMenuBar(Component parent, Controller controller, LogoCanvas canvas) {
         super(parent, controller);
         this.canvas = canvas;

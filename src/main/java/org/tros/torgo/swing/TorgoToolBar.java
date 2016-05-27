@@ -48,6 +48,7 @@ public class TorgoToolBar extends JToolBar {
      * @param parent
      * @param controller
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public TorgoToolBar(final Component parent, final Controller controller) {
         paused = false;
         debugging = false;
@@ -226,6 +227,7 @@ public class TorgoToolBar extends JToolBar {
             this(name, iconPath, name);
         }
 
+        @SuppressWarnings("OverridableMethodCallInConstructor")
         public ToolBarAction(String name, String iconPath, String toolTip) {
             URL url = ClassLoader.getSystemClassLoader().getResource(iconPath);
             putValue(Action.NAME, name);

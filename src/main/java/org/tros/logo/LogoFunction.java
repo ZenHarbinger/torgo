@@ -32,7 +32,7 @@ import org.tros.torgo.interpreter.Scope;
 class LogoFunction extends LogoBlock implements CodeFunction {
 
     private final String funcitonName;
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoFunction.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoFunction.class);
 
     /**
      * Constructor
@@ -63,7 +63,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
      */
     @Override
     public ReturnValue process(Scope scope, Map<String, InterpreterValue> params) {
-        logger.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
+        LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
 
         for (String key : params.keySet()) {
@@ -76,7 +76,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
         try {
             ret = super.process(scope);
         } catch (Exception ex) {
-            logger.warn(MessageFormat.format("{0} -> {1}", ex.getClass().getName(), ex.getMessage()), ex);
+            LOGGER.warn(MessageFormat.format("{0} -> {1}", ex.getClass().getName(), ex.getMessage()), ex);
         }
         if (ret != null && ret.getResult() != ProcessResult.HALT) {
             //NOT HALT!

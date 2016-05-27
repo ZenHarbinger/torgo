@@ -52,6 +52,7 @@ public class TorgoMenuBar extends JMenuBar {
      * @param parent
      * @param controller
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public TorgoMenuBar(Component parent, Controller controller) {
         this.controller = controller;
         this.parent = parent;

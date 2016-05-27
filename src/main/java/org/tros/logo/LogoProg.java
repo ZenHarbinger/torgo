@@ -27,7 +27,7 @@ import org.tros.torgo.interpreter.Scope;
  */
 class LogoProg extends LogoBlock {
 
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoProg.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoProg.class);
 
     /**
      * Constructor.
@@ -48,7 +48,7 @@ class LogoProg extends LogoBlock {
      */
     @Override
     public ReturnValue process(Scope scope) {
-        logger.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
+        LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
         listeners.fire().currStatement(this, scope);
 

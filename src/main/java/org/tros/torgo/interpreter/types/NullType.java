@@ -23,5 +23,5 @@ import org.tros.torgo.interpreter.InterpreterType;
  */
 public class NullType extends InterpreterTypeImpl implements InterpreterType {
 
-    public static final InterpreterType Instance = new NullType();
+    public static final InterpreterType INSTANCE = new NullType();
 }

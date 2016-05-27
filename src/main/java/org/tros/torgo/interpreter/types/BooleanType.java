@@ -23,5 +23,5 @@ import org.tros.torgo.interpreter.InterpreterType;
  */
 public class BooleanType extends InterpreterTypeImpl implements InterpreterType {
 
-    public static final InterpreterType Instance = new BooleanType();
+    public static final InterpreterType INSTANCE = new BooleanType();
 }

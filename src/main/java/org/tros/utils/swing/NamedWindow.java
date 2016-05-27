@@ -33,6 +33,7 @@ public class NamedWindow extends JFrame {
      * @param width
      * @param height
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public NamedWindow(final String name, int width, int height) {
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(this.getClass());
 

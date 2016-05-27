@@ -20,7 +20,7 @@ public class Mailbox<T> {
 
     private final java.util.ArrayList<T> m_msgs;
     private boolean m_halt;
-    private final static org.tros.utils.logging.Logger log = org.tros.utils.logging.Logging.getLogFactory().getLogger(Mailbox.class);
+    private final static org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(Mailbox.class);
 
     public Mailbox() {
         m_msgs = new ArrayList<T>();
@@ -64,7 +64,7 @@ public class Mailbox<T> {
             try {
                 wait();
             } catch (InterruptedException e) {
-                log.warn(null, e);
+                LOGGER.warn(null, e);
                 continue;
             }
             if (m_halt) {
@@ -83,7 +83,7 @@ public class Mailbox<T> {
             try {
                 wait();
             } catch (InterruptedException e) {
-                log.warn(null, e);
+                LOGGER.warn(null, e);
                 continue;
             }
             if (m_halt) {

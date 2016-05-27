@@ -23,7 +23,7 @@ import org.tros.torgo.interpreter.types.NullType;
  */
 public class InterpreterValue {
 
-    public static final InterpreterValue NULL = new InterpreterValue(NullType.Instance, null);
+    public static final InterpreterValue NULL = new InterpreterValue(NullType.INSTANCE, null);
 
     private final Object value;
     private final InterpreterType type;

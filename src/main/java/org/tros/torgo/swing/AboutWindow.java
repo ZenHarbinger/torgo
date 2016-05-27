@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class AboutWindow extends JDialog {
     /**
      * Constructor.
      */
-    @SuppressWarnings("LeakingThisInConstructor")
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public AboutWindow() {
         //no resize.
         this.setResizable(false);
@@ -101,7 +102,7 @@ public class AboutWindow extends JDialog {
         this.setSize(670, 225);//Size of JFrame
 
         //load the window icon
-        Main.loadIcon(this);
+        Main.loadIcon((Window) this);
 
         //load the icon for display
         JPanel image_panel = new JPanel();

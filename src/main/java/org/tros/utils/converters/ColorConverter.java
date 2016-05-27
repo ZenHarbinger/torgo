@@ -12,7 +12,6 @@ import java.util.List;
 import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.tros.utils.TypeHandler;
 
 /**
  *
@@ -59,20 +58,20 @@ public class ColorConverter implements Converter, ConverterRegister {
         return ret;
     }
 
-    public static void main(String[] args) {
-        Converter lookup = UtilsBeanFactory.getConverter(String.class, Color.class);
-        String hex = "0x0dff00";
-        Color convert = lookup.convert(Color.class, hex);
-        System.out.println(convert.toString());
-        convert = lookup.convert(Color.class, "blue");
-        System.out.println(convert.toString());
-
-        System.out.println(TypeHandler.fromString(Color.class, "0x0dff00").toString());
-        System.out.println(TypeHandler.fromString(Color.class, "blue").toString());
-        System.out.println(TypeHandler.colorToHex(Color.red));
-
-        lookup = UtilsBeanFactory.getConverter(Color.class, String.class);
-        hex = lookup.convert(String.class, convert);
-        System.out.println(hex);
-    }
+//    public static void main(String[] args) {
+//        Converter lookup = UtilsBeanFactory.getConverter(String.class, Color.class);
+//        String hex = "0x0dff00";
+//        Color convert = lookup.convert(Color.class, hex);
+//        System.out.println(convert.toString());
+//        convert = lookup.convert(Color.class, "blue");
+//        System.out.println(convert.toString());
+//
+//        System.out.println(TypeHandler.fromString(Color.class, "0x0dff00").toString());
+//        System.out.println(TypeHandler.fromString(Color.class, "blue").toString());
+//        System.out.println(TypeHandler.colorToHex(Color.red));
+//
+//        lookup = UtilsBeanFactory.getConverter(Color.class, String.class);
+//        hex = lookup.convert(String.class, convert);
+//        System.out.println(hex);
+//    }
 }

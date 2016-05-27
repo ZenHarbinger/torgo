@@ -31,7 +31,7 @@ import org.tros.torgo.interpreter.types.NumberType;
  */
 class LogoFor extends LogoBlock {
 
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoFor.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoFor.class);
 
     /**
      * How will we step.
@@ -62,7 +62,7 @@ class LogoFor extends LogoBlock {
      */
     @Override
     public ReturnValue process(Scope scope) {
-        logger.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
+        LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
         listeners.fire().currStatement(this, scope);
 
@@ -97,7 +97,7 @@ class LogoFor extends LogoBlock {
             //not sure if this should be <=
             boolean doMore = type == ForType.INCREASE ? start < stop : stop < start;
             while (success && doMore) {
-                scope.setNew(variable, new InterpreterValue(NumberType.Instance, start));
+                scope.setNew(variable, new InterpreterValue(NumberType.INSTANCE, start));
                 success = success && super.process(scope).getResult() == ProcessResult.SUCCESS;
 
                 switch (type) {

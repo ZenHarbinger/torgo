@@ -27,37 +27,37 @@ import java.util.Set;
  */
 public final class TorgoToolkit {
 
-    private static final HashMap<String, Controller> controllersMap;
-    private static final ServiceLoader<Controller> controllers;
+    private static final HashMap<String, Controller> CONTROLLER_MAP;
+    private static final ServiceLoader<Controller> CONTROLLERS;
 
-    private static final HashMap<String, InterpreterVisualization> vizMap;
-    private static final ServiceLoader<InterpreterVisualization> vizualizers;
+    private static final HashMap<String, InterpreterVisualization> VIZ_MAP;
+    private static final ServiceLoader<InterpreterVisualization> VIZUALIZERS;
 
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoToolkit.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoToolkit.class);
 
     /**
      * Static constructor.
      */
     static {
-        controllersMap = new HashMap<String, Controller>();
-        controllers = ServiceLoader.load(Controller.class);
+        CONTROLLER_MAP = new HashMap<String, Controller>();
+        CONTROLLERS = ServiceLoader.load(Controller.class);
         try {
-            for (Controller controller : controllers) {
-                logger.info(MessageFormat.format("Loaded: {0}", controller.getClass().getName()));
-                controllersMap.put(controller.getLang(), controller);
+            for (Controller controller : CONTROLLERS) {
+                LOGGER.info(MessageFormat.format("Loaded: {0}", controller.getClass().getName()));
+                CONTROLLER_MAP.put(controller.getLang(), controller);
             }
         } catch (ServiceConfigurationError serviceError) {
-            logger.warn(null, serviceError);
+            LOGGER.warn(null, serviceError);
         }
-        vizMap = new HashMap<String, InterpreterVisualization>();
-        vizualizers = ServiceLoader.load(InterpreterVisualization.class);
+        VIZ_MAP = new HashMap<String, InterpreterVisualization>();
+        VIZUALIZERS = ServiceLoader.load(InterpreterVisualization.class);
         try {
-            for (InterpreterVisualization viz : vizualizers) {
-                logger.info(MessageFormat.format("Loaded: {0}", viz.getClass().getName()));
-                vizMap.put(viz.getName(), viz);
+            for (InterpreterVisualization viz : VIZUALIZERS) {
+                LOGGER.info(MessageFormat.format("Loaded: {0}", viz.getClass().getName()));
+                VIZ_MAP.put(viz.getName(), viz);
             }
         } catch (ServiceConfigurationError serviceError) {
-            logger.warn(null, serviceError);
+            LOGGER.warn(null, serviceError);
         }
     }
 
@@ -75,7 +75,7 @@ public final class TorgoToolkit {
      * @return Controller of the desired type.
      */
     public static Controller getController(String name) {
-        return controllersMap.get(name);
+        return CONTROLLER_MAP.get(name);
     }
 
     /**
@@ -84,7 +84,7 @@ public final class TorgoToolkit {
      * @return Get a list of controllers available.
      */
     public static Set<String> getToolkits() {
-        return controllersMap.keySet();
+        return CONTROLLER_MAP.keySet();
     }
 
     /**
@@ -93,7 +93,7 @@ public final class TorgoToolkit {
      * @return Get a list of visualizers available.
      */
     public static Set<String> getVisualizers() {
-        return vizMap.keySet();
+        return VIZ_MAP.keySet();
     }
 
     /**
@@ -103,6 +103,6 @@ public final class TorgoToolkit {
      * @return The desired visualizer.
      */
     public static InterpreterVisualization getVisualization(String name) {
-        return vizMap.get(name);
+        return VIZ_MAP.get(name);
     }
 }

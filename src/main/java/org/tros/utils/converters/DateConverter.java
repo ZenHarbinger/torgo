@@ -77,11 +77,11 @@ public class DateConverter implements Converter, ConverterRegister {
         convertUtilsBean.register(this, Date.class);
     }
 
-    public static void main(String[] args) {
-        Converter lookup = UtilsBeanFactory.getConverter(Date.class, String.class);
-        String hex = TypeHandler.dateToString(Calendar.getInstance());
-
-        Date convert = lookup.convert(Date.class, hex);
-        System.out.println(convert.toString());
-    }
+//    public static void main(String[] args) {
+//        Converter lookup = UtilsBeanFactory.getConverter(Date.class, String.class);
+//        String hex = TypeHandler.dateToString(Calendar.getInstance());
+//
+//        Date convert = lookup.convert(Date.class, hex);
+//        System.out.println(convert.toString());
+//    }
 }

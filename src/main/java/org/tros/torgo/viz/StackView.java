@@ -43,7 +43,7 @@ public class StackView implements InterpreterVisualization {
 
     private boolean isFinished;
     private InterpreterThread interpreter;
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(StackView.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(StackView.class);
 
     private NamedWindow window;
 
@@ -95,7 +95,7 @@ public class StackView implements InterpreterVisualization {
              */
             @Override
             public void currStatement(CodeBlock block, Scope scope) {
-                logger.verbose(MessageFormat.format("Curr Statement: {0}", new Object[]{block.getParserRuleContext().getClass().getName()}));
+                LOGGER.verbose(MessageFormat.format("Curr Statement: {0}", new Object[]{block.getParserRuleContext().getClass().getName()}));
             }
         });
 
@@ -107,18 +107,18 @@ public class StackView implements InterpreterVisualization {
 
             @Override
             public void scopePopped(Scope scope, CodeBlock block) {
-                logger.verbose(MessageFormat.format("Scope Popped: {0}", new Object[]{block.getClass().getName()}));
+                LOGGER.verbose(MessageFormat.format("Scope Popped: {0}", new Object[]{block.getClass().getName()}));
             }
 
             @Override
             public void scopePushed(Scope scope, CodeBlock block) {
-                logger.verbose(MessageFormat.format("Scope Pushed: {0}", new Object[]{block.getClass().getName()}));
+                LOGGER.verbose(MessageFormat.format("Scope Pushed: {0}", new Object[]{block.getClass().getName()}));
             }
 
             @Override
             public void variableSet(Scope scope, String name, InterpreterValue value) {
                 if (!name.contains("%")) {
-                    logger.verbose(MessageFormat.format("Variable Set: {0} -> {1}", new Object[]{name, value.toString()}));
+                    LOGGER.verbose(MessageFormat.format("Variable Set: {0} -> {1}", new Object[]{name, value.toString()}));
                 }
             }
         });

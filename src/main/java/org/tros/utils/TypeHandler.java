@@ -97,8 +97,8 @@ public final class TypeHandler {
         return toString(color);
     }
 
-    public static Object fromString(final Class<?> type, final String val) {
-        Object o = convert(type, val);
+    public static <T> T fromString(final Class<T> type, final String val) {
+        T o = convert(type, val);
         if (o == null) {
             Logger.getLogger(TypeHandler.class.getName()).log(Level.WARNING, "Cannot convert {0} to {1}", new Object[]{val, type.getName()});
         }

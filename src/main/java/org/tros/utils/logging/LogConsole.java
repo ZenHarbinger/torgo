@@ -47,9 +47,9 @@ public final class LogConsole extends JFrame {
      *
      * @param level
      */
-    @SuppressWarnings("LeakingThisInConstructor")
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     private LogConsole(Level level) {
-        Main.loadIcon(this);
+        Main.loadIcon((JFrame) this);
         JMenuBar main_menu = new JMenuBar();
         this.setJMenuBar(main_menu);
 

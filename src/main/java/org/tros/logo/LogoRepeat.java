@@ -37,7 +37,7 @@ class LogoRepeat extends LogoBlock {
      * declared.
      */
     public static final String REPCOUNT_VAR = "1_repcount%";
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoRepeat.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoRepeat.class);
 
     /**
      * Constructor
@@ -56,7 +56,7 @@ class LogoRepeat extends LogoBlock {
      */
     @Override
     public ReturnValue process(Scope scope) {
-        logger.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
+        LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
         listeners.fire().currStatement(this, scope);
 
@@ -64,7 +64,7 @@ class LogoRepeat extends LogoBlock {
         ReturnValue success = ReturnValue.SUCCESS;
         for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
             //this sets the repcount variable for dereferencing in the block.
-            scope.setNew(REPCOUNT_VAR, new InterpreterValue(NumberType.Instance, ii + 1));
+            scope.setNew(REPCOUNT_VAR, new InterpreterValue(NumberType.INSTANCE, ii + 1));
             success = super.process(scope);
         }
 

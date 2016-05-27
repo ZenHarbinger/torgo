@@ -23,5 +23,5 @@ import org.tros.torgo.interpreter.InterpreterType;
  */
 public class StringType extends InterpreterTypeImpl implements InterpreterType {
 
-    public static final InterpreterType Instance = new StringType();
+    public static final InterpreterType INSTANCE = new StringType();
 }

@@ -35,7 +35,7 @@ import org.tros.utils.TypeHandler;
 public class TraceLogger implements InterpreterVisualization {
 
     private InterpreterThread interpreter;
-    private static final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(TraceLogger.class);
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(TraceLogger.class);
 
 
     /**
@@ -79,23 +79,23 @@ public class TraceLogger implements InterpreterVisualization {
 
             @Override
             public void started() {
-                logger.info(MessageFormat.format("Started [{0}]: {1}", new Object[]{controller.getLang(), TypeHandler.dateToString(Calendar.getInstance())}));
+                LOGGER.info(MessageFormat.format("Started [{0}]: {1}", new Object[]{controller.getLang(), TypeHandler.dateToString(Calendar.getInstance())}));
             }
 
             @Override
             public void finished() {
-                logger.info(MessageFormat.format("Finished [{0}]: {1}", new Object[]{controller.getLang(), TypeHandler.dateToString(Calendar.getInstance())}));
+                LOGGER.info(MessageFormat.format("Finished [{0}]: {1}", new Object[]{controller.getLang(), TypeHandler.dateToString(Calendar.getInstance())}));
             }
 
             @Override
             public void error(Exception e) {
-                logger.info(MessageFormat.format("Error [{0}]: {1}", new Object[]{controller.getLang(), TypeHandler.dateToString(Calendar.getInstance())}));
-                logger.info(null, e);
+                LOGGER.info(MessageFormat.format("Error [{0}]: {1}", new Object[]{controller.getLang(), TypeHandler.dateToString(Calendar.getInstance())}));
+                LOGGER.info(null, e);
             }
 
             @Override
             public void message(String msg) {
-                logger.info(MessageFormat.format("Message [{0}]: {1}", new Object[]{controller.getLang(), msg}));
+                LOGGER.info(MessageFormat.format("Message [{0}]: {1}", new Object[]{controller.getLang(), msg}));
             }
 
             /**
@@ -106,7 +106,7 @@ public class TraceLogger implements InterpreterVisualization {
              */
             @Override
             public void currStatement(CodeBlock block, Scope scope) {
-                logger.info(MessageFormat.format("Curr Statement: {0}", new Object[]{block.getParserRuleContext().getClass().getName()}));
+                LOGGER.info(MessageFormat.format("Curr Statement: {0}", new Object[]{block.getParserRuleContext().getClass().getName()}));
             }
         });
 
@@ -114,18 +114,18 @@ public class TraceLogger implements InterpreterVisualization {
 
             @Override
             public void scopePopped(Scope scope, CodeBlock block) {
-                logger.info(MessageFormat.format("Scope Popped: {0}", new Object[]{block.getClass().getName()}));
+                LOGGER.info(MessageFormat.format("Scope Popped: {0}", new Object[]{block.getClass().getName()}));
             }
 
             @Override
             public void scopePushed(Scope scope, CodeBlock block) {
-                logger.info(MessageFormat.format("Scope Pushed: {0}", new Object[]{block.getClass().getName()}));
+                LOGGER.info(MessageFormat.format("Scope Pushed: {0}", new Object[]{block.getClass().getName()}));
             }
 
             @Override
             public void variableSet(Scope scope, String name, InterpreterValue value) {
                 if (!name.contains("%")) {
-                    logger.info(MessageFormat.format("Variable Set: {0} -> {1}", new Object[]{name, value.toString()}));
+                    LOGGER.info(MessageFormat.format("Variable Set: {0} -> {1}", new Object[]{name, value.toString()}));
                 }
             }
         });

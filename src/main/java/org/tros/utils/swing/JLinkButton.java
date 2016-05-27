@@ -56,6 +56,7 @@ public final class JLinkButton extends JButton {
      *
      * @param action
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public JLinkButton(Action action) {
         this();
         setAction(action);
@@ -115,6 +116,7 @@ public final class JLinkButton extends JButton {
      * @param icon
      * @param url
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public JLinkButton(String text, Icon icon, URL url) {
         super(text, icon);
         linkBehavior = LinkBehavior.SYSTEM_DEFAULT;
@@ -278,13 +280,13 @@ public final class JLinkButton extends JButton {
 
 class BasicLinkButtonUI extends MetalButtonUI {
 
-    private static final BasicLinkButtonUI ui = new BasicLinkButtonUI();
+    private static final BasicLinkButtonUI UI = new BasicLinkButtonUI();
 
     public BasicLinkButtonUI() {
     }
 
     public static ComponentUI createUI(JComponent jcomponent) {
-        return ui;
+        return UI;
     }
 
     @Override

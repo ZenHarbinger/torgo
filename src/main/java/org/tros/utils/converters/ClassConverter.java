@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.tros.utils.TypeHandler;
 
 /**
  *
@@ -45,12 +44,12 @@ public class ClassConverter implements Converter, ConverterRegister {
         return ret;
     }
 
-    public static void main(String[] args) {
-        Converter lookup = UtilsBeanFactory.getConverter(String.class, Class.class);
-        String hex = ClassConverter.class.getName();
-        Class convert = lookup.convert(Class.class, hex);
-        System.out.println(convert.getName());
-        Class fromString = (Class) TypeHandler.fromString(Class.class, hex);
-        System.out.println(fromString.getName());
-    }
+//    public static void main(String[] args) {
+//        Converter lookup = UtilsBeanFactory.getConverter(String.class, Class.class);
+//        String hex = ClassConverter.class.getName();
+//        Class convert = lookup.convert(Class.class, hex);
+//        System.out.println(convert.getName());
+//        Class fromString = (Class) TypeHandler.fromString(Class.class, hex);
+//        System.out.println(fromString.getName());
+//    }
 }
