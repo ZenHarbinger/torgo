@@ -17,10 +17,20 @@ public class AutoResetEvent {
     private final Object _monitor = new Object();
     private volatile boolean _isOpen = false;
 
+    /**
+     * Constructor.
+     *
+     * @param open
+     */
     public AutoResetEvent(boolean open) {
         _isOpen = open;
     }
 
+    /**
+     * Wait until signaled.
+     *
+     * @throws InterruptedException
+     */
     public void waitOne() throws InterruptedException {
         synchronized (_monitor) {
             while (!_isOpen) {
@@ -30,6 +40,13 @@ public class AutoResetEvent {
         }
     }
 
+    /**
+     * Wait until signaled.
+     *
+     * @param timeout
+     * @return
+     * @throws InterruptedException
+     */
     public boolean waitOne(long timeout) throws InterruptedException {
         boolean ret = true;
         synchronized (_monitor) {
@@ -47,6 +64,9 @@ public class AutoResetEvent {
         return ret;
     }
 
+    /**
+     * Signal.
+     */
     public void set() {
         synchronized (_monitor) {
             _isOpen = true;
@@ -54,6 +74,9 @@ public class AutoResetEvent {
         }
     }
 
+    /**
+     * Reset.
+     */
     public void reset() {
         _isOpen = false;
     }

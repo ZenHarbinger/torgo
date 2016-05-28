@@ -9,7 +9,7 @@ package org.tros.utils;
 import org.apache.commons.lang3.event.EventListenerSupport;
 
 /**
- * Can be used to monitor when a thread is halted/exits
+ * Can be used to monitor when a thread is halted/exits.
  *
  * @author matta
  */
@@ -76,7 +76,7 @@ public final class HaltMonitor implements ImmutableHaltMonitor {
     }
 
     /**
-     * Halt the thread
+     * Halt the thread.
      */
     public synchronized void halt() {
         _halted = true;

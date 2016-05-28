@@ -9,8 +9,6 @@ package org.tros.utils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -80,9 +78,9 @@ public final class Random {
             _seedValue = Integer.parseInt(prop.getProperty("seedValue"));
             legacy = Boolean.parseBoolean(prop.getProperty("useLegacy"));
         } catch (NullPointerException ex) {
-            Logger.getLogger(Random.class.getName()).log(Level.SEVERE, null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).fatal(null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Random.class.getName()).log(Level.SEVERE, null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).fatal(null, ex);
         }
         LEGACY = legacy;
         RANDOMS = new HashMap<Thread, java.util.Random>();
@@ -576,7 +574,7 @@ public final class Random {
         } else {
             final T elem = getRandom(list);
             if (elem != null && elem.equals(not)) {
-                Logger.getLogger(Random.class.getName()).log(Level.FINEST, "Creating array copy for finding random item.");
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).debug("Creating array copy for finding random item.");
                 ArrayList<T> l = new ArrayList<T>(list);
                 l.remove(not);
                 return getRandom(l);
@@ -607,7 +605,7 @@ public final class Random {
         } else {
             final T elem = getRandom(random, list);
             if (elem != null && elem.equals(not)) {
-                Logger.getLogger(Random.class.getName()).log(Level.FINEST, "Creating array copy for finding random item.");
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).debug("Creating array copy for finding random item.");
                 ArrayList<T> l = new ArrayList<T>(list);
                 l.remove(not);
                 return getRandom(random, l);

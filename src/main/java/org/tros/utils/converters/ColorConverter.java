@@ -14,11 +14,20 @@ import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 /**
+ * Convert Color to/from String.
  *
  * @author matta
  */
 public class ColorConverter implements Converter, ConverterRegister {
 
+    /**
+     * Convert.
+     *
+     * @param <T>
+     * @param type
+     * @param value
+     * @return
+     */
     @Override
     @SuppressWarnings("unchecked")
     public <T> T convert(Class<T> type, Object value) {
@@ -42,6 +51,11 @@ public class ColorConverter implements Converter, ConverterRegister {
         }
     }
 
+    /**
+     * Register the conversion types.
+     *
+     * @param convertUtilsBean
+     */
     @Override
     public void register(ConvertUtilsBean convertUtilsBean) {
         convertUtilsBean.deregister(String.class);
@@ -50,6 +64,11 @@ public class ColorConverter implements Converter, ConverterRegister {
         convertUtilsBean.register(this, Color.class);
     }
 
+    /**
+     * Get provided conversions.
+     *
+     * @return
+     */
     @Override
     public List<ImmutablePair<Class<?>, Class<?>>> getConversions() {
         ArrayList<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<ImmutablePair<Class<?>, Class<?>>>();
@@ -58,20 +77,4 @@ public class ColorConverter implements Converter, ConverterRegister {
         return ret;
     }
 
-//    public static void main(String[] args) {
-//        Converter lookup = UtilsBeanFactory.getConverter(String.class, Color.class);
-//        String hex = "0x0dff00";
-//        Color convert = lookup.convert(Color.class, hex);
-//        System.out.println(convert.toString());
-//        convert = lookup.convert(Color.class, "blue");
-//        System.out.println(convert.toString());
-//
-//        System.out.println(TypeHandler.fromString(Color.class, "0x0dff00").toString());
-//        System.out.println(TypeHandler.fromString(Color.class, "blue").toString());
-//        System.out.println(TypeHandler.colorToHex(Color.red));
-//
-//        lookup = UtilsBeanFactory.getConverter(Color.class, String.class);
-//        hex = lookup.convert(String.class, convert);
-//        System.out.println(hex);
-//    }
 }

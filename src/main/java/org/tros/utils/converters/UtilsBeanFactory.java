@@ -18,6 +18,10 @@ import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 /**
+ * Custom wrapper that allows a component wise conversion of types.
+ *
+ * A single object does not have to know how to do all conversions concerning a
+ * type, they can be added piece-by-piece.
  *
  * @author matta
  */
@@ -25,6 +29,9 @@ public final class UtilsBeanFactory {
 
     private static final Map<Class<?>, ArrayList<ImmutablePair<Class<?>, BeanUtilsBean>>> MAP;
 
+    /**
+     * Static Constructor.
+     */
     static {
         MAP = new HashMap<Class<?>, ArrayList<ImmutablePair<Class<?>, BeanUtilsBean>>>();
 
@@ -34,7 +41,7 @@ public final class UtilsBeanFactory {
             BeanUtilsBean bub = new BeanUtilsBean(cub, new PropertyUtilsBean());
             cr.register(cub);
             List<ImmutablePair<Class<?>, Class<?>>> pairs = cr.getConversions();
-            for(ImmutablePair<Class<?>, Class<?>> pair : pairs) {
+            for (ImmutablePair<Class<?>, Class<?>> pair : pairs) {
                 if (!MAP.containsKey(pair.getLeft())) {
                     MAP.put(pair.getLeft(), new ArrayList<ImmutablePair<Class<?>, BeanUtilsBean>>());
                 }
@@ -44,6 +51,13 @@ public final class UtilsBeanFactory {
         }
     }
 
+    /**
+     * Get a converter that goes from From to To.
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public static Converter getConverter(Class<?> from, Class<?> to) {
         if (MAP.containsKey(from)) {
             ArrayList<ImmutablePair<Class<?>, BeanUtilsBean>> m2 = MAP.get(from);

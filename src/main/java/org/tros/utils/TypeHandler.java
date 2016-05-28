@@ -7,14 +7,16 @@
 package org.tros.utils;
 
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.tros.utils.converters.UtilsBeanFactory;
 
 /**
+ * Provides conversion from one object type to another.
+ *
+ * Often this is date to/from String. Color to/from String. But bean utils is
+ * used to do just about anything under the sun.
  *
  * @author matta
  */
@@ -22,97 +24,98 @@ public final class TypeHandler {
 
     public static final FastDateFormat DEFAULT_DATE_FORMAT = DateFormatUtils.ISO_DATETIME_FORMAT;
 
-    private static final java.util.Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
-    private static final java.util.HashMap<Class<?>, Class<?>> WRAPPER_LOOKUP = getWrapperTypes2();
-    
-    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(TypeHandler.class);
-
-
-    private TypeHandler() {
-    }
-
-    public static boolean isWrapperType(final Class<?> clazz) {
-        return WRAPPER_TYPES.contains(clazz);
-    }
-
-    public static Class<?> getWrapperType(final Class<?> clazz) {
-        if (WRAPPER_LOOKUP.containsKey(clazz)) {
-            return WRAPPER_LOOKUP.get(clazz);
-        }
-        return null;
-    }
-
-    private static java.util.Set<Class<?>> getWrapperTypes() {
-        java.util.Set<Class<?>> ret = new java.util.HashSet<Class<?>>();
-        ret.add(Boolean.class);
-        ret.add(Character.class);
-        ret.add(Byte.class);
-        ret.add(Short.class);
-        ret.add(Integer.class);
-        ret.add(Long.class);
-        ret.add(Float.class);
-        ret.add(Double.class);
-        ret.add(Void.class);
-        ret.add(String.class);
-        return ret;
-    }
-
-    private static java.util.HashMap<Class<?>, Class<?>> getWrapperTypes2() {
-        java.util.HashMap<Class<?>, Class<?>> ret = new java.util.HashMap<Class<?>, Class<?>>();
-        ret.put(boolean.class, Boolean.class);
-        ret.put(char.class, Character.class);
-        ret.put(byte.class, Byte.class);
-        ret.put(short.class, Short.class);
-        ret.put(int.class, Integer.class);
-        ret.put(long.class, Long.class);
-        ret.put(float.class, Float.class);
-        ret.put(double.class, Double.class);
-        ret.put(void.class, Void.class);
-        return ret;
-    }
-
-    public static boolean isPrimitive(final Class<?> type) {
-        return WRAPPER_LOOKUP.containsKey(type);
-    }
-
+    /**
+     * Calendar to string.
+     *
+     * @param value
+     * @return
+     */
     public static String dateToString(final java.util.Calendar value) {
         return DEFAULT_DATE_FORMAT.format(value.getTime());
     }
 
+    /**
+     * Date to string.
+     *
+     * @param value
+     * @return
+     */
     public static String dateToString(final java.util.Date value) {
         return DEFAULT_DATE_FORMAT.format(value);
     }
 
+    /**
+     * Date from string.
+     *
+     * @param value
+     * @return
+     * @throws ParseException
+     */
     public static java.util.Date dateFromString(String value) throws ParseException {
         return DEFAULT_DATE_FORMAT.parse(value);
     }
 
+    /**
+     * String to calendar.
+     *
+     * @param value
+     * @return
+     * @throws ParseException
+     */
     public static java.util.Calendar calendarFromString(final String value) throws ParseException {
         java.util.Calendar c = java.util.Calendar.getInstance();
         c.setTime(dateFromString(value));
         return c;
     }
 
+    /**
+     * Color to hex string.
+     *
+     * @param color
+     * @return
+     */
     public static String colorToHex(final java.awt.Color color) {
         return toString(color);
     }
 
+    /**
+     * Convert string to specified object type.
+     *
+     * @param <T>
+     * @param type
+     * @param val
+     * @return
+     */
     public static <T> T fromString(final Class<T> type, final String val) {
         T o = convert(type, val);
         if (o == null) {
-            Logger.getLogger(TypeHandler.class.getName()).log(Level.WARNING, "Cannot convert {0} to {1}", new Object[]{val, type.getName()});
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).warn("Cannot convert {0} to {1}", new Object[]{val, type.getName()});
         }
         return o;
     }
 
+    /**
+     * Convert object to String.
+     *
+     * @param val
+     * @return
+     */
     public static String toString(final Object val) {
         String o = (String) convert(String.class, val);
         if (o == null) {
-            Logger.getLogger(TypeHandler.class.getName()).log(Level.WARNING, "Cannot convert {0} to {1}", new Object[]{val, String.class.getName()});
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).warn("Cannot convert {0} to {1}", new Object[]{val, String.class.getName()});
         }
         return o;
     }
 
+    /**
+     * Convert an object to a specified type.
+     *
+     * @param <T>
+     * @param to
+     * @param val
+     * @return
+     */
     public static <T> T convert(Class<T> to, Object val) {
         Converter lookup = UtilsBeanFactory.getConverter(val.getClass(), to);
         if (lookup != null) {

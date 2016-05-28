@@ -28,6 +28,12 @@ public final class PathUtils {
         return getDir("tros.home");
     }
 
+    /**
+     * Get the specified property directory.
+     *
+     * @param prop
+     * @return
+     */
     public static String getDir(String prop) {
         String dir = System.getProperty(prop);
         if (dir == null) {
@@ -40,6 +46,11 @@ public final class PathUtils {
         return dir;
     }
 
+    /**
+     * Get the temp dir.
+     *
+     * @return
+     */
     public static String getTempDir() {
         String dir = System.getProperty("torgo.temp");
         if (dir == null) {
@@ -74,6 +85,12 @@ public final class PathUtils {
         return ret;
     }
 
+    /**
+     * Get the etc dir.
+     *
+     * @param bi
+     * @return
+     */
     public static String getApplicationEtcDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.etc");
         String ret;
@@ -92,6 +109,11 @@ public final class PathUtils {
         return ret;
     }
 
+    /**
+     * Get the lib dir.
+     * @param bi
+     * @return 
+     */
     public static String getApplicationLibDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.lib");
         String ret;

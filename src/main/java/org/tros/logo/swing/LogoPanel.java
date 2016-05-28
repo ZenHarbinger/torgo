@@ -31,8 +31,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -516,9 +514,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                         }
                     });
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
                 } catch (InvocationTargetException ex) {
-                    Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
                 }
             } else {
                 SwingUtilities.invokeLater(new Runnable() {

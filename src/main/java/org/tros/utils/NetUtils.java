@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 /**
+ * Provides to net level functionality.
  *
  * @author matta
  */
@@ -22,6 +23,9 @@ public class NetUtils {
     private static InetAddress _ip;
     private static InetAddress[] _ips;
 
+    /**
+     * Static Constructor.
+     */
     static {
         try {
             _ip = getIP();
@@ -30,9 +34,18 @@ public class NetUtils {
         }
     }
 
+    /**
+     * Hidden Constructor.
+     */
     private NetUtils() {
     }
 
+    /**
+     * Get an IP.
+     *
+     * @return
+     * @throws SocketException
+     */
     public static InetAddress getIP() throws SocketException {
         if (_ip != null) {
             return _ip;
@@ -56,6 +69,12 @@ public class NetUtils {
         return null;
     }
 
+    /**
+     * Get all IPs.
+     *
+     * @return
+     * @throws SocketException
+     */
     public static InetAddress[] getIPs() throws SocketException {
         if (_ips != null) {
             return _ips;

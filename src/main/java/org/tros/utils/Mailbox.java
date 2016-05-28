@@ -22,15 +22,26 @@ public class Mailbox<T> {
     private boolean m_halt;
     private final static org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(Mailbox.class);
 
+    /**
+     * Constructor.
+     */
     public Mailbox() {
         m_msgs = new ArrayList<T>();
         m_halt = false;
     }
 
+    /**
+     * Get the size.
+     *
+     * @return
+     */
     public synchronized int size() {
         return m_msgs.size();
     }
 
+    /**
+     * Halt the mailbox.
+     */
     public synchronized void halt() {
         if (!m_halt) {
             m_halt = true;
@@ -52,7 +63,7 @@ public class Mailbox<T> {
     }
 
     /**
-     * Receive an AIMessage from the queue.
+     * Receive a message from the queue.
      *
      * @return
      */
@@ -75,6 +86,11 @@ public class Mailbox<T> {
         return ret;
     }
 
+    /**
+     * Get all messages in the mailbox.
+     *
+     * @return
+     */
     public synchronized ArrayList<T> getMessages() {
         if (m_halt) {
             return null;
@@ -95,6 +111,11 @@ public class Mailbox<T> {
         return ret;
     }
 
+    /**
+     * Is the mailbox halted?
+     *
+     * @return
+     */
     public boolean isHalted() {
         return m_halt;
     }

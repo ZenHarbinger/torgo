@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -20,6 +22,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
+import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoInfo;
 
 /**
@@ -28,11 +31,25 @@ import org.tros.torgo.TorgoInfo;
  */
 public abstract class PropertiesInitializer {
 
-    private static Object mapper;
+    private static final Object MAPPER;
     private static final Object LOCK = new Object();
     private static boolean _loading = false;
     private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(PropertiesInitializer.class);
 
+    static {
+        Object m = null;
+        try {
+            Class<?> forName = Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
+            m = forName.newInstance();
+        } catch (ClassNotFoundException ex) {
+            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
+        } catch (InstantiationException ex) {
+            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
+        } catch (IllegalAccessException ex) {
+            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
+        }
+        MAPPER = m;
+    }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     protected PropertiesInitializer() {
@@ -53,25 +70,51 @@ public abstract class PropertiesInitializer {
             this.initializeFromProperties();
             this.initializeFromProperties(dir);
         }
-        try {
-            Class<?> forName = Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
-            mapper = forName.newInstance();
-        } catch (ClassNotFoundException ex) {
-            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
-        } catch (InstantiationException ex) {
-            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
-        } catch (IllegalAccessException ex) {
-            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
-        }
     }
 
-    private Object readValue(InputStream fis, Class<?> clazz) {
+    public static boolean canCopy() {
+        return MAPPER != null;
+    }
+    
+    /**
+     * Create a copy of the current object.
+     *
+     * @return
+     */
+    public PropertiesInitializer copy() {
+        java.io.StringWriter sw = new java.io.StringWriter();
+        writeValue(sw, this);
+
+        java.io.StringReader sr = new StringReader(sw.toString());
+        PropertiesInitializer c2 = null;
         try {
-            Method method = mapper.getClass().getMethod("readValue", InputStream.class, Class.class);
-            return method.invoke(mapper, fis, clazz);
-        } catch (NoSuchMethodException ex) {
+            c2 = (PropertiesInitializer) readValue(IOUtils.toString(sr), this.getClass());
+        } catch (IOException ex) {
             LOGGER.warn(null, ex);
-        } catch (SecurityException ex) {
+        }
+
+        return c2;
+    }
+
+    /**
+     * Copy values from the specified object.
+     *
+     * @param cb
+     */
+    public void copy(PropertiesInitializer cb) {
+        try {
+            PropertyDescriptor[] thisProps = Introspector.getBeanInfo(this.getClass()).getPropertyDescriptors();
+            PropertyDescriptor[] cbProps = Introspector.getBeanInfo(cb.getClass()).getPropertyDescriptors();
+            for (PropertyDescriptor thisP : thisProps) {
+                for (PropertyDescriptor cbP : cbProps) {
+                    if (thisP.getName().equals(cbP.getName())
+                            && thisP.getPropertyType().equals(cbP.getPropertyType())
+                            && thisP.getWriteMethod() != null && cbP.getReadMethod() != null) {
+                        thisP.getWriteMethod().invoke(this, cbP.getReadMethod().invoke(cb));
+                    }
+                }
+            }
+        } catch (IntrospectionException ex) {
             LOGGER.warn(null, ex);
         } catch (IllegalAccessException ex) {
             LOGGER.warn(null, ex);
@@ -79,28 +122,74 @@ public abstract class PropertiesInitializer {
             LOGGER.warn(null, ex);
         } catch (InvocationTargetException ex) {
             LOGGER.warn(null, ex);
+        }
+    }
+
+    private Object readValue(InputStream fis, Class<?> clazz) {
+        if (MAPPER != null) {
+            try {
+                Method method = MAPPER.getClass().getMethod("readValue", InputStream.class, Class.class);
+                return method.invoke(MAPPER, fis, clazz);
+            } catch (NoSuchMethodException ex) {
+                LOGGER.warn(null, ex);
+            } catch (SecurityException ex) {
+                LOGGER.warn(null, ex);
+            } catch (IllegalAccessException ex) {
+                LOGGER.warn(null, ex);
+            } catch (IllegalArgumentException ex) {
+                LOGGER.warn(null, ex);
+            } catch (InvocationTargetException ex) {
+                LOGGER.warn(null, ex);
+            }
         }
         return null;
     }
 
     private Object readValue(String fis, Class<?> clazz) {
-        try {
-            Method method = mapper.getClass().getMethod("readValue", String.class, Class.class);
-            return method.invoke(mapper, fis, clazz);
-        } catch (NoSuchMethodException ex) {
-            LOGGER.warn(null, ex);
-        } catch (SecurityException ex) {
-            LOGGER.warn(null, ex);
-        } catch (IllegalAccessException ex) {
-            LOGGER.warn(null, ex);
-        } catch (IllegalArgumentException ex) {
-            LOGGER.warn(null, ex);
-        } catch (InvocationTargetException ex) {
-            LOGGER.warn(null, ex);
+        if (MAPPER != null) {
+            try {
+                Method method = MAPPER.getClass().getMethod("readValue", String.class, Class.class);
+                return method.invoke(MAPPER, fis, clazz);
+            } catch (NoSuchMethodException ex) {
+                LOGGER.warn(null, ex);
+            } catch (SecurityException ex) {
+                LOGGER.warn(null, ex);
+            } catch (IllegalAccessException ex) {
+                LOGGER.warn(null, ex);
+            } catch (IllegalArgumentException ex) {
+                LOGGER.warn(null, ex);
+            } catch (InvocationTargetException ex) {
+                LOGGER.warn(null, ex);
+            }
         }
         return null;
     }
 
+    private Object writeValue(Writer fis, Object obj) {
+        if (MAPPER != null) {
+            try {
+                Method method = MAPPER.getClass().getMethod("writeValue", Writer.class, Object.class);
+                return method.invoke(MAPPER, fis, obj);
+            } catch (NoSuchMethodException ex) {
+                LOGGER.warn(null, ex);
+            } catch (SecurityException ex) {
+                LOGGER.warn(null, ex);
+            } catch (IllegalAccessException ex) {
+                LOGGER.warn(null, ex);
+            } catch (IllegalArgumentException ex) {
+                LOGGER.warn(null, ex);
+            } catch (InvocationTargetException ex) {
+                LOGGER.warn(null, ex);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Initialize from JSON if possible.
+     *
+     * @param dir
+     */
     private void initializeFromJson(String dir) {
         if (dir == null) {
             return;
@@ -141,6 +230,9 @@ public abstract class PropertiesInitializer {
         }
     }
 
+    /**
+     * Initialize from JSON if possible.
+     */
     private void initializeFromJson() {
         try {
             java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader()
@@ -202,6 +294,11 @@ public abstract class PropertiesInitializer {
         }
     }
 
+    /**
+     * Initialize from properties file if possible.
+     *
+     * @param dir
+     */
     private void initializeFromProperties(String dir) {
         if (dir == null) {
             return;
@@ -266,6 +363,9 @@ public abstract class PropertiesInitializer {
         }
     }
 
+    /**
+     * Initialize from properties file if possible.
+     */
     private void initializeFromProperties() {
         try {
             Properties prop = new Properties();
@@ -358,16 +458,41 @@ public abstract class PropertiesInitializer {
         }
     }
 
+    /**
+     * Set values.
+     *
+     * @param p
+     * @param value
+     * @return
+     */
     protected boolean setValueHelper(PropertyDescriptor p, String value) {
         return false;
     }
 
+    /**
+     * Set name value.
+     *
+     * @param name
+     * @param value
+     */
     protected void setNameValuePair(String name, String value) {
     }
 
+    /**
+     * helper method for initialization.
+     *
+     * Called during constructor. Derived classes should not initialize anything
+     * in their constructor as that will over-write any values read in from
+     * file.
+     */
     protected void initializeHelper() {
     }
 
+    /**
+     * Get a display name.
+     *
+     * @return
+     */
     public String displayName() {
         return this.getClass().getCanonicalName();
     }

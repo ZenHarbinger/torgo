@@ -7,6 +7,7 @@
 package org.tros.utils;
 
 /**
+ * Halt monitor that can only query for state.
  *
  * @author matta
  */

@@ -10,14 +10,27 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 
 /**
+ * Gunzip a file.
+ * 
+ * Used in web.
  *
  * @author matta
  */
 public final class Gzip {
 
+    /**
+     * Hidden Constructor.
+     */
     private Gzip() {
     }
 
+    /**
+     * Gunzip.
+     *
+     * @param compressedFile
+     * @param decompressedFile
+     * @throws IOException
+     */
     public final static void GunzipFile(final java.io.InputStream compressedFile, final java.io.OutputStream decompressedFile) throws IOException {
 
         final byte[] buffer = new byte[1024];
@@ -31,3 +44,4 @@ public final class Gzip {
         decompressedFile.flush();
     }
 }
+

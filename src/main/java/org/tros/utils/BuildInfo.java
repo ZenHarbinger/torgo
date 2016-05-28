@@ -7,25 +7,22 @@
 package org.tros.utils;
 
 /**
+ * Interface for build info.
  *
  * @author matta
  */
 public interface BuildInfo {
 
-//    String getBuild();
     String getBuilder();
 
     String getBuildtime();
 
-//    String getSvn();
     String getVersion();
 
-//    void setBuild(String value);
     void setBuilder(String value);
 
     void setBuildtime(String value);
 
-//    void setSvn(String value);
     void setVersion(String value);
 
     String getApplicationName();

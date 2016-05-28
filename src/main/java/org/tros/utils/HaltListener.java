@@ -7,6 +7,7 @@
 package org.tros.utils;
 
 /**
+ * Listener for when a HaltMonitor is halted.
  *
  * @author matta
  */

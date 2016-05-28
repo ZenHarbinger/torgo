@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by matta on 6/16/15.
+ * @author matta
  */
 public interface ResourceAccessor {
 
