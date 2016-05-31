@@ -35,7 +35,6 @@ import org.tros.torgo.interpreter.LexicalAnalyzer;
 import org.tros.torgo.TorgoScreen;
 import org.tros.torgo.TorgoTextConsole;
 import org.tros.torgo.swing.TorgoToolBar;
-import org.tros.utils.logging.Logging;
 
 /**
  * The Logo factory/controller.
@@ -134,7 +133,7 @@ public final class LogoController extends ControllerBase {
         try {
             openFile(file.toURI().toURL());
         } catch (MalformedURLException ex) {
-            Logging.getLogFactory().getLogger(LogoController.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoController.class).fatal(null, ex);
         }
     }
 }
