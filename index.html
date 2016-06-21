@@ -32,14 +32,17 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a id="torgo" class="anchor" href="#torgo" aria-hidden="true"><span class="octicon octicon-link"></span></a>torgo</h1>
+<a id="torgo" class="anchor" href="#torgo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>torgo</h1>
+
+<p><a href="https://travis-ci.org/ZenHarbinger/torgo"><img src="https://travis-ci.org/ZenHarbinger/torgo.svg?branch=master" alt="Build Status"></a><br>
+<a href="https://gitter.im/ZenHarbinger/torgo?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/ZenHarbinger/torgo.svg" alt="Join the chat at https://gitter.im/ZenHarbinger/torgo"></a></p>
 
 <h2>
-<a id="logo-interpreter-in-java" class="anchor" href="#logo-interpreter-in-java" aria-hidden="true"><span class="octicon octicon-link"></span></a>Logo Interpreter in Java</h2>
+<a id="logo-interpreter-in-java" class="anchor" href="#logo-interpreter-in-java" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logo Interpreter in Java</h2>
 
 <p>Torgo is a Logo interpreter written in Java.  It uses <a href="http://www.antlr.org/">ANTLR</a> as a language parser and for lexical analysis.  The parsed scripts are then walked to interpret the commands.</p>
 
-<p>Torgo is built using Java8 (use of lamba for personal learning).</p>
+<p>Torgo is built using Java6.</p>
 
 <p>Some goals for Torgo are:</p>
 
@@ -52,55 +55,23 @@
 <p>This project was inspired by <a href="http://tortue.sourceforge.net/">Tortue</a>.</p>
 
 <h2>
-<a id="languages" class="anchor" href="#languages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Languages</h2>
+<a id="languages" class="anchor" href="#languages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Languages</h2>
 
 <p>Torgo currently supports logo; jvmBasic and lisp are in development.</p>
 
 <h2>
-<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
-
-<p>All requirements (and optional jars) for compiling and running are available in the /lib directory of the project.</p>
-
-<h3>
-<a id="run" class="anchor" href="#run" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run</h3>
-
-<ul>
-<li>
-<a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">Java8</a> (for lambdas)</li>
-<li><a href="http://commons.apache.org/proper/commons-io/">apache-commons-io</a></li>
-<li><a href="http://commons.apache.org/proper/commons-collections/">apache-commons-collections</a></li>
-<li><a href="http://commons.apache.org/proper/commons-cli/">apache-commons-cli</a></li>
-<li><a href="http://www.antlr.org/">ANTLR 4.5</a></li>
-</ul>
-
-<h3>
-<a id="optional" class="anchor" href="#optional" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optional</h3>
-
-<ul>
-<li>
-<a href="http://fifesoft.com/rsyntaxtextarea/">RSyntaxArea</a> - Will compile and run without this jar, but looks nicer with it.</li>
-</ul>
-
-<h3>
-<a id="building" class="anchor" href="#building" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building</h3>
-
-<ul>
-<li>org-netbeans-modules-java-j2seproject-copylibstask.jar</li>
-</ul>
-
-<h2>
-<a id="compile" class="anchor" href="#compile" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compile</h2>
+<a id="compile" class="anchor" href="#compile" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compile</h2>
 
 <ol>
 <li>Check out code</li>
-<li><code>ant clean jar</code></li>
+<li><code>mvn clean package</code></li>
 </ol>
 
 <h2>
-<a id="run-1" class="anchor" href="#run-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run</h2>
+<a id="run" class="anchor" href="#run" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run</h2>
 
 <ol>
-<li><code>java -jar dist/torgo.jar</code></li>
+<li><code>java -jar target/torgo-1.0.6.jar</code></li>
 </ol>
       </section>
     </div>
