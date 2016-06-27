@@ -7,4 +7,4 @@ export FONTCONFIG_PATH=$SNAP/etc/fonts/config.d
 export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
 export HOME=$SNAP_USER_DATA
 
-$SNAP/jre-8u91/bin/java -Dsnapd=true -Dsun.java2d.opengl=true -Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel -jar $SNAP/jar/torgo-1.0.6.jar
+$SNAP/jre-8u91/bin/java -Dsnapd=false -Dsun.java2d.opengl=true -duser.home=$HOME -jar $SNAP/jar/torgo-1.0.6.jar
