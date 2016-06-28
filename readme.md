@@ -26,11 +26,26 @@ This project was inspired by [Tortue](http://tortue.sourceforge.net/).
 
 Torgo currently supports logo; jvmBasic and lisp are in development.
 
+# Install on Recent Linux Distros
+
+`sudo snap install torgo`
+
+# Download
+
+- git clone: `git clone https://github.com/ZenHarbinger/torgo.git`
+- [tarbal](https://github.com/ZenHarbinger/torgo/tarball/master)
+- [zipball](https://github.com/ZenHarbinger/torgo/zipball/master)
+
 # Compile
 
-1. Check out code
-2. `mvn clean package`
+```sh
+git clone https://github.com/ZenHarbinger/torgo.git
+cd torgo
+mvn clean package
+```
 
 # Run
 
-1. `java -jar target/torgo-1.0.6.jar`
+```sh
+java -jar target/torgo-1.0.6.jar
+```

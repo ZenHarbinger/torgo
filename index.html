@@ -3,13 +3,11 @@ layout: default
 author_profile: true
 ---
 <div class="home">
-    <!-- https://github.com/ZenHarbinger/torgo/zipball/master
-    https://github.com/ZenHarbinger/torgo/tarball/master -->
 
   <ul class="post-list">
     {% for post in paginator.posts %}
     <div class="unit whole single-post-excerpt">
-    	<h2><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h2>
+    	<h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
     	<div class="meta-info">
     		<span class="meta"><time class="timeago postlist-meta" datetime="{{ post.date | date: "%Y-%m-%d" }}"><i class="fa fa-calendar"></i>{{ post.date | date: "%B %-d, %Y" }}</time></span>
     		<!-- {% if post.tags and post.tags.size > 0 %}
