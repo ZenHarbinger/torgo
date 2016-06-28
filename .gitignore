@@ -9,6 +9,7 @@ nb-configuration.xml
 
 # snapcraft
 prime/
+snapcraft/
 parts/
 stage/
 snap/

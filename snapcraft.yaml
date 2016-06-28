@@ -9,7 +9,7 @@ description: A Logo interpreter written in Java.
 apps:
   torgo:
     command: bin/wrapper
-    plugs: [x11, opengl]
+    plugs: [home, x11, opengl]
 
 parts:
   torgo-mvn:
@@ -17,8 +17,6 @@ parts:
     source: .
     stage-packages:
       - fontconfig-config
-      - gnome-themes-standard
-      - openjdk-8-jdk
       - openjdk-8-jre
       - fonts-dejavu-extra
       - fonts-ipafont-gothic
