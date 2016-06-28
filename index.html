@@ -1,90 +1,47 @@
-<!DOCTYPE html>
-<html>
+---
+layout: default
+author_profile: true
+---
+<div class="home">
+    <!-- https://github.com/ZenHarbinger/torgo/zipball/master
+    https://github.com/ZenHarbinger/torgo/tarball/master -->
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Torgo : Logo Interpreter in Java">
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Torgo</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/ZenHarbinger/torgo">View on GitHub</a>
-
-          <h1 id="project_title">Torgo</h1>
-          <h2 id="project_tagline">Logo Interpreter in Java</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/ZenHarbinger/torgo/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/ZenHarbinger/torgo/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+  <ul class="post-list">
+    {% for post in paginator.posts %}
+    <div class="unit whole single-post-excerpt">
+    	<h2><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h2>
+    	<div class="meta-info">
+    		<span class="meta"><time class="timeago postlist-meta" datetime="{{ post.date | date: "%Y-%m-%d" }}"><i class="fa fa-calendar"></i>{{ post.date | date: "%B %-d, %Y" }}</time></span>
+    		<!-- {% if post.tags and post.tags.size > 0 %}
+    			<div class="tags">
+    				Tagged:
+    				{% for tag in post.tags %}
+    				<span><i class="fa fa-tag"></i>{{ tag }}</span>
+    				{% endfor %}
+    			</div>
+    		{% endif %} -->
+    	</div>
+    	<p class="description">{{ post.excerpt | strip_html}}</p>
     </div>
+    {% endfor %}
+  </ul>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a id="torgo" class="anchor" href="#torgo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>torgo</h1>
-
-<p><a href="https://travis-ci.org/ZenHarbinger/torgo"><img src="https://travis-ci.org/ZenHarbinger/torgo.svg?branch=master" alt="Build Status"></a><br>
-<a href="https://gitter.im/ZenHarbinger/torgo?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/ZenHarbinger/torgo.svg" alt="Join the chat at https://gitter.im/ZenHarbinger/torgo"></a></p>
-
-<h2>
-<a id="logo-interpreter-in-java" class="anchor" href="#logo-interpreter-in-java" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logo Interpreter in Java</h2>
-
-<p>Torgo is a Logo interpreter written in Java.  It uses <a href="http://www.antlr.org/">ANTLR</a> as a language parser and for lexical analysis.  The parsed scripts are then walked to interpret the commands.</p>
-
-<p>Torgo is built using Java6.</p>
-
-<p>Some goals for Torgo are:</p>
-
-<ul>
-<li>to learn to program</li>
-<li>to learn how machines execute programs</li>
-<li>to modify/add languages to change behaviors</li>
-</ul>
-
-<p>This project was inspired by <a href="http://tortue.sourceforge.net/">Tortue</a>.</p>
-
-<h2>
-<a id="languages" class="anchor" href="#languages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Languages</h2>
-
-<p>Torgo currently supports logo; jvmBasic and lisp are in development.</p>
-
-<h2>
-<a id="compile" class="anchor" href="#compile" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compile</h2>
-
-<ol>
-<li>Check out code</li>
-<li><code>mvn clean package</code></li>
-</ol>
-
-<h2>
-<a id="run" class="anchor" href="#run" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run</h2>
-
-<ol>
-<li><code>java -jar target/torgo-1.0.6.jar</code></li>
-</ol>
-      </section>
+  <!-- Pagination links -->
+  {% if paginator.total_pages > 1 %}
+     <div class="pagination">
+      {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path }}" class="previous">Previous</a>
+      {% else %}
+        <span class="previous">Previous</span>
+      {% endif %}
+      <span class="page_number ">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
+      {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path }}" class="next">Next</a>
+      {% else %}
+        <span class="next ">Next</span>
+      {% endif %}
     </div>
+  {% endif %}
+  <!-- <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p> -->
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Torgo maintained by <a href="https://github.com/ZenHarbinger">ZenHarbinger</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
-</html>
+</div>
