@@ -3,6 +3,8 @@ version: 1.0.6
 summary: A Logo interpreter written in Java.
 description: A Logo interpreter written in Java.
 
+confinement: strict
+
 #license: LICENSE
 #icon: src/main/resources/torgo-256x256.png
 
