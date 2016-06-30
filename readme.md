@@ -33,7 +33,7 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
 # Download
 
 - git clone: `git clone https://github.com/ZenHarbinger/torgo.git`
-- [tarbal](https://github.com/ZenHarbinger/torgo/tarball/master)
+- [tarball](https://github.com/ZenHarbinger/torgo/tarball/master)
 - [zipball](https://github.com/ZenHarbinger/torgo/zipball/master)
 
 # Compile
