@@ -5,9 +5,6 @@ description: A Logo interpreter written in Java.
 
 confinement: strict
 
-#license: LICENSE
-#icon: src/main/resources/torgo-256x256.png
-
 apps:
   torgo:
     command: bin/wrapper
@@ -28,6 +25,7 @@ parts:
       ../../torgo-mvn/build/target/lib: jar/lib
     after:
       - torgo-mvn
-  wrapper:
-      plugin: make
-      source: .
+  torgo-files:
+    plugin: copy
+    files:
+      wrapper: bin/wrapper
