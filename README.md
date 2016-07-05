@@ -1,5 +1,6 @@
 # torgo
 [![Build Status](https://travis-ci.org/ZenHarbinger/torgo.svg?branch=master)](https://travis-ci.org/ZenHarbinger/torgo)  
+[![Coverage Status](https://coveralls.io/repos/github/ZenHarbinger/torgo/badge.svg)](https://coveralls.io/github/ZenHarbinger/torgo)  
 [![Join the chat at https://gitter.im/ZenHarbinger/torgo](https://badges.gitter.im/ZenHarbinger/torgo.svg)](https://gitter.im/ZenHarbinger/torgo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ##Logo Interpreter in Java
 
