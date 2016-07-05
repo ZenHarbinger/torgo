@@ -4,6 +4,7 @@ to test
     clear
     home
 
+    fontname arial
     fontstyle bold
     fontstyle italic
     fontstyle plain
@@ -24,6 +25,10 @@ to test
     st
     repeat 5 [
         forward 1
+        print repcount
+        print getx
+        print gety
+        print getangle
     ]
 
     make "i 1
@@ -39,6 +44,10 @@ to test
     if :i > 0 [
         print :i
     ]
+    make "i 5 \ 2
+    print :i
+    make "i 5 % 2
+    print :i
 
     pencolor BLACK
     forward 10
@@ -69,3 +78,5 @@ to test
 end
 
 test
+
+for [i 100 10 10] [fd :i rt 90] ht

@@ -163,11 +163,11 @@ class LogoStatement extends LogoBlock {
         } else if ("fontstyle".equals(command)) {
             logoParser.FontstyleContext fd = (logoParser.FontstyleContext) ctx;
             String styleString = fd.style().getText();
-            if ("bold".equals(command)) {
+            if ("bold".equals(styleString)) {
                 canvas.fontStyle(1);
-            } else if ("italic".equals(command)) {
+            } else if ("italic".equals(styleString)) {
                 canvas.fontStyle(2);
-            } else if ("plain".equals(command)) {
+            } else if ("plain".equals(styleString)) {
                 canvas.fontStyle(0);
             } else {
                 LOGGER.warn(MessageFormat.format("Unknown {0}: {1}", "fontstyle", styleString));
