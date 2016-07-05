@@ -6,6 +6,8 @@ to test
     cc 255 255 255
     cc #660000
 
+    pc #660000
+
     clear
     home
 
