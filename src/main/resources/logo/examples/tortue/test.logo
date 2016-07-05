@@ -1,6 +1,11 @@
 ; test to make sure no exceptions are thrown
 ; nothing fancy here.
 to test
+    cc 23 45 67
+    pause 10
+    cc 255 255 255
+    cc #660000
+
     clear
     home
 
@@ -80,3 +85,6 @@ end
 test
 
 for [i 100 10 10] [fd :i rt 90] ht
+t
+st
+home
