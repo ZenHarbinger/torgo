@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.logo.swing.LogoMenuBar;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
@@ -60,6 +61,9 @@ public class LogoControllerTest {
     @Test
     public void testCreateConsole() {
         System.out.println("createConsole");
+        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+        boolean checked = prefs.getBoolean("wait-for-repaint", true);
+        prefs.putBoolean("wait-for-repaint", false);
         LogoController controller = (LogoController) TorgoToolkit.getController("logo");
         controller.run();
         assertEquals("logo", controller.getLang());
@@ -88,10 +92,10 @@ public class LogoControllerTest {
             "logo/examples/tortue/fibonacci.logo",
             "logo/examples/tortue/flower2.logo",
             "logo/examples/tortue/flower.logo",
-//            "logo/examples/tortue/Getriebe.logo",
+            //            "logo/examples/tortue/Getriebe.logo",
             "logo/examples/tortue/grayscale-fun.logo",
             "logo/examples/tortue/iris.logo",
-//            "logo/examples/tortue/MetallRahmen.logo",
+            //            "logo/examples/tortue/MetallRahmen.logo",
             "logo/examples/tortue/octagon.logo",
             "logo/examples/tortue/pretty.logo",
             "logo/examples/tortue/snowflake.logo",
@@ -144,5 +148,6 @@ public class LogoControllerTest {
         }
 
         controller.close();
+        prefs.putBoolean("wait-for-repaint", checked);
     }
 }
