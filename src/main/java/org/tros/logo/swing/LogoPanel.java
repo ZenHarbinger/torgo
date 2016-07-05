@@ -111,10 +111,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
         //since this list can be written to, do not swith to for-each
         for (int ii = 0; ii < queuedCommands.size(); ii++) {
-            GraphicCommand get = queuedCommands.get(ii);
-            if (get != null) {
-                get.draw(g2d);
-            }
+            queuedCommands.get(ii).draw(g2d);
         }
     }
 
