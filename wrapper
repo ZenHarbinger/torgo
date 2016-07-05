@@ -7,4 +7,8 @@ export FONTCONFIG_PATH=$SNAP/etc/fonts/config.d
 export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
 export HOME=$SNAP_USER_DATA
 
-$SNAP/usr/lib/jvm/default-java/bin/java -Dsnapd=false -Duser.home=$HOME -Dsun.java2d.opengl=true -jar $SNAP/jar/torgo-1.0.6.jar
+export LIBGL_DRIVERS_PATH=$SNAP/usr/lib/x86_64-linux-gnu/dri
+export LIBVA_DRIVERS_PATH=$SNAP/usr/lib/x86_64-linux-gnu/dri
+#export LIBGL_DEBUG=verbose
+
+$SNAP/usr/lib/jvm/default-java/bin/java -Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel -Duser.home=$HOME -Dsun.java2d.opengl=true -jar $SNAP/jar/torgo-1.0.6.jar "$@"

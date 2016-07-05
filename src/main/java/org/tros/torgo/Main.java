@@ -1,12 +1,12 @@
 /*
- * Copyright 2015 Matthew Aguirre
- * 
+ * Copyright 2015-2016 Matthew Aguirre
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,8 +41,6 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-//        //force opengl
-//        System.setProperty("sun.java2d.opengl", "true");
         //initialize the logging
         org.tros.utils.logging.Logging.initLogging(TorgoInfo.INSTANCE);
         Options options = new Options();
@@ -67,7 +65,7 @@ public class Main {
         }
 
         //currently commented out for working with snapd
-        if (!TorgoInfo.INSTANCE.isSnapd()) {
+        if (System.getProperty("swing.defaultlaf") == null) {
             try {
                 //set look and feel (laf) to that of the system.
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
