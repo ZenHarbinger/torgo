@@ -11,6 +11,7 @@ to test
     clear
     home
 
+    fontname does_not_exist
     fontname arial
     fontstyle bold
     fontstyle italic
