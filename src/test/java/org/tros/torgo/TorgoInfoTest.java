@@ -15,6 +15,7 @@
  */
 package org.tros.torgo;
 
+import java.util.Calendar;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.utils.PropertiesInitializer;
+import org.tros.utils.TypeHandler;
 
 /**
  *
@@ -52,28 +54,6 @@ public class TorgoInfoTest {
     }
 
     /**
-     * Test of isSnapd method, of class TorgoInfo.
-     */
-    @Test
-    public void testIsSnapd() {
-        INFO.setSnapd(true);
-        assertTrue(INFO.isSnapd());
-        INFO.setSnapd(false);
-        assertFalse(INFO.isSnapd());
-    }
-
-    /**
-     * Test of setSnapd method, of class TorgoInfo.
-     */
-    @Test
-    public void testSetSnapd() {
-        INFO.setSnapd(true);
-        assertTrue(INFO.isSnapd());
-        INFO.setSnapd(false);
-        assertFalse(INFO.isSnapd());
-    }
-
-    /**
      * Test of getVersion method, of class TorgoInfo.
      */
     @Test
@@ -93,6 +73,8 @@ public class TorgoInfoTest {
      */
     @Test
     public void testGetBuildtime() {
+        INFO.setBuildtime(TypeHandler.dateToString(Calendar.getInstance()));
+        assertNotNull(INFO.getBuildtime());
     }
 
     /**
@@ -100,6 +82,7 @@ public class TorgoInfoTest {
      */
     @Test
     public void testSetBuildtime() {
+        INFO.setBuildtime(TypeHandler.dateToString(Calendar.getInstance()));
     }
 
     /**
