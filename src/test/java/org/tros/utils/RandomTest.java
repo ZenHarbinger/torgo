@@ -416,18 +416,12 @@ public class RandomTest {
     @Test
     public void testNextLong_long() {
         System.out.println("nextLong");
-        int min = 5;
-        int max = 50;
-        org.tros.utils.Random.nextLong(min, max);
-        org.tros.utils.Random.nextLong(min, max);
-        org.tros.utils.Random.nextLong(min, max);
-        org.tros.utils.Random.nextLong(min, max);
-        org.tros.utils.Random.nextLong(min, max);
-        try {
-            org.tros.utils.Random.nextLong(max, min);
-        } catch (IllegalArgumentException ex) {
-
-        }
+        int max = 5;
+        org.tros.utils.Random.nextLong(max);
+        org.tros.utils.Random.nextLong(max);
+        org.tros.utils.Random.nextLong(max);
+        org.tros.utils.Random.nextLong(max);
+        org.tros.utils.Random.nextLong(max);
     }
 
     /**
