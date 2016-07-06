@@ -164,7 +164,7 @@ public class LoggerTest {
         System.out.println("warn");
         String message = "warn";
         Logger instance = Logging.getLogFactory().getLogger(LoggerTest.class);
-        instance.warn("Message: {0}", new Object[]{message});
+        instance.warn("Message: ", new Throwable(message));
     }
 
     /**
@@ -175,7 +175,7 @@ public class LoggerTest {
         System.out.println("debug");
         String message = "debug";
         Logger instance = Logging.getLogFactory().getLogger(LoggerTest.class);
-        instance.debug("Message: {0}", new Throwable(message));
+        instance.debug("Message: ", new Throwable(message));
     }
 
     /**
@@ -186,7 +186,7 @@ public class LoggerTest {
         System.out.println("error");
         String message = "error";
         Logger instance = Logging.getLogFactory().getLogger(LoggerTest.class);
-        instance.error("Message: {0}", new Throwable(message));
+        instance.error("Message: ", new Throwable(message));
     }
 
     /**
@@ -197,7 +197,7 @@ public class LoggerTest {
         System.out.println("info");
         String message = "info";
         Logger instance = Logging.getLogFactory().getLogger(LoggerTest.class);
-        instance.info("Message: {0}", new Throwable(message));
+        instance.info("Message: ", new Throwable(message));
     }
 
     /**
@@ -208,7 +208,7 @@ public class LoggerTest {
         System.out.println("verbose");
         String message = "verbose";
         Logger instance = Logging.getLogFactory().getLogger(LoggerTest.class);
-        instance.verbose("Message: {0}", new Throwable(message));
+        instance.verbose("Message: ", new Throwable(message));
     }
 
     /**
@@ -241,7 +241,7 @@ public class LoggerTest {
         System.out.println("fatal");
         String message = "fatal";
         Logger instance = Logging.getLogFactory().getLogger(LoggerTest.class);
-        instance.fatal("Message: {0}", new Throwable(message));
+        instance.fatal("Message: ", new Throwable(message));
     }
     
 }
