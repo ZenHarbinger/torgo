@@ -1,7 +1,7 @@
 <project>
     <shortName>Torgo</shortName>
     <fullName>Torgo</fullName>
-    <version>1.0</version>
+    <version>1.0.7</version>
     <!-- <logoImage>48x48.png</logoImage> -->
     <!-- <splashImage>splash.png</splashImage> -->
     <componentList>
@@ -122,4 +122,3 @@
         </directoryParameter>
     </parameterList>
 </project>
-
