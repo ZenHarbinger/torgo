@@ -304,7 +304,7 @@ public abstract class ControllerBase implements Controller {
         try {
             init();
             StringWriter writer = new StringWriter();
-            IOUtils.copy(file.openStream(), writer);
+            IOUtils.copy(file.openStream(), writer, "utf-8");
             this.setSource(writer.toString());
             //handle windows, jar, and linux path.  Not sure if necessary, but should work.
             String toSplit = file.getFile().replace("/", "|").replace("\\", "|");//.split("|");

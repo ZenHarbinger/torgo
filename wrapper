@@ -11,4 +11,4 @@ export LIBGL_DRIVERS_PATH=$SNAP/usr/lib/x86_64-linux-gnu/dri
 export LIBVA_DRIVERS_PATH=$SNAP/usr/lib/x86_64-linux-gnu/dri
 #export LIBGL_DEBUG=verbose
 
-$SNAP/usr/lib/jvm/default-java/bin/java -Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel -Duser.home=$HOME -Dsun.java2d.opengl=true -jar $SNAP/jar/torgo-1.0.6.jar "$@"
+$SNAP/usr/lib/jvm/default-java/bin/java -Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel -Duser.home=$HOME -Dsun.java2d.opengl=true -jar $SNAP/jar/torgo-1.0.7.jar "$@"

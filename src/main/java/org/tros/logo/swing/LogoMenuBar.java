@@ -178,7 +178,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
         JMenu samplesMenu = new JMenu(name);
         try {
             InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(base + "/resource.manifest");
-            List<String> readLines = IOUtils.readLines(resourceAsStream);
+            List<String> readLines = IOUtils.readLines(resourceAsStream, "utf-8");
             Collections.sort(readLines);
             for (String line : readLines) {
                 JMenuItem jmi = new JMenuItem(base + "/" + line);
