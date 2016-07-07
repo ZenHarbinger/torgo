@@ -44,9 +44,9 @@ import org.tros.utils.swing.JLinkButton;
 public class AboutWindow extends JDialog {
 
     /**
-     * TORGO Github address.
+     * TORGO web address.
      */
-    public static final String TORGO_ADDRESS = "https://github.com/ZenHarbinger/torgo";
+    public static final String TORGO_ADDRESS = "https://tros.org/torgo";
 
     /**
      * License Address.
