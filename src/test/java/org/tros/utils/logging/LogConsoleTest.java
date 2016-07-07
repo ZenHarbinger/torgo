@@ -52,17 +52,17 @@ public class LogConsoleTest {
 
     @Test
     public void testSomeMethod() {
-        LogConsole.CONSOLE.setVisible(true);
-        LogConsole.CONSOLE.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                LogConsole.CONSOLE.dispatchEvent(new WindowEvent(LogConsole.CONSOLE, WindowEvent.WINDOW_CLOSING));
-            }
-        }, 500);
-        
+//        LogConsole.CONSOLE.setVisible(true);
+//        LogConsole.CONSOLE.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//
+//        Timer t = new Timer();
+//        t.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                LogConsole.CONSOLE.dispatchEvent(new WindowEvent(LogConsole.CONSOLE, WindowEvent.WINDOW_CLOSING));
+//            }
+//        }, 500);
+//        
     }
     
 }

@@ -54,18 +54,18 @@ public class AboutWindowTest {
 
     @Test
     public void testConstructor() {
-        final AboutWindow aw = new AboutWindow();
-        aw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                aw.dispatchEvent(new WindowEvent(aw, WindowEvent.WINDOW_CLOSING));
-            }
-        }, 500);
-        
-        aw.setVisible(true);
+//        final AboutWindow aw = new AboutWindow();
+//        aw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//
+//        Timer t = new Timer();
+//        t.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                aw.dispatchEvent(new WindowEvent(aw, WindowEvent.WINDOW_CLOSING));
+//            }
+//        }, 500);
+//        
+//        aw.setVisible(true);
     }
 
 }
