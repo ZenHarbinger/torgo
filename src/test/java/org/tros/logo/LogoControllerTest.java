@@ -93,8 +93,8 @@ public class LogoControllerTest {
             "logo/examples/tortue/flower2.logo",
             "logo/examples/tortue/flower.logo",
             //            "logo/examples/tortue/Getriebe.logo",
-            "logo/examples/tortue/grayscale-fun.logo",
-            "logo/examples/tortue/iris.logo",
+            //            "logo/examples/tortue/grayscale-fun.logo",
+            //            "logo/examples/tortue/iris.logo",
             //            "logo/examples/tortue/MetallRahmen.logo",
             "logo/examples/tortue/octagon.logo",
             "logo/examples/tortue/pretty.logo",
@@ -145,6 +145,11 @@ public class LogoControllerTest {
             }
             assertTrue(started.get());
             assertTrue(finished.get());
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         controller.close();
