@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.utils.converters;
+package org.tros.torgo;
 
-import java.util.Calendar;
-import org.apache.commons.beanutils.Converter;
+import java.awt.Window;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.utils.TypeHandler;
 
 /**
  *
  * @author matta
  */
-public class DateConverterTest {
+public class MainTest {
     
-    public DateConverterTest() {
+    public MainTest() {
     }
     
     @BeforeClass
@@ -51,19 +49,13 @@ public class DateConverterTest {
     }
 
     /**
-     * Test of convert method, of class DateConverter.
+     * Test of main method, of class Main.
      */
     @Test
-    public void testConvert() {
-        Calendar d = Calendar.getInstance();
-        d.set(Calendar.MILLISECOND, 0);
-        String hex = TypeHandler.dateToString(d);
-        
-        Converter lookup = UtilsBeanFactory.getConverter(Calendar.class, String.class);
-        Calendar convert = lookup.convert(Calendar.class, hex);
-        String hex2 = TypeHandler.dateToString(convert);
-        
-        assertEquals(hex, hex2);
-        assertEquals(d, convert);
+    public void testMain() {
+        System.out.println("main");
+        String[] args = new String[]{"-i"};
+        Main.main(args);
     }
+    
 }
