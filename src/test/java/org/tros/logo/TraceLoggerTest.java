@@ -70,38 +70,7 @@ public class TraceLoggerTest {
         LogoController controller = (LogoController) TorgoToolkit.getController("logo");
         controller.run();
         assertEquals("logo", controller.getLang());
-        String[] files = new String[]{"logo/examples/antlr/octagon.txt"};
 
-        for (String file : files) {
-            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
-            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
-
-            final AtomicBoolean started = new AtomicBoolean(false);
-            final AtomicBoolean finished = new AtomicBoolean(false);
-            controller.addInterpreterListener(new InterpreterListener() {
-                @Override
-                public void started() {
-                    started.set(true);
-                }
-
-                @Override
-                public void finished() {
-                    finished.set(true);
-                }
-
-                @Override
-                public void error(Exception e) {
-                }
-
-                @Override
-                public void message(String msg) {
-                }
-
-                @Override
-                public void currStatement(CodeBlock block, Scope scope) {
-                }
-            });
-            
             Robot robot = null;
             try {
                 robot = new Robot();
@@ -111,6 +80,8 @@ public class TraceLoggerTest {
             if (robot == null) {
                 return;
             }
+
+            robot.delay(100);
             robot.keyPress(KeyEvent.VK_ALT);
             robot.keyPress(KeyEvent.VK_F);
             robot.delay(100);
@@ -141,6 +112,44 @@ public class TraceLoggerTest {
             robot.delay(100);
             robot.keyRelease(KeyEvent.VK_ENTER);
             robot.delay(100);
+            
+        String[] files = new String[]{
+            "logo/examples/tortue/octagon.logo",
+            "logo/examples/tortue/pretty.logo",
+            "logo/examples/tortue/snowflake.logo",
+            "logo/examples/tortue/spokes.logo",
+            "logo/examples/tortue/test.logo",
+            "logo/examples/tortue/tortue-text.logo"};
+
+        for (String file : files) {
+            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
+            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+
+            final AtomicBoolean started = new AtomicBoolean(false);
+            final AtomicBoolean finished = new AtomicBoolean(false);
+            controller.addInterpreterListener(new InterpreterListener() {
+                @Override
+                public void started() {
+                    started.set(true);
+                }
+
+                @Override
+                public void finished() {
+                    finished.set(true);
+                }
+
+                @Override
+                public void error(Exception e) {
+                }
+
+                @Override
+                public void message(String msg) {
+                }
+
+                @Override
+                public void currStatement(CodeBlock block, Scope scope) {
+                }
+            });
 
             controller.startInterpreter();
 
