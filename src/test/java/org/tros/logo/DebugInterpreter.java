@@ -72,6 +72,46 @@ public class DebugInterpreter {
         assertEquals("logo", controller.getLang());
         String[] files = new String[]{"logo/examples/antlr/octagon.txt"};
 
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException ex) {
+            Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (robot == null) {
+            return;
+        }
+        robot.keyPress(KeyEvent.VK_ALT);
+        robot.keyPress(KeyEvent.VK_F);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_ALT);
+        robot.keyRelease(KeyEvent.VK_F);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_RIGHT);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_RIGHT);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_RIGHT);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_RIGHT);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_RIGHT);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_RIGHT);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_RIGHT);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_RIGHT);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_DOWN);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_DOWN);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.delay(100);
+        
         for (String file : files) {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
@@ -101,46 +141,6 @@ public class DebugInterpreter {
                 public void currStatement(CodeBlock block, Scope scope) {
                 }
             });
-
-            Robot robot = null;
-            try {
-                robot = new Robot();
-            } catch (AWTException ex) {
-                Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (robot == null) {
-                return;
-            }
-            robot.keyPress(KeyEvent.VK_ALT);
-            robot.keyPress(KeyEvent.VK_F);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_ALT);
-            robot.keyRelease(KeyEvent.VK_F);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_DOWN);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_DOWN);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_ENTER);
-            robot.delay(100);
 
             controller.debugInterpreter();
 
