@@ -15,35 +15,38 @@
  */
 package org.tros.torgo;
 
-import java.awt.Window;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author matta
  */
 public class MainTest {
-    
+
     public MainTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -57,5 +60,60 @@ public class MainTest {
         String[] args = new String[]{"-i"};
         Main.main(args);
     }
-    
+
+    @Test
+    public void testMainNewAndClose() {
+        System.out.println("main");
+        String[] args = new String[]{"-l", "logo"};
+        Main.main(args);
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException ex) {
+            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (robot == null) {
+            return;
+        }
+
+        robot.delay(2000);
+        robot.keyPress(KeyEvent.VK_ALT);
+        robot.keyPress(KeyEvent.VK_F);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_ALT);
+        robot.keyRelease(KeyEvent.VK_F);
+        robot.delay(100);
+//        robot.keyPress(KeyEvent.VK_DOWN);
+//        robot.delay(100);
+//        robot.keyRelease(KeyEvent.VK_DOWN);
+//        robot.delay(100);
+//        robot.delay(100);
+//        robot.keyPress(KeyEvent.VK_DOWN);
+//        robot.delay(100);
+//        robot.keyRelease(KeyEvent.VK_DOWN);
+//        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_ALT);
+        robot.keyPress(KeyEvent.VK_F);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_ALT);
+        robot.keyRelease(KeyEvent.VK_F);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_DOWN);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_DOWN);
+        robot.delay(100);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_DOWN);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_DOWN);
+        robot.delay(100);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.delay(100);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.delay(100);
+    }
 }
