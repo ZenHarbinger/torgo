@@ -175,7 +175,7 @@ public abstract class ControllerBase implements Controller {
         });
         helpMenu.add(aboutMenu);
 
-        JMenu vizMenu = new JMenu("Vizualization");
+        JMenu vizMenu = new JMenu("Visualization");
         for (String name : TorgoToolkit.getVisualizers()) {
             JCheckBoxMenuItem item = new JCheckBoxMenuItem(name);
             viz.add(item);
