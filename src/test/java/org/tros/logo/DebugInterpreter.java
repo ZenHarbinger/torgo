@@ -37,9 +37,9 @@ import org.tros.torgo.interpreter.Scope;
  *
  * @author matta
  */
-public class TraceLoggerTest {
+public class DebugInterpreter {
 
-    public TraceLoggerTest() {
+    public DebugInterpreter() {
     }
 
     @BeforeClass
@@ -101,7 +101,7 @@ public class TraceLoggerTest {
                 public void currStatement(CodeBlock block, Scope scope) {
                 }
             });
-            
+
             Robot robot = null;
             try {
                 robot = new Robot();
@@ -142,7 +142,7 @@ public class TraceLoggerTest {
             robot.keyRelease(KeyEvent.VK_ENTER);
             robot.delay(100);
 
-            controller.startInterpreter();
+            controller.debugInterpreter();
 
             try {
                 while (!finished.get()) {
