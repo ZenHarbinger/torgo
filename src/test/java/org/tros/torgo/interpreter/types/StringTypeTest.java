@@ -13,57 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.utils.converters;
+package org.tros.torgo.interpreter.types;
 
-import java.util.Calendar;
-import org.apache.commons.beanutils.Converter;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.tros.utils.TypeHandler;
+import org.tros.torgo.interpreter.InterpreterType;
 
 /**
  *
  * @author matta
  */
-public class DateConverterTest {
-    
-    public DateConverterTest() {
+public class StringTypeTest {
+
+    public StringTypeTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
 
-    /**
-     * Test of convert method, of class DateConverter.
-     */
     @Test
-    public void testConvert() {
-        Calendar d = Calendar.getInstance();
-        d.set(Calendar.MILLISECOND, 0);
-        String hex = TypeHandler.dateToString(d);
-        
-        Converter lookup = UtilsBeanFactory.getConverter(Calendar.class, String.class);
-        Calendar convert = lookup.convert(Calendar.class, hex);
-        String hex2 = TypeHandler.dateToString(convert);
-        
-        assertEquals(hex, hex2);
-        assertEquals(d, convert);
+    public void testInstanceAccess() {
+        InterpreterType t = StringType.INSTANCE;
     }
 }

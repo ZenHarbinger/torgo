@@ -40,13 +40,13 @@ import org.tros.utils.ImmutableHaltMonitor;
 abstract class LogoBlock implements CodeBlock {
 
     protected final ParserRuleContext ctx;
-    private final ArrayList<CodeBlock> commands = new ArrayList<CodeBlock>();
-    private final HashMap<String, CodeFunction> functions = new HashMap<String, CodeFunction>();
+    private final ArrayList<CodeBlock> commands = new ArrayList<>();
+    private final HashMap<String, CodeFunction> functions = new HashMap<>();
     protected final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
     private final AtomicBoolean halted = new AtomicBoolean(false);
 
-    private final HashMap<String, InterpreterValue> variables = new HashMap<String, InterpreterValue>();
+    private final HashMap<String, InterpreterValue> variables = new HashMap<>();
     private CodeBlock parent;
 
     @Override

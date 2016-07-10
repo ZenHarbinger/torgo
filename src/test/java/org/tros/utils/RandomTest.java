@@ -15,6 +15,8 @@
  */
 package org.tros.utils;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -482,109 +484,161 @@ public class RandomTest {
         org.tros.utils.Random.nextGaussian(key);
     }
 
-//    /**
-//     * Test of getRandom method, of class Random.
-//     */
-//    @Test
-//    public void testGetRandom_Collection_int() {
-//        System.out.println("getRandom");
-//        Collection expResult = null;
-//        Collection result = org.tros.utils.Random.getRandom(null);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getRandom method, of class Random.
-//     */
-//    @Test
-//    public void testGetRandom_3args_1() {
-//        System.out.println("getRandom");
-//        Collection expResult = null;
-//        Collection result = org.tros.utils.Random.getRandom(null);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getRandom method, of class Random.
-//     */
-//    @Test
-//    public void testGetRandom_Collection_GenericType() {
-//        System.out.println("getRandom");
-//        Object expResult = null;
-//        Object result = org.tros.utils.Random.getRandom(null);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getRandom method, of class Random.
-//     */
-//    @Test
-//    public void testGetRandom_3args_2() {
-//        System.out.println("getRandom");
-//        Object expResult = null;
-//        Object result = org.tros.utils.Random.getRandom(null);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-////    /**
-////     * Test of getRandomNotInList method, of class Random.
-////     */
-////    @Test
-////    public void testGetRandomNotInList_Collection_Collection() {
-////        System.out.println("getRandomNotInList");
-////        Object expResult = null;
-////        Object result = org.tros.utils.Random.getRandomNotInList(null);
-////        assertEquals(expResult, result);
-////        // TODO review the generated test code and remove the default call to fail.
-////        fail("The test case is a prototype.");
-////    }
-////
-////    /**
-////     * Test of getRandomNotInList method, of class Random.
-////     */
-////    @Test
-////    public void testGetRandomNotInList_3args() {
-////        System.out.println("getRandomNotInList");
-////        Object expResult = null;
-////        Object result = org.tros.utils.Random.getRandomNotInList(null);
-////        assertEquals(expResult, result);
-////        // TODO review the generated test code and remove the default call to fail.
-////        fail("The test case is a prototype.");
-////    }
-//
-//    /**
-//     * Test of getRandom method, of class Random.
-//     */
-//    @Test
-//    public void testGetRandom_Collection() {
-//        System.out.println("getRandom");
-//        Object expResult = null;
-//        Object result = org.tros.utils.Random.getRandom(null);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getRandom method, of class Random.
-//     */
-//    @Test
-//    public void testGetRandom_Random_Collection() {
-//        System.out.println("getRandom");
-//        Object expResult = null;
-//        Object result = org.tros.utils.Random.getRandom(null);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    /**
+     * Test of getRandom method, of class Random.
+     */
+    @Test
+    public void testGetRandom_Collection_Collection() {
+        System.out.println("getRandom");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for (int ii = 0; ii < 100; ii++) {
+            coll.add(ii);
+        }
+        ArrayList<Integer> pulled = new ArrayList<Integer>();
+        while (pulled.size() != coll.size()) {
+            Integer result = org.tros.utils.Random.getRandom(coll);
+            if (!pulled.contains(result)) {
+                pulled.add(result);
+            }
+        }
+    }
+
+    /**
+     * Test of getRandom method, of class Random.
+     */
+    @Test
+    public void testGetRandom_3args_1() {
+        System.out.println("getRandom");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for (int ii = 0; ii < 2; ii++) {
+            coll.add(ii);
+        }
+        Integer random = org.tros.utils.Random.getRandom(new Random(), coll,  new Integer(1));
+        assertEquals(0, random.intValue());
+    }
+
+    /**
+     * Test of getRandom method, of class Random.
+     */
+    @Test
+    public void testGetRandom_Collection_3args_1() {
+        System.out.println("getRandom");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for (int ii = 0; ii < 100; ii++) {
+            coll.add(ii);
+        }
+        Collection<Integer> result = org.tros.utils.Random.getRandom(new Random(), coll, 5);
+        assertEquals(5, result.size());
+        coll.clear();
+        for (int ii = 0; ii < 4; ii++) {
+            coll.add(ii);
+        }
+        result = org.tros.utils.Random.getRandom(new Random(), coll, 5);
+        assertEquals(4, result.size());
+    }
+
+    /**
+     * Test of getRandom method, of class Random.
+     */
+    @Test
+    public void testGetRandom_int() {
+        System.out.println("getRandom");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for (int ii = 0; ii < 100; ii++) {
+            coll.add(ii);
+        }
+        Collection<Integer> result = org.tros.utils.Random.getRandom(coll, 5);
+        assertEquals(5, result.size());
+        coll.clear();
+        for (int ii = 0; ii < 4; ii++) {
+            coll.add(ii);
+        }
+        result = org.tros.utils.Random.getRandom(coll, 5);
+        assertEquals(4, result.size());
+    }
+
+    /**
+     * Test of getRandomNotInList method, of class Random.
+     */
+    @Test
+    public void testGetRandomNotInList_Collection_Collection() {
+        System.out.println("getRandomNotInList");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for (int ii = 0; ii < 100; ii++) {
+            coll.add(ii);
+        }
+        ArrayList<Integer> not = new ArrayList<Integer>();
+        for (int ii = 0; ii < 50; ii++) {
+            not.add(ii);
+        }
+
+        ArrayList<Integer> pulled = new ArrayList<Integer>();
+        while(pulled.size() < coll.size() - not.size()) {
+            Integer randomNotInList = org.tros.utils.Random.getRandomNotInList(coll, not);
+            if (!pulled.contains(randomNotInList)) {
+                pulled.add(randomNotInList);
+            }
+        }
+    }
+
+    /**
+     * Test of getRandomNotInList method, of class Random.
+     */
+    @Test
+    public void testGetRandomNotInList_3args() {
+        System.out.println("getRandomNotInList");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for (int ii = 0; ii < 100; ii++) {
+            coll.add(ii);
+        }
+        ArrayList<Integer> not = new ArrayList<Integer>();
+        for (int ii = 0; ii < 50; ii++) {
+            not.add(ii);
+        }
+
+        ArrayList<Integer> pulled = new ArrayList<Integer>();
+        while(pulled.size() < coll.size() - not.size()) {
+            Integer randomNotInList = org.tros.utils.Random.getRandomNotInList(new Random(), coll, not);
+            if (!pulled.contains(randomNotInList)) {
+                pulled.add(randomNotInList);
+            }
+        }
+    }
+
+    /**
+     * Test of getRandom method, of class Random.
+     */
+    @Test
+    public void testGetRandom_Collection_Not() {
+        System.out.println("getRandom");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for (int ii = 0; ii < 2; ii++) {
+            coll.add(ii);
+        }
+        Integer result = org.tros.utils.Random.getRandom(coll, new Integer(0));
+        assertEquals(1, result.intValue());
+    }
+
+    /**
+     * Test of getRandom method, of class Random.
+     */
+    @Test
+    public void testGetRandom_Random_Collection() {
+        System.out.println("getRandom");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for (int ii = 0; ii < 100; ii++) {
+            coll.add(ii);
+        }
+        Collection<Integer> result = org.tros.utils.Random.getRandom(coll, 5);
+        assertEquals(5, result.size());
+        coll.clear();
+        for (int ii = 0; ii < 4; ii++) {
+            coll.add(ii);
+        }
+        result = org.tros.utils.Random.getRandom(coll, 5);
+        assertEquals(4, result.size());
+    }
+
     /**
      * Test of isSeeded method, of class Random.
      */
@@ -874,82 +928,86 @@ public class RandomTest {
         org.tros.utils.Random.exp(lambda);
     }
 
-//    /**
-//     * Test of shuffle method, of class Random.
-//     */
-//    @Test
-//    public void testShuffle_ObjectArr() {
-//        System.out.println("shuffle");
-//        Object[] a = null;
-//        org.tros.utils.Random.shuffle(a);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of shuffle method, of class Random.
-//     */
-//    @Test
-//    public void testShuffle_doubleArr() {
-//        System.out.println("shuffle");
-//        double[] a = null;
-//        org.tros.utils.Random.shuffle(a);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of shuffle method, of class Random.
-//     */
-//    @Test
-//    public void testShuffle_intArr() {
-//        System.out.println("shuffle");
-//        int[] a = null;
-//        org.tros.utils.Random.shuffle(a);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of shuffle method, of class Random.
-//     */
-//    @Test
-//    public void testShuffle_3args_1() {
-//        System.out.println("shuffle");
-//        Object[] a = null;
-//        int lo = 0;
-//        int hi = 0;
-//        org.tros.utils.Random.shuffle(a, lo, hi);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of shuffle method, of class Random.
-//     */
-//    @Test
-//    public void testShuffle_3args_2() {
-//        System.out.println("shuffle");
-//        double[] a = null;
-//        int lo = 0;
-//        int hi = 0;
-//        org.tros.utils.Random.shuffle(a, lo, hi);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of shuffle method, of class Random.
-//     */
-//    @Test
-//    public void testShuffle_3args_3() {
-//        System.out.println("shuffle");
-//        int[] a = null;
-//        int lo = 0;
-//        int hi = 0;
-//        org.tros.utils.Random.shuffle(a, lo, hi);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//    
+    /**
+     * Test of shuffle method, of class Random.
+     */
+    @Test
+    public void testShuffle_ObjectArr() {
+        System.out.println("shuffle");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for(int ii = 0; ii < 100; ii++) {
+            coll.add(ii);
+        }
+        Object[] a = (Object[])coll.toArray(new Integer[]{});
+        org.tros.utils.Random.shuffle(a);
+    }
+
+    /**
+     * Test of shuffle method, of class Random.
+     */
+    @Test
+    public void testShuffle_doubleArr() {
+        System.out.println("shuffle");
+        double[] arr = new double[100];
+        for(int ii = 0; ii < 100; ii++) {
+            arr[ii] = ii;
+        }
+        org.tros.utils.Random.shuffle(arr);
+    }
+
+    /**
+     * Test of shuffle method, of class Random.
+     */
+    @Test
+    public void testShuffle_intArr() {
+        System.out.println("shuffle");
+        System.out.println("shuffle");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for(int ii = 0; ii < 100; ii++) {
+            coll.add(ii);
+        }
+        Object[] a = (Object[])coll.toArray(new Integer[]{});
+        org.tros.utils.Random.shuffle(a, 25, 75);
+
+    }
+
+    /**
+     * Test of shuffle method, of class Random.
+     */
+    @Test
+    public void testShuffle_3args_1() {
+        System.out.println("shuffle");
+        ArrayList<Integer> coll = new ArrayList<Integer>();
+        for(int ii = 0; ii < 100; ii++) {
+            coll.add(ii);
+        }
+        Object[] a = (Object[])coll.toArray(new Integer[]{});
+        org.tros.utils.Random.shuffle(a, 25, 75);
+    }
+
+    /**
+     * Test of shuffle method, of class Random.
+     */
+    @Test
+    public void testShuffle_3args_2() {
+        System.out.println("shuffle");
+        double[] arr = new double[100];
+        for(int ii = 0; ii < 100; ii++) {
+            arr[ii] = ii;
+        }
+        org.tros.utils.Random.shuffle(arr, 25, 75);
+    }
+
+    /**
+     * Test of shuffle method, of class Random.
+     */
+    @Test
+    public void testShuffle_3args_3() {
+        System.out.println("shuffle");
+        int[] arr = new int[100];
+        for(int ii = 0; ii < 100; ii++) {
+            arr[ii] = ii;
+        }
+        org.tros.utils.Random.shuffle(arr, 25, 75);
+    }
 }

@@ -41,11 +41,7 @@ public abstract class PropertiesInitializer {
         try {
             Class<?> forName = Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
             m = forName.newInstance();
-        } catch (ClassNotFoundException ex) {
-            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
-        } catch (InstantiationException ex) {
-            LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
-        } catch (IllegalAccessException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             LOGGER.debug("com.fasterxml.jackson.databind.ObjectMapper not in CLASSPATH...");
         }
         MAPPER = m;
@@ -75,7 +71,7 @@ public abstract class PropertiesInitializer {
     public static boolean canCopy() {
         return MAPPER != null;
     }
-    
+
     /**
      * Create a copy of the current object.
      *
@@ -114,13 +110,7 @@ public abstract class PropertiesInitializer {
                     }
                 }
             }
-        } catch (IntrospectionException ex) {
-            LOGGER.warn(null, ex);
-        } catch (IllegalAccessException ex) {
-            LOGGER.warn(null, ex);
-        } catch (IllegalArgumentException ex) {
-            LOGGER.warn(null, ex);
-        } catch (InvocationTargetException ex) {
+        } catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             LOGGER.warn(null, ex);
         }
     }
@@ -130,15 +120,7 @@ public abstract class PropertiesInitializer {
             try {
                 Method method = MAPPER.getClass().getMethod("readValue", InputStream.class, Class.class);
                 return method.invoke(MAPPER, fis, clazz);
-            } catch (NoSuchMethodException ex) {
-                LOGGER.warn(null, ex);
-            } catch (SecurityException ex) {
-                LOGGER.warn(null, ex);
-            } catch (IllegalAccessException ex) {
-                LOGGER.warn(null, ex);
-            } catch (IllegalArgumentException ex) {
-                LOGGER.warn(null, ex);
-            } catch (InvocationTargetException ex) {
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 LOGGER.warn(null, ex);
             }
         }
@@ -150,15 +132,7 @@ public abstract class PropertiesInitializer {
             try {
                 Method method = MAPPER.getClass().getMethod("readValue", String.class, Class.class);
                 return method.invoke(MAPPER, fis, clazz);
-            } catch (NoSuchMethodException ex) {
-                LOGGER.warn(null, ex);
-            } catch (SecurityException ex) {
-                LOGGER.warn(null, ex);
-            } catch (IllegalAccessException ex) {
-                LOGGER.warn(null, ex);
-            } catch (IllegalArgumentException ex) {
-                LOGGER.warn(null, ex);
-            } catch (InvocationTargetException ex) {
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 LOGGER.warn(null, ex);
             }
         }
@@ -170,15 +144,7 @@ public abstract class PropertiesInitializer {
             try {
                 Method method = MAPPER.getClass().getMethod("writeValue", Writer.class, Object.class);
                 return method.invoke(MAPPER, fis, obj);
-            } catch (NoSuchMethodException ex) {
-                LOGGER.warn(null, ex);
-            } catch (SecurityException ex) {
-                LOGGER.warn(null, ex);
-            } catch (IllegalAccessException ex) {
-                LOGGER.warn(null, ex);
-            } catch (IllegalArgumentException ex) {
-                LOGGER.warn(null, ex);
-            } catch (InvocationTargetException ex) {
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 LOGGER.warn(null, ex);
             }
         }
@@ -198,8 +164,7 @@ public abstract class PropertiesInitializer {
         File f = new File(propFile);
         if (f.exists()) {
 
-            try {
-                FileInputStream fis = new FileInputStream(f);
+            try (FileInputStream fis = new FileInputStream(f)) {
                 PropertyDescriptor[] props = Introspector.getBeanInfo(this.getClass()).getPropertyDescriptors();
                 PropertiesInitializer obj = (PropertiesInitializer) readValue(fis, this.getClass());
 
@@ -213,16 +178,7 @@ public abstract class PropertiesInitializer {
                         }
                     }
                 }
-                fis.close();
-            } catch (NullPointerException ex) {
-                LOGGER.debug(null, ex);
-            } catch (IOException ex) {
-                LOGGER.debug(null, ex);
-            } catch (IllegalArgumentException ex) {
-                LOGGER.debug(null, ex);
-            } catch (InvocationTargetException ex) {
-                LOGGER.debug(null, ex);
-            } catch (IllegalAccessException ex) {
+            } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
                 LOGGER.debug(null, ex);
             } catch (IntrospectionException ex) {
                 LOGGER.warn(null, ex);
@@ -237,7 +193,7 @@ public abstract class PropertiesInitializer {
         try {
             java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader()
                     .getResources(this.getClass().getCanonicalName().replace('.', '/') + ".json");
-            ArrayList<URL> urls = new ArrayList<URL>();
+            ArrayList<URL> urls = new ArrayList<>();
 
             //HACK: semi sort classpath to put "files" first and "jars" second.
             //this has an impact once we are workin in tomcat where
@@ -280,11 +236,7 @@ public abstract class PropertiesInitializer {
                             }
                         }
                     }
-                } catch (NullPointerException ex) {
-                } catch (IOException ex) {
-                } catch (IllegalArgumentException ex) {
-                } catch (InvocationTargetException ex) {
-                } catch (IllegalAccessException ex) {
+                } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
                     LOGGER.debug(null, ex);
                 }
             }
@@ -309,12 +261,11 @@ public abstract class PropertiesInitializer {
         File f = new File(propFile);
         if (f.exists()) {
 
-            try {
-                FileInputStream fis = new FileInputStream(f);
+            try (FileInputStream fis = new FileInputStream(f)) {
                 PropertyDescriptor[] props = Introspector.getBeanInfo(this.getClass()).getPropertyDescriptors();
                 prop.load(fis);
 
-                ArrayList<String> propKeys = new ArrayList<String>(prop.stringPropertyNames());
+                ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
                 for (PropertyDescriptor p : props) {
                     if (p.getWriteMethod() != null
                             && p.getReadMethod() != null
@@ -350,11 +301,7 @@ public abstract class PropertiesInitializer {
                     String value = prop.getProperty(key);
                     setNameValuePair(key, value);
                 }
-                fis.close();
-            } catch (NullPointerException ex) {
-            } catch (IOException ex) {
-            } catch (IllegalArgumentException ex) {
-            } catch (InvocationTargetException ex) {
+            } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException ex) {
             } catch (IllegalAccessException ex) {
                 LOGGER.debug(null, ex);
             } catch (IntrospectionException ex) {
@@ -372,7 +319,7 @@ public abstract class PropertiesInitializer {
 
             String propFile = this.getClass().getPackage().getName().replace('.', '/') + '/' + this.getClass().getSimpleName() + ".properties";
             java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(propFile);
-            ArrayList<URL> urls = new ArrayList<URL>();
+            ArrayList<URL> urls = new ArrayList<>();
 
             //HACK: semi sort classpath to put "files" first and "jars" second.
             //this has an impact once we are workin in tomcat where
@@ -404,7 +351,7 @@ public abstract class PropertiesInitializer {
             for (URL url : urls) {
                 try {
                     prop.load(url.openStream());
-                    ArrayList<String> propKeys = new ArrayList<String>(prop.stringPropertyNames());
+                    ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
 
                     for (PropertyDescriptor p : props) {
                         if (p.getWriteMethod() != null
@@ -444,10 +391,7 @@ public abstract class PropertiesInitializer {
                         String value = prop.getProperty(key);
                         setNameValuePair(key, value);
                     }
-                } catch (NullPointerException ex) {
-                } catch (IOException ex) {
-                } catch (IllegalArgumentException ex) {
-                } catch (InvocationTargetException ex) {
+                } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException ex) {
                 } catch (IllegalAccessException ex) {
                     LOGGER.warn(null, ex);
                 }

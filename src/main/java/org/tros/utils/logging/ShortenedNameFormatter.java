@@ -54,10 +54,10 @@ public class ShortenedNameFormatter extends Formatter {
         String throwable = "";
         if (record.getThrown() != null) {
             StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            pw.println();
-            record.getThrown().printStackTrace(pw);
-            pw.close();
+            try (PrintWriter pw = new PrintWriter(sw)) {
+                pw.println();
+                record.getThrown().printStackTrace(pw);
+            }
             throwable = sw.toString();
         }
         return String.format(FORMAT,
