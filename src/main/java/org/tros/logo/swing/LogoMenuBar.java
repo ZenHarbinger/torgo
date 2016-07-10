@@ -37,6 +37,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import org.apache.commons.io.IOUtils;
+import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.swing.TorgoMenuBar;
 
 /**
@@ -177,7 +178,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
     private JMenu setupMenu(String name, String base) {
         JMenu samplesMenu = new JMenu(name);
         try {
-            InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(base + "/resource.manifest");
+            InputStream resourceAsStream = TorgoToolkit.getDefaultResourceAccessor().open(base + "/resource.manifest");
             List<String> readLines = IOUtils.readLines(resourceAsStream, "utf-8");
             Collections.sort(readLines);
             for (String line : readLines) {
