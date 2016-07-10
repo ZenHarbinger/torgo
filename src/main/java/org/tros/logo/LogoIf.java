@@ -59,31 +59,38 @@ class LogoIf extends LogoBlock {
 
         ReturnValue success = ReturnValue.SUCCESS;
 
-        //evaluate the if condition, if it is satisfied, evaluate the if block.
-        if (">".equals(comparator)) {
-            if (val1 > val2) {
-                success = super.process(scope);
-            }
-        } else if ("<".equals(comparator)) {
-            if (val1 < val2) {
-                success = super.process(scope);
-            }
-        } else if (">=".equals(comparator)) {
-            if (val1 >= val2) {
-                success = super.process(scope);
-            }
-        } else if ("<=".equals(comparator)) {
-            if (val1 <= val2) {
-                success = super.process(scope);
-            }
-        } else if ("=".equals(comparator) || "==".equals(comparator)) {
-            if (val1 == val2) {
-                success = super.process(scope);
-            }
-        } else if ("<>".equals(comparator) || "!=".equals(comparator) || "!".equals(comparator)) {   //TODO: this ! operator should probably be unary.
-            if (val1 != val2) {
-                success = super.process(scope);
-            }
+        if (null != comparator) //evaluate the if condition, if it is satisfied, evaluate the if block.
+        switch (comparator) {
+            case ">":
+                if (val1 > val2) {
+                    success = super.process(scope);
+                }   break;
+            case "<":
+                if (val1 < val2) {
+                    success = super.process(scope);
+                }   break;
+            case ">=":
+                if (val1 >= val2) {
+                    success = super.process(scope);
+                }   break;
+            case "<=":
+                if (val1 <= val2) {
+                    success = super.process(scope);
+                }   break;
+            case "=":
+            case "==":
+                if (val1 == val2) {
+                    success = super.process(scope);
+                }   break;
+            case "<>":
+            case "!=":
+            case "!":
+                //TODO: this ! operator should probably be unary.
+                if (val1 != val2) {
+                    success = super.process(scope);
+                }   break;
+            default:
+                break;
         }
         scope.pop();
         return success;

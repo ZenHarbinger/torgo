@@ -18,6 +18,8 @@ package org.tros.utils.logging;
 import java.awt.event.WindowEvent;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.WindowConstants;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -52,17 +54,14 @@ public class LogConsoleTest {
 
     @Test
     public void testSomeMethod() {
-//        LogConsole.CONSOLE.setVisible(true);
-//        LogConsole.CONSOLE.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//
-//        Timer t = new Timer();
-//        t.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                LogConsole.CONSOLE.dispatchEvent(new WindowEvent(LogConsole.CONSOLE, WindowEvent.WINDOW_CLOSING));
-//            }
-//        }, 500);
-//        
+        LogConsole.CONSOLE.setVisible(true);
+        LogConsole.CONSOLE.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LogConsoleTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

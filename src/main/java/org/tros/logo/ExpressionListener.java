@@ -36,7 +36,7 @@ import org.tros.torgo.interpreter.types.StringType;
 class ExpressionListener extends logoBaseListener {
 
     private final Scope scope;
-    private final Stack<ArrayList<InterpreterValue>> value = new Stack<ArrayList<InterpreterValue>>();
+    private final Stack<ArrayList<InterpreterValue>> value = new Stack<>();
 
     /**
      * Evaluate an expression as defined in the logo.g4 grammar.
@@ -64,20 +64,30 @@ class ExpressionListener extends logoBaseListener {
     private InterpreterValue mathExpression(InterpreterValue val1, InterpreterValue val2, String op) {
         double num1 = ((Number) val1.getValue()).doubleValue();
         double num2 = ((Number) val2.getValue()).doubleValue();
-        if ("-".equals(op)) {
-            num1 = num1 - num2;
-        } else if ("+".equals(op)) {
-            num1 = num1 + num2;
-        } else if ("*".equals(op)) {
-            num1 = num1 * num2;
-        } else if ("%".equals(op)) {
-            num1 = num1 % num2;
-        } else if ("/".equals(op)) {
-            num1 = num1 / num2;
-        } else if ("\\".equals(op)) {
-            num1 = (int) (num1 / num2);
-        } else if ("^".equals(op)) {
-            num1 = Math.pow(num1, num2);
+        if (null != op) switch (op) {
+            case "-":
+                num1 = num1 - num2;
+                break;
+            case "+":
+                num1 = num1 + num2;
+                break;
+            case "*":
+                num1 = num1 * num2;
+                break;
+            case "%":
+                num1 = num1 % num2;
+                break;
+            case "/":
+                num1 = num1 / num2;
+                break;
+            case "\\":
+                num1 = (int) (num1 / num2);
+                break;
+            case "^":
+                num1 = Math.pow(num1, num2);
+                break;
+            default:
+                break;
         }
         return new InterpreterValue(NumberType.INSTANCE, num1);
     }

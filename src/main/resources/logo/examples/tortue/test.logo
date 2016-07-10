@@ -52,6 +52,87 @@ to test
     if :i > 0 [
         print :i
     ]
+
+    make "i 2
+    if :i > 0 [
+        print "i_GT_0
+    ]
+
+    make "i 2
+    if :i >= 2 [
+        print "i_GTE_2
+    ]
+
+    make "i 2
+    if :i <= 2 [
+        print "i_LTE_2
+    ]
+
+    make "i 1
+    if :i < 2 [
+        print "i_GTE_2
+    ]
+
+    make "i 2
+    if :i = 2 [
+        print "i_EQ_2
+    ]
+
+    make "i 2
+    if :i == 2 [
+        print "i_EQ_2
+    ]
+
+    make "i 3
+    if :i <> 2 [
+        print "i_NEQ_2
+    ]
+
+    make "i 3
+    if :i != 2 [
+        print "i_NEQ_2
+    ]
+
+    make "i -1
+    if :i > 0 [
+        print "i_GT_0_IF_YOU_SEE_THIS_IT_FAILED
+    ]
+
+    make "i -1
+    if :i >= 2 [
+        print "i_GTE_2_IF_YOU_SEE_THIS_IT_FAILED
+    ]
+
+    make "i 3
+    if :i <= 2 [
+        print "i_LTE_2_IF_YOU_SEE_THIS_IT_FAILED
+    ]
+
+    make "i 3
+    if :i < 2 [
+        print "i_GTE_2_IF_YOU_SEE_THIS_IT_FAILED
+    ]
+
+    make "i 3
+    if :i = 2 [
+        print "i_EQ_2_IF_YOU_SEE_THIS_IT_FAILED
+    ]
+
+    make "i 1
+    if :i == 2 [
+        print "i_EQ_2_IF_YOU_SEE_THIS_IT_FAILED
+    ]
+
+    make "i 2
+    if :i <> 2 [
+        print "i_NEQ_2_IF_YOU_SEE_THIS_IT_FAILED
+    ]
+
+    make "i 2
+    if :i != 2 [
+        print "i_NEQ_2_IF_YOU_SEE_THIS_IT_FAILED
+    ]
+
     make "i 5 \ 2
     print :i
     make "i 5 % 2

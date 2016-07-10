@@ -18,8 +18,6 @@ package org.tros.torgo.swing;
 import java.awt.event.WindowEvent;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDialog;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -54,18 +52,18 @@ public class AboutWindowTest {
 
     @Test
     public void testConstructor() {
-//        final AboutWindow aw = new AboutWindow();
-//        aw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//
-//        Timer t = new Timer();
-//        t.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                aw.dispatchEvent(new WindowEvent(aw, WindowEvent.WINDOW_CLOSING));
-//            }
-//        }, 500);
-//        
-//        aw.setVisible(true);
+        final AboutWindow aw = new AboutWindow();
+        aw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                aw.dispatchEvent(new WindowEvent(aw, WindowEvent.WINDOW_CLOSING));
+            }
+        }, 500);
+        
+        aw.setVisible(true);
     }
 
 }

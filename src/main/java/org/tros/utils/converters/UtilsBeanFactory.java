@@ -33,7 +33,7 @@ public final class UtilsBeanFactory {
      * Static Constructor.
      */
     static {
-        MAP = new HashMap<Class<?>, ArrayList<ImmutablePair<Class<?>, BeanUtilsBean>>>();
+        MAP = new HashMap<>();
 
         ServiceLoader<ConverterRegister> crs = ServiceLoader.load(ConverterRegister.class);
         for (ConverterRegister cr : crs) {

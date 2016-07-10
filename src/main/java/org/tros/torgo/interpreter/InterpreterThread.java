@@ -144,13 +144,7 @@ public abstract class InterpreterThread extends Thread {
                 java.lang.reflect.Method m = field.getType().getMethod("setVisible", boolean.class);
                 Object fieldInstance = field.get(null);
                 m.invoke(fieldInstance, true);
-            } catch (ClassNotFoundException ex1) {
-            } catch (NoSuchFieldException ex1) {
-            } catch (SecurityException ex1) {
-            } catch (NoSuchMethodException ex1) {
-            } catch (IllegalAccessException ex1) {
-            } catch (IllegalArgumentException ex1) {
-            } catch (InvocationTargetException ex1) {
+            } catch (ClassNotFoundException | NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex1) {
             }
         }
         listeners.fire().finished();

@@ -50,7 +50,7 @@ public final class SwingComponentHandler extends Handler {
     private final static String FORMAT;
 
     static {
-        STYLE_MAP = new HashMap<java.util.logging.Level, Style>();
+        STYLE_MAP = new HashMap<>();
 
         StyleContext sc = new StyleContext();
         DOC = new DefaultStyledDocument(sc);
@@ -131,7 +131,7 @@ public final class SwingComponentHandler extends Handler {
                 timer();
             }
         }, time_field, time_field);
-        records = new ArrayList<LogRecord>();
+        records = new ArrayList<>();
         Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.FINE, "Started...");
     }
 
@@ -179,11 +179,7 @@ public final class SwingComponentHandler extends Handler {
         if (formatter != null) {
             try {
                 fmmt = (Formatter) Class.forName(formatter).newInstance();
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -196,11 +192,7 @@ public final class SwingComponentHandler extends Handler {
         if (filter != null) {
             try {
                 filt = (Filter) Class.forName(filter).newInstance();
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -247,7 +239,7 @@ public final class SwingComponentHandler extends Handler {
             return;
         }
 
-        final ArrayList<LogRecord> rec = new ArrayList<LogRecord>();
+        final ArrayList<LogRecord> rec = new ArrayList<>();
         synchronized (records) {
             rec.addAll(records);
             records.clear();
@@ -285,10 +277,10 @@ public final class SwingComponentHandler extends Handler {
                         String throwable = "";
                         if (record.getThrown() != null) {
                             StringWriter sw = new StringWriter();
-                            PrintWriter pw = new PrintWriter(sw);
-                            pw.println();
-                            record.getThrown().printStackTrace(pw);
-                            pw.close();
+                            try (PrintWriter pw = new PrintWriter(sw)) {
+                                pw.println();
+                                record.getThrown().printStackTrace(pw);
+                            }
                             throwable = sw.toString();
                         }
                         String toInsert = String.format(FORMAT,
