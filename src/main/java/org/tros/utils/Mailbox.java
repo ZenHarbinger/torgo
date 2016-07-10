@@ -26,7 +26,7 @@ public class Mailbox<T> {
      * Constructor.
      */
     public Mailbox() {
-        m_msgs = new ArrayList<T>();
+        m_msgs = new ArrayList<>();
         m_halt = false;
     }
 

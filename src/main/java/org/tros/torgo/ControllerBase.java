@@ -66,7 +66,7 @@ public abstract class ControllerBase implements Controller {
     protected final AutoResetEvent step;
     protected final AtomicBoolean isStepping;
 
-    private final ArrayList<JCheckBoxMenuItem> viz = new ArrayList<JCheckBoxMenuItem>();
+    private final ArrayList<JCheckBoxMenuItem> viz = new ArrayList<>();
 
     protected final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
@@ -362,8 +362,7 @@ public abstract class ControllerBase implements Controller {
             return;
         }
 
-        try {
-            FileOutputStream out = new FileOutputStream(filename);
+        try (FileOutputStream out = new FileOutputStream(filename)) {
             String source = torgoPanel.getSource();
             byte[] sourceArray = new byte[source.length()];
 
@@ -374,7 +373,6 @@ public abstract class ControllerBase implements Controller {
             out.write(sourceArray);
             window.setTitle("Torgo - " + filename);
             out.flush();
-            out.close();
         } catch (Exception ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
         }

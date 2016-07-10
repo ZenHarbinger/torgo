@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public final class CommonsLogFactory implements LogFactory {
 
-    private static final HashMap<String, Logger> INSTANCES = new HashMap<String, Logger>();
+    private static final HashMap<String, Logger> INSTANCES = new HashMap<>();
 
     @Override
     public Logger getLogger(Class<?> c) {

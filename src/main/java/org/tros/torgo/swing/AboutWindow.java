@@ -74,9 +74,7 @@ public class AboutWindow extends JDialog {
                 try {
                     URI uri = new URI(APACHE_LICENSE_ADDRESS);
                     Desktop.getDesktop().browse(uri);
-                } catch (URISyntaxException ex) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-                } catch (IOException ex) {
+                } catch (URISyntaxException | IOException ex) {
                     org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
                 }
             }

@@ -55,8 +55,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         void draw(Graphics2D g2);
     }
 
-    private final ArrayList<GraphicCommand> queuedCommands = new ArrayList<GraphicCommand>();
-    private final ArrayList<GraphicCommand> commands = new ArrayList<GraphicCommand>();
+    private final ArrayList<GraphicCommand> queuedCommands = new ArrayList<>();
+    private final ArrayList<GraphicCommand> commands = new ArrayList<>();
 
     /**
      * Constructor.
@@ -337,26 +337,21 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                     .getField(color);
             return (Color) field.get(
                     null);
-        } catch (NoSuchFieldException ex) {
-        } catch (SecurityException ex) {
-        } catch (IllegalArgumentException ex) {
-        } catch (IllegalAccessException ex) {
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
         }
-        if ("darkgray".equals(color)) {
-            return (Color.darkGray);
-        } else if ("lightgray".equals(color)) {
-            return (Color.lightGray);
-        } else {
-            try {
+        if (null != color) switch (color) {
+            case "darkgray":
+                return (Color.darkGray);
+            case "lightgray":
+                return (Color.lightGray);
+            default:
                 if (!color.startsWith("#") || !color.startsWith(color)) {
                     color = "#" + color;
                 }
                 Color c = java.awt.Color.decode(color);
                 return c == null ? Color.black : c;
-            } catch (Exception ex) {
-                return Color.black;
-            }
         }
+        return Color.black;
     }
 
     @Override
@@ -513,9 +508,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                             LogoPanel.super.repaint();
                         }
                     });
-                } catch (InterruptedException ex) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
-                } catch (InvocationTargetException ex) {
+                } catch (InterruptedException | InvocationTargetException ex) {
                     org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
                 }
             } else {
