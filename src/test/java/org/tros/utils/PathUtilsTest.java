@@ -47,6 +47,15 @@ public class PathUtilsTest {
     @After
     public void tearDown() {
     }
+    
+    /**
+     * Test of hidden constructor.
+     */
+    @Test
+    public void testConstructor() {
+        PathUtils pu = new PathUtils();
+        assertNotNull(pu);
+    }
 
     /**
      * Test of getHomeDir method, of class PathUtils.

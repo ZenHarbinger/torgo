@@ -21,7 +21,7 @@ public final class Gzip {
     /**
      * Hidden Constructor.
      */
-    private Gzip() {
+    protected Gzip() {
     }
 
     /**

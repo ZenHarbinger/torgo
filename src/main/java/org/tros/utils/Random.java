@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicLong;
+import org.tros.torgo.TorgoToolkit;
 
 /**
  * This is a utility class for accessing random members of a collection and also
@@ -72,7 +73,7 @@ public final class Random {
         Properties prop = new Properties();
         String prop_file = Random.class.getCanonicalName().replace('.', '/') + ".properties";
         try {
-            prop.load(Random.class.getClassLoader().getResourceAsStream(prop_file));
+            prop.load(TorgoToolkit.getDefaultResourceAccessor().open(prop_file));
             _incrementType = UuidIncrementType.valueOf(prop.getProperty("uuidIncrementType"));
             _doSeed = Boolean.parseBoolean(prop.getProperty("doSeed"));
             _seedValue = Integer.parseInt(prop.getProperty("seedValue"));

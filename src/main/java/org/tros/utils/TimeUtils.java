@@ -50,6 +50,6 @@ public final class TimeUtils implements Serializable {
     public static final long NANO = 1000000000L;
     public static final double NANO_D = 1000000000.0;
 
-    private TimeUtils() {
+    protected TimeUtils() {
     }
 }
