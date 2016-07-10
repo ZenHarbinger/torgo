@@ -83,8 +83,7 @@ public final class TorgoToolkit {
     /**
      * Hidden constructor.
      */
-    private TorgoToolkit() {
-
+    protected TorgoToolkit() {
     }
 
     /**

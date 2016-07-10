@@ -49,6 +49,16 @@ public class TorgoToolkitTest {
     }
 
     /**
+     * Test of hidden constructor.
+     */
+    @Test
+    public void testConstructor() {
+        System.out.println("constructor");
+        TorgoToolkit tt = new TorgoToolkit();
+        assertNotNull(tt);
+    }
+
+    /**
      * Test of getController method, of class TorgoToolkit.
      */
     @Test
