@@ -69,13 +69,7 @@ public class Main {
             try {
                 //set look and feel (laf) to that of the system.
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (ClassNotFoundException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
-            } catch (InstantiationException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
-            } catch (IllegalAccessException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
-            } catch (UnsupportedLookAndFeelException ex) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                 org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
             }
         }

@@ -55,7 +55,7 @@ public class ClassConverter implements Converter, ConverterRegister {
      */
     @Override
     public List<ImmutablePair<Class<?>, Class<?>>> getConversions() {
-        ArrayList<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<ImmutablePair<Class<?>, Class<?>>>();
+        ArrayList<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<>();
         ret.add(new ImmutablePair<Class<?>, Class<?>>(String.class, Class.class));
         return ret;
     }
