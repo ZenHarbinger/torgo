@@ -68,7 +68,7 @@ public final class Random {
     static {
         boolean legacy = false;
 
-        COUNTERS = new HashMap<String, AtomicLong>();
+        COUNTERS = new HashMap<>();
         Properties prop = new Properties();
         String prop_file = Random.class.getCanonicalName().replace('.', '/') + ".properties";
         try {
@@ -77,14 +77,12 @@ public final class Random {
             _doSeed = Boolean.parseBoolean(prop.getProperty("doSeed"));
             _seedValue = Integer.parseInt(prop.getProperty("seedValue"));
             legacy = Boolean.parseBoolean(prop.getProperty("useLegacy"));
-        } catch (NullPointerException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).fatal(null, ex);
-        } catch (IOException ex) {
+        } catch (NullPointerException | IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).fatal(null, ex);
         }
         LEGACY = legacy;
-        RANDOMS = new HashMap<Thread, java.util.Random>();
-        SPECIFIC_RANDOMS = new HashMap<Object, java.util.Random>();
+        RANDOMS = new HashMap<>();
+        SPECIFIC_RANDOMS = new HashMap<>();
     }
 
     /**
@@ -473,7 +471,7 @@ public final class Random {
      */
     public static <T> Collection<T> getRandom(final Collection<T> list, final int count) {
         if (count <= 0) {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         if (list.size() > count && count > 0) {
@@ -481,8 +479,8 @@ public final class Random {
             final int max_stride = list_count / count;
             java.util.Random instance = getInstance();
             final int start = Random.nextInt(instance, list_count % count);
-            final ArrayList<T> retVal = new ArrayList<T>();
-            final ArrayList<Integer> ints = new ArrayList<Integer>();
+            final ArrayList<T> retVal = new ArrayList<>();
+            final ArrayList<Integer> ints = new ArrayList<>();
 
             for (int ii = start; ints.size() < count; ii += max_stride) {
                 if (count - 1 == retVal.size()) {
@@ -503,7 +501,7 @@ public final class Random {
             }
             return retVal;
         } else {
-            return new ArrayList<T>(list);
+            return new ArrayList<>(list);
         }
     }
 
@@ -519,7 +517,7 @@ public final class Random {
      */
     public static <T> Collection<T> getRandom(java.util.Random random, final Collection<T> list, final int count) {
         if (count <= 0) {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         if (list.size() > count && count > 0) {
@@ -527,8 +525,8 @@ public final class Random {
             final int max_stride = list_count / count;
             java.util.Random instance = random;
             final int start = Random.nextInt(instance, list_count % count);
-            final ArrayList<T> retVal = new ArrayList<T>();
-            final ArrayList<Integer> ints = new ArrayList<Integer>();
+            final ArrayList<T> retVal = new ArrayList<>();
+            final ArrayList<Integer> ints = new ArrayList<>();
 
             for (int ii = start; ints.size() < count; ii += max_stride) {
                 if (count - 1 == retVal.size()) {
@@ -549,7 +547,7 @@ public final class Random {
             }
             return retVal;
         } else {
-            return new ArrayList<T>(list);
+            return new ArrayList<>(list);
         }
     }
 
@@ -568,14 +566,14 @@ public final class Random {
             return null;
         }
         if (LEGACY) {
-            Collection<T> not_list = new ArrayList<T>();
+            Collection<T> not_list = new ArrayList<>();
             not_list.add(not);
             return getRandomNotInList(list, not_list);
         } else {
             final T elem = getRandom(list);
             if (elem != null && elem.equals(not)) {
                 org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).debug("Creating array copy for finding random item.");
-                ArrayList<T> l = new ArrayList<T>(list);
+                ArrayList<T> l = new ArrayList<>(list);
                 l.remove(not);
                 return getRandom(l);
             }
@@ -599,14 +597,14 @@ public final class Random {
             return null;
         }
         if (LEGACY) {
-            Collection<T> not_list = new ArrayList<T>();
+            Collection<T> not_list = new ArrayList<>();
             not_list.add(not);
             return getRandomNotInList(random, list, not_list);
         } else {
             final T elem = getRandom(random, list);
             if (elem != null && elem.equals(not)) {
                 org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).debug("Creating array copy for finding random item.");
-                ArrayList<T> l = new ArrayList<T>(list);
+                ArrayList<T> l = new ArrayList<>(list);
                 l.remove(not);
                 return getRandom(random, l);
             }
@@ -627,7 +625,7 @@ public final class Random {
      */
     public static <T> T getRandomNotInList(final Collection<T> list, final Collection<T> not) {
         if (LEGACY) {
-            ArrayList<T> l = new ArrayList<T>(list);
+            ArrayList<T> l = new ArrayList<>(list);
             l.removeAll(not);
             return getRandom(l);
         } else {
@@ -649,7 +647,7 @@ public final class Random {
      */
     public static <T> T getRandomNotInList(java.util.Random random, final Collection<T> list, final Collection<T> not) {
         if (LEGACY) {
-            ArrayList<T> l = new ArrayList<T>(list);
+            ArrayList<T> l = new ArrayList<>(list);
             l.removeAll(not);
             return getRandom(random, l);
         } else {

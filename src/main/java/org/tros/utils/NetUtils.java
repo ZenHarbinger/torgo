@@ -82,7 +82,7 @@ public class NetUtils {
 
         Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
         NetworkInterface ni;
-        ArrayList<InetAddress> ret = new ArrayList<InetAddress>();
+        ArrayList<InetAddress> ret = new ArrayList<>();
         while (nis.hasMoreElements()) {
             ni = nis.nextElement();
             if (!ni.isLoopback()/*not loopback*/ && ni.isUp()/*it works now*/) {

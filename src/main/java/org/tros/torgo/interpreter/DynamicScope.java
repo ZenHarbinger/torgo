@@ -27,7 +27,7 @@ import java.util.HashMap;
  */
 public class DynamicScope extends ScopeImpl implements Scope {
 
-    private final ArrayList<HashMap<String, InterpreterValue>> scope = new ArrayList<HashMap<String, InterpreterValue>>();
+    private final ArrayList<HashMap<String, InterpreterValue>> scope = new ArrayList<>();
 
     /**
      * Constructor.
