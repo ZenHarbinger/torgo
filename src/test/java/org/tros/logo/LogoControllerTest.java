@@ -64,7 +64,8 @@ public class LogoControllerTest {
         LexicalLogoController controller = (LexicalLogoController) TorgoToolkit.getController("lexical-logo");
         controller.run();
         assertEquals("lexical-logo", controller.getLang());
-        String[] files = new String[]{"logo/examples/antlr/dynamic_scope.txt",
+        String[] files = new String[]{
+            "logo/examples/antlr/dynamic_scope.txt",
             "logo/examples/antlr/example1.txt",
             "logo/examples/antlr/example2.txt",
             "logo/examples/antlr/example3.txt",
