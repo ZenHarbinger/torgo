@@ -50,6 +50,50 @@ public class ManualResetEventTest {
     @After
     public void tearDown() {
     }
+    
+        /**
+     * Test of waitOne method, of class ManualResetEvent.
+     */
+    @Test
+    public void testNoBlock() {
+        System.out.println("noBlock");
+        final ManualResetEvent instance = new ManualResetEvent(true);
+        assertTrue(instance.isOpen());
+
+        final ArrayList<Thread> threads = new ArrayList<>();
+        final AtomicInteger counter = new AtomicInteger(0);
+
+        for (int ii = 0; ii < 10; ii++) {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        assertTrue(instance.waitOne(1));
+                        counter.incrementAndGet();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ManualResetEventTest.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            t.start();
+            threads.add(t);
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ManualResetEventTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        assertEquals(threads.size(), counter.get());
+
+        for (Thread t : threads) {
+            try {
+                t.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ManualResetEventTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     /**
      * Test of waitOne method, of class ManualResetEvent.
@@ -58,7 +102,9 @@ public class ManualResetEventTest {
     public void testWaitOne_0args() {
         System.out.println("waitOne");
         final ManualResetEvent instance = new ManualResetEvent(true);
+        assertTrue(instance.isOpen());
         instance.reset();
+        assertFalse(instance.isOpen());
 
         final ArrayList<Thread> threads = new ArrayList<>();
         final AtomicInteger counter = new AtomicInteger(0);
@@ -107,8 +153,10 @@ public class ManualResetEventTest {
     public void testWaitOne_long() {
         System.out.println("waitOne");
         final ManualResetEvent instance = new ManualResetEvent(true);
+        assertTrue(instance.isOpen());
         instance.reset();
-
+        assertFalse(instance.isOpen());
+        
         final ArrayList<Thread> threads = new ArrayList<>();
 
         for (int ii = 0; ii < 10; ii++) {
