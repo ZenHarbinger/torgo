@@ -130,7 +130,7 @@ public class AboutWindow extends JDialog {
         l.setToolTipText(l.getText());
         text_panel.add(l);
 
-        apacheButton.setText("© 2015 Matthew Aguirre, Apache License 2.0.");
+        apacheButton.setText("© 2015-2016 Matthew Aguirre, Apache License 2.0.");
         apacheButton.setBorderPainted(false);
         apacheButton.setOpaque(false);
         apacheButton.setToolTipText(APACHE_LICENSE_ADDRESS);

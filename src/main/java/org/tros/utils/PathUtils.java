@@ -12,8 +12,7 @@ package org.tros.utils;
  */
 public final class PathUtils {
 
-    private PathUtils() {
-
+    protected PathUtils() {
     }
 
     /**

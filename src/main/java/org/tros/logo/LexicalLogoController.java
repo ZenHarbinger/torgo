@@ -34,6 +34,7 @@ import org.tros.torgo.interpreter.InterpreterThread;
 import org.tros.torgo.interpreter.LexicalAnalyzer;
 import org.tros.torgo.TorgoScreen;
 import org.tros.torgo.TorgoTextConsole;
+import org.tros.torgo.interpreter.LexicalScope;
 import org.tros.torgo.swing.TorgoToolBar;
 
 /**
@@ -41,7 +42,7 @@ import org.tros.torgo.swing.TorgoToolBar;
  *
  * @author matta
  */
-public final class LogoController extends ControllerBase {
+public final class LexicalLogoController extends ControllerBase {
 
     private LogoPanel canvas;
     private LogoUserInputPanel panel;
@@ -50,7 +51,7 @@ public final class LogoController extends ControllerBase {
      * Constructor, must be public for the ServiceLoader. Only initializes basic
      * object needs.
      */
-    public LogoController() {
+    public LexicalLogoController() {
     }
 
     @Override
@@ -96,7 +97,7 @@ public final class LogoController extends ControllerBase {
      */
     @Override
     protected InterpreterThread createInterpreterThread(String source) {
-        return new InterpreterThread(source, new DynamicScope()) {
+        return new InterpreterThread(source, new LexicalScope()) {
 
             @Override
             protected LexicalAnalyzer getLexicalAnalysis(String source) {
@@ -125,7 +126,7 @@ public final class LogoController extends ControllerBase {
      */
     @Override
     public String getLang() {
-        return "logo";
+        return "lexical-logo";
     }
 
     @Override
@@ -133,7 +134,7 @@ public final class LogoController extends ControllerBase {
         try {
             openFile(file.toURI().toURL());
         } catch (MalformedURLException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoController.class).fatal(null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LexicalLogoController.class).fatal(null, ex);
         }
     }
 }

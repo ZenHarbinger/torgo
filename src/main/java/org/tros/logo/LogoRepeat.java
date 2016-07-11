@@ -59,15 +59,15 @@ class LogoRepeat extends LogoBlock {
         LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
         listeners.fire().currStatement(this, scope);
-
-        int repeat = ((Number) ExpressionListener.evaluate(scope, ((logoParser.RepeatContext) ctx).expression()).getValue()).intValue();
+        
         ReturnValue success = ReturnValue.SUCCESS;
+        int repeat = ((Number) ExpressionListener.evaluate(scope, ((logoParser.RepeatContext) ctx).expression()).getValue()).intValue();
         for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
             //this sets the repcount variable for dereferencing in the block.
             scope.setNew(REPCOUNT_VAR, new InterpreterValue(NumberType.INSTANCE, ii + 1));
             success = super.process(scope);
         }
-
+        
         scope.pop();
         return success;
     }
