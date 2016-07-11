@@ -390,6 +390,24 @@ public abstract class ControllerBase implements Controller {
          printJob.setPrintable(torgoCanvas, pageFormat);
          */
     }
+    
+    @Override
+    public void enable(String name) {
+        for (JCheckBoxMenuItem item : viz) {
+            if (item.getText().equals(name)) {
+                item.setState(true);
+            }
+        }
+    }
+
+    @Override
+    public void disable(String name) {
+        for (JCheckBoxMenuItem item : viz) {
+            if (item.getText().equals(name)) {
+                item.setState(false);
+            }
+        }
+    }
 
     /**
      * Instantiate/Run the interpreter.
