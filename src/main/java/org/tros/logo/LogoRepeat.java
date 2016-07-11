@@ -61,15 +61,11 @@ class LogoRepeat extends LogoBlock {
         listeners.fire().currStatement(this, scope);
         
         ReturnValue success = ReturnValue.SUCCESS;
-        try {
-            int repeat = ((Number) ExpressionListener.evaluate(scope, ((logoParser.RepeatContext) ctx).expression()).getValue()).intValue();
-            for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
-                //this sets the repcount variable for dereferencing in the block.
-                scope.setNew(REPCOUNT_VAR, new InterpreterValue(NumberType.INSTANCE, ii + 1));
-                success = super.process(scope);
-            }
-        } catch (NullPointerException npe) {
-            LOGGER.warn("NPE", npe);
+        int repeat = ((Number) ExpressionListener.evaluate(scope, ((logoParser.RepeatContext) ctx).expression()).getValue()).intValue();
+        for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
+            //this sets the repcount variable for dereferencing in the block.
+            scope.setNew(REPCOUNT_VAR, new InterpreterValue(NumberType.INSTANCE, ii + 1));
+            success = super.process(scope);
         }
         
         scope.pop();
