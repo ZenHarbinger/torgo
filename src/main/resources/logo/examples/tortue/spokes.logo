@@ -1,3 +1,7 @@
+; for lexical testing, x/y must be here
+make "x 3
+make "y 45
+
 to spoke
     repeat :x [
         forward :y
@@ -12,8 +16,9 @@ pendown
 
 pencolor blue
 repeat 20 [
-    make "x 3
-    make "y 45
+    ; for dynamic testing, x/y can be here
+    ; make "x 3
+    ; make "y 45
     spoke
     left 18
 ]

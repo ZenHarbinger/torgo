@@ -106,7 +106,7 @@ repeat
 
 /*--Would like to make this be multi-line--*/
 block
-    : '[' EOL* (cmd EOL*)+ ']'
+    : '[' line+ ']'
     ;
 
 ife
