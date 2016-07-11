@@ -13,6 +13,7 @@ to test
 
     fontname does_not_exist
     fontname arial
+    fontname jokerman
     fontstyle bold
     fontstyle italic
     fontstyle plain

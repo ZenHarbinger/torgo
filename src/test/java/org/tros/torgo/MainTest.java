@@ -64,7 +64,7 @@ public class MainTest {
     @Test
     public void testMainNewAndClose() {
         System.out.println("main");
-        String[] args = new String[]{"-l", "logo"};
+        String[] args = new String[]{"-l", "dynamic-logo"};
         Main.main(args);
         Robot robot = null;
         try {

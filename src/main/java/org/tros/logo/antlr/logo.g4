@@ -300,7 +300,7 @@ fontstyle
     ;
 
 style
-    : 'bold' | 'plain' | 'italic'
+    : 'bold' | 'plain' | 'italic' | 'bold_italic'
     ;
 
 number
