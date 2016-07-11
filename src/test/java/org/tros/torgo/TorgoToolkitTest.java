@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.utils.ResourceAccessor;
 
 /**
  *
@@ -46,6 +47,16 @@ public class TorgoToolkitTest {
 
     @After
     public void tearDown() {
+    }
+
+    /**
+     * Test of hidden constructor.
+     */
+    @Test
+    public void testConstructor() {
+        System.out.println("constructor");
+        TorgoToolkit tt = new TorgoToolkit();
+        assertNotNull(tt);
     }
 
     /**
@@ -94,4 +105,28 @@ public class TorgoToolkitTest {
         }
     }
 
+    
+    /**
+     * Test of getResourceAccessors method, of class TorgoToolkit.
+     */
+    @Test
+    public void testGetResourceAccessors() {
+        System.out.println("getResourceAccessors");
+        Set<String> result = TorgoToolkit.getResourceAccessors();
+        assertNotNull(result);
+    }
+
+    /**
+     * Test of getResourceAccessors method, of class TorgoToolkit.
+     */
+    @Test
+    public void testResourceAccessors() {
+        System.out.println("getResourceAccessors");
+        Set<String> viz = TorgoToolkit.getResourceAccessors();
+        for (String name : viz) {
+            ResourceAccessor result = TorgoToolkit.getResourceAccessor(name);
+            assertNotNull(result);
+        }
+        assertNotNull(TorgoToolkit.getDefaultResourceAccessor());
+    }
 }

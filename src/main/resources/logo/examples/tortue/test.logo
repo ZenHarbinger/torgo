@@ -16,6 +16,7 @@ to test
     fontstyle bold
     fontstyle italic
     fontstyle plain
+    fontstyle bold_italic
     fontsize 36
     backward 10
     forward 10

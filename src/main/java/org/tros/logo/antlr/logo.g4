@@ -106,7 +106,7 @@ repeat
 
 /*--Would like to make this be multi-line--*/
 block
-    : '[' EOL* (cmd EOL*)+ ']'
+    : '[' line+ ']'
     ;
 
 ife
@@ -300,7 +300,7 @@ fontstyle
     ;
 
 style
-    : 'bold' | 'plain' | 'italic'
+    : 'bold' | 'plain' | 'italic' | 'bold_italic'
     ;
 
 number

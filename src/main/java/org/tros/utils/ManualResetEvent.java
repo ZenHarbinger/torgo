@@ -47,13 +47,15 @@ public class ManualResetEvent {
      * @throws InterruptedException
      */
     public boolean waitOne(long milliseconds) throws InterruptedException {
+        boolean ret;
         synchronized (monitor) {
             if (open) {
                 return true;
             }
             monitor.wait(milliseconds);
-            return open;
+            ret = open;
         }
+        return ret;
     }
 
     /**

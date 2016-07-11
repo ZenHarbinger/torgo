@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.Set;
+import org.tros.utils.ResourceAccessor;
 
 /**
  *
@@ -33,7 +34,12 @@ public final class TorgoToolkit {
     private static final HashMap<String, InterpreterVisualization> VIZ_MAP;
     private static final ServiceLoader<InterpreterVisualization> VIZUALIZERS;
 
+    private static final HashMap<String, ResourceAccessor> RESOURCE_MAP;
+    private static final ServiceLoader<ResourceAccessor> RESOURCES;
+
     private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoToolkit.class);
+
+    private static String defaultResourceAccessor;
 
     /**
      * Static constructor.
@@ -59,13 +65,25 @@ public final class TorgoToolkit {
         } catch (ServiceConfigurationError serviceError) {
             LOGGER.warn(null, serviceError);
         }
+        RESOURCE_MAP = new HashMap<>();
+        RESOURCES = ServiceLoader.load(ResourceAccessor.class);
+        try {
+            for (ResourceAccessor ressource : RESOURCES) {
+                LOGGER.info(MessageFormat.format("Loaded: {0}", ressource.getClass().getName()));
+                RESOURCE_MAP.put(ressource.getName(), ressource);
+                if (defaultResourceAccessor == null) {
+                    defaultResourceAccessor = ressource.getName();
+                }
+            }
+        } catch (ServiceConfigurationError serviceError) {
+            LOGGER.warn(null, serviceError);
+        }
     }
 
     /**
      * Hidden constructor.
      */
-    private TorgoToolkit() {
-
+    protected TorgoToolkit() {
     }
 
     /**
@@ -104,5 +122,33 @@ public final class TorgoToolkit {
      */
     public static InterpreterVisualization getVisualization(String name) {
         return VIZ_MAP.get(name);
+    }
+
+    /**
+     * Get the name of all available resource accessors.
+     *
+     * @return Get a list of resource accessors available.
+     */
+    public static Set<String> getResourceAccessors() {
+        return RESOURCE_MAP.keySet();
+    }
+
+    /**
+     * Get a desired resource accessor.
+     *
+     * @param name The desired resource accessor to get.
+     * @return The desired resource accessor.
+     */
+    public static ResourceAccessor getResourceAccessor(String name) {
+        return RESOURCE_MAP.get(name);
+    }
+
+    /**
+     * Get a default resource accessor.
+     *
+     * @return The default resource accessor.
+     */
+    public static ResourceAccessor getDefaultResourceAccessor() {
+        return getResourceAccessor(defaultResourceAccessor);
     }
 }
