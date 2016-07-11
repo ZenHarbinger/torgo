@@ -62,8 +62,8 @@ public class TraceLoggerTest {
      * Test of create method, of class TraceLogger.
      */
     @Test
-    public void testCreate() {
-        System.out.println("createConsole");
+    public void traceLoggerTest() {
+        System.out.println("traceLoggerTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
@@ -98,6 +98,7 @@ public class TraceLoggerTest {
             "logo/examples/tortue/tortue-text.logo"};
 
         for (String file : files) {
+            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 

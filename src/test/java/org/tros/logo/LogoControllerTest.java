@@ -57,7 +57,7 @@ public class LogoControllerTest {
 
     @Test
     public void testLexicalScoping() {
-        System.out.println("createConsole");
+        System.out.println("lexicalScopingTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", false);
@@ -104,6 +104,7 @@ public class LogoControllerTest {
             "logo/examples/tortue/tortue-text.logo"};
 
         for (String file : files) {
+            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             
@@ -168,7 +169,7 @@ public class LogoControllerTest {
      */
     @Test
     public void testCreateConsole() {
-        System.out.println("createConsole");
+        System.out.println("dynamicScopingTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", false);
@@ -214,6 +215,16 @@ public class LogoControllerTest {
             "logo/examples/tortue/tortue-text.logo"};
 
         for (String file : files) {
+            System.out.println(file);
+            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
+            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 

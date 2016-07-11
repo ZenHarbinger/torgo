@@ -63,7 +63,7 @@ public class DebugInterpreter {
      */
     @Test
     public void testCreate() {
-        System.out.println("createConsole");
+        System.out.println("debugTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
@@ -91,6 +91,7 @@ public class DebugInterpreter {
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
         for (String file : files) {
+            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
