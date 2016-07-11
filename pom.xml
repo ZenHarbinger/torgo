@@ -223,7 +223,7 @@
                         <param>org.tros.utils.logging.LogFactory</param>
                         <param>org.apache.commons.beanutils.Converter</param>
                         <param>org.tros.utils.converters.ConverterRegister</param>
-                        <!--<param>org.tros.torgo.InterpreterVisualization</param>-->
+                        <param>org.tros.torgo.InterpreterVisualization</param>
                     </services>
                 </configuration>
                 <executions>
