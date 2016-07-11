@@ -46,7 +46,7 @@ public class AboutWindow extends JDialog {
     /**
      * TORGO web address.
      */
-    public static final String TORGO_ADDRESS = "https://tros.org/torgo";
+    public static final String TORGO_ADDRESS = "http://tros.org/torgo/";
 
     /**
      * License Address.
