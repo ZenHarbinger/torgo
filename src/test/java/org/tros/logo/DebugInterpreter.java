@@ -63,7 +63,7 @@ public class DebugInterpreter {
      */
     @Test
     public void testCreate() {
-        System.out.println("createConsole");
+        System.out.println("debugTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
@@ -81,44 +81,29 @@ public class DebugInterpreter {
         if (robot == null) {
             return;
         }
-        robot.keyPress(KeyEvent.VK_ALT);
-        robot.keyPress(KeyEvent.VK_F);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_ALT);
-        robot.keyRelease(KeyEvent.VK_F);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_DOWN);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_DOWN);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_ENTER);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_ENTER);
-        robot.delay(100);
-        
+
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+
         for (String file : files) {
+            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
-            controller.addInterpreterListener(new InterpreterListener() {
+            InterpreterListener listener = new InterpreterListener() {
                 @Override
                 public void started() {
                     started.set(true);
@@ -140,8 +125,8 @@ public class DebugInterpreter {
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
                 }
-            });
-
+            };
+            controller.addInterpreterListener(listener);
             controller.debugInterpreter();
 
             try {
@@ -164,4 +149,14 @@ public class DebugInterpreter {
         prefs.putBoolean("wait-for-repaint", checked);
     }
 
+    void pressKey(Robot robot, int[] keys, int delay) {
+        for (int key : keys) {
+            robot.keyPress(key);
+        }
+        robot.delay(delay);
+        for (int key : keys) {
+            robot.keyRelease(key);
+        }
+        robot.delay(delay);
+    }
 }
