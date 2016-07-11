@@ -67,9 +67,9 @@ public class DebugInterpreter {
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
-        LogoController controller = (LogoController) TorgoToolkit.getController("logo");
+        DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
-        assertEquals("logo", controller.getLang());
+        assertEquals("dynamic-logo", controller.getLang());
         String[] files = new String[]{"logo/examples/antlr/octagon.txt"};
 
         Robot robot = null;
