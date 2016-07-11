@@ -106,10 +106,16 @@ public class LogoControllerTest {
         for (String file : files) {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
-            controller.addInterpreterListener(new InterpreterListener() {
+            InterpreterListener listener = new InterpreterListener() {
                 @Override
                 public void started() {
                     started.set(true);
@@ -131,7 +137,8 @@ public class LogoControllerTest {
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
                 }
-            });
+            };
+            controller.addInterpreterListener(listener);
 
             controller.startInterpreter();
 
@@ -149,6 +156,7 @@ public class LogoControllerTest {
             } catch (InterruptedException ex) {
                 Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
+            controller.removeInterpreterListener(listener);
         }
 
         controller.close();

@@ -81,8 +81,8 @@ public class DebugInterpreter {
         if (robot == null) {
             return;
         }
-        
-        pressKey(robot, new int[]{KeyEvent.VK_ALT,KeyEvent.VK_F}, 100);
+
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
@@ -94,9 +94,15 @@ public class DebugInterpreter {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
-            controller.addInterpreterListener(new InterpreterListener() {
+            InterpreterListener listener = new InterpreterListener() {
                 @Override
                 public void started() {
                     started.set(true);
@@ -118,8 +124,8 @@ public class DebugInterpreter {
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
                 }
-            });
-
+            };
+            controller.addInterpreterListener(listener);
             controller.debugInterpreter();
 
             try {

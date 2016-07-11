@@ -18,7 +18,6 @@ package org.tros.torgo;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -77,88 +76,7 @@ public class MainTest {
             return;
         }
 
-        File t = new File("t.logo");
-        File b = new File("b.logo");
-
-        if (t.isFile()) {
-            t.delete();
-        }
-        if (b.isFile()) {
-            b.delete();
-        }
-
         robot.delay(2000);
-        //new
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-
-        //save
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_L}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_O}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_O}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-
-        //save as
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_B}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_L}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_O}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_O}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-
-        //open
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_B}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_L}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_O}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_O}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-
-        //view about
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        //close log console
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F4}, 100);
-
-        //view log console
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        //close log console
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F4}, 100);
-
-        if (t.isFile()) {
-            t.delete();
-        }
-        if (b.isFile()) {
-            b.delete();
-        }
 
         //close app
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);

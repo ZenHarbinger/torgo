@@ -18,7 +18,7 @@ package org.tros.torgo.swing;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.io.File;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -26,40 +26,68 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.tros.torgo.Main;
+import org.tros.logo.LexicalLogoController;
 import org.tros.torgo.MainTest;
+import org.tros.torgo.TorgoToolkit;
+import org.tros.torgo.interpreter.CodeBlock;
+import org.tros.torgo.interpreter.InterpreterListener;
+import org.tros.torgo.interpreter.Scope;
 
 /**
  *
  * @author matta
  */
 public class TorgoToolBarTest {
-    
+
     public TorgoToolBarTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
 
     @Test
-    public void testMainNew() {
-        System.out.println("main");
-        String[] args = new String[]{"-l", "dynamic-logo"};
-        Main.main(args);
+    public void testTorgoToolBar() {
+        System.out.println("torgoToolBar");
+        LexicalLogoController controller = (LexicalLogoController) TorgoToolkit.getController("lexical-logo");
+        controller.run();
+        final AtomicBoolean started = new AtomicBoolean(false);
+        final AtomicBoolean finished = new AtomicBoolean(false);
+        controller.addInterpreterListener(new InterpreterListener() {
+            @Override
+            public void started() {
+                started.set(true);
+            }
+
+            @Override
+            public void finished() {
+                finished.set(true);
+            }
+
+            @Override
+            public void error(Exception e) {
+            }
+
+            @Override
+            public void message(String msg) {
+            }
+
+            @Override
+            public void currStatement(CodeBlock block, Scope scope) {
+            }
+        });
         Robot robot = null;
         try {
             robot = new Robot();
@@ -72,17 +100,41 @@ public class TorgoToolBarTest {
 
         robot.delay(2000);
         //new
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_SPACE}, 100);
 
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        robot.delay(500);
+
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_SPACE}, 100);
+
+        while (!finished.get()) {
+            robot.delay(100);
+        }
+        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        //        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        //        robot.delay(200);
         //add load/save/save as
         //add debugging steps...
         //add run command
-        
         //close app
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        controller.close();
     }
 
     void pressKey(Robot robot, int[] keys, int delay) {
@@ -95,5 +147,5 @@ public class TorgoToolBarTest {
         }
         robot.delay(delay);
     }
-    
+
 }
