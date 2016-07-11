@@ -71,48 +71,24 @@ public class TraceLoggerTest {
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
 
-            Robot robot = null;
-            try {
-                robot = new Robot();
-            } catch (AWTException ex) {
-                Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (robot == null) {
-                return;
-            }
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException ex) {
+            Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (robot == null) {
+            return;
+        }
 
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_ALT);
-            robot.keyPress(KeyEvent.VK_F);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_ALT);
-            robot.keyRelease(KeyEvent.VK_F);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_DOWN);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_DOWN);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_ENTER);
-            robot.delay(100);
-            
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+
         String[] files = new String[]{
             "logo/examples/tortue/octagon.logo",
             "logo/examples/tortue/pretty.logo",
@@ -173,4 +149,14 @@ public class TraceLoggerTest {
         prefs.putBoolean("wait-for-repaint", checked);
     }
 
+    void pressKey(Robot robot, int[] keys, int delay) {
+        for (int key : keys) {
+            robot.keyPress(key);
+        }
+        robot.delay(delay);
+        for (int key : keys) {
+            robot.keyRelease(key);
+        }
+        robot.delay(delay);
+    }
 }
