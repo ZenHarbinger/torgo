@@ -104,9 +104,9 @@ public class LogoControllerTest {
             "logo/examples/tortue/tortue-text.logo"};
 
         for (String file : files) {
-            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            controller.disable("TraceLogger");
             
             try {
                 Thread.sleep(200);
@@ -215,9 +215,9 @@ public class LogoControllerTest {
             "logo/examples/tortue/tortue-text.logo"};
 
         for (String file : files) {
-            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            controller.disable("TraceLogger");
             
             try {
                 Thread.sleep(200);

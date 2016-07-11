@@ -76,6 +76,7 @@ public class LogoMenuBarTest {
         for (String file : files) {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            controller.disable("TraceLogger");
 
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
