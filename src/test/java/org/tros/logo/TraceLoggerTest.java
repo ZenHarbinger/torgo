@@ -81,68 +81,70 @@ public class TraceLoggerTest {
             return;
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        for (int ii = 0; ii < 4; ii++) {
+            pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
-        String[] files = new String[]{
-            "logo/examples/tortue/octagon.logo",
-            "logo/examples/tortue/pretty.logo",
-            "logo/examples/tortue/snowflake.logo",
-            "logo/examples/tortue/spokes.logo",
-            "logo/examples/tortue/test.logo",
-            "logo/examples/tortue/tortue-text.logo"};
+            String[] files = new String[]{
+                "logo/examples/tortue/octagon.logo",
+                "logo/examples/tortue/pretty.logo",
+                "logo/examples/tortue/snowflake.logo",
+                "logo/examples/tortue/spokes.logo",
+                "logo/examples/tortue/test.logo",
+                "logo/examples/tortue/tortue-text.logo"};
 
-        for (String file : files) {
-            System.out.println(file);
-            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
-            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            for (String file : files) {
+                System.out.println(file);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
+                controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
-            final AtomicBoolean started = new AtomicBoolean(false);
-            final AtomicBoolean finished = new AtomicBoolean(false);
-            controller.addInterpreterListener(new InterpreterListener() {
-                @Override
-                public void started() {
-                    started.set(true);
+                final AtomicBoolean started = new AtomicBoolean(false);
+                final AtomicBoolean finished = new AtomicBoolean(false);
+                controller.addInterpreterListener(new InterpreterListener() {
+                    @Override
+                    public void started() {
+                        started.set(true);
+                    }
+
+                    @Override
+                    public void finished() {
+                        finished.set(true);
+                    }
+
+                    @Override
+                    public void error(Exception e) {
+                    }
+
+                    @Override
+                    public void message(String msg) {
+                    }
+
+                    @Override
+                    public void currStatement(CodeBlock block, Scope scope) {
+                    }
+                });
+
+                controller.startInterpreter();
+
+                try {
+                    while (!finished.get()) {
+                        Thread.sleep(10);
+                    }
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-                @Override
-                public void finished() {
-                    finished.set(true);
+                assertTrue(started.get());
+                assertTrue(finished.get());
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-                @Override
-                public void error(Exception e) {
-                }
-
-                @Override
-                public void message(String msg) {
-                }
-
-                @Override
-                public void currStatement(CodeBlock block, Scope scope) {
-                }
-            });
-
-            controller.startInterpreter();
-
-            try {
-                while (!finished.get()) {
-                    Thread.sleep(10);
-                }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            assertTrue(started.get());
-            assertTrue(finished.get());
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
