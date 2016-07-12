@@ -29,12 +29,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.logo.DynamicLogoController;
-import org.tros.logo.LogoControllerTest;
-import org.tros.logo.TraceLoggerTest;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -42,11 +42,15 @@ import org.tros.torgo.interpreter.Scope;
  */
 public class LogoMenuBarTest {
 
+    private static Logger LOGGER;
+
     public LogoMenuBarTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(LogoMenuBarTest.class.getName());
     }
 
     @AfterClass
@@ -66,6 +70,7 @@ public class LogoMenuBarTest {
      */
     @Test
     public void testExportCanvas() {
+        LOGGER.info("exportCanvas");
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
@@ -74,8 +79,9 @@ public class LogoMenuBarTest {
         };
 
         for (String file : files) {
-            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
+            LOGGER.info(file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            controller.disable("TraceLogger");
 
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
@@ -110,21 +116,21 @@ public class LogoMenuBarTest {
                     Thread.sleep(10);
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             }
             assertTrue(started.get());
             assertTrue(finished.get());
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             }
 
             Robot robot = null;
             try {
                 robot = new Robot();
             } catch (AWTException ex) {
-                Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             }
             if (robot == null) {
                 return;

@@ -16,34 +16,41 @@
 package org.tros.utils;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
 public class MailboxTest {
-    
+
+    private static Logger LOGGER;
+
     public MailboxTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(MailboxTest.class.getName());
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -53,10 +60,10 @@ public class MailboxTest {
      */
     @Test
     public void testSize() {
-        System.out.println("size");
+        LOGGER.info("size");
         Mailbox<Integer> ints = new Mailbox<Integer>();
         int size = 10;
-        for(int ii = 0; ii < size; ii++) {
+        for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
         }
         assertEquals(size, ints.size());
@@ -68,10 +75,10 @@ public class MailboxTest {
      */
     @Test
     public void testHalt() {
-        System.out.println("halt");
+        LOGGER.info("halt");
         Mailbox<Integer> ints = new Mailbox<Integer>();
         int size = 10;
-        for(int ii = 0; ii < size; ii++) {
+        for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
         }
         ints.halt();
@@ -82,10 +89,10 @@ public class MailboxTest {
      */
     @Test
     public void testAddMessage() {
-        System.out.println("addMessage");
+        LOGGER.info("addMessage");
         Mailbox<Integer> ints = new Mailbox<Integer>();
         int size = 10;
-        for(int ii = 0; ii < size; ii++) {
+        for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
         }
         assertEquals(size, ints.size());
@@ -97,15 +104,15 @@ public class MailboxTest {
      */
     @Test
     public void testGetMessage() {
-        System.out.println("getMessage");
+        LOGGER.info("getMessage");
         Mailbox<Integer> ints = new Mailbox<Integer>();
         int size = 10;
-        for(int ii = 0; ii < size; ii++) {
+        for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
         }
         assertEquals(size, ints.size());
 
-        for(int ii = 0; ii < size; ii++) {
+        for (int ii = 0; ii < size; ii++) {
             assertEquals(ii, ints.getMessage().intValue());
         }
 
@@ -117,10 +124,10 @@ public class MailboxTest {
      */
     @Test
     public void testGetMessages() {
-        System.out.println("getMessages");
+        LOGGER.info("getMessages");
         Mailbox<Integer> ints = new Mailbox<Integer>();
         int size = 10;
-        for(int ii = 0; ii < size; ii++) {
+        for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
         }
         assertEquals(size, ints.size());
@@ -136,10 +143,10 @@ public class MailboxTest {
      */
     @Test
     public void testIsHalted() {
-        System.out.println("isHalted");
+        LOGGER.info("isHalted");
         Mailbox<Integer> ints = new Mailbox<Integer>();
         int size = 10;
-        for(int ii = 0; ii < size; ii++) {
+        for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
         }
         assertEquals(size, ints.size());
@@ -150,5 +157,5 @@ public class MailboxTest {
         ints.halt();
         assertTrue(ints.isHalted());
     }
-    
+
 }

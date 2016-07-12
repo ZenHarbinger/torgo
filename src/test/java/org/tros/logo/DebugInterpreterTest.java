@@ -15,6 +15,7 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.viz.TraceLoggerTest;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -28,22 +29,28 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.logo.swing.LogoMenuBar;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
-public class DebugInterpreter {
+public class DebugInterpreterTest {
 
-    public DebugInterpreter() {
+    private static Logger LOGGER;
+
+    public DebugInterpreterTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(DebugInterpreterTest.class.getName());
     }
 
     @AfterClass
@@ -63,7 +70,7 @@ public class DebugInterpreter {
      */
     @Test
     public void testCreate() {
-        System.out.println("debugTest");
+        LOGGER.info("debugTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
@@ -94,6 +101,7 @@ public class DebugInterpreter {
             System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            controller.disable("TraceLogger");
 
             try {
                 Thread.sleep(200);

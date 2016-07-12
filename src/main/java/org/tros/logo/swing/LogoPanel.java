@@ -459,11 +459,13 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void message(String message) {
+        message = message.trim();
         console.appendToOutputTextArea(message + System.getProperty("line.separator"));
     }
 
     @Override
     public void warning(String message) {
+        message = message.trim();
         console.appendToOutputTextArea(">> " + message + System.getProperty("line.separator"));
     }
 

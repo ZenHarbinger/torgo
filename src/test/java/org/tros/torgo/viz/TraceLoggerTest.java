@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.logo;
+package org.tros.torgo.viz;
 
-import java.awt.AWTException;
 import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,12 +24,16 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.tros.logo.DynamicLogoController;
+import org.tros.logo.LogoControllerTest;
 import static org.junit.Assert.*;
 import org.tros.logo.swing.LogoMenuBar;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -39,11 +41,15 @@ import org.tros.torgo.interpreter.Scope;
  */
 public class TraceLoggerTest {
 
+    private static Logger LOGGER;
+    
     public TraceLoggerTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(TraceLoggerTest.class.getName());
     }
 
     @AfterClass
@@ -63,7 +69,7 @@ public class TraceLoggerTest {
      */
     @Test
     public void traceLoggerTest() {
-        System.out.println("traceLoggerTest");
+        LOGGER.info("traceLoggerTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
@@ -71,34 +77,18 @@ public class TraceLoggerTest {
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
 
-        Robot robot = null;
-        try {
-            robot = new Robot();
-        } catch (AWTException ex) {
-            Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (robot == null) {
-            return;
-        }
-
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        controller.enable("TraceLogger");
 
         String[] files = new String[]{
             "logo/examples/tortue/octagon.logo",
-            "logo/examples/tortue/pretty.logo",
-            "logo/examples/tortue/snowflake.logo",
-            "logo/examples/tortue/spokes.logo",
-            "logo/examples/tortue/test.logo",
-            "logo/examples/tortue/tortue-text.logo"};
+//            "logo/examples/tortue/pretty.logo",
+//            "logo/examples/tortue/snowflake.logo",
+//            "logo/examples/tortue/spokes.logo",
+            "logo/examples/tortue/test.logo"
+//            "logo/examples/tortue/tortue-text.logo"
+        };
 
         for (String file : files) {
-            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 

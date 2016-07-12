@@ -16,34 +16,41 @@
 package org.tros.utils;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
 public class HaltMonitorTest {
-    
+
+    private static Logger LOGGER;
+
     public HaltMonitorTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(HaltMonitorTest.class.getName());
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -53,7 +60,7 @@ public class HaltMonitorTest {
      */
     @Test
     public void testGetName() {
-        System.out.println("getName");
+        LOGGER.info("getName");
         HaltMonitor instance = new HaltMonitor();
         instance.setName("name");
         String result = instance.getName();
@@ -65,7 +72,7 @@ public class HaltMonitorTest {
      */
     @Test
     public void testSetName() {
-        System.out.println("setName");
+        LOGGER.info("setName");
         HaltMonitor instance = new HaltMonitor();
         instance.setName("name");
         String result = instance.getName();
@@ -77,7 +84,7 @@ public class HaltMonitorTest {
      */
     @Test
     public void testAddHaltListener() {
-        System.out.println("addHaltListener");
+        LOGGER.info("addHaltListener");
         final AtomicBoolean called = new AtomicBoolean(false);
         HaltListener listener = new HaltListener() {
             @Override
@@ -97,7 +104,7 @@ public class HaltMonitorTest {
      */
     @Test
     public void testRemoveHaltListener() {
-        System.out.println("removeHaltListener");
+        LOGGER.info("removeHaltListener");
         final AtomicBoolean called = new AtomicBoolean(false);
         HaltListener listener = new HaltListener() {
             @Override
@@ -113,5 +120,5 @@ public class HaltMonitorTest {
         assertTrue(instance.isHalted());
 
     }
-    
+
 }

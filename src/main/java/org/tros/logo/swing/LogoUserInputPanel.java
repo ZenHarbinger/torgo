@@ -152,7 +152,6 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
              */
             @Override
             public void message(String msg) {
-                appendToOutputTextArea(msg);
             }
 
             @Override
@@ -185,7 +184,8 @@ public final class LogoUserInputPanel extends JPanel implements TorgoTextConsole
      */
     @Override
     public void appendToOutputTextArea(String what) {
-        outputTextArea.append(what);
+        what = what.trim();
+        outputTextArea.append(what + System.getProperty("line.separator"));
     }
 
     /**

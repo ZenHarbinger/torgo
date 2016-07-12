@@ -15,34 +15,41 @@
  */
 package org.tros.utils;
 
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
 public class TimeUtilsTest {
-    
+
+    private static Logger LOGGER;
+
     public TimeUtilsTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(TimeUtilsTest.class.getName());
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -52,9 +59,10 @@ public class TimeUtilsTest {
      */
     @Test
     public void testConstructor() {
+        LOGGER.info("constructor");
         // TODO review the generated test code and remove the default call to fail.
         TimeUtils tu = new TimeUtils();
         assertNotNull(tu);
     }
-    
+
 }
