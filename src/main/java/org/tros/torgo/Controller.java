@@ -139,4 +139,18 @@ public interface Controller {
      * Start up the application/controller.
      */
     void run();
+    
+    /**
+     * Enable
+     * 
+     * @param name 
+     */
+    void enable(String name);
+
+    /**
+     * Disable
+     * 
+     * @param name 
+     */
+    void disable(String name);
 }

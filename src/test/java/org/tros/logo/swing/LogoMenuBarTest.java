@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.logo;
+package org.tros.logo.swing;
 
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +28,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.logo.swing.LogoMenuBar;
+import org.tros.logo.DynamicLogoController;
+import org.tros.logo.LogoControllerTest;
+import org.tros.logo.TraceLoggerTest;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
@@ -37,9 +40,9 @@ import org.tros.torgo.interpreter.Scope;
  *
  * @author matta
  */
-public class DebugInterpreter {
+public class LogoMenuBarTest {
 
-    public DebugInterpreter() {
+    public LogoMenuBarTest() {
     }
 
     @BeforeClass
@@ -59,52 +62,25 @@ public class DebugInterpreter {
     }
 
     /**
-     * Test of create method, of class TraceLogger.
+     * Test of exportCanvas method, of class LogoMenuBar.
      */
     @Test
-    public void testCreate() {
-        System.out.println("debugTest");
-        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
-        boolean checked = prefs.getBoolean("wait-for-repaint", true);
-        prefs.putBoolean("wait-for-repaint", true);
+    public void testExportCanvas() {
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
-        String[] files = new String[]{"logo/examples/antlr/octagon.txt"};
-
-        Robot robot = null;
-        try {
-            robot = new Robot();
-        } catch (AWTException ex) {
-            Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (robot == null) {
-            return;
-        }
-
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        String[] files = new String[]{
+            "logo/examples/antlr/fractal.txt"
+        };
 
         for (String file : files) {
-            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             controller.disable("TraceLogger");
 
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
-            InterpreterListener listener = new InterpreterListener() {
+            controller.addInterpreterListener(new InterpreterListener() {
                 @Override
                 public void started() {
                     started.set(true);
@@ -126,9 +102,9 @@ public class DebugInterpreter {
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
                 }
-            };
-            controller.addInterpreterListener(listener);
-            controller.debugInterpreter();
+            });
+
+            controller.startInterpreter();
 
             try {
                 while (!finished.get()) {
@@ -140,14 +116,46 @@ public class DebugInterpreter {
             assertTrue(started.get());
             assertTrue(finished.get());
             try {
-                Thread.sleep(100);
+                Thread.sleep(500);
             } catch (InterruptedException ex) {
                 Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Robot robot = null;
+            try {
+                robot = new Robot();
+            } catch (AWTException ex) {
+                Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (robot == null) {
+                return;
+            }
+            File t = new File("t.png");
+
+            if (t.isFile()) {
+                t.delete();
+            }
+
+            pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+//            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+            robot.delay(500);
+            pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_N}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+            robot.delay(500);
+
+            if (t.isFile()) {
+                t.delete();
             }
         }
 
         controller.close();
-        prefs.putBoolean("wait-for-repaint", checked);
     }
 
     void pressKey(Robot robot, int[] keys, int delay) {
@@ -160,4 +168,5 @@ public class DebugInterpreter {
         }
         robot.delay(delay);
     }
+
 }

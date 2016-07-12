@@ -15,9 +15,7 @@
  */
 package org.tros.logo;
 
-import java.awt.AWTException;
 import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,10 +26,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.logo.swing.LogoMenuBar;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -62,8 +62,9 @@ public class TraceLoggerTest {
      * Test of create method, of class TraceLogger.
      */
     @Test
-    public void testCreate() {
-        System.out.println("createConsole");
+    public void traceLoggerTest() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        System.out.println("traceLoggerTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
@@ -71,48 +72,8 @@ public class TraceLoggerTest {
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
 
-            Robot robot = null;
-            try {
-                robot = new Robot();
-            } catch (AWTException ex) {
-                Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (robot == null) {
-                return;
-            }
+        controller.enable("TraceLogger");
 
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_ALT);
-            robot.keyPress(KeyEvent.VK_F);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_ALT);
-            robot.keyRelease(KeyEvent.VK_F);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_DOWN);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_DOWN);
-            robot.delay(100);
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.delay(100);
-            robot.keyRelease(KeyEvent.VK_ENTER);
-            robot.delay(100);
-            
         String[] files = new String[]{
             "logo/examples/tortue/octagon.logo",
             "logo/examples/tortue/pretty.logo",
@@ -122,6 +83,7 @@ public class TraceLoggerTest {
             "logo/examples/tortue/tortue-text.logo"};
 
         for (String file : files) {
+            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
@@ -173,4 +135,14 @@ public class TraceLoggerTest {
         prefs.putBoolean("wait-for-repaint", checked);
     }
 
+    void pressKey(Robot robot, int[] keys, int delay) {
+        for (int key : keys) {
+            robot.keyPress(key);
+        }
+        robot.delay(delay);
+        for (int key : keys) {
+            robot.keyRelease(key);
+        }
+        robot.delay(delay);
+    }
 }
