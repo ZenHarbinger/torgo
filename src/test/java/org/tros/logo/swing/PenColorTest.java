@@ -27,8 +27,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.logo.DynamicLogoController;
-import org.tros.logo.TraceLoggerTest;
+import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.viz.TraceLoggerTest;
 import org.tros.torgo.TorgoToolkit;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -36,11 +38,15 @@ import org.tros.torgo.TorgoToolkit;
  */
 public class PenColorTest {
 
+    private static Logger LOGGER;
+
     public PenColorTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(PenColorTest.class.getName());
     }
 
     @AfterClass
@@ -59,7 +65,8 @@ public class PenColorTest {
      * Test of exportCanvas method, of class LogoMenuBar.
      */
     @Test
-    public void testExportCanvas() {
+    public void testPennColor() {
+        LOGGER.info("penColor");
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());

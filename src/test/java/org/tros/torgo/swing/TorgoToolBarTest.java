@@ -28,10 +28,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.tros.logo.LexicalLogoController;
 import org.tros.torgo.MainTest;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -39,11 +41,15 @@ import org.tros.torgo.interpreter.Scope;
  */
 public class TorgoToolBarTest {
 
+    private static Logger LOGGER;
+
     public TorgoToolBarTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(TorgoToolBarTest.class.getName());
     }
 
     @AfterClass
@@ -60,7 +66,7 @@ public class TorgoToolBarTest {
 
     @Test
     public void testTorgoToolBar() {
-        System.out.println("torgoToolBar");
+        LOGGER.info("torgoToolBar");
         LexicalLogoController controller = (LexicalLogoController) TorgoToolkit.getController("lexical-logo");
         controller.run();
         final AtomicBoolean started = new AtomicBoolean(false);
@@ -99,6 +105,7 @@ public class TorgoToolBarTest {
         }
 
         robot.delay(2000);
+        LOGGER.info("new");
         //new
         pressKey(robot, new int[]{KeyEvent.VK_SPACE}, 100);
 
@@ -113,6 +120,7 @@ public class TorgoToolBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
 
+        LOGGER.info("debug");
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);

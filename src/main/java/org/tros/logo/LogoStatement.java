@@ -237,6 +237,7 @@ class LogoStatement extends LogoBlock {
                     //will need to support strings...
                     InterpreterValue evaluate = ExpressionListener.evaluate(scope, ctx.getChild(1));
                     canvas.message(this.getClass().getName() + " -> " + evaluate.getValue().toString());
+                    super.listeners.fire().message(this.getClass().getName() + " -> " + evaluate.getValue().toString());
                     break;
                 default:
                     //if it is not a known value form above, it is probably a funciton,
@@ -266,6 +267,7 @@ class LogoStatement extends LogoBlock {
                         //no function by that name was found.
                         //halt interpreting.
                         success = ReturnValue.HALT;
+                        super.listeners.fire().error(new Exception(MessageFormat.format("process(): UNKNOWN -> {0}", command)));
                         canvas.warning(this.getClass().getName() + "process(): UNKNOWN -> " + command);
                         LOGGER.warn(MessageFormat.format("process(): UNKNOWN -> {0}", command));
                     }

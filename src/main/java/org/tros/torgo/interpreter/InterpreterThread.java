@@ -112,10 +112,12 @@ public abstract class InterpreterThread extends Thread {
 
                 @Override
                 public void error(Exception e) {
+                    listeners.fire().error(e);
                 }
 
                 @Override
                 public void message(String msg) {
+                    listeners.fire().message(msg);
                 }
 
                 /**

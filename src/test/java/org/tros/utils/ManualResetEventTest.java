@@ -25,6 +25,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -32,11 +34,15 @@ import static org.junit.Assert.*;
  */
 public class ManualResetEventTest {
 
+    private static Logger LOGGER;
+
     public ManualResetEventTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(ManualResetEventTest.class.getName());
     }
 
     @AfterClass
@@ -50,13 +56,13 @@ public class ManualResetEventTest {
     @After
     public void tearDown() {
     }
-    
-        /**
+
+    /**
      * Test of waitOne method, of class ManualResetEvent.
      */
     @Test
     public void testNoBlock() {
-        System.out.println("noBlock");
+        LOGGER.info("noBlock");
         final ManualResetEvent instance = new ManualResetEvent(true);
         assertTrue(instance.isOpen());
 
@@ -100,7 +106,7 @@ public class ManualResetEventTest {
      */
     @Test
     public void testWaitOne_0args() {
-        System.out.println("waitOne");
+        LOGGER.info("waitOne");
         final ManualResetEvent instance = new ManualResetEvent(true);
         assertTrue(instance.isOpen());
         instance.reset();
@@ -151,12 +157,12 @@ public class ManualResetEventTest {
      */
     @Test
     public void testWaitOne_long() {
-        System.out.println("waitOne");
+        LOGGER.info("waitOne");
         final ManualResetEvent instance = new ManualResetEvent(true);
         assertTrue(instance.isOpen());
         instance.reset();
         assertFalse(instance.isOpen());
-        
+
         final ArrayList<Thread> threads = new ArrayList<>();
 
         for (int ii = 0; ii < 10; ii++) {
