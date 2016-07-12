@@ -99,14 +99,14 @@ public class DebugInterpreterTest {
 
         for (String file : files) {
             System.out.println(file);
-            Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.INFO, file);
+            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             controller.disable("TraceLogger");
 
             try {
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             final AtomicBoolean started = new AtomicBoolean(false);
@@ -142,14 +142,14 @@ public class DebugInterpreterTest {
                     Thread.sleep(10);
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
             assertTrue(started.get());
             assertTrue(finished.get());
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

@@ -36,17 +36,17 @@ import org.tros.utils.logging.Logging;
  *
  * @author matta
  */
-public class LexicalControllerTest {
+public class LogoControllerTest {
 
     private static Logger LOGGER;
 
-    public LexicalControllerTest() {
+    public LogoControllerTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
         Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(LexicalControllerTest.class.getName());
+        LOGGER = Logger.getLogger(LogoControllerTest.class.getName());
     }
 
     @AfterClass
@@ -117,7 +117,7 @@ public class LexicalControllerTest {
             try {
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             final AtomicBoolean started = new AtomicBoolean(false);
@@ -154,14 +154,14 @@ public class LexicalControllerTest {
                     Thread.sleep(10);
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
             assertTrue(started.get());
             assertTrue(finished.get());
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
             controller.removeInterpreterListener(listener);
         }
@@ -175,7 +175,7 @@ public class LexicalControllerTest {
      */
     @Test
     public void testCreateConsole() {
-        System.out.println("dynamicScopingTest");
+        LOGGER.info("dynamicScopingTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", false);
@@ -221,18 +221,15 @@ public class LexicalControllerTest {
             "logo/examples/tortue/tortue-text.logo"};
 
         for (String file : files) {
-            Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.INFO, file);
+            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             controller.disable("TraceLogger");
             
             try {
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.INFO, file);
-            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
@@ -267,14 +264,14 @@ public class LexicalControllerTest {
                     Thread.sleep(10);
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
             assertTrue(started.get());
             assertTrue(finished.get());
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

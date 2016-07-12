@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.tros.logo.DynamicLogoController;
-import org.tros.logo.LexicalControllerTest;
+import org.tros.logo.LogoControllerTest;
 import static org.junit.Assert.*;
 import org.tros.logo.swing.LogoMenuBar;
 import org.tros.torgo.TorgoInfo;
@@ -89,7 +89,7 @@ public class TraceLoggerTest {
         };
 
         for (String file : files) {
-            Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.INFO, file);
+            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
             final AtomicBoolean started = new AtomicBoolean(false);
@@ -125,14 +125,14 @@ public class TraceLoggerTest {
                     Thread.sleep(10);
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
             assertTrue(started.get());
             assertTrue(finished.get());
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
