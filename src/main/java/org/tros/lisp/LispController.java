@@ -64,4 +64,11 @@ public class LispController extends ControllerBase {
     public void openFile(File file) {
     }
 
+    @Override
+    public void enable(String name) {
+    }
+    
+    @Override
+    public void disable(String name) {
+    }
 }
