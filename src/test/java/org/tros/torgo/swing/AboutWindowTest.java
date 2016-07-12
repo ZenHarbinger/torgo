@@ -18,12 +18,15 @@ package org.tros.torgo.swing;
 import java.awt.event.WindowEvent;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -31,11 +34,15 @@ import org.junit.Test;
  */
 public class AboutWindowTest {
 
+    private static Logger LOGGER;
+
     public AboutWindowTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(AboutWindowTest.class.getName());
     }
 
     @AfterClass
@@ -52,6 +59,7 @@ public class AboutWindowTest {
 
     @Test
     public void testConstructor() {
+        LOGGER.info("aboutWindow");
         final AboutWindow aw = new AboutWindow();
         aw.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 

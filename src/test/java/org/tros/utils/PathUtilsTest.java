@@ -15,6 +15,7 @@
  */
 package org.tros.utils;
 
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,32 +23,37 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
 public class PathUtilsTest {
-    
+
+    private static Logger LOGGER;
+
     public PathUtilsTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(PathUtilsTest.class.getName());
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
-    
+
     /**
      * Test of hidden constructor.
      */
@@ -62,7 +68,7 @@ public class PathUtilsTest {
      */
     @Test
     public void testGetHomeDir() {
-        System.out.println("getHomeDir");
+        LOGGER.info("getHomeDir");
         String result = PathUtils.getHomeDir();
         assertNotNull(result);
     }
@@ -72,7 +78,7 @@ public class PathUtilsTest {
      */
     @Test
     public void testGetTempDir() {
-        System.out.println("getTempDir");
+        LOGGER.info("getTempDir");
         String result = PathUtils.getTempDir();
         assertNotNull(result);
 
@@ -83,7 +89,7 @@ public class PathUtilsTest {
      */
     @Test
     public void testGetApplicationDirectory() {
-        System.out.println("getApplicationDirectory");
+        LOGGER.info("getApplicationDirectory");
         String result = PathUtils.getApplicationDirectory(TorgoInfo.INSTANCE);
         assertNotNull(result);
     }
@@ -93,7 +99,7 @@ public class PathUtilsTest {
      */
     @Test
     public void testGetApplicationEtcDirectory() {
-        System.out.println("getApplicationEtcDirectory");
+        LOGGER.info("getApplicationEtcDirectory");
         String result = PathUtils.getApplicationEtcDirectory(TorgoInfo.INSTANCE);
         assertNotNull(result);
     }
@@ -103,7 +109,7 @@ public class PathUtilsTest {
      */
     @Test
     public void testGetApplicationLibDirectory() {
-        System.out.println("getApplicationLibDirectory");
+        LOGGER.info("getApplicationLibDirectory");
         String result = PathUtils.getApplicationLibDirectory(TorgoInfo.INSTANCE);
         assertNotNull(result);
     }
@@ -113,7 +119,7 @@ public class PathUtilsTest {
      */
     @Test
     public void testGetApplicationConfigDirectory() {
-        System.out.println("getApplicationConfigDirectory");
+        LOGGER.info("getApplicationConfigDirectory");
         String result = PathUtils.getApplicationConfigDirectory(TorgoInfo.INSTANCE);
         assertNotNull(result);
     }
@@ -123,8 +129,8 @@ public class PathUtilsTest {
      */
     @Test
     public void testGetLogDirectory() {
-        System.out.println("getLogDirectory");
+        LOGGER.info("getLogDirectory");
         String result = PathUtils.getLogDirectory(TorgoInfo.INSTANCE);
         assertNotNull(result);
-    }   
+    }
 }

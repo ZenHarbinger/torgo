@@ -15,7 +15,10 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.viz.TraceLoggerTest;
+import java.awt.AWTException;
 import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,13 +40,17 @@ import org.tros.utils.logging.Logging;
  *
  * @author matta
  */
-public class TraceLoggerTest {
+public class DebugInterpreterTest {
 
-    public TraceLoggerTest() {
+    private static Logger LOGGER;
+
+    public DebugInterpreterTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(DebugInterpreterTest.class.getName());
     }
 
     @AfterClass
@@ -62,34 +69,49 @@ public class TraceLoggerTest {
      * Test of create method, of class TraceLogger.
      */
     @Test
-    public void traceLoggerTest() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        System.out.println("traceLoggerTest");
+    public void testCreate() {
+        LOGGER.info("debugTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
+        String[] files = new String[]{"logo/examples/antlr/octagon.txt"};
 
-        controller.enable("TraceLogger");
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException ex) {
+            Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (robot == null) {
+            return;
+        }
 
-        String[] files = new String[]{
-            "logo/examples/tortue/octagon.logo",
-            "logo/examples/tortue/pretty.logo",
-            "logo/examples/tortue/snowflake.logo",
-            "logo/examples/tortue/spokes.logo",
-            "logo/examples/tortue/test.logo",
-            "logo/examples/tortue/tortue-text.logo"};
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
         for (String file : files) {
             System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            controller.disable("TraceLogger");
+
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
-            controller.addInterpreterListener(new InterpreterListener() {
+            InterpreterListener listener = new InterpreterListener() {
                 @Override
                 public void started() {
                     started.set(true);
@@ -111,9 +133,9 @@ public class TraceLoggerTest {
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
                 }
-            });
-
-            controller.startInterpreter();
+            };
+            controller.addInterpreterListener(listener);
+            controller.debugInterpreter();
 
             try {
                 while (!finished.get()) {

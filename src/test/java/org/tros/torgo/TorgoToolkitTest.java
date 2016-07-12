@@ -16,6 +16,7 @@
 package org.tros.torgo;
 
 import java.util.Set;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,6 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.utils.ResourceAccessor;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -30,11 +32,15 @@ import org.tros.utils.ResourceAccessor;
  */
 public class TorgoToolkitTest {
 
+    private static Logger LOGGER;
+
     public TorgoToolkitTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(TorgoToolkitTest.class.getName());
     }
 
     @AfterClass
@@ -54,7 +60,7 @@ public class TorgoToolkitTest {
      */
     @Test
     public void testConstructor() {
-        System.out.println("constructor");
+        LOGGER.info("constructor");
         TorgoToolkit tt = new TorgoToolkit();
         assertNotNull(tt);
     }
@@ -64,9 +70,9 @@ public class TorgoToolkitTest {
      */
     @Test
     public void testGetController() {
-        System.out.println("getController");
+        LOGGER.info("getController");
         Set<String> results = TorgoToolkit.getToolkits();
-        for(String name : results) {
+        for (String name : results) {
             Controller controller = TorgoToolkit.getController(name);
             assertNotNull(controller);
         }
@@ -77,7 +83,7 @@ public class TorgoToolkitTest {
      */
     @Test
     public void testGetToolkits() {
-        System.out.println("getToolkits");
+        LOGGER.info("getToolkits");
         Set<String> result = TorgoToolkit.getToolkits();
         assertNotNull(result);
     }
@@ -87,7 +93,7 @@ public class TorgoToolkitTest {
      */
     @Test
     public void testGetVisualizers() {
-        System.out.println("getVisualizers");
+        LOGGER.info("getVisualizers");
         Set<String> result = TorgoToolkit.getVisualizers();
         assertNotNull(result);
     }
@@ -97,7 +103,7 @@ public class TorgoToolkitTest {
      */
     @Test
     public void testGetVisualization() {
-        System.out.println("getVisualization");
+        LOGGER.info("getVisualization");
         Set<String> viz = TorgoToolkit.getVisualizers();
         for (String name : viz) {
             InterpreterVisualization result = TorgoToolkit.getVisualization(name);
@@ -105,13 +111,12 @@ public class TorgoToolkitTest {
         }
     }
 
-    
     /**
      * Test of getResourceAccessors method, of class TorgoToolkit.
      */
     @Test
     public void testGetResourceAccessors() {
-        System.out.println("getResourceAccessors");
+        LOGGER.info("getResourceAccessors");
         Set<String> result = TorgoToolkit.getResourceAccessors();
         assertNotNull(result);
     }
@@ -121,7 +126,7 @@ public class TorgoToolkitTest {
      */
     @Test
     public void testResourceAccessors() {
-        System.out.println("getResourceAccessors");
+        LOGGER.info("getResourceAccessors");
         Set<String> viz = TorgoToolkit.getResourceAccessors();
         for (String name : viz) {
             ResourceAccessor result = TorgoToolkit.getResourceAccessor(name);
