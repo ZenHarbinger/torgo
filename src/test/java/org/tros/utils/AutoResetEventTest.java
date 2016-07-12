@@ -25,6 +25,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.viz.TraceLoggerTest;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -32,11 +35,15 @@ import static org.junit.Assert.*;
  */
 public class AutoResetEventTest {
 
+    private static Logger LOGGER;
+
     public AutoResetEventTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(AutoResetEventTest.class.getName());
     }
 
     @AfterClass
@@ -56,7 +63,7 @@ public class AutoResetEventTest {
      */
     @Test
     public void testWaitOne_0args() {
-        System.out.println("waitOne");
+        LOGGER.info("waitOne");
         final AutoResetEvent instance = new AutoResetEvent(true);
         instance.reset();
 
@@ -107,7 +114,7 @@ public class AutoResetEventTest {
      */
     @Test
     public void testWaitOne_long() {
-        System.out.println("waitOne");
+        LOGGER.info("waitOne");
         final AutoResetEvent instance = new AutoResetEvent(true);
         instance.reset();
 

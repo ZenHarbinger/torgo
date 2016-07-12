@@ -15,6 +15,7 @@
  */
 package org.tros.utils.converters;
 
+import java.util.logging.Logger;
 import org.apache.commons.beanutils.Converter;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,29 +23,35 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
 import org.tros.utils.TypeHandler;
+import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
 public class ClassConverterTest {
-    
+
+    private static Logger LOGGER;
+
     public ClassConverterTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(ClassConverterTest.class.getName());
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -54,6 +61,7 @@ public class ClassConverterTest {
      */
     @Test
     public void testConvert() {
+        LOGGER.info("class convert test");
         Converter lookup = UtilsBeanFactory.getConverter(String.class, Class.class);
         String hex = ClassConverter.class.getName();
         Class convert = lookup.convert(Class.class, hex);
