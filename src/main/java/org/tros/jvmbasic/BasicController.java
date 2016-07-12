@@ -63,4 +63,12 @@ public class BasicController extends ControllerBase {
     @Override
     public void openFile(File file) {
     }
+    
+    @Override
+    public void enable(String name) {
+    }
+
+    @Override
+    public void disable(String name) {
+    }
 }
