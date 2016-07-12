@@ -15,14 +15,15 @@
  */
 package org.tros.utils;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -30,11 +31,15 @@ import static org.junit.Assert.*;
  */
 public class GzipTest {
     
+    private static Logger LOGGER;
+
     public GzipTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(GzipTest.class.getName());
     }
     
     @AfterClass
@@ -54,6 +59,7 @@ public class GzipTest {
      */
     @Test
     public void testConstructor() {
+        LOGGER.info("gunzip");
         Gzip gz = new Gzip();
         assertNotNull(gz);
     }
@@ -63,7 +69,7 @@ public class GzipTest {
      */
     @Test
     public void testGunzipFile() throws Exception {
-        System.out.println("GunzipFile");
+        LOGGER.warning("TODO: GunzipFile");
     }
     
 }

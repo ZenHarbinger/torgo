@@ -15,6 +15,7 @@
  */
 package org.tros.logo;
 
+import org.tros.torgo.viz.TraceLoggerTest;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -28,22 +29,28 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.logo.swing.LogoMenuBar;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
-public class DebugInterpreter {
+public class DebugInterpreterTest {
 
-    public DebugInterpreter() {
+    private static Logger LOGGER;
+
+    public DebugInterpreterTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(DebugInterpreterTest.class.getName());
     }
 
     @AfterClass
@@ -63,7 +70,7 @@ public class DebugInterpreter {
      */
     @Test
     public void testCreate() {
-        System.out.println("createConsole");
+        LOGGER.info("debugTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
@@ -81,44 +88,30 @@ public class DebugInterpreter {
         if (robot == null) {
             return;
         }
-        robot.keyPress(KeyEvent.VK_ALT);
-        robot.keyPress(KeyEvent.VK_F);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_ALT);
-        robot.keyRelease(KeyEvent.VK_F);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_RIGHT);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_DOWN);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_DOWN);
-        robot.delay(100);
-        robot.keyPress(KeyEvent.VK_ENTER);
-        robot.delay(100);
-        robot.keyRelease(KeyEvent.VK_ENTER);
-        robot.delay(100);
-        
+
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+
         for (String file : files) {
+            System.out.println(file);
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            controller.disable("TraceLogger");
+
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
-            controller.addInterpreterListener(new InterpreterListener() {
+            InterpreterListener listener = new InterpreterListener() {
                 @Override
                 public void started() {
                     started.set(true);
@@ -140,8 +133,8 @@ public class DebugInterpreter {
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
                 }
-            });
-
+            };
+            controller.addInterpreterListener(listener);
             controller.debugInterpreter();
 
             try {
@@ -164,4 +157,14 @@ public class DebugInterpreter {
         prefs.putBoolean("wait-for-repaint", checked);
     }
 
+    void pressKey(Robot robot, int[] keys, int delay) {
+        for (int key : keys) {
+            robot.keyPress(key);
+        }
+        robot.delay(delay);
+        for (int key : keys) {
+            robot.keyRelease(key);
+        }
+        robot.delay(delay);
+    }
 }

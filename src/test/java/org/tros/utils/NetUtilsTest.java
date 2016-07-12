@@ -16,12 +16,15 @@
 package org.tros.utils;
 
 import java.net.InetAddress;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -29,11 +32,15 @@ import static org.junit.Assert.*;
  */
 public class NetUtilsTest {
     
+    private static Logger LOGGER;
+
     public NetUtilsTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(NetUtilsTest.class.getName());
     }
     
     @AfterClass
@@ -54,7 +61,7 @@ public class NetUtilsTest {
      */
     @Test
     public void testGetIP() throws Exception {
-        System.out.println("getIP");
+        LOGGER.info("getIP");
         InetAddress result = NetUtils.getIP();
         assertNotNull(result);
         
@@ -66,7 +73,7 @@ public class NetUtilsTest {
      */
     @Test
     public void testGetIPs() throws Exception {
-        System.out.println("getIPs");
+        LOGGER.info("getIPs");
         InetAddress[] result = NetUtils.getIPs();
         assertNotNull(result);
     }
