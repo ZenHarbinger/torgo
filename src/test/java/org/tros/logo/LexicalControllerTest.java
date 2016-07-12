@@ -25,22 +25,28 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.logo.swing.LogoMenuBar;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
-public class LogoControllerTest {
+public class LexicalControllerTest {
 
-    public LogoControllerTest() {
+    private static Logger LOGGER;
+
+    public LexicalControllerTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(LexicalControllerTest.class.getName());
     }
 
     @AfterClass
@@ -57,7 +63,7 @@ public class LogoControllerTest {
 
     @Test
     public void testLexicalScoping() {
-        System.out.println("lexicalScopingTest");
+        LOGGER.info("lexicalScopingTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", false);
@@ -104,14 +110,14 @@ public class LogoControllerTest {
             "logo/examples/tortue/tortue-text.logo"};
 
         for (String file : files) {
-            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
+            LOGGER.info(file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             controller.disable("TraceLogger");
             
             try {
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             final AtomicBoolean started = new AtomicBoolean(false);
@@ -148,14 +154,14 @@ public class LogoControllerTest {
                     Thread.sleep(10);
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
             assertTrue(started.get());
             assertTrue(finished.get());
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
             controller.removeInterpreterListener(listener);
         }
@@ -215,17 +221,17 @@ public class LogoControllerTest {
             "logo/examples/tortue/tortue-text.logo"};
 
         for (String file : files) {
-            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
+            Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             controller.disable("TraceLogger");
             
             try {
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
+            Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
             final AtomicBoolean started = new AtomicBoolean(false);
@@ -261,14 +267,14 @@ public class LogoControllerTest {
                     Thread.sleep(10);
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
             assertTrue(started.get());
             assertTrue(finished.get());
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
-                Logger.getLogger(LogoControllerTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LexicalControllerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

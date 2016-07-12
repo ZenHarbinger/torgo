@@ -27,8 +27,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.logo.DynamicLogoController;
-import org.tros.logo.TraceLoggerTest;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -36,11 +37,15 @@ import org.tros.torgo.TorgoToolkit;
  */
 public class ExampleLoadTest {
 
+    private static Logger LOGGER;
+
     public ExampleLoadTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(ExampleLoadTest.class.getName());
     }
 
     @AfterClass
@@ -59,7 +64,8 @@ public class ExampleLoadTest {
      * Test of exportCanvas method, of class LogoMenuBar.
      */
     @Test
-    public void testExportCanvas() {
+    public void testLoad() {
+        LOGGER.info("loadScript");
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
@@ -68,7 +74,7 @@ public class ExampleLoadTest {
         try {
             robot = new Robot();
         } catch (AWTException ex) {
-            Logger.getLogger(TraceLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         if (robot == null) {
             return;

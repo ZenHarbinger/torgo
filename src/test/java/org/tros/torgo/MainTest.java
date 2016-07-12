@@ -25,6 +25,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.tros.logo.swing.LogoMenuBarTest;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -32,11 +34,15 @@ import org.junit.Test;
  */
 public class MainTest {
 
+    private static Logger LOGGER;
+
     public MainTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(MainTest.class.getName());
     }
 
     @AfterClass
@@ -56,14 +62,14 @@ public class MainTest {
      */
     @Test
     public void testMain() {
-        System.out.println("main");
+        LOGGER.info("main");
         String[] args = new String[]{"-i"};
         Main.main(args);
     }
 
     @Test
     public void testMainNewAndClose() {
-        System.out.println("main");
+        LOGGER.info("main");
         String[] args = new String[]{"-l", "dynamic-logo"};
         Main.main(args);
         Robot robot = null;

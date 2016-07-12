@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.tros.logo.LexicalLogoController;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -35,11 +36,15 @@ import org.tros.logo.LexicalLogoController;
  */
 public class TorgoMenuBarTest {
 
+    private static Logger LOGGER;
+
     public TorgoMenuBarTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(TorgoMenuBarTest.class.getName());
     }
 
     @AfterClass
@@ -59,7 +64,7 @@ public class TorgoMenuBarTest {
      */
     @Test
     public void torgoMenuBar() {
-        System.out.println("torgoMenuBar");
+        LOGGER.info("torgoMenuBar");
         LexicalLogoController controller = (LexicalLogoController) TorgoToolkit.getController("lexical-logo");
         controller.run();
         Robot robot = null;
@@ -83,10 +88,12 @@ public class TorgoMenuBarTest {
         }
 
         robot.delay(2000);
+        LOGGER.info("new");
         //new
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        LOGGER.info("trace");
         //trace
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
@@ -96,6 +103,7 @@ public class TorgoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        LOGGER.info("reset trace");
         //reset trace
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
@@ -105,6 +113,7 @@ public class TorgoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        LOGGER.warning("TODO: save");
 //        //save
 //        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
@@ -117,6 +126,7 @@ public class TorgoMenuBarTest {
 //        pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_O}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        LOGGER.warning("TODO: save as");
 //        //save as
 //        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
@@ -130,6 +140,7 @@ public class TorgoMenuBarTest {
 //        pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_O}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        LOGGER.warning("open");
 //        //open
 //        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
@@ -141,6 +152,7 @@ public class TorgoMenuBarTest {
 //        pressKey(robot, new int[]{KeyEvent.VK_O}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        LOGGER.info("about");
         //view about
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
@@ -151,11 +163,13 @@ public class TorgoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        LOGGER.info("close about");
         //close about
         robot.delay(200);
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F4}, 100);
         robot.delay(200);
 
+        LOGGER.info("view log");
         //view log console
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
@@ -165,6 +179,7 @@ public class TorgoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        LOGGER.info("close log");
         //close log console
         robot.delay(200);
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F4}, 100);

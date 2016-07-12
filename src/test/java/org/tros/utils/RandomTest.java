@@ -18,12 +18,15 @@ package org.tros.utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -31,11 +34,15 @@ import static org.junit.Assert.*;
  */
 public class RandomTest {
 
+    private static Logger LOGGER;
+
     public RandomTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(RandomTest.class.getName());
     }
 
     @AfterClass
@@ -55,7 +62,7 @@ public class RandomTest {
      */
     @Test
     public void testGetInstance() {
-        System.out.println("getInstance");
+        LOGGER.info("getInstance");
         Object key = new Object();
         Random result = org.tros.utils.Random.getInstance(key);
         Random expResult = org.tros.utils.Random.getInstance(key);
@@ -67,7 +74,7 @@ public class RandomTest {
      */
     @Test
     public void testReset_0args() {
-        System.out.println("reset");
+        LOGGER.info("reset");
         org.tros.utils.Random.reset();
     }
 
@@ -76,7 +83,7 @@ public class RandomTest {
      */
     @Test
     public void testReset_Class_long() {
-        System.out.println("reset");
+        LOGGER.info("reset");
         Class<?> c = RandomTest.class;
         long value = 0L;
         org.tros.utils.Random.reset(c, value);
@@ -87,7 +94,7 @@ public class RandomTest {
      */
     @Test
     public void testReset_boolean() {
-        System.out.println("reset");
+        LOGGER.info("reset");
         org.tros.utils.Random.reset(true);
         org.tros.utils.Random.reset(false);
     }
@@ -97,7 +104,7 @@ public class RandomTest {
      */
     @Test
     public void testGetRandomName() {
-        System.out.println("getRandomName");
+        LOGGER.info("getRandomName");
         Class<?> c = RandomTest.class;
         String result = org.tros.utils.Random.getRandomName(c);
         assertNotNull(result);
@@ -108,7 +115,7 @@ public class RandomTest {
      */
     @Test
     public void testGetPUID_Class_RandomUuidIncrementType() {
-        System.out.println("getPUID");
+        LOGGER.info("getPUID");
         Class<?> c = RandomTest.class;
         org.tros.utils.Random.UuidIncrementType type = org.tros.utils.Random.UuidIncrementType.useClass;
         String result = org.tros.utils.Random.getPUID(c, type);
@@ -126,7 +133,7 @@ public class RandomTest {
      */
     @Test
     public void testGetPUID_Class() {
-        System.out.println("getPUID");
+        LOGGER.info("getPUID");
         Class<?> c = RandomTest.class;
         String result = org.tros.utils.Random.getPUID(c);
         assertNotNull(result);
@@ -137,7 +144,7 @@ public class RandomTest {
      */
     @Test
     public void testGetPUID_Class_int() {
-        System.out.println("getPUID");
+        LOGGER.info("getPUID");
         Class<?> c = RandomTest.class;
         int strength = 4;
         String result = org.tros.utils.Random.getPUID(c, strength);
@@ -149,7 +156,7 @@ public class RandomTest {
      */
     @Test
     public void testNextBoolean_Random() {
-        System.out.println("nextBoolean");
+        LOGGER.info("nextBoolean");
         Random random = new Random();
         boolean result1 = org.tros.utils.Random.nextBoolean(random);
         boolean result2 = org.tros.utils.Random.nextBoolean(random);
@@ -163,7 +170,7 @@ public class RandomTest {
      */
     @Test
     public void testNextBoolean_0args() {
-        System.out.println("nextBoolean");
+        LOGGER.info("nextBoolean");
         boolean result1 = org.tros.utils.Random.nextBoolean();
         boolean result2 = org.tros.utils.Random.nextBoolean();
         while (result1 == result2) {
@@ -176,7 +183,7 @@ public class RandomTest {
      */
     @Test
     public void testNextTriState_Random() {
-        System.out.println("nextTriState");
+        LOGGER.info("nextTriState");
         Random random = new Random();
         org.tros.utils.Random.TriState expResult = org.tros.utils.Random.TriState.FALSE;
         org.tros.utils.Random.TriState result = org.tros.utils.Random.nextTriState(random);
@@ -200,7 +207,7 @@ public class RandomTest {
      */
     @Test
     public void testNextTriState_0args() {
-        System.out.println("nextTriState");
+        LOGGER.info("nextTriState");
         org.tros.utils.Random.TriState expResult = org.tros.utils.Random.TriState.FALSE;
         org.tros.utils.Random.TriState result = org.tros.utils.Random.nextTriState();
         while (result != expResult) {
@@ -223,7 +230,7 @@ public class RandomTest {
      */
     @Test
     public void testNextDouble_Random() {
-        System.out.println("nextDouble");
+        LOGGER.info("nextDouble");
         int seed = 22;
         Random random = new Random(seed);
         double result1 = org.tros.utils.Random.nextDouble(random);
@@ -237,7 +244,7 @@ public class RandomTest {
      */
     @Test
     public void testNextDouble_0args() {
-        System.out.println("nextDouble");
+        LOGGER.info("nextDouble");
         org.tros.utils.Random.nextDouble();
         org.tros.utils.Random.nextDouble();
         org.tros.utils.Random.nextDouble();
@@ -250,7 +257,7 @@ public class RandomTest {
      */
     @Test
     public void testNextFloat_Random() {
-        System.out.println("nextFloat");
+        LOGGER.info("nextFloat");
         int seed = 22;
         Random random = new Random(seed);
         float result1 = org.tros.utils.Random.nextFloat(random);
@@ -264,7 +271,7 @@ public class RandomTest {
      */
     @Test
     public void testNextFloat_0args() {
-        System.out.println("nextFloat");
+        LOGGER.info("nextFloat");
         org.tros.utils.Random.nextFloat();
         org.tros.utils.Random.nextFloat();
         org.tros.utils.Random.nextFloat();
@@ -277,7 +284,7 @@ public class RandomTest {
      */
     @Test
     public void testNextInt_Random() {
-        System.out.println("nextInt");
+        LOGGER.info("nextInt");
         int seed = 22;
         Random random = new Random(seed);
         int result1 = org.tros.utils.Random.nextInt(random);
@@ -291,7 +298,7 @@ public class RandomTest {
      */
     @Test
     public void testNextInt_0args() {
-        System.out.println("nextInt");
+        LOGGER.info("nextInt");
         org.tros.utils.Random.nextInt();
         org.tros.utils.Random.nextInt();
         org.tros.utils.Random.nextInt();
@@ -304,7 +311,7 @@ public class RandomTest {
      */
     @Test
     public void testNextInt_Random_int() {
-        System.out.println("nextInt");
+        LOGGER.info("nextInt");
         int seed = 22;
         int n = 10;
         Random random = new Random(seed);
@@ -319,7 +326,7 @@ public class RandomTest {
      */
     @Test
     public void testNextInt_int() {
-        System.out.println("nextInt");
+        LOGGER.info("nextInt");
         int n = 10;
         org.tros.utils.Random.nextInt(n);
         org.tros.utils.Random.nextInt(n);
@@ -333,7 +340,7 @@ public class RandomTest {
      */
     @Test
     public void testNextInt_3args() {
-        System.out.println("nextInt");
+        LOGGER.info("nextInt");
         int seed = 22;
         int min = 5;
         int max = 50;
@@ -354,7 +361,7 @@ public class RandomTest {
      */
     @Test
     public void testNextInt_int_int() {
-        System.out.println("nextInt");
+        LOGGER.info("nextInt");
         int min = 5;
         int max = 50;
         org.tros.utils.Random.nextInt(min, max);
@@ -374,7 +381,7 @@ public class RandomTest {
      */
     @Test
     public void testNextLong_Random() {
-        System.out.println("nextLong");
+        LOGGER.info("nextLong");
         int seed = 22;
         int n = 10;
         Random random = new Random(seed);
@@ -389,7 +396,7 @@ public class RandomTest {
      */
     @Test
     public void testNextLong_0args() {
-        System.out.println("nextLong");
+        LOGGER.info("nextLong");
         org.tros.utils.Random.nextLong();
         org.tros.utils.Random.nextLong();
         org.tros.utils.Random.nextLong();
@@ -402,7 +409,7 @@ public class RandomTest {
      */
     @Test
     public void testNextLong_Random_long() {
-        System.out.println("nextLong");
+        LOGGER.info("nextLong");
         int seed = 22;
         int n = 10;
         Random random = new Random(seed);
@@ -417,7 +424,7 @@ public class RandomTest {
      */
     @Test
     public void testNextLong_long() {
-        System.out.println("nextLong");
+        LOGGER.info("nextLong");
         int max = 5;
         org.tros.utils.Random.nextLong(max);
         org.tros.utils.Random.nextLong(max);
@@ -431,7 +438,7 @@ public class RandomTest {
      */
     @Test
     public void testNextLong_3args() {
-        System.out.println("nextLong");
+        LOGGER.info("nextLong");
         int seed = 22;
         int min = 5;
         int max = 50;
@@ -452,7 +459,7 @@ public class RandomTest {
      */
     @Test
     public void testNextLong_long_long() {
-        System.out.println("nextLong");
+        LOGGER.info("nextLong");
         int min = 5;
         int max = 50;
         org.tros.utils.Random.nextLong(min, max);
@@ -472,7 +479,7 @@ public class RandomTest {
      */
     @Test
     public void testNextGaussian() {
-        System.out.println("nextGaussian");
+        LOGGER.info("nextGaussian");
         Object key = new Object();
         org.tros.utils.Random.nextGaussian(key);
         org.tros.utils.Random.nextGaussian(key);
@@ -489,7 +496,7 @@ public class RandomTest {
      */
     @Test
     public void testGetRandom_Collection_Collection() {
-        System.out.println("getRandom");
+        LOGGER.info("getRandom");
         ArrayList<Integer> coll = new ArrayList<Integer>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
@@ -508,12 +515,12 @@ public class RandomTest {
      */
     @Test
     public void testGetRandom_3args_1() {
-        System.out.println("getRandom");
+        LOGGER.info("getRandom");
         ArrayList<Integer> coll = new ArrayList<Integer>();
         for (int ii = 0; ii < 2; ii++) {
             coll.add(ii);
         }
-        Integer random = org.tros.utils.Random.getRandom(new Random(), coll,  new Integer(1));
+        Integer random = org.tros.utils.Random.getRandom(new Random(), coll, new Integer(1));
         assertEquals(0, random.intValue());
     }
 
@@ -522,7 +529,7 @@ public class RandomTest {
      */
     @Test
     public void testGetRandom_Collection_3args_1() {
-        System.out.println("getRandom");
+        LOGGER.info("getRandom");
         ArrayList<Integer> coll = new ArrayList<Integer>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
@@ -542,7 +549,7 @@ public class RandomTest {
      */
     @Test
     public void testGetRandom_int() {
-        System.out.println("getRandom");
+        LOGGER.info("getRandom");
         ArrayList<Integer> coll = new ArrayList<Integer>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
@@ -562,7 +569,7 @@ public class RandomTest {
      */
     @Test
     public void testGetRandomNotInList_Collection_Collection() {
-        System.out.println("getRandomNotInList");
+        LOGGER.info("getRandomNotInList");
         ArrayList<Integer> coll = new ArrayList<Integer>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
@@ -573,7 +580,7 @@ public class RandomTest {
         }
 
         ArrayList<Integer> pulled = new ArrayList<Integer>();
-        while(pulled.size() < coll.size() - not.size()) {
+        while (pulled.size() < coll.size() - not.size()) {
             Integer randomNotInList = org.tros.utils.Random.getRandomNotInList(coll, not);
             if (!pulled.contains(randomNotInList)) {
                 pulled.add(randomNotInList);
@@ -586,7 +593,7 @@ public class RandomTest {
      */
     @Test
     public void testGetRandomNotInList_3args() {
-        System.out.println("getRandomNotInList");
+        LOGGER.info("getRandomNotInList");
         ArrayList<Integer> coll = new ArrayList<Integer>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
@@ -597,7 +604,7 @@ public class RandomTest {
         }
 
         ArrayList<Integer> pulled = new ArrayList<Integer>();
-        while(pulled.size() < coll.size() - not.size()) {
+        while (pulled.size() < coll.size() - not.size()) {
             Integer randomNotInList = org.tros.utils.Random.getRandomNotInList(new Random(), coll, not);
             if (!pulled.contains(randomNotInList)) {
                 pulled.add(randomNotInList);
@@ -610,7 +617,7 @@ public class RandomTest {
      */
     @Test
     public void testGetRandom_Collection_Not() {
-        System.out.println("getRandom");
+        LOGGER.info("getRandom");
         ArrayList<Integer> coll = new ArrayList<Integer>();
         for (int ii = 0; ii < 2; ii++) {
             coll.add(ii);
@@ -624,7 +631,7 @@ public class RandomTest {
      */
     @Test
     public void testGetRandom_Random_Collection() {
-        System.out.println("getRandom");
+        LOGGER.info("getRandom");
         ArrayList<Integer> coll = new ArrayList<Integer>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
@@ -644,7 +651,7 @@ public class RandomTest {
      */
     @Test
     public void testIsSeeded() {
-        System.out.println("isSeeded");
+        LOGGER.info("isSeeded");
         boolean expResult = false;
         org.tros.utils.Random.setSeeded(expResult);
         assertNotNull(org.tros.utils.Random.getInstance(new Object()));
@@ -663,7 +670,7 @@ public class RandomTest {
      */
     @Test
     public void testSetSeeded() {
-        System.out.println("setSeeded");
+        LOGGER.info("setSeeded");
         boolean expResult = false;
         org.tros.utils.Random.setSeeded(expResult);
         boolean result = org.tros.utils.Random.isSeeded();
@@ -680,7 +687,7 @@ public class RandomTest {
      */
     @Test
     public void testGetSeed() {
-        System.out.println("getSeed");
+        LOGGER.info("getSeed");
         int expResult = 51;
         org.tros.utils.Random.setSeed(expResult);
         int result = org.tros.utils.Random.getSeed();
@@ -692,7 +699,7 @@ public class RandomTest {
      */
     @Test
     public void testSetSeed() {
-        System.out.println("setSeed");
+        LOGGER.info("setSeed");
         int expResult = 42;
         org.tros.utils.Random.setSeed(expResult);
         int result = org.tros.utils.Random.getSeed();
@@ -704,7 +711,7 @@ public class RandomTest {
      */
     @Test
     public void testNextDouble_double_double() {
-        System.out.println("nextDouble");
+        LOGGER.info("nextDouble");
         int min = 5;
         int max = 50;
         org.tros.utils.Random.nextDouble(min, max);
@@ -725,7 +732,7 @@ public class RandomTest {
      */
     @Test
     public void testBernoulli_double() {
-        System.out.println("bernoulli");
+        LOGGER.info("bernoulli");
 
         try {
             org.tros.utils.Random.bernoulli(-0.1);
@@ -751,7 +758,7 @@ public class RandomTest {
      */
     @Test
     public void testBernoulli_0args() {
-        System.out.println("bernoulli");
+        LOGGER.info("bernoulli");
         org.tros.utils.Random.bernoulli();
         org.tros.utils.Random.bernoulli();
         org.tros.utils.Random.bernoulli();
@@ -764,7 +771,7 @@ public class RandomTest {
      */
     @Test
     public void testGaussian_0args() {
-        System.out.println("gaussian");
+        LOGGER.info("gaussian");
         org.tros.utils.Random.gaussian();
         org.tros.utils.Random.gaussian();
         org.tros.utils.Random.gaussian();
@@ -777,7 +784,7 @@ public class RandomTest {
      */
     @Test
     public void testGaussian_double_double() {
-        System.out.println("gaussian");
+        LOGGER.info("gaussian");
         double mu = 10.0;
         double sigma = Math.PI;
         org.tros.utils.Random.gaussian(mu, sigma);
@@ -792,7 +799,7 @@ public class RandomTest {
      */
     @Test
     public void testGeometric() {
-        System.out.println("geometric");
+        LOGGER.info("geometric");
         try {
             org.tros.utils.Random.geometric(-0.1);
         } catch (IllegalArgumentException ex) {
@@ -815,7 +822,7 @@ public class RandomTest {
      */
     @Test
     public void testPoisson() {
-        System.out.println("poisson");
+        LOGGER.info("poisson");
         try {
             org.tros.utils.Random.poisson(-1);
         } catch (IllegalArgumentException ex) {
@@ -841,7 +848,7 @@ public class RandomTest {
      */
     @Test
     public void testPareto_0args() {
-        System.out.println("pareto");
+        LOGGER.info("pareto");
         org.tros.utils.Random.pareto();
         org.tros.utils.Random.pareto();
         org.tros.utils.Random.pareto();
@@ -854,7 +861,7 @@ public class RandomTest {
      */
     @Test
     public void testPareto_double() {
-        System.out.println("pareto");
+        LOGGER.info("pareto");
         double alpha = -1;
         try {
             org.tros.utils.Random.pareto(alpha);
@@ -874,7 +881,7 @@ public class RandomTest {
      */
     @Test
     public void testCauchy() {
-        System.out.println("cauchy");
+        LOGGER.info("cauchy");
         org.tros.utils.Random.cauchy();
         org.tros.utils.Random.cauchy();
         org.tros.utils.Random.cauchy();
@@ -887,7 +894,7 @@ public class RandomTest {
 //     */
 //    @Test
 //    public void testDiscrete_doubleArr() {
-//        System.out.println("discrete");
+//        LOGGER.info("discrete");
 //        double[] probabilities = null;
 //        int expResult = 0;
 //        int result = org.tros.utils.Random.discrete(probabilities);
@@ -901,7 +908,7 @@ public class RandomTest {
 //     */
 //    @Test
 //    public void testDiscrete_intArr() {
-//        System.out.println("discrete");
+//        LOGGER.info("discrete");
 //        int[] frequencies = null;
 //        int expResult = 0;
 //        int result = org.tros.utils.Random.discrete(frequencies);
@@ -914,7 +921,7 @@ public class RandomTest {
      */
     @Test
     public void testExp() {
-        System.out.println("exp");
+        LOGGER.info("exp");
         double lambda = -1.0;
         try {
             org.tros.utils.Random.exp(lambda);
@@ -933,12 +940,12 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_ObjectArr() {
-        System.out.println("shuffle");
+        LOGGER.info("shuffle");
         ArrayList<Integer> coll = new ArrayList<Integer>();
-        for(int ii = 0; ii < 100; ii++) {
+        for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
-        Object[] a = (Object[])coll.toArray(new Integer[]{});
+        Object[] a = (Object[]) coll.toArray(new Integer[]{});
         org.tros.utils.Random.shuffle(a);
     }
 
@@ -947,9 +954,9 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_doubleArr() {
-        System.out.println("shuffle");
+        LOGGER.info("shuffle");
         double[] arr = new double[100];
-        for(int ii = 0; ii < 100; ii++) {
+        for (int ii = 0; ii < 100; ii++) {
             arr[ii] = ii;
         }
         org.tros.utils.Random.shuffle(arr);
@@ -960,13 +967,13 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_intArr() {
-        System.out.println("shuffle");
-        System.out.println("shuffle");
+        LOGGER.info("shuffle");
+        LOGGER.info("shuffle");
         ArrayList<Integer> coll = new ArrayList<Integer>();
-        for(int ii = 0; ii < 100; ii++) {
+        for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
-        Object[] a = (Object[])coll.toArray(new Integer[]{});
+        Object[] a = (Object[]) coll.toArray(new Integer[]{});
         org.tros.utils.Random.shuffle(a, 25, 75);
 
     }
@@ -976,12 +983,12 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_3args_1() {
-        System.out.println("shuffle");
+        LOGGER.info("shuffle");
         ArrayList<Integer> coll = new ArrayList<Integer>();
-        for(int ii = 0; ii < 100; ii++) {
+        for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
-        Object[] a = (Object[])coll.toArray(new Integer[]{});
+        Object[] a = (Object[]) coll.toArray(new Integer[]{});
         org.tros.utils.Random.shuffle(a, 25, 75);
     }
 
@@ -990,9 +997,9 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_3args_2() {
-        System.out.println("shuffle");
+        LOGGER.info("shuffle");
         double[] arr = new double[100];
-        for(int ii = 0; ii < 100; ii++) {
+        for (int ii = 0; ii < 100; ii++) {
             arr[ii] = ii;
         }
         org.tros.utils.Random.shuffle(arr, 25, 75);
@@ -1003,9 +1010,9 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_3args_3() {
-        System.out.println("shuffle");
+        LOGGER.info("shuffle");
         int[] arr = new int[100];
-        for(int ii = 0; ii < 100; ii++) {
+        for (int ii = 0; ii < 100; ii++) {
             arr[ii] = ii;
         }
         org.tros.utils.Random.shuffle(arr, 25, 75);
