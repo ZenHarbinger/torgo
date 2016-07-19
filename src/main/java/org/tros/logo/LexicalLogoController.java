@@ -15,26 +15,8 @@
  */
 package org.tros.logo;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import javax.swing.JMenuBar;
-import javax.swing.JToolBar;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.tros.logo.antlr.logoLexer;
-import org.tros.logo.antlr.logoParser;
-import org.tros.logo.swing.LogoPanel;
-import org.tros.logo.swing.LogoMenuBar;
-import org.tros.logo.swing.LogoUserInputPanel;
-import org.tros.torgo.interpreter.CodeBlock;
-import org.tros.torgo.Controller;
-import org.tros.torgo.interpreter.InterpreterThread;
-import org.tros.torgo.interpreter.LexicalAnalyzer;
-import org.tros.torgo.TorgoScreen;
-import org.tros.torgo.TorgoTextConsole;
 import org.tros.torgo.interpreter.LexicalScope;
 import org.tros.torgo.interpreter.Scope;
-import org.tros.torgo.swing.TorgoToolBar;
 
 /**
  * The Logo factory/controller.
