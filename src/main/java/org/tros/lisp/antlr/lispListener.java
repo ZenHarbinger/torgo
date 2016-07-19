@@ -10,33 +10,53 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface lispListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link lispParser#program}.
+	 * Enter a parse tree produced by {@link lispParser#sexpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterProgram(lispParser.ProgramContext ctx);
+	void enterSexpr(lispParser.SexprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link lispParser#program}.
+	 * Exit a parse tree produced by {@link lispParser#sexpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitProgram(lispParser.ProgramContext ctx);
+	void exitSexpr(lispParser.SexprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link lispParser#symExpr}.
+	 * Enter a parse tree produced by {@link lispParser#item}.
 	 * @param ctx the parse tree
 	 */
-	void enterSymExpr(lispParser.SymExprContext ctx);
+	void enterItem(lispParser.ItemContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link lispParser#symExpr}.
+	 * Exit a parse tree produced by {@link lispParser#item}.
 	 * @param ctx the parse tree
 	 */
-	void exitSymExpr(lispParser.SymExprContext ctx);
+	void exitItem(lispParser.ItemContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link lispParser#symbol}.
+	 * Enter a parse tree produced by {@link lispParser#list}.
 	 * @param ctx the parse tree
 	 */
-	void enterSymbol(lispParser.SymbolContext ctx);
+	void enterList(lispParser.ListContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link lispParser#symbol}.
+	 * Exit a parse tree produced by {@link lispParser#list}.
 	 * @param ctx the parse tree
 	 */
-	void exitSymbol(lispParser.SymbolContext ctx);
+	void exitList(lispParser.ListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link lispParser#seq}.
+	 * @param ctx the parse tree
+	 */
+	void enterSeq(lispParser.SeqContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link lispParser#seq}.
+	 * @param ctx the parse tree
+	 */
+	void exitSeq(lispParser.SeqContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link lispParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterAtom(lispParser.AtomContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link lispParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitAtom(lispParser.AtomContext ctx);
 }

@@ -18,37 +18,61 @@ public class lispBaseListener implements lispListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProgram(lispParser.ProgramContext ctx) { }
+	@Override public void enterSexpr(lispParser.SexprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProgram(lispParser.ProgramContext ctx) { }
+	@Override public void exitSexpr(lispParser.SexprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSymExpr(lispParser.SymExprContext ctx) { }
+	@Override public void enterItem(lispParser.ItemContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSymExpr(lispParser.SymExprContext ctx) { }
+	@Override public void exitItem(lispParser.ItemContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSymbol(lispParser.SymbolContext ctx) { }
+	@Override public void enterList(lispParser.ListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSymbol(lispParser.SymbolContext ctx) { }
+	@Override public void exitList(lispParser.ListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSeq(lispParser.SeqContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSeq(lispParser.SeqContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAtom(lispParser.AtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAtom(lispParser.AtomContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

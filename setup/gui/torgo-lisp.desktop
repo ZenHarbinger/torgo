@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
-Name=Torgo
-GenericName=Torgo
-Comment=Logo Interpreter
-Exec=torgo -l dynamic-logo
+Name=Torgo (Lisp)
+GenericName=Torgo (Lisp)
+Comment=Lisp Interpreter
+Exec=torgo -l lisp
 TryExec=
 Icon=${SNAP}/meta/gui/torgo.png
 Terminal=false
@@ -11,4 +11,4 @@ Type=Application
 Categories=Interpreter;Development;Application
 MimeType=
 X-KDE-Protocols=
-Keywords=Interpreter;Logo
+Keywords=Interpreter;Lisp
