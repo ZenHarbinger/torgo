@@ -46,7 +46,7 @@ public class Main {
         Options options = new Options();
         options.addOption("l", "lang", true, "Open using the desired language. [default is 'logo']");
         options.addOption("i", "list", false, "List available languages.");
-        String lang = "dynamic-logo";
+        String lang = "jvmBasic";
         try {
             CommandLineParser parser = new org.apache.commons.cli.DefaultParser();
             CommandLine cmd = parser.parse(options, args);

@@ -33,7 +33,7 @@ import org.tros.torgo.interpreter.Scope;
 class ExpressionListener extends jvmBasicBaseListener {
 
     private final Scope scope;
-    private final Stack<ArrayList<Object>> value = new Stack<ArrayList<Object>>();
+    private final Stack<ArrayList<Object>> value = new Stack<>();
 
     /**
      * Evaluate an expression as defined in the jvmBasic.g4 grammar.
@@ -55,24 +55,34 @@ class ExpressionListener extends jvmBasicBaseListener {
      */
     private ExpressionListener(Scope scope) {
         this.scope = scope;
-        value.push(new ArrayList<Object>());
+        value.push(new ArrayList<>());
     }
 
     private double mathExpression(Double val1, Double val2, String op) {
-        if ("-".equals(op)) {
-            val1 = val1 - val2;
-        } else if ("+".equals(op)) {
-            val1 = val1 + val2;
-        } else if ("*".equals(op)) {
-            val1 = val1 * val2;
-        } else if ("%".equals(op)) {
-            val1 = val1 % val2;
-        } else if ("/".equals(op)) {
-            val1 = val1 / val2;
-        } else if ("\\".equals(op)) {
-            val1 = new Double((int) (val1 / val2));
-        } else if ("^".equals(op)) {
-            val1 = Math.pow(val1, val2);
+        if (null != op) switch (op) {
+            case "-":
+                val1 = val1 - val2;
+                break;
+            case "+":
+                val1 = val1 + val2;
+                break;
+            case "*":
+                val1 = val1 * val2;
+                break;
+            case "%":
+                val1 = val1 % val2;
+                break;
+            case "/":
+                val1 = val1 / val2;
+                break;
+            case "\\":
+                val1 = new Double((int) (val1 / val2));
+                break;
+            case "^":
+                val1 = Math.pow(val1, val2);
+                break;
+            default:
+                break;
         }
         return val1;
     }
@@ -140,9 +150,10 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterFunc(jvmBasicParser.FuncContext ctx) {
-        if (ctx.NUMBER() != null) {
+        jvmBasicParser.NumberContext ctx2 = ctx.number();
+        if (ctx2 != null && ctx2.NUMBER() != null) {
             value.peek().add(Integer.parseInt(ctx.getText()));
-        } else if (ctx.FLOAT() != null) {
+        } else if (ctx2 != null && ctx2.FLOAT() != null) {
             value.peek().add(Double.parseDouble(ctx.getText()));
         } else if (ctx.STRINGLITERAL() != null) {
             value.peek().add(ctx.getText());

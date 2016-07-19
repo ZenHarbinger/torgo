@@ -174,30 +174,6 @@ public class jvmBasicBaseListener implements jvmBasicListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGte(jvmBasicParser.GteContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitGte(jvmBasicParser.GteContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLte(jvmBasicParser.LteContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLte(jvmBasicParser.LteContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterNeq(jvmBasicParser.NeqContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -222,13 +198,37 @@ public class jvmBasicBaseListener implements jvmBasicListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterForstmt(jvmBasicParser.ForstmtContext ctx) { }
+	@Override public void enterForstmt1(jvmBasicParser.Forstmt1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitForstmt(jvmBasicParser.ForstmtContext ctx) { }
+	@Override public void exitForstmt1(jvmBasicParser.Forstmt1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForstmt2(jvmBasicParser.Forstmt2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForstmt2(jvmBasicParser.Forstmt2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNextstmt(jvmBasicParser.NextstmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNextstmt(jvmBasicParser.NextstmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -738,6 +738,18 @@ public class jvmBasicBaseListener implements jvmBasicListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNumber(jvmBasicParser.NumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumber(jvmBasicParser.NumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunc(jvmBasicParser.FuncContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -1201,6 +1213,18 @@ public class jvmBasicBaseListener implements jvmBasicListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAbsfunc(jvmBasicParser.AbsfuncContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTabfunc(jvmBasicParser.TabfuncContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTabfunc(jvmBasicParser.TabfuncContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

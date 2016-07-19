@@ -140,26 +140,6 @@ public interface jvmBasicListener extends ParseTreeListener {
 	 */
 	void exitRelop(jvmBasicParser.RelopContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link jvmBasicParser#gte}.
-	 * @param ctx the parse tree
-	 */
-	void enterGte(jvmBasicParser.GteContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link jvmBasicParser#gte}.
-	 * @param ctx the parse tree
-	 */
-	void exitGte(jvmBasicParser.GteContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link jvmBasicParser#lte}.
-	 * @param ctx the parse tree
-	 */
-	void enterLte(jvmBasicParser.LteContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link jvmBasicParser#lte}.
-	 * @param ctx the parse tree
-	 */
-	void exitLte(jvmBasicParser.LteContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link jvmBasicParser#neq}.
 	 * @param ctx the parse tree
 	 */
@@ -180,15 +160,35 @@ public interface jvmBasicListener extends ParseTreeListener {
 	 */
 	void exitIfstmt(jvmBasicParser.IfstmtContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link jvmBasicParser#forstmt}.
+	 * Enter a parse tree produced by {@link jvmBasicParser#forstmt1}.
 	 * @param ctx the parse tree
 	 */
-	void enterForstmt(jvmBasicParser.ForstmtContext ctx);
+	void enterForstmt1(jvmBasicParser.Forstmt1Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link jvmBasicParser#forstmt}.
+	 * Exit a parse tree produced by {@link jvmBasicParser#forstmt1}.
 	 * @param ctx the parse tree
 	 */
-	void exitForstmt(jvmBasicParser.ForstmtContext ctx);
+	void exitForstmt1(jvmBasicParser.Forstmt1Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link jvmBasicParser#forstmt2}.
+	 * @param ctx the parse tree
+	 */
+	void enterForstmt2(jvmBasicParser.Forstmt2Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link jvmBasicParser#forstmt2}.
+	 * @param ctx the parse tree
+	 */
+	void exitForstmt2(jvmBasicParser.Forstmt2Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link jvmBasicParser#nextstmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterNextstmt(jvmBasicParser.NextstmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link jvmBasicParser#nextstmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitNextstmt(jvmBasicParser.NextstmtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link jvmBasicParser#inputstmt}.
 	 * @param ctx the parse tree
@@ -610,6 +610,16 @@ public interface jvmBasicListener extends ParseTreeListener {
 	 */
 	void exitRestorestmt(jvmBasicParser.RestorestmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link jvmBasicParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumber(jvmBasicParser.NumberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link jvmBasicParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumber(jvmBasicParser.NumberContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link jvmBasicParser#func}.
 	 * @param ctx the parse tree
 	 */
@@ -999,4 +1009,14 @@ public interface jvmBasicListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAbsfunc(jvmBasicParser.AbsfuncContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link jvmBasicParser#tabfunc}.
+	 * @param ctx the parse tree
+	 */
+	void enterTabfunc(jvmBasicParser.TabfuncContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link jvmBasicParser#tabfunc}.
+	 * @param ctx the parse tree
+	 */
+	void exitTabfunc(jvmBasicParser.TabfuncContext ctx);
 }
