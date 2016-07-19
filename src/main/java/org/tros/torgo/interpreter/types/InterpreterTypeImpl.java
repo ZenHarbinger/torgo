@@ -21,7 +21,7 @@ import org.tros.torgo.interpreter.InterpreterType;
  *
  * @author matta
  */
-class InterpreterTypeImpl implements InterpreterType {
+public abstract class InterpreterTypeImpl implements InterpreterType {
 
     @Override
     public boolean equals(Object o) {
