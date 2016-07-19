@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.tros.jvmbasic.antlr.jvmBasicBaseListener;
 import org.tros.jvmbasic.antlr.jvmBasicParser;
+import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.torgo.interpreter.types.NumberType;
+import org.tros.torgo.interpreter.types.StringType;
 
 /**
  * Evaluates expressions. Builds a stack/tree of expressions and evaluates them
@@ -33,7 +36,7 @@ import org.tros.torgo.interpreter.Scope;
 class ExpressionListener extends jvmBasicBaseListener {
 
     private final Scope scope;
-    private final Stack<ArrayList<Object>> value = new Stack<>();
+    private final Stack<ArrayList<InterpreterValue>> value = new Stack<>();
 
     /**
      * Evaluate an expression as defined in the jvmBasic.g4 grammar.
@@ -42,8 +45,8 @@ class ExpressionListener extends jvmBasicBaseListener {
      * @param ctx
      * @return
      */
-    public static Object evaluate(Scope scope, ParseTree ctx) {
-        ExpressionListener el = new ExpressionListener(scope);
+    public static InterpreterValue evaluate(Scope scope, ParseTree ctx) {
+        org.tros.jvmbasic.ExpressionListener el = new org.tros.jvmbasic.ExpressionListener(scope);
         ParseTreeWalker.DEFAULT.walk(el, ctx);
         return el.getValue();
     }
@@ -55,7 +58,7 @@ class ExpressionListener extends jvmBasicBaseListener {
      */
     private ExpressionListener(Scope scope) {
         this.scope = scope;
-        value.push(new ArrayList<>());
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     private double mathExpression(Double val1, Double val2, String op) {
@@ -94,7 +97,6 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void exitExpression(jvmBasicParser.ExpressionContext ctx) {
-        scope.pop();
         super.exitExpression(ctx);
     }
 
@@ -147,16 +149,19 @@ class ExpressionListener extends jvmBasicBaseListener {
     public void exitSignExpression(jvmBasicParser.SignExpressionContext ctx) {
         super.exitSignExpression(ctx);
     }
-
+    
     @Override
     public void enterFunc(jvmBasicParser.FuncContext ctx) {
         jvmBasicParser.NumberContext ctx2 = ctx.number();
         if (ctx2 != null && ctx2.NUMBER() != null) {
-            value.peek().add(Integer.parseInt(ctx.getText()));
+            InterpreterValue v = new InterpreterValue(NumberType.INSTANCE, Integer.parseInt(ctx.getText()));
+            value.peek().add(v);
         } else if (ctx2 != null && ctx2.FLOAT() != null) {
-            value.peek().add(Double.parseDouble(ctx.getText()));
+            InterpreterValue v = new InterpreterValue(NumberType.INSTANCE, Float.parseFloat(ctx.getText()));
+            value.peek().add(v);
         } else if (ctx.STRINGLITERAL() != null) {
-            value.peek().add(ctx.getText());
+            InterpreterValue v = new InterpreterValue(StringType.INSTANCE, ctx.getText());
+            value.peek().add(v);
         } else {
         }
         super.enterFunc(ctx);
@@ -167,7 +172,7 @@ class ExpressionListener extends jvmBasicBaseListener {
         super.exitFunc(ctx);
     }
 
-    public Object getValue() {
+    public InterpreterValue getValue() {
         return value.peek().get(0);
     }
 }

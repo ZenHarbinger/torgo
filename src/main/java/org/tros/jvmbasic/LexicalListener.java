@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,5 +69,17 @@ class LexicalListener extends jvmBasicBaseListener implements LexicalAnalyzer  {
     @Override
     public Collection<CodeBlock> getCodeBlocks() {
         return blocks;
+    }
+
+    @Override
+    public void enterPrintstmt1(jvmBasicParser.Printstmt1Context ctx) {
+        BasicStatement basicStatement = new BasicStatement("print", ctx);
+        blocks.add(basicStatement);
+        stack.peek().addCommand(basicStatement);
+    }
+
+    @Override
+    public void enterPrstmt(jvmBasicParser.PrstmtContext ctx) {
+        super.enterPrstmt(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 }

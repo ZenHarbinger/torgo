@@ -152,6 +152,7 @@ public final class BasicUserInputPanel extends JPanel implements TorgoTextConsol
              */
             @Override
             public void message(String msg) {
+                outputTextArea.append(msg + System.getProperty("line.separator"));
             }
 
             @Override
