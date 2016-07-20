@@ -63,5 +63,5 @@ mvn clean package
 # Run
 
 ```sh
-java -jar target/torgo-1.0.7.jar
+java -jar target/torgo-1.1.0.jar
 ```
