@@ -24,6 +24,7 @@ import org.tros.jvmbasic.antlr.jvmBasicParser;
 import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.interpreter.types.BooleanType;
+import org.tros.torgo.interpreter.types.NullType;
 import org.tros.torgo.interpreter.types.NumberType;
 import org.tros.torgo.interpreter.types.StringType;
 
@@ -99,28 +100,35 @@ class ExpressionListener extends jvmBasicBaseListener {
         double num1 = ((Number) val1.getValue()).doubleValue();
         double num2 = ((Number) val2.getValue()).doubleValue();
         boolean ret = false;
+        boolean success = false;
         if (null != op) {
             switch (op) {
                 case "=>":  //GTE
                 case ">=":  //GTE
                 case ">: ": //GTE
+                    success = true;
                     ret = num1 >= num2;
                     break;
                 case "<=":  //LTE
                 case "=<":  //LTE
                 case "<: ": //LTE
+                    success = true;
                     ret = num1 <= num2;
                     break;
                 case "<":   //lt
+                    success = true;
                     ret = num1 < num2;
                     break;
                 case ">":   //gt
+                    success = true;
                     ret = num1 > num2;
                     break;
                 case "=":   //eq
+                    success = true;
                     ret = num1 == num2;
                     break;
                 case "<>":  //neq
+                    success = true;
                     ret = num1 != num2;
                     break;
                 default:
@@ -128,15 +136,74 @@ class ExpressionListener extends jvmBasicBaseListener {
                     break;
             }
         }
-        return new InterpreterValue(BooleanType.INSTANCE, ret);
+        if (success) {
+            return new InterpreterValue(BooleanType.INSTANCE, ret);
+        } else {
+            return new InterpreterValue(NullType.INSTANCE, null);
+        }
+    }
+
+    /**
+     * TODO: add in a conversion scheme, (widening/narrowing)
+     *
+     * @param val1
+     * @param val2
+     * @param op
+     * @return
+     */
+    private InterpreterValue boolOp(InterpreterValue val1, InterpreterValue val2, String op) {
+        boolean num1;
+        boolean num2;
+
+        if (val1.getType().getClass() != BooleanType.class) {
+            double val = ((Number) val1.getValue()).doubleValue();
+            num1 = val != 0;
+        } else {
+            num1 = ((Boolean) val1.getValue());
+        }
+        if (val2.getType().getClass() != BooleanType.class) {
+            double val = ((Number) val2.getValue()).doubleValue();
+            num2 = val != 0;
+        } else {
+            num2 = ((Boolean) val2.getValue());
+        }
+
+        boolean ret = false;
+        boolean success = false;
+        if (null != op) {
+            switch (op.toLowerCase()) {
+                case "and":
+                    success = true;
+                    ret = num1 && num2;
+                    break;
+                case "or":  //OR
+                    success = true;
+                    ret = num1 || num2;
+                    break;
+                default:
+                    //fail...
+                    break;
+            }
+        }
+        if (success) {
+            return new InterpreterValue(BooleanType.INSTANCE, ret);
+        } else {
+            return new InterpreterValue(NullType.INSTANCE, null);
+        }
     }
 
     @Override
     public void enterExpression(jvmBasicParser.ExpressionContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
     public void exitExpression(jvmBasicParser.ExpressionContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        for (int ii = 1; ii < ctx.getChildCount(); ii += 2) {
+            values.add(0, boolOp(values.remove(0), values.remove(0), ctx.getChild(ii).getText()));
+        }
+        value.peek().add(values.get(0));
     }
 
     @Override
@@ -208,17 +275,37 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void exitSignExpression(jvmBasicParser.SignExpressionContext ctx) {
-        String x = ctx.getChild(0).getText();
+        boolean inverse = ctx.NOT() != null;
+        int neg_count = ctx.MINUS().size();
+        int pos_count = ctx.PLUS().size();
+
+        /**
+         * I don't know what the grammar is thinking, but you can't have
+         * '--++--++-+-+++--+-+'. You can have 1 '+' to denote positive, but
+         * that won't actually do anything. Multiple negatives '-----' will keep
+         * flipping to the negative/positive value.
+         */
+        if (neg_count > 0 && pos_count > 0) {
+            //error
+        } else if (neg_count == 0 && pos_count > 1) {
+            //error
+        }
+
         ArrayList<InterpreterValue> peek = this.value.peek();
         int index = peek.size() - 1;
         if (peek.get(index).getType().equals(NumberType.INSTANCE)) {
             InterpreterValue val = peek.remove(index);
-            Object o = val.getValue();
             double n = ((Number) val.getValue()).doubleValue();
-            if ("-".equals(x)) {
-                n *= -1;
+            neg_count = (int) Math.pow(-1, neg_count);
+            if (inverse) {
+                peek.add(index, new InterpreterValue(BooleanType.INSTANCE, n != 0));
+            } else {
+                peek.add(index, new InterpreterValue(NumberType.INSTANCE, n *= neg_count));
             }
-            peek.add(index, new InterpreterValue(NumberType.INSTANCE, n));
+        } else if (inverse && peek.get(index).getType().equals(BooleanType.INSTANCE)) {
+            InterpreterValue val = peek.remove(index);
+            boolean n = ((Boolean) val.getValue());
+            peek.add(index, new InterpreterValue(BooleanType.INSTANCE, !n));
         }
     }
 

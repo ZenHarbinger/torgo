@@ -48,6 +48,7 @@ public final class BasicMenuBar extends TorgoMenuBar {
         super(parent, controller);
         JMenu menu = new JMenu("Basic Options");
         menu.add(setupMenu("Examples From ANTLR", "basic/examples/antlr"));
+        menu.add(setupMenu("Examples From TROS", "basic/examples/tros"));
         add(menu);
     }
 
