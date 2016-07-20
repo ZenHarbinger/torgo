@@ -14,19 +14,33 @@ author_profile: true
 
 Torgo is a Logo interpreter written in Java. It uses [ANTLR](http://www.antlr.org/) as a language parser and for lexical analysis. The parsed scripts are then walked to interpret the commands.
 
-Torgo is built using Java6.
+Torgo is built using Java7.
 
 Some goals for Torgo are:
 
-- to learn to program
-- to learn how machines execute programs
-- to modify/add languages to change behaviors
+- to allow people to learn to program
+- to show how machines execute programs
+- to allow modifications and add to languages to change behaviors
 
 This project was inspired by [Tortue](http://tortue.sourceforge.net/).
 
 # Languages
 
 Torgo currently supports logo; jvmBasic and lisp are in development.
+
+# Features
+
+- 'Debugging' a script
+    - Allows pause/resume/stop
+    - Can see the current operation highlighted in the script window.
+- Trace Logging of execution
+
+# Future
+
+- Call Stack Watch
+- Export to animated GIF
+- Export to SVG
+- jvmBasic and Lisp
 
 # Install on Recent Linux Distros
 
