@@ -23,6 +23,7 @@ import org.tros.jvmbasic.antlr.jvmBasicBaseListener;
 import org.tros.jvmbasic.antlr.jvmBasicParser;
 import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.torgo.interpreter.types.BooleanType;
 import org.tros.torgo.interpreter.types.NumberType;
 import org.tros.torgo.interpreter.types.StringType;
 
@@ -61,115 +62,177 @@ class ExpressionListener extends jvmBasicBaseListener {
         value.push(new ArrayList<InterpreterValue>());
     }
 
-    private double mathExpression(Double val1, Double val2, String op) {
-        if (null != op) switch (op) {
-            case "-":
-                val1 = val1 - val2;
-                break;
-            case "+":
-                val1 = val1 + val2;
-                break;
-            case "*":
-                val1 = val1 * val2;
-                break;
-            case "%":
-                val1 = val1 % val2;
-                break;
-            case "/":
-                val1 = val1 / val2;
-                break;
-            case "\\":
-                val1 = new Double((int) (val1 / val2));
-                break;
-            case "^":
-                val1 = Math.pow(val1, val2);
-                break;
-            default:
-                break;
+    private InterpreterValue mathExpression(InterpreterValue val1, InterpreterValue val2, String op) {
+        double num1 = ((Number) val1.getValue()).doubleValue();
+        double num2 = ((Number) val2.getValue()).doubleValue();
+        if (null != op) {
+            switch (op) {
+                case "-":
+                    num1 = num1 - num2;
+                    break;
+                case "+":
+                    num1 = num1 + num2;
+                    break;
+                case "*":
+                    num1 = num1 * num2;
+                    break;
+                case "%":
+                    num1 = num1 % num2;
+                    break;
+                case "/":
+                    num1 = num1 / num2;
+                    break;
+                case "\\":
+                    num1 = (int) (num1 / num2);
+                    break;
+                case "^":
+                    num1 = Math.pow(num1, num2);
+                    break;
+                default:
+                    break;
+            }
         }
-        return val1;
+        return new InterpreterValue(NumberType.INSTANCE, num1);
+    }
+
+    private InterpreterValue relOp(InterpreterValue val1, InterpreterValue val2, String op) {
+        double num1 = ((Number) val1.getValue()).doubleValue();
+        double num2 = ((Number) val2.getValue()).doubleValue();
+        boolean ret = false;
+        if (null != op) {
+            switch (op) {
+                case "=>":  //GTE
+                case ">=":  //GTE
+                case ">: ": //GTE
+                    ret = num1 >= num2;
+                    break;
+                case "<=":  //LTE
+                case "=<":  //LTE
+                case "<: ": //LTE
+                    ret = num1 <= num2;
+                    break;
+                case "<":   //lt
+                    ret = num1 < num2;
+                    break;
+                case ">":   //gt
+                    ret = num1 > num2;
+                    break;
+                case "=":   //eq
+                    ret = num1 == num2;
+                    break;
+                case "<>":  //neq
+                    ret = num1 != num2;
+                    break;
+                default:
+                    //fail...
+                    break;
+            }
+        }
+        return new InterpreterValue(BooleanType.INSTANCE, ret);
     }
 
     @Override
     public void enterExpression(jvmBasicParser.ExpressionContext ctx) {
-        super.enterExpression(ctx);
     }
 
     @Override
     public void exitExpression(jvmBasicParser.ExpressionContext ctx) {
-        super.exitExpression(ctx);
+    }
+
+    @Override
+    public void enterNumber(jvmBasicParser.NumberContext ctx) {
+        if (ctx.NUMBER() != null) {
+            InterpreterValue v = new InterpreterValue(NumberType.INSTANCE, Integer.parseInt(ctx.getText()));
+            value.peek().add(v);
+        } else if (ctx.FLOAT() != null) {
+            InterpreterValue v = new InterpreterValue(NumberType.INSTANCE, Float.parseFloat(ctx.getText()));
+            value.peek().add(v);
+        }
     }
 
     @Override
     public void enterRelationalExpression(jvmBasicParser.RelationalExpressionContext ctx) {
-        super.enterRelationalExpression(ctx);
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
     public void exitRelationalExpression(jvmBasicParser.RelationalExpressionContext ctx) {
-        super.exitRelationalExpression(ctx);
+        ArrayList<InterpreterValue> values = value.pop();
+        for (int ii = 1; ii < ctx.getChildCount(); ii += 2) {
+            values.add(0, relOp(values.remove(0), values.remove(0), ctx.getChild(ii).getText()));
+        }
+        value.peek().add(values.get(0));
     }
 
     @Override
     public void enterAddingExpression(jvmBasicParser.AddingExpressionContext ctx) {
-        super.enterAddingExpression(ctx);
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
     public void exitAddingExpression(jvmBasicParser.AddingExpressionContext ctx) {
-        super.exitAddingExpression(ctx);
+        ArrayList<InterpreterValue> values = value.pop();
+        for (int ii = 1; ii < ctx.getChildCount(); ii += 2) {
+            values.add(0, mathExpression(values.remove(0), values.remove(0), ctx.getChild(ii).getText()));
+        }
+        value.peek().add(values.get(0));
     }
 
     @Override
     public void enterMultiplyingExpression(jvmBasicParser.MultiplyingExpressionContext ctx) {
-        super.enterMultiplyingExpression(ctx);
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
     public void exitMultiplyingExpression(jvmBasicParser.MultiplyingExpressionContext ctx) {
-        super.exitMultiplyingExpression(ctx);
+        ArrayList<InterpreterValue> values = value.pop();
+        for (int ii = 1; ii < ctx.getChildCount(); ii += 2) {
+            values.add(0, mathExpression(values.remove(0), values.remove(0), ctx.getChild(ii).getText()));
+        }
+        value.peek().add(values.get(0));
     }
 
     @Override
     public void enterExponentExpression(jvmBasicParser.ExponentExpressionContext ctx) {
-        super.enterExponentExpression(ctx);
+        value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
     public void exitExponentExpression(jvmBasicParser.ExponentExpressionContext ctx) {
-        super.exitExponentExpression(ctx);
-    }
-
-    @Override
-    public void enterSignExpression(jvmBasicParser.SignExpressionContext ctx) {
-        super.enterSignExpression(ctx);
+        ArrayList<InterpreterValue> values = value.pop();
+        for (int ii = 1; ii < ctx.getChildCount(); ii += 2) {
+            values.add(0, mathExpression(values.remove(0), values.remove(0), ctx.getChild(ii).getText()));
+        }
+        value.peek().add(values.get(0));
     }
 
     @Override
     public void exitSignExpression(jvmBasicParser.SignExpressionContext ctx) {
-        super.exitSignExpression(ctx);
+        String x = ctx.getChild(0).getText();
+        ArrayList<InterpreterValue> peek = this.value.peek();
+        int index = peek.size() - 1;
+        if (peek.get(index).getType().equals(NumberType.INSTANCE)) {
+            InterpreterValue val = peek.remove(index);
+            Object o = val.getValue();
+            double n = ((Number) val.getValue()).doubleValue();
+            if ("-".equals(x)) {
+                n *= -1;
+            }
+            peek.add(index, new InterpreterValue(NumberType.INSTANCE, n));
+        }
     }
-    
+
     @Override
     public void enterFunc(jvmBasicParser.FuncContext ctx) {
-        jvmBasicParser.NumberContext ctx2 = ctx.number();
-        if (ctx2 != null && ctx2.NUMBER() != null) {
-            InterpreterValue v = new InterpreterValue(NumberType.INSTANCE, Integer.parseInt(ctx.getText()));
-            value.peek().add(v);
-        } else if (ctx2 != null && ctx2.FLOAT() != null) {
-            InterpreterValue v = new InterpreterValue(NumberType.INSTANCE, Float.parseFloat(ctx.getText()));
-            value.peek().add(v);
-        } else if (ctx.STRINGLITERAL() != null) {
+        if (ctx.STRINGLITERAL() != null) {
             InterpreterValue v = new InterpreterValue(StringType.INSTANCE, ctx.getText());
             value.peek().add(v);
         } else {
         }
-        super.enterFunc(ctx);
     }
 
     @Override
     public void exitFunc(jvmBasicParser.FuncContext ctx) {
-        super.exitFunc(ctx);
     }
 
     public InterpreterValue getValue() {
