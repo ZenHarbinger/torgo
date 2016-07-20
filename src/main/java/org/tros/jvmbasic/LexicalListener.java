@@ -58,8 +58,6 @@ class LexicalListener extends jvmBasicBaseListener implements LexicalAnalyzer  {
     public void enterProg(jvmBasicParser.ProgContext ctx) {
         stack.push(new BasicProg(ctx));
     }
-    
-    
 
     @Override
     public CodeBlock getEntryPoint() {

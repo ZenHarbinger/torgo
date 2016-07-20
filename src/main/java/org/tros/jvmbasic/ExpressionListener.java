@@ -319,6 +319,193 @@ class ExpressionListener extends jvmBasicBaseListener {
     }
 
     @Override
+    public void enterSqrfunc(jvmBasicParser.SqrfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    @Override
+    public void exitSqrfunc(jvmBasicParser.SqrfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            double sqrt = Math.sqrt(((Number) val.getValue()).doubleValue());
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, sqrt));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
+    public void enterSinfunc(jvmBasicParser.SinfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    /**
+     * Not sure if this should be degrees or radians
+     *
+     * @param ctx
+     */
+    @Override
+    public void exitSinfunc(jvmBasicParser.SinfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            double sqrt = Math.sin(((Number) val.getValue()).doubleValue());
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, sqrt));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
+    public void enterCosfunc(jvmBasicParser.CosfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    /**
+     * Not sure if this should be degrees or radians
+     *
+     * @param ctx
+     */
+    @Override
+    public void exitCosfunc(jvmBasicParser.CosfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            double sqrt = Math.cos(((Number) val.getValue()).doubleValue());
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, sqrt));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
+    public void enterTanfunc(jvmBasicParser.TanfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    /**
+     * Not sure if this should be degrees or radians
+     *
+     * @param ctx
+     */
+    @Override
+    public void exitTanfunc(jvmBasicParser.TanfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            double sqrt = Math.tan(((Number) val.getValue()).doubleValue());
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, sqrt));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
+    public void enterAtnfunc(jvmBasicParser.AtnfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    /**
+     * Not sure if this should be degrees or radians
+     *
+     * @param ctx
+     */
+    @Override
+    public void exitAtnfunc(jvmBasicParser.AtnfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            double sqrt = Math.atan(((Number) val.getValue()).doubleValue());
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, sqrt));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
+    public void enterAbsfunc(jvmBasicParser.AbsfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    @Override
+    public void exitAbsfunc(jvmBasicParser.AbsfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            double sqrt = Math.abs(((Number) val.getValue()).doubleValue());
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, sqrt));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
+    public void enterExpfunc(jvmBasicParser.ExpfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    @Override
+    public void exitExpfunc(jvmBasicParser.ExpfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            double sqrt = Math.pow(Math.E, ((Number) val.getValue()).doubleValue());
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, sqrt));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
+    public void enterLogfunc(jvmBasicParser.LogfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    @Override
+    public void exitLogfunc(jvmBasicParser.LogfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            double sqrt = Math.log(((Number) val.getValue()).doubleValue());
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, sqrt));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
+    public void enterSgnfunc(jvmBasicParser.SgnfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    @Override
+    public void exitSgnfunc(jvmBasicParser.SgnfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            double sqrt = ((Number) val.getValue()).doubleValue();
+            sqrt = sqrt < 0 ? -1 : sqrt > 0 ? 1 : 0;
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, sqrt));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
+    public void enterRndfunc(jvmBasicParser.RndfuncContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    /**
+     * TODO: this one needs some work.
+     * https://msdn.microsoft.com/en-us/library/f7s023d2(v=vs.90).aspx Not sure
+     * of what to do w/ the passed in value.
+     *
+     * @param ctx
+     */
+    @Override
+    public void exitRndfunc(jvmBasicParser.RndfuncContext ctx) {
+        ArrayList<InterpreterValue> values = value.pop();
+        InterpreterValue val = values.remove(0);
+        if (val.getType().equals(NumberType.INSTANCE)) {
+            values.add(0, new InterpreterValue(NumberType.INSTANCE, org.tros.utils.Random.nextDouble()));
+        }
+        value.peek().add(values.get(0));
+    }
+
+    @Override
     public void exitFunc(jvmBasicParser.FuncContext ctx) {
     }
 
