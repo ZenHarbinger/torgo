@@ -37,8 +37,9 @@ import javax.swing.SwingUtilities;
 import org.tros.torgo.TorgoScreen;
 
 import org.tros.torgo.TorgoTextConsole;
+import org.tros.torgo.swing.Drawable;
 
-public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, BufferedImageProvider {
+public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, BufferedImageProvider, Drawable {
 
     private Color penColor;
     private Font font;
@@ -50,13 +51,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     private final TorgoTextConsole console;
     private BufferedImage turtle;
 
-    private interface GraphicCommand {
-
-        void draw(Graphics2D g2);
-    }
-
-    private final ArrayList<GraphicCommand> queuedCommands = new ArrayList<>();
-    private final ArrayList<GraphicCommand> commands = new ArrayList<>();
+    private final ArrayList<Drawable> queuedCommands = new ArrayList<>();
+    private final ArrayList<Drawable> commands = new ArrayList<>();
 
     /**
      * Constructor.
@@ -104,7 +100,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         }
     }
 
-    private void draw(Graphics2D g2d) {
+    @Override
+    public void draw(Graphics2D g2d) {
         if (g2d == null) {
             return;
         }
@@ -126,7 +123,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void forward(final double distance) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -145,13 +142,13 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         submitCommand(command);
     }
 
-    private void submitCommand(GraphicCommand command) {
+    private void submitCommand(Drawable command) {
         queuedCommands.add(command);
     }
 
     @Override
     public void backward(final double distance) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -172,7 +169,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void left(final double angle) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -184,7 +181,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void right(final double angle) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -196,7 +193,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void setXY(final double x, final double y) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -216,7 +213,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void penUp() {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -228,7 +225,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void penDown() {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -240,7 +237,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void clear() {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g) {
@@ -263,7 +260,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void home() {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -277,7 +274,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void canvascolor(final String color) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -292,7 +289,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     }
 
     private void canvascolor(final Color color) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -305,7 +302,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     }
 
     private void pencolor(final Color color) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -318,7 +315,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void pencolor(final String color) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -339,24 +336,26 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                     null);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
         }
-        if (null != color) switch (color) {
-            case "darkgray":
-                return (Color.darkGray);
-            case "lightgray":
-                return (Color.lightGray);
-            default:
-                if (!color.startsWith("#") || !color.startsWith(color)) {
-                    color = "#" + color;
-                }
-                Color c = java.awt.Color.decode(color);
-                return c == null ? Color.black : c;
+        if (null != color) {
+            switch (color) {
+                case "darkgray":
+                    return (Color.darkGray);
+                case "lightgray":
+                    return (Color.lightGray);
+                default:
+                    if (!color.startsWith("#") || !color.startsWith(color)) {
+                        color = "#" + color;
+                    }
+                    Color c = java.awt.Color.decode(color);
+                    return c == null ? Color.black : c;
+            }
         }
         return Color.black;
     }
 
     @Override
     public void drawString(final String message) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -376,7 +375,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void fontSize(final int size) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -393,7 +392,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void fontName(final String fontFace) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -410,7 +409,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void fontStyle(final int style) {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -435,7 +434,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void hideTurtle() {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
@@ -447,7 +446,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public void showTurtle() {
-        GraphicCommand command = new GraphicCommand() {
+        Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2) {
