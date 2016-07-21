@@ -21,6 +21,7 @@ import org.tros.torgo.swing.Localization;
 import org.tros.torgo.Controller;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -39,6 +40,8 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import org.apache.batik.dom.GenericDOMImplementation;
@@ -48,8 +51,10 @@ import org.tros.torgo.swing.TorgoMenuBar;
 import org.w3c.dom.DOMImplementation;
 import org.apache.batik.svggen.*;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
+import org.tros.torgo.swing.DrawListener;
 import org.w3c.dom.Document;
 import org.tros.torgo.swing.Drawable;
+import org.tros.utils.GifSequenceWriter;
 
 /**
  * Sets up a menu bar for the Logo application.
@@ -97,7 +102,15 @@ public final class LogoMenuBar extends TorgoMenuBar {
         add(menu);
     }
 
-    // The image handler will write all images files to "res/images".
+    /**
+     * Create a SVG image. The image handler will write all images files to
+     * "res/images".
+     *
+     * @param p
+     * @param outStream
+     * @throws UnsupportedEncodingException
+     * @throws SVGGraphics2DIOException
+     */
     private void generateSVG(Drawable p, OutputStream outStream) throws UnsupportedEncodingException, SVGGraphics2DIOException {
         DOMImplementation domImpl
                 = GenericDOMImplementation.getDOMImplementation();
@@ -117,6 +130,37 @@ public final class LogoMenuBar extends TorgoMenuBar {
     }
 
     /**
+     * Create an animated GIF.
+     *
+     * @param p
+     * @param canvas
+     * @param filename
+     * @throws UnsupportedEncodingException
+     * @throws SVGGraphics2DIOException
+     * @throws IOException
+     */
+    private void generateGIF(final Drawable p, final BufferedImageProvider canvas, String filename) throws UnsupportedEncodingException, SVGGraphics2DIOException, IOException {
+        final ImageOutputStream output = new FileImageOutputStream(new File(filename));
+        final GifSequenceWriter writer = new GifSequenceWriter(output, canvas.getBufferedImage().getType(), 1, true);
+
+        final BufferedImage image = canvas.getBufferedImage();
+
+        final Graphics2D g2d = image.createGraphics();
+        p.addListener(new DrawListener() {
+            @Override
+            public void drawn(Drawable sender) {
+                try {
+                    writer.writeToSequence(image);
+                } catch (IOException ex) {
+                }
+            }
+        });
+
+        p.draw(g2d);
+        writer.close();
+    }
+
+    /**
      * Export the canvas as an image of the specified format. GIF will generate
      * an animated gif. Other formats are generated using ImageIO.write(...)
      *
@@ -124,88 +168,43 @@ public final class LogoMenuBar extends TorgoMenuBar {
      * @param filename
      */
     public void exportCanvas(String format, String filename) {
-        if (format.equals("svg")) {
-            if (Drawable.class.isAssignableFrom(canvas.getClass())) {
-                try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
-                    generateSVG((Drawable) canvas, fos);
-                    fos.flush();
-                } catch (IOException e) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).fatal(null, e);
+        switch (format) {
+            case "svg":
+                if (Drawable.class.isAssignableFrom(canvas.getClass())) {
+                    try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
+                        generateSVG((Drawable) canvas, fos);
+                        fos.flush();
+                    } catch (IOException ex) {
+                        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                    }
                 }
-            }
+                break;
+            case "gif":
+                if (Drawable.class.isAssignableFrom(canvas.getClass())
+                        && BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
+                    try {
+                        generateGIF((Drawable) canvas, (BufferedImageProvider) canvas, filename);
+                    } catch (SVGGraphics2DIOException ex) {
+                        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                    } catch (IOException ex) {
+                        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                    }
+                }
+                break;
+            default:
+                try {
+                    // retrieve image
+                    if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
+                        BufferedImageProvider bip = (BufferedImageProvider) canvas;
+                        BufferedImage bi = bip.getBufferedImage();
+                        File outputfile = new File(filename);
+                        ImageIO.write(bi, format, outputfile);
+                    }
+                } catch (IOException ex) {
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                }
+                break;
         }
-//        if (format.equals("gif")) {
-//            //export animated gif
-//            try {
-//                ImageOutputStream output = new FileImageOutputStream(new File(filename));
-//                GifSequenceWriter writer = new GifSequenceWriter(output, torgoCanvas.getImage().getType(), 1, true);
-//
-//                String source = torgoPanel.getSource();
-//                interp = createInterpreterThread(source);
-//
-//                interp.addInterpreterListener(new InterpreterListener() {
-//
-//                    @Override
-//                    public void started() {
-//                        listeners.stream().forEach((l) -> {
-//                            l.started();
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void finished() {
-//                        listeners.stream().forEach((l) -> {
-//                            l.finished();
-//                        });
-//                        torgoPanel.highlight(-1, 0, 0);
-//                        try {
-//                            writer.close();
-//                        } catch (IOException ex) {
-//                            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void error(Exception e) {
-//                        listeners.stream().forEach((l) -> {
-//                            l.error(e);
-//                        });
-//                        Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, e);
-//                    }
-//
-//                    @Override
-//                    public void message(String msg) {
-//                        listeners.stream().forEach((l) -> {
-//                            l.message(msg);
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void currStatement(String statement, int line, int start, int end) {
-//                        try {
-//                            writer.writeToSequence(SwingCanvas.deepCopy(torgoCanvas.getImage()));
-//                        } catch (IOException ex) {
-//                            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                    }
-//                });
-//                interp.start();
-//            } catch (IOException ex) {
-//                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        } else {
-        try {
-            // retrieve image
-            if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
-                BufferedImageProvider bip = (BufferedImageProvider) canvas;
-                BufferedImage bi = bip.getBufferedImage();
-                File outputfile = new File(filename);
-                ImageIO.write(bi, format, outputfile);
-            }
-        } catch (IOException e) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).fatal(null, e);
-        }
-//        }
     }
 
     /**
