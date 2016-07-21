@@ -32,21 +32,24 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
 
 - 'Debugging' a script
     - Allows pause/resume/stop
-    - Can see the current operation highlighted in the script window.
+    - Can see the current operation highlighted in the script window
 - Trace Logging of execution
+- Export to various image types:
+    - PNG
+    - SVG
+    - Animated GIF
 
 # Future
 
 - Call Stack Watch
-- Export to animated GIF
-- Export to SVG
+- Breakpoints
 - jvmBasic and Lisp
 
 # Install on Recent Linux Distros
 
 `sudo snap install torgo`
 
-# Download
+# Download Snapshot
 
 - git clone: `git clone https://github.com/ZenHarbinger/torgo.git`
 - [tarball](https://github.com/ZenHarbinger/torgo/tarball/master)
