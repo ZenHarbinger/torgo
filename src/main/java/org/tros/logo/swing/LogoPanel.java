@@ -34,9 +34,11 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.torgo.TorgoScreen;
 
 import org.tros.torgo.TorgoTextConsole;
+import org.tros.torgo.swing.DrawListener;
 import org.tros.torgo.swing.Drawable;
 
 public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, BufferedImageProvider, Drawable {
@@ -53,6 +55,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     private final ArrayList<Drawable> queuedCommands = new ArrayList<>();
     private final ArrayList<Drawable> commands = new ArrayList<>();
+    protected final EventListenerSupport<DrawListener> listeners
+            = EventListenerSupport.create(DrawListener.class);
 
     /**
      * Constructor.
@@ -71,6 +75,16 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         } catch (IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
         }
+    }
+
+    @Override
+    public void addListener(DrawListener listener) {
+        listeners.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(DrawListener listener) {
+        listeners.removeListener(listener);
     }
 
     /**
@@ -109,9 +123,10 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         //since this list can be written to, do not swith to for-each
         for (int ii = 0; ii < queuedCommands.size(); ii++) {
             queuedCommands.get(ii).draw(g2d);
+            listeners.fire().drawn(this);
         }
     }
-
+    
     @Override
     public void pause(final int time) {
         try {
@@ -138,6 +153,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 penX = newx;
                 penY = newy;
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -163,6 +186,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 penX = newx;
                 penY = newy;
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -175,6 +206,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             public void draw(Graphics2D g2) {
                 LogoPanel.this.angle -= Math.PI * angle / 180.0;
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -186,6 +225,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2) {
                 LogoPanel.this.angle += Math.PI * angle / 180.0;
+            }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
             }
         };
         submitCommand(command);
@@ -207,6 +254,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 penX = x2;
                 penY = y2;
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -219,6 +274,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             public void draw(Graphics2D g2) {
                 penup = true;
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -230,6 +293,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2) {
                 penup = false;
+            }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
             }
         };
         submitCommand(command);
@@ -254,6 +325,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
                 }
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -267,6 +346,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 penX = getWidth() / 2.0;
                 penY = getHeight() / 2.0;
                 angle = -1.0 * (Math.PI / 2.0);
+            }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
             }
         };
         submitCommand(command);
@@ -284,6 +371,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.setColor(penColor);
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -297,6 +392,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.setColor(penColor);
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -308,6 +411,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             public void draw(Graphics2D g2) {
                 penColor = color;
                 g2.setColor(penColor);
+            }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
             }
         };
         submitCommand(command);
@@ -321,6 +432,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             public void draw(Graphics2D g2) {
                 penColor = getColorByName(color);
                 g2.setColor(penColor);
+            }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
             }
         };
         submitCommand(command);
@@ -369,6 +488,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                     g2.setTransform(saveXform);
                 }
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -385,6 +512,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 font = new Font(fontName, style, size);
 
                 g2.setFont(font);
+            }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
             }
         };
         submitCommand(command);
@@ -403,6 +538,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
                 g2.setFont(font);
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -419,6 +562,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 font = new Font(fontName, style, size);
 
                 g2.setFont(font);
+            }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
             }
         };
         submitCommand(command);
@@ -440,6 +591,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             public void draw(Graphics2D g2) {
                 showTurtle = false;
             }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+            }
         };
         submitCommand(command);
     }
@@ -451,6 +610,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2) {
                 showTurtle = true;
+            }
+
+            @Override
+            public void addListener(DrawListener listener) {
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
             }
         };
         submitCommand(command);

@@ -15,17 +15,11 @@
  */
 package org.tros.torgo.swing;
 
-import java.awt.Graphics2D;
-
 /**
  *
  * @author matta
  */
-public interface Drawable {
+public interface DrawListener {
 
-    void draw(Graphics2D g);
-
-    void addListener(DrawListener listener);
-
-    void removeListener(DrawListener listener);
+    void drawn(Drawable sender);
 }
