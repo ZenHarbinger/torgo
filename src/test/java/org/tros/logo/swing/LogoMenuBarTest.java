@@ -70,9 +70,19 @@ public class LogoMenuBarTest {
      */
     @Test
     public void testExportCanvas() {
-        LOGGER.info("exportCanvas");
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        if (robot == null) {
+            return;
+        }
+
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
+        robot.delay(1000);
         assertEquals("dynamic-logo", controller.getLang());
         String[] files = new String[]{
             "logo/examples/antlr/fractal.txt"
@@ -126,16 +136,109 @@ public class LogoMenuBarTest {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
 
-            Robot robot = null;
+            File t = new File("t.png");
+
+            if (t.isFile()) {
+                t.delete();
+            }
+
+            pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+//            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+            robot.delay(500);
+            pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_N}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+            robot.delay(500);
+
+            if (t.isFile()) {
+                t.delete();
+            }
+        }
+
+        controller.close();
+    }
+
+    /**
+     * Test of exportCanvas method, of class LogoMenuBar.
+     */
+    @Test
+    public void testExportCanvasSVG() {
+        LOGGER.info("exportCanvasSVG");
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        if (robot == null) {
+            return;
+        }
+
+        DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
+        controller.run();
+        robot.delay(1000);
+        assertEquals("dynamic-logo", controller.getLang());
+        String[] files = new String[]{
+            "logo/examples/antlr/fractal.txt"
+        };
+
+        for (String file : files) {
+            LOGGER.info(file);
+            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            controller.disable("TraceLogger");
+
+            final AtomicBoolean started = new AtomicBoolean(false);
+            final AtomicBoolean finished = new AtomicBoolean(false);
+            controller.addInterpreterListener(new InterpreterListener() {
+                @Override
+                public void started() {
+                    started.set(true);
+                }
+
+                @Override
+                public void finished() {
+                    finished.set(true);
+                }
+
+                @Override
+                public void error(Exception e) {
+                }
+
+                @Override
+                public void message(String msg) {
+                }
+
+                @Override
+                public void currStatement(CodeBlock block, Scope scope) {
+                }
+            });
+
+            controller.startInterpreter();
+
             try {
-                robot = new Robot();
-            } catch (AWTException ex) {
+                while (!finished.get()) {
+                    Thread.sleep(10);
+                }
+            } catch (InterruptedException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
-            if (robot == null) {
-                return;
+            assertTrue(started.get());
+            assertTrue(finished.get());
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
             }
-            File t = new File("t.png");
+
+            File t = new File("t.svg");
 
             if (t.isFile()) {
                 t.delete();
@@ -149,9 +252,110 @@ public class LogoMenuBarTest {
             robot.delay(500);
             pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
             pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
-            pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
-            pressKey(robot, new int[]{KeyEvent.VK_N}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_S}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_V}, 100);
             pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+            robot.delay(500);
+
+            if (t.isFile()) {
+                t.delete();
+            }
+        }
+
+        controller.close();
+    }
+
+    /**
+     * Test of exportCanvas method, of class LogoMenuBar.
+     */
+    @Test
+    public void testExportCanvasGIF() {
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        if (robot == null) {
+            return;
+        }
+
+        DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
+        controller.run();
+        robot.delay(1000);
+
+        assertEquals("dynamic-logo", controller.getLang());
+        String[] files = new String[]{
+            "logo/examples/antlr/fractal.txt"
+        };
+
+        for (String file : files) {
+            LOGGER.info(file);
+            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            controller.disable("TraceLogger");
+
+            final AtomicBoolean started = new AtomicBoolean(false);
+            final AtomicBoolean finished = new AtomicBoolean(false);
+            controller.addInterpreterListener(new InterpreterListener() {
+                @Override
+                public void started() {
+                    started.set(true);
+                }
+
+                @Override
+                public void finished() {
+                    finished.set(true);
+                }
+
+                @Override
+                public void error(Exception e) {
+                }
+
+                @Override
+                public void message(String msg) {
+                }
+
+                @Override
+                public void currStatement(CodeBlock block, Scope scope) {
+                }
+            });
+
+            controller.startInterpreter();
+
+            try {
+                while (!finished.get()) {
+                    Thread.sleep(10);
+                }
+            } catch (InterruptedException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+            assertTrue(started.get());
+            assertTrue(finished.get());
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+
+            File t = new File("t.gif");
+
+            if (t.isFile()) {
+                t.delete();
+            }
+
+            pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+//            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+            robot.delay(500);
+            pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_I}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_F}, 100);
             pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
             robot.delay(500);
 
