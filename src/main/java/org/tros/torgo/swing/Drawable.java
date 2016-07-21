@@ -13,37 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.logo;
+package org.tros.torgo.swing;
 
-import org.tros.torgo.interpreter.DynamicScope;
-import org.tros.torgo.interpreter.Scope;
+import java.awt.Graphics2D;
 
 /**
- * The Logo factory/controller.
  *
  * @author matta
  */
-public final class DynamicLogoController extends LogoController {
+public interface Drawable {
 
-    /**
-     * Constructor, must be public for the ServiceLoader. Only initializes basic
-     * object needs.
-     */
-    public DynamicLogoController() {
-    }
-
-    /**
-     * Get the supported language.
-     *
-     * @return
-     */
-    @Override
-    public String getLang() {
-        return "dynamic-logo";
-    }
-
-    @Override
-    protected Scope createScope() {
-        return new DynamicScope();
-    }
+    void draw(Graphics2D g);
 }

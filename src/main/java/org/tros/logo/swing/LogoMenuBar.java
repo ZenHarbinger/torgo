@@ -25,20 +25,31 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import javax.swing.JColorChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
+import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.swing.TorgoMenuBar;
+import org.w3c.dom.DOMImplementation;
+import org.apache.batik.svggen.*;
+import org.apache.batik.anim.dom.SVGDOMImplementation;
+import org.w3c.dom.Document;
+import org.tros.torgo.swing.Drawable;
 
 /**
  * Sets up a menu bar for the Logo application.
@@ -86,6 +97,25 @@ public final class LogoMenuBar extends TorgoMenuBar {
         add(menu);
     }
 
+    // The image handler will write all images files to "res/images".
+    private void generateSVG(Drawable p, OutputStream outStream) throws UnsupportedEncodingException, SVGGraphics2DIOException {
+        DOMImplementation domImpl
+                = GenericDOMImplementation.getDOMImplementation();
+        String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
+        Document myFactory = domImpl.createDocument(svgNS, "svg", null);
+        SVGGeneratorContext ctx
+                = SVGGeneratorContext.createDefault(myFactory);
+        GenericImageHandler ihandler = new CachedImageHandlerPNGEncoder("res/images", null);
+        ctx.setGenericImageHandler(ihandler);
+
+        SVGGraphics2D svgGenerator = new SVGGraphics2D(ctx, false);
+
+        p.draw(svgGenerator);
+        // Create the SVG DOM tree.
+        Writer out = new OutputStreamWriter(outStream, "UTF-8");
+        svgGenerator.stream(out, true);
+    }
+
     /**
      * Export the canvas as an image of the specified format. GIF will generate
      * an animated gif. Other formats are generated using ImageIO.write(...)
@@ -94,6 +124,16 @@ public final class LogoMenuBar extends TorgoMenuBar {
      * @param filename
      */
     public void exportCanvas(String format, String filename) {
+        if (format.equals("svg")) {
+            if (Drawable.class.isAssignableFrom(canvas.getClass())) {
+                try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
+                    generateSVG((Drawable) canvas, fos);
+                    fos.flush();
+                } catch (IOException e) {
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).fatal(null, e);
+                }
+            }
+        }
 //        if (format.equals("gif")) {
 //            //export animated gif
 //            try {
@@ -157,7 +197,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
         try {
             // retrieve image
             if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
-                BufferedImageProvider bip = (BufferedImageProvider)canvas;
+                BufferedImageProvider bip = (BufferedImageProvider) canvas;
                 BufferedImage bi = bip.getBufferedImage();
                 File outputfile = new File(filename);
                 ImageIO.write(bi, format, outputfile);
@@ -212,6 +252,26 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         JMenuItem exportGif = new JMenuItem(Localization.getLocalizedString("ExportGIF"));
         JMenuItem exportPng = new JMenuItem(Localization.getLocalizedString("ExportPNG"));
+        JMenuItem exportSvg = new JMenuItem(Localization.getLocalizedString("ExportSVG"));
+
+        exportSvg.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setMultiSelectionEnabled(false);
+                java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+                chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
+
+                chooser.setVisible(true);
+                int result = chooser.showSaveDialog(parent);
+
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    String filename = chooser.getSelectedFile().getPath();
+                    prefs.put("export-directory", chooser.getSelectedFile().getParent());
+                    exportCanvas("svg", filename);
+                }
+            }
+        });
 
         exportGif.addActionListener(new ActionListener() {
 
@@ -252,6 +312,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             }
         });
 
+        exportMenu.add(exportSvg);
         exportMenu.add(exportGif);
         exportMenu.add(exportPng);
 
