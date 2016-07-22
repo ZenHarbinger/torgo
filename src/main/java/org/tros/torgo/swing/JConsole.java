@@ -42,6 +42,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -780,7 +782,7 @@ public class JConsole extends JScrollPane
 
     @Override
     public String toString() {
-        return "BeanShell console";
+        return MessageFormat.format("{0} console", TorgoInfo.INSTANCE.getApplicationName());
     }
 
     // MouseListener Interface
