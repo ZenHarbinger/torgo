@@ -11,7 +11,3 @@
 110 print (abs (-8))
 120 print (abs (8))
 130 print (rnd (8))
-
-
-
-
