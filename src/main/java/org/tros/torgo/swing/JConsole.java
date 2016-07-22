@@ -99,6 +99,7 @@ public class JConsole extends JScrollPane
     public static final String DEFAULT_HEADER_FONT = "Ubuntu Mono";
     public static final String FALLBACK_HEADER_FONT = "Monospaced";
     public static final int HEADER_SIZE = 20;
+    public static final String PROMPT = "torgo % ";
 
     public InputStream getInputStream() {
         return in;
@@ -161,7 +162,7 @@ public class JConsole extends JScrollPane
             }
         };
 
-        Font font = new Font("Monospaced", Font.PLAIN, 14);
+        Font font = new Font(FALLBACK_HEADER_FONT, Font.PLAIN, 14);
         text.setText("");
         text.setFont(font);
         text.setMargin(new Insets(7, 5, 7, 5));
@@ -245,16 +246,16 @@ public class JConsole extends JScrollPane
     }
 
     private synchronized void type(KeyEvent e) {
-        
+
         int startSel = text.getSelectionStart();
         int endSel = text.getSelectionEnd();
-        
+
         if (startSel != endSel && endSel > 0) {
             text.setSelectionStart(0);
             text.setSelectionEnd(0);
             text.setCaretPosition(textLength());
         }
-        
+
         switch (e.getKeyCode()) {
             case (KeyEvent.VK_ENTER):
                 if (e.getID() == KeyEvent.KEY_PRESSED) {
