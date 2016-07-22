@@ -80,4 +80,18 @@ class LexicalListener extends jvmBasicBaseListener implements LexicalAnalyzer  {
     public void enterPrstmt(jvmBasicParser.PrstmtContext ctx) {
         super.enterPrstmt(ctx); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void enterVar(jvmBasicParser.VarContext ctx) {
+        BasicStatement basicStatement = new BasicStatement("var", ctx);
+        blocks.add(basicStatement);
+        stack.peek().addCommand(basicStatement);
+    }
+
+    @Override
+    public void enterVariableassignment(jvmBasicParser.VariableassignmentContext ctx) {
+        BasicStatement basicStatement = new BasicStatement("variableassignment", ctx);
+        blocks.add(basicStatement);
+        stack.peek().addCommand(basicStatement);
+    }
 }

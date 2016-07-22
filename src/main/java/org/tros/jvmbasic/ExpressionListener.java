@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.tros.jvmbasic.antlr.jvmBasicBaseListener;
 import org.tros.jvmbasic.antlr.jvmBasicParser;
 import org.tros.torgo.interpreter.InterpreterValue;
@@ -505,8 +506,36 @@ class ExpressionListener extends jvmBasicBaseListener {
         value.peek().add(values.get(0));
     }
 
+    /**
+     * TODO: Ensure PERCENT is handled.
+     * @param ctx 
+     */
     @Override
-    public void exitFunc(jvmBasicParser.FuncContext ctx) {
+    public void enterVar(jvmBasicParser.VarContext ctx) {
+        ctx.varname().getText();
+        TerminalNode DOLLAR = ctx.varsuffix() != null ? ctx.varsuffix().DOLLAR() : null;
+        TerminalNode PERCENT = ctx.varsuffix() != null ? ctx.varsuffix().PERCENT() : null;
+        if (DOLLAR != null) {
+            InterpreterValue val = new InterpreterValue(StringType.INSTANCE, ctx.getText());
+            value.peek().add(0, val);
+        } else {
+            value.peek().add(0, new InterpreterValue(NumberType.INSTANCE, ctx.getText()));
+        }
+    }
+
+    @Override
+    public void enterVardecl(jvmBasicParser.VardeclContext ctx) {
+        value.push(new ArrayList<InterpreterValue>());
+    }
+
+    @Override
+    public void exitVardecl(jvmBasicParser.VardeclContext var) {
+        ArrayList<InterpreterValue> values = value.pop();
+
+        InterpreterValue val = values.remove(0);
+        InterpreterValue get = scope.get(val.getValue().toString());
+        
+        value.peek().add(get);
     }
 
     public InterpreterValue getValue() {

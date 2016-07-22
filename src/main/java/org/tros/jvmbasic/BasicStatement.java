@@ -17,9 +17,12 @@ package org.tros.jvmbasic;
 
 import java.text.MessageFormat;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.tros.jvmbasic.antlr.jvmBasicParser;
 import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.interpreter.ReturnValue;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.torgo.interpreter.types.StringType;
 
 /**
  *
@@ -62,10 +65,26 @@ public class BasicStatement extends BasicBlock {
 
         if (null != command) {
             switch (command) {
-                case "print":
+                case "print": {
                     InterpreterValue evaluate = org.tros.jvmbasic.ExpressionListener.evaluate(scope, ctx.getChild(1));
                     super.listeners.fire().message(evaluate.getValue().toString());
-                    break;
+                }
+                break;
+                case "variableassignment": {
+                    jvmBasicParser.VariableassignmentContext var = (jvmBasicParser.VariableassignmentContext) ctx;
+                    InterpreterValue evaluate = org.tros.jvmbasic.ExpressionListener.evaluate(scope, var.exprlist());
+                    String varname = var.vardecl().var().getText();
+                    TerminalNode DOLLAR = var.vardecl().var().varsuffix() != null ? var.vardecl().var().varsuffix().DOLLAR() : null;
+                    TerminalNode PERCENT = var.vardecl().var().varsuffix() != null ? var.vardecl().var().varsuffix().PERCENT() : null;
+                    if (DOLLAR != null && evaluate.getType().equals(StringType.INSTANCE)) {
+                        //a string
+                        scope.set(varname, evaluate);
+                    } else if (DOLLAR == null && !evaluate.getType().equals(StringType.INSTANCE)){
+                        //not a string
+                        scope.set(varname, evaluate);
+                    }
+                }
+                break;
                 default:
                     break;
             }
