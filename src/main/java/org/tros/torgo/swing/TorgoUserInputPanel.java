@@ -89,15 +89,15 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
         output.setLayout(outputLayout);
 
         outputTextArea = new JConsole();
-        outputTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+//        outputTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         outputTextArea.setEditable(editable);
-        JScrollPane outputScrollPane = new JScrollPane(outputTextArea);
+//        JScrollPane outputScrollPane = new JScrollPane(outputTextArea);
 
         JLabel messagesLabel = new JLabel(Localization.getLocalizedString("MessagesLabel"));
         JPanel messages = new JPanel();
         messages.setLayout(new BorderLayout());
         messages.add(messagesLabel, BorderLayout.PAGE_START);
-        messages.add(outputScrollPane, BorderLayout.CENTER);
+        messages.add(outputTextArea, BorderLayout.CENTER);
         output.add(messages, BorderLayout.CENTER);
 
         splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tabs, output);
