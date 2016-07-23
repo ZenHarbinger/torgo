@@ -55,9 +55,7 @@ import org.tros.torgo.swing.TorgoMenuBar;
 import org.w3c.dom.DOMImplementation;
 import org.apache.batik.svggen.*;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
-import org.tros.torgo.swing.DrawListener;
 import org.w3c.dom.Document;
-import org.tros.torgo.swing.Drawable;
 import org.tros.utils.GifSequenceWriter;
 
 /**
@@ -127,7 +125,9 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         SVGGraphics2D svgGenerator = new SVGGraphics2D(ctx, false);
 
-        p.draw(svgGenerator);
+        LogoPanel.TurtleState ts = new LogoPanel.TurtleState();
+        
+        p.draw(svgGenerator, ts);
         // Create the SVG DOM tree.
         Writer out = new OutputStreamWriter(outStream, "UTF-8");
         svgGenerator.stream(out, true);
@@ -161,7 +161,9 @@ public final class LogoMenuBar extends TorgoMenuBar {
         };
         p.addListener(dl);
 
-        p.draw(g2d);
+        LogoPanel.TurtleState ts = new LogoPanel.TurtleState();
+
+        p.draw(g2d, ts);
         writer.close();
 
         p.removeListener(dl);
