@@ -28,4 +28,6 @@ public interface Drawable {
     void addListener(DrawListener listener);
 
     void removeListener(DrawListener listener);
+    
+    public Drawable cloneDrawable();
 }

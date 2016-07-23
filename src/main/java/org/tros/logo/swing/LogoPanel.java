@@ -126,7 +126,42 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             listeners.fire().drawn(this);
         }
     }
-    
+
+    @Override
+    public Drawable cloneDrawable() {
+        Drawable d = new Drawable() {
+
+            private final ArrayList<Drawable> queuedCommandsCopy = new ArrayList<>(queuedCommands);
+            protected final EventListenerSupport<DrawListener> listenersCopy
+                    = EventListenerSupport.create(DrawListener.class);
+
+            @Override
+            public void draw(Graphics2D g2d) {
+                //since this list can be written to, do not swith to for-each
+                for (int ii = 0; ii < queuedCommandsCopy.size(); ii++) {
+                    queuedCommandsCopy.get(ii).draw(g2d);
+                    listenersCopy.fire().drawn(this);
+                }
+            }
+
+            @Override
+            public void addListener(DrawListener listener) {
+                listenersCopy.addListener(listener);
+            }
+
+            @Override
+            public void removeListener(DrawListener listener) {
+                listenersCopy.removeListener(listener);
+            }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
+        };
+        return d;
+    }
+
     @Override
     public void pause(final int time) {
         try {
@@ -161,6 +196,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -194,6 +234,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -214,6 +259,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -233,6 +283,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void removeListener(DrawListener listener) {
+            }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
             }
         };
         submitCommand(command);
@@ -262,6 +317,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -282,6 +342,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -301,6 +366,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void removeListener(DrawListener listener) {
+            }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
             }
         };
         submitCommand(command);
@@ -333,6 +403,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -354,6 +429,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void removeListener(DrawListener listener) {
+            }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
             }
         };
         submitCommand(command);
@@ -379,6 +459,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -400,6 +485,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -419,6 +509,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void removeListener(DrawListener listener) {
+            }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
             }
         };
         submitCommand(command);
@@ -440,6 +535,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void removeListener(DrawListener listener) {
+            }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
             }
         };
         submitCommand(command);
@@ -496,6 +596,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -520,6 +625,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void removeListener(DrawListener listener) {
+            }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
             }
         };
         submitCommand(command);
@@ -546,6 +656,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -570,6 +685,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void removeListener(DrawListener listener) {
+            }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
             }
         };
         submitCommand(command);
@@ -599,6 +719,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void removeListener(DrawListener listener) {
             }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
+            }
         };
         submitCommand(command);
     }
@@ -618,6 +743,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void removeListener(DrawListener listener) {
+            }
+
+            @Override
+            public Drawable cloneDrawable() {
+                return this;
             }
         };
         submitCommand(command);
