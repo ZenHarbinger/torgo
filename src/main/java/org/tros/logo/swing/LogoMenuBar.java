@@ -21,6 +21,7 @@ import org.tros.torgo.swing.Localization;
 import org.tros.torgo.Controller;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +45,8 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoToolkit;
@@ -146,7 +149,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
         final BufferedImage image = canvas.getBufferedImage();
 
         final Graphics2D g2d = image.createGraphics();
-        p.addListener(new DrawListener() {
+        DrawListener dl = new DrawListener() {
             @Override
             public void drawn(Drawable sender) {
                 try {
@@ -154,10 +157,13 @@ public final class LogoMenuBar extends TorgoMenuBar {
                 } catch (IOException ex) {
                 }
             }
-        });
+        };
+        p.addListener(dl);
 
         p.draw(g2d);
         writer.close();
+
+        p.removeListener(dl);
     }
 
     /**
@@ -167,44 +173,62 @@ public final class LogoMenuBar extends TorgoMenuBar {
      * @param format
      * @param filename
      */
-    public void exportCanvas(String format, String filename) {
-        switch (format) {
-            case "svg":
-                if (Drawable.class.isAssignableFrom(canvas.getClass())) {
-                    try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
-                        generateSVG((Drawable) canvas, fos);
-                        fos.flush();
-                    } catch (IOException ex) {
-                        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
-                    }
-                }
-                break;
-            case "gif":
-                if (Drawable.class.isAssignableFrom(canvas.getClass())
-                        && BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
-                    try {
-                        generateGIF((Drawable) canvas, (BufferedImageProvider) canvas, filename);
-                    } catch (SVGGraphics2DIOException ex) {
-                        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
-                    } catch (IOException ex) {
-                        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
-                    }
-                }
-                break;
-            default:
-                try {
-                    // retrieve image
-                    if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
-                        BufferedImageProvider bip = (BufferedImageProvider) canvas;
-                        BufferedImage bi = bip.getBufferedImage();
-                        File outputfile = new File(filename);
-                        ImageIO.write(bi, format, outputfile);
-                    }
-                } catch (IOException ex) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
-                }
-                break;
+    public void exportCanvas(final String format, final String filename) {
+        if (JFrame.class.isAssignableFrom(super.parent.getClass())) {
+            final JFrame frame = (JFrame) super.parent;
+            frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         }
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    switch (format) {
+                        case "svg":
+                            if (Drawable.class.isAssignableFrom(canvas.getClass())) {
+                                try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
+                                    generateSVG((Drawable) canvas, fos);
+                                    fos.flush();
+                                } catch (IOException ex) {
+                                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                                }
+                            }
+                            break;
+                        case "gif":
+                            if (Drawable.class.isAssignableFrom(canvas.getClass())
+                                    && BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
+                                try {
+                                    generateGIF((Drawable) canvas, (BufferedImageProvider) canvas, filename);
+                                } catch (SVGGraphics2DIOException ex) {
+                                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                                } catch (IOException ex) {
+                                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                                }
+                            }
+                            break;
+                        default:
+                            try {
+                                // retrieve image
+                                if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
+                                    BufferedImageProvider bip = (BufferedImageProvider) canvas;
+                                    BufferedImage bi = bip.getBufferedImage();
+                                    File outputfile = new File(filename);
+                                    ImageIO.write(bi, format, outputfile);
+                                }
+                            } catch (IOException ex) {
+                                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                            }
+                            break;
+                    }
+                } catch (Exception ex) {
+                } finally {
+                    if (JFrame.class.isAssignableFrom(LogoMenuBar.super.parent.getClass())) {
+                        JFrame frame = (JFrame) LogoMenuBar.super.parent;
+                        frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                    }
+                }
+            }
+        });
     }
 
     /**
