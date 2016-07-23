@@ -197,30 +197,21 @@ public final class LogoMenuBar extends TorgoMenuBar {
                         case "gif":
                             if (Drawable.class.isAssignableFrom(canvas.getClass())
                                     && BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
-                                try {
                                     generateGIF((Drawable) canvas, (BufferedImageProvider) canvas, filename);
-                                } catch (SVGGraphics2DIOException ex) {
-                                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
-                                } catch (IOException ex) {
-                                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
-                                }
                             }
                             break;
                         default:
-                            try {
-                                // retrieve image
-                                if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
-                                    BufferedImageProvider bip = (BufferedImageProvider) canvas;
-                                    BufferedImage bi = bip.getBufferedImage();
-                                    File outputfile = new File(filename);
-                                    ImageIO.write(bi, format, outputfile);
-                                }
-                            } catch (IOException ex) {
-                                org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                            // retrieve image
+                            if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
+                                BufferedImageProvider bip = (BufferedImageProvider) canvas;
+                                BufferedImage bi = bip.getBufferedImage();
+                                File outputfile = new File(filename);
+                                ImageIO.write(bi, format, outputfile);
                             }
                             break;
                     }
                 } catch (Exception ex) {
+                        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
                 } finally {
                     if (JFrame.class.isAssignableFrom(LogoMenuBar.super.parent.getClass())) {
                         JFrame frame = (JFrame) LogoMenuBar.super.parent;
