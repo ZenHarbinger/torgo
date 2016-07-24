@@ -19,6 +19,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.logo.DynamicLogoController;
+import org.tros.torgo.Main;
+import org.tros.torgo.MainTest;
 import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
@@ -70,97 +73,119 @@ public class LogoMenuBarTest {
      */
     @Test
     public void testExportCanvas() {
+        LOGGER.info("testExportCanvas");
+        String[] args = new String[]{"-l", "dynamic-logo"};
+        Main.main(args);
         Robot robot = null;
         try {
             robot = new Robot();
         } catch (AWTException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (robot == null) {
             return;
         }
 
-        DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
-        controller.run();
-        assertEquals("dynamic-logo", controller.getLang());
-        String[] files = new String[]{
-            "logo/examples/antlr/fractal.txt"
-        };
+        java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+        File f = null;
+        try {
+            f = File.createTempFile("pre", "suf");
+        } catch (IOException ex) {
+            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        prefs.put("export-directory", f.getParent());
+//        DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
+//        controller.run();
+//        assertEquals("dynamic-logo", controller.getLang());
+//        String[] files gi= new String[]{
+//            "logo/examples/antlr/fractal.txt"
+//        };
+        robot.delay(3000);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
 
-        for (String file : files) {
-            LOGGER.info(file);
-            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
-            controller.disable("TraceLogger");
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
-            final AtomicBoolean started = new AtomicBoolean(false);
-            final AtomicBoolean finished = new AtomicBoolean(false);
-            controller.addInterpreterListener(new InterpreterListener() {
-                @Override
-                public void started() {
-                    started.set(true);
-                }
-
-                @Override
-                public void finished() {
-                    finished.set(true);
-                }
-
-                @Override
-                public void error(Exception e) {
-                }
-
-                @Override
-                public void message(String msg) {
-                }
-
-                @Override
-                public void currStatement(CodeBlock block, Scope scope) {
-                }
-            });
-
-            controller.startInterpreter();
-
-            try {
-                while (!finished.get()) {
-                    Thread.sleep(10);
-                }
-            } catch (InterruptedException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
-            }
-            assertTrue(started.get());
-            assertTrue(finished.get());
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
-            }
+//////        for (String file : files) {
+////            LOGGER.info(file);
+////            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+////            controller.disable("TraceLogger");
+////
+////            final AtomicBoolean started = new AtomicBoolean(false);
+////            final AtomicBoolean finished = new AtomicBoolean(false);
+////            controller.addInterpreterListener(new InterpreterListener() {
+////                @Override
+////                public void started() {
+////                    started.set(true);
+////                }
+////
+////                @Override
+////                public void finished() {
+////                    finished.set(true);
+////                }
+////
+////                @Override
+////                public void error(Exception e) {
+////                }
+////
+////                @Override
+////                public void message(String msg) {
+////                }
+////
+////                @Override
+////                public void currStatement(CodeBlock block, Scope scope) {
+////                }
+////            });
+////
+////            controller.startInterpreter();
+//
+//            try {
+//                while (!finished.get()) {
+//                    Thread.sleep(10);
+//                }
+//            } catch (InterruptedException ex) {
+//                LOGGER.log(Level.SEVERE, null, ex);
+//            }
+//            assertTrue(started.get());
+//            assertTrue(finished.get());
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException ex) {
+//                LOGGER.log(Level.SEVERE, null, ex);
+//            }
 
             System.out.println("exportSVG");
             exportSVG(robot);
-            System.out.println("exportGIF");
-            exportGIF(robot);
             System.out.println("exportPNG");
             exportPNG(robot);
-        }
-
-        controller.close();
+            System.out.println("exportGIF");
+            exportGIF(robot);
+//        }
+//
+//        controller.close();
     }
 
     private void exportPNG(Robot robot) {
-        File t = new File("t.png");
+        String tmpDir = System.getProperty("java.io.tmpdir");
+        File t = new File(tmpDir + System.getProperty("file.separator") + "t.png");
 
         if (t.isFile()) {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-//            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_P}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
@@ -175,26 +200,22 @@ public class LogoMenuBarTest {
     }
 
     private void exportGIF(Robot robot) {
-        File t = new File("t.gif");
+        String tmpDir = System.getProperty("java.io.tmpdir");
+        File t = new File(tmpDir + System.getProperty("file.separator") + "t.gif");
 
         if (t.isFile()) {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-//            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_G}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_I}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_F}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+        robot.delay(5000);
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
         if (t.isFile()) {
             t.delete();
@@ -202,18 +223,14 @@ public class LogoMenuBarTest {
     }
 
     private void exportSVG(Robot robot) {
-        File t = new File("t.svg");
+        String tmpDir = System.getProperty("java.io.tmpdir");
+        File t = new File(tmpDir + System.getProperty("file.separator") + "t.svg");
 
         if (t.isFile()) {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-//            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_V}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_S}, 100);
@@ -230,10 +247,12 @@ public class LogoMenuBarTest {
     void pressKey(Robot robot, int[] keys, int delay) {
         for (int key : keys) {
             robot.keyPress(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
         for (int key : keys) {
             robot.keyRelease(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
     }

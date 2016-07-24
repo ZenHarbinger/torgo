@@ -21,6 +21,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -36,14 +41,6 @@ public class TorgoMenuBar extends JMenuBar {
 
     protected final Controller controller;
 
-    private JMenuItem fileNew;
-    private JMenuItem fileOpen;
-    private JMenuItem fileClose;
-    private JMenuItem fileSave;
-    private JMenuItem fileSaveAs;
-    private JMenuItem fileQuit;
-    private JMenuItem logConsole;
-
     protected final Component parent;
 
     /**
@@ -57,7 +54,11 @@ public class TorgoMenuBar extends JMenuBar {
         this.controller = controller;
         this.parent = parent;
 
-        add(setupFileMenu());
+        try {
+            add(setupFileMenu());
+        } catch (IOException ex) {
+            Logger.getLogger(TorgoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -65,18 +66,34 @@ public class TorgoMenuBar extends JMenuBar {
      *
      * @return
      */
-    private JMenu setupFileMenu() {
+    private JMenu setupFileMenu() throws IOException {
         LogConsole.CONSOLE.setVisible(false);
         JMenu fileMenu = new JMenu(Localization.getLocalizedString("FileMenu"));
 
-        fileNew = new JMenuItem(Localization.getLocalizedString("FileNew"));
-        fileOpen = new JMenuItem(Localization.getLocalizedString("FileOpen"));
-        fileClose = new JMenuItem(Localization.getLocalizedString("FileClose"));
-        fileSave = new JMenuItem(Localization.getLocalizedString("FileSave"));
-        fileSaveAs = new JMenuItem(Localization.getLocalizedString("FileSaveAs"));
-        fileQuit = new JMenuItem(Localization.getLocalizedString("FileQuit"));
+        JMenuItem fileNew = new JMenuItem(Localization.getLocalizedString("FileNew"));
+        java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("projectui/newFile.png");
+        ImageIcon ico = new ImageIcon(resources.nextElement());
+        fileNew.setIcon(ico);
 
-        logConsole = new JMenuItem("View Log Console");
+        JMenuItem fileOpen = new JMenuItem(Localization.getLocalizedString("FileOpen"));
+        resources = ClassLoader.getSystemClassLoader().getResources("projectui/open.png");
+        ico = new ImageIcon(resources.nextElement());
+        fileOpen.setIcon(ico);
+
+        JMenuItem fileClose = new JMenuItem(Localization.getLocalizedString("FileClose"));
+        JMenuItem fileSave = new JMenuItem(Localization.getLocalizedString("FileSave"));
+        resources = ClassLoader.getSystemClassLoader().getResources("actions/save.png");
+        ico = new ImageIcon(resources.nextElement());
+        fileSave.setIcon(ico);
+
+        JMenuItem fileSaveAs = new JMenuItem(Localization.getLocalizedString("FileSaveAs"));
+        resources = ClassLoader.getSystemClassLoader().getResources("profiler/actions/icons/saveAs.png");
+        ico = new ImageIcon(resources.nextElement());
+        fileSaveAs.setIcon(ico);
+
+        JMenuItem fileQuit = new JMenuItem(Localization.getLocalizedString("FileQuit"));
+
+        JMenuItem logConsole = new JMenuItem("View Log Console");
 
         fileNew.addActionListener(new ActionListener() {
 
