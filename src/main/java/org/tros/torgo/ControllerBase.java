@@ -34,6 +34,9 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -45,6 +48,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.event.EventListenerSupport;
+import static org.tros.torgo.Main.IMAGE_ICON_CLASS_PATH;
 import org.tros.torgo.swing.AboutWindow;
 import org.tros.torgo.swing.Localization;
 import org.tros.torgo.swing.TorgoMenuBar;
@@ -165,6 +169,14 @@ public abstract class ControllerBase implements Controller {
         window.setJMenuBar(mb);
         JMenu helpMenu = new JMenu("Help");
         JMenuItem aboutMenu = new JMenuItem("About Torgo");
+        try {
+            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("torgo-16x16.png");
+            ImageIcon ico = new ImageIcon(resources.nextElement());
+            aboutMenu.setIcon(ico);
+        } catch (IOException ex) {
+            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         aboutMenu.addActionListener(new ActionListener() {
 
             @Override
@@ -447,6 +459,7 @@ public abstract class ControllerBase implements Controller {
 
             @Override
             public void message(String msg) {
+                torgoPanel.appendToOutputTextArea(msg);
             }
 
             @Override
@@ -497,6 +510,7 @@ public abstract class ControllerBase implements Controller {
 
             @Override
             public void message(String msg) {
+                torgoPanel.appendToOutputTextArea(msg);
             }
 
             @Override
