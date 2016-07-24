@@ -56,54 +56,9 @@ public class TorgoMenuBar extends JMenuBar {
 
         try {
             add(setupFileMenu());
-//            add(setupInterpretersMenu());
         } catch (IOException ex) {
             Logger.getLogger(TorgoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private JMenu setupInterpreterMenu() throws IOException {
-        LogConsole.CONSOLE.setVisible(false);
-        JMenu interpreterMenu = new JMenu("Interpreter");
-
-        JMenuItem fileStart = new JMenuItem("Start");
-        java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("projectui/runProject.png");
-        ImageIcon ico = new ImageIcon(resources.nextElement());
-        fileStart.setIcon(ico);
-        
-        fileStart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("hello");
-            }
-        });
-        
-        resources = ClassLoader.getSystemClassLoader().getResources("projectui/stop.png");
-        ico = new ImageIcon(resources.nextElement());
-        JMenuItem fileStop = new JMenuItem("Stop");
-        fileStop.setIcon(ico);
-        JMenuItem fileDebug = new JMenuItem("Debug");
-        resources = ClassLoader.getSystemClassLoader().getResources("debugging/debugProject.png");
-        ico = new ImageIcon(resources.nextElement());
-        fileDebug.setIcon(ico);
-        JMenuItem filePause = new JMenuItem("Pause");
-        resources = ClassLoader.getSystemClassLoader().getResources("debugging/actions/Pause.png");
-        ico = new ImageIcon(resources.nextElement());
-        filePause.setIcon(ico);
-        JMenuItem fileStep = new JMenuItem("Step");
-        resources = ClassLoader.getSystemClassLoader().getResources("debugging/actions/StepOver.png");
-        ico = new ImageIcon(resources.nextElement());
-        fileStep.setIcon(ico);
-
-        interpreterMenu.add(fileStart);
-        interpreterMenu.add(fileStop);
-        interpreterMenu.add(fileDebug);
-        interpreterMenu.add(filePause);
-        interpreterMenu.add(fileStep);
-
-        interpreterMenu.setMnemonic('I');
-
-        return interpreterMenu;
     }
 
     /**
