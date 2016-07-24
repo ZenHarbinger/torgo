@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.tros.logo.swing;
 
 import java.awt.Graphics2D;
-import org.tros.logo.swing.LogoPanel.TurtleState;
 
 /**
  *
