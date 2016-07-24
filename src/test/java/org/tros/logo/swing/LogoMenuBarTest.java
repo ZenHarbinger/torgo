@@ -163,10 +163,10 @@ public class LogoMenuBarTest {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_X}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
 //            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
@@ -198,10 +198,10 @@ public class LogoMenuBarTest {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-//            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_X}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+////            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
@@ -233,10 +233,10 @@ public class LogoMenuBarTest {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_X}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
 //            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
 //        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);

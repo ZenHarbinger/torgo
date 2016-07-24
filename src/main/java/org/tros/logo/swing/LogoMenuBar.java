@@ -313,6 +313,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
         exportMenu.add(exportSvg);
         exportMenu.add(exportGif);
         exportMenu.add(exportPng);
+        exportMenu.setMnemonic('X');
 
         return (exportMenu);
     }
