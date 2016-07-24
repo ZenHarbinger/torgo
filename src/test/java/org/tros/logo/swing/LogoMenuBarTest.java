@@ -163,14 +163,14 @@ public class LogoMenuBarTest {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_X}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_P}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
 //            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+//        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+//        robot.delay(500);
 //        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
@@ -198,13 +198,13 @@ public class LogoMenuBarTest {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_X}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_G}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
 ////            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+//        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+//        robot.delay(500);
 //        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
@@ -233,12 +233,12 @@ public class LogoMenuBarTest {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_X}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_V}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
 //            pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+//        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+//        robot.delay(500);
 //        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
 //        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
@@ -261,10 +261,12 @@ public class LogoMenuBarTest {
     void pressKey(Robot robot, int[] keys, int delay) {
         for (int key : keys) {
             robot.keyPress(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
         for (int key : keys) {
             robot.keyRelease(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
     }
