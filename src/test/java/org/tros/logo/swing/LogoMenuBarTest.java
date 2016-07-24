@@ -19,6 +19,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -80,6 +81,14 @@ public class LogoMenuBarTest {
             return;
         }
 
+        java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+        File f = null;
+        try {
+            f = File.createTempFile("pre", "suf");
+        } catch (IOException ex) {
+            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        prefs.put("export-directory", f.getParent());
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
@@ -147,7 +156,8 @@ public class LogoMenuBarTest {
     }
 
     private void exportPNG(Robot robot) {
-        File t = new File("t.png");
+        String tmpDir = System.getProperty("java.io.tmpdir");
+        File t = new File(tmpDir + System.getProperty("file.separator") + "t.png");
 
         if (t.isFile()) {
             t.delete();
@@ -161,11 +171,11 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
-        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
@@ -174,13 +184,15 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
 
+        assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
     }
 
     private void exportGIF(Robot robot) {
-        File t = new File("t.gif");
+        String tmpDir = System.getProperty("java.io.tmpdir");
+        File t = new File(tmpDir + System.getProperty("file.separator") + "t.gif");
 
         if (t.isFile()) {
             t.delete();
@@ -193,11 +205,11 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
-        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
@@ -207,13 +219,15 @@ public class LogoMenuBarTest {
         robot.delay(5000);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
     }
 
     private void exportSVG(Robot robot) {
-        File t = new File("t.svg");
+        String tmpDir = System.getProperty("java.io.tmpdir");
+        File t = new File(tmpDir + System.getProperty("file.separator") + "t.svg");
 
         if (t.isFile()) {
             t.delete();
@@ -225,11 +239,11 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
-        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_S}, 100);
@@ -238,6 +252,7 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
 
+        assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
