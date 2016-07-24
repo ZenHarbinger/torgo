@@ -21,7 +21,6 @@ import org.tros.torgo.swing.Localization;
 import org.tros.torgo.Controller;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,15 +37,17 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.JOptionPane;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoToolkit;
@@ -54,9 +55,7 @@ import org.tros.torgo.swing.TorgoMenuBar;
 import org.w3c.dom.DOMImplementation;
 import org.apache.batik.svggen.*;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
-import org.tros.torgo.swing.DrawListener;
 import org.w3c.dom.Document;
-import org.tros.torgo.swing.Drawable;
 import org.tros.utils.GifSequenceWriter;
 
 /**
@@ -126,7 +125,9 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         SVGGraphics2D svgGenerator = new SVGGraphics2D(ctx, false);
 
-        p.draw(svgGenerator);
+        LogoPanel.TurtleState ts = new LogoPanel.TurtleState();
+        
+        p.draw(svgGenerator, ts);
         // Create the SVG DOM tree.
         Writer out = new OutputStreamWriter(outStream, "UTF-8");
         svgGenerator.stream(out, true);
@@ -160,66 +161,14 @@ public final class LogoMenuBar extends TorgoMenuBar {
         };
         p.addListener(dl);
 
-        p.draw(g2d);
+        LogoPanel.TurtleState ts = new LogoPanel.TurtleState();
+
+        p.draw(g2d, ts);
         writer.close();
 
         p.removeListener(dl);
-    }
-
-    /**
-     * Export the canvas as an image of the specified format. GIF will generate
-     * an animated gif. Other formats are generated using ImageIO.write(...)
-     *
-     * @param format
-     * @param filename
-     */
-    public void exportCanvas(final String format, final String filename) {
-        if (JFrame.class.isAssignableFrom(super.parent.getClass())) {
-            final JFrame frame = (JFrame) super.parent;
-            frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        }
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    switch (format) {
-                        case "svg":
-                            if (Drawable.class.isAssignableFrom(canvas.getClass())) {
-                                try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
-                                    generateSVG((Drawable) canvas, fos);
-                                    fos.flush();
-                                } catch (IOException ex) {
-                                    org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
-                                }
-                            }
-                            break;
-                        case "gif":
-                            if (Drawable.class.isAssignableFrom(canvas.getClass())
-                                    && BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
-                                    generateGIF((Drawable) canvas, (BufferedImageProvider) canvas, filename);
-                            }
-                            break;
-                        default:
-                            // retrieve image
-                            if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
-                                BufferedImageProvider bip = (BufferedImageProvider) canvas;
-                                BufferedImage bi = bip.getBufferedImage();
-                                File outputfile = new File(filename);
-                                ImageIO.write(bi, format, outputfile);
-                            }
-                            break;
-                    }
-                } catch (Exception ex) {
-                        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
-                } finally {
-                    if (JFrame.class.isAssignableFrom(LogoMenuBar.super.parent.getClass())) {
-                        JFrame frame = (JFrame) LogoMenuBar.super.parent;
-                        frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                    }
-                }
-            }
-        });
+        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).info("{0} animation is complete!", filename);
+        JOptionPane.showMessageDialog(parent, MessageFormat.format("{0} animation is complete!", filename), "Animated GIF Sequence Complete", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -282,7 +231,14 @@ public final class LogoMenuBar extends TorgoMenuBar {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     String filename = chooser.getSelectedFile().getPath();
                     prefs.put("export-directory", chooser.getSelectedFile().getParent());
-                    exportCanvas("svg", filename);
+                    if (Drawable.class.isAssignableFrom(canvas.getClass())) {
+                        try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
+                            generateSVG((Drawable) canvas, fos);
+                            fos.flush();
+                        } catch (IOException ex) {
+                            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                        }
+                    }
                 }
             }
         });
@@ -300,9 +256,25 @@ public final class LogoMenuBar extends TorgoMenuBar {
                 int result = chooser.showSaveDialog(parent);
 
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    String filename = chooser.getSelectedFile().getPath();
+                    final String filename = chooser.getSelectedFile().getPath();
                     prefs.put("export-directory", chooser.getSelectedFile().getParent());
-                    exportCanvas("gif", filename);
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (Drawable.class.isAssignableFrom(canvas.getClass())
+                                    && BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
+                                try {
+                                    generateGIF(((Drawable) canvas).cloneDrawable(), (BufferedImageProvider) canvas, filename);
+                                } catch (SVGGraphics2DIOException ex) {
+                                    Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                    });
+                    t.setDaemon(true);
+                    t.start();
                 }
             }
         });
@@ -321,7 +293,17 @@ public final class LogoMenuBar extends TorgoMenuBar {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     String filename = chooser.getSelectedFile().getPath();
                     prefs.put("export-directory", chooser.getSelectedFile().getParent());
-                    exportCanvas("png", filename);
+                    // retrieve image
+                    if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
+                        BufferedImageProvider bip = (BufferedImageProvider) canvas;
+                        BufferedImage bi = bip.getBufferedImage();
+                        File outputfile = new File(filename);
+                        try {
+                            ImageIO.write(bi, "png", outputfile);
+                        } catch (IOException ex) {
+                            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
             }
         });
