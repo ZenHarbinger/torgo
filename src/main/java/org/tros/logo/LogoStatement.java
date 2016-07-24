@@ -236,8 +236,8 @@ class LogoStatement extends LogoBlock {
                 case "print":
                     //will need to support strings...
                     InterpreterValue evaluate = ExpressionListener.evaluate(scope, ctx.getChild(1));
-                    canvas.message(this.getClass().getName() + " -> " + evaluate.getValue().toString());
-                    super.listeners.fire().message(this.getClass().getName() + " -> " + evaluate.getValue().toString());
+//                    canvas.message(this.getClass().getName() + " -> " + evaluate.getValue().toString());
+                    super.listeners.fire().message(evaluate.getValue().toString());
                     break;
                 default:
                     //if it is not a known value form above, it is probably a funciton,

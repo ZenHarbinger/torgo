@@ -447,6 +447,7 @@ public abstract class ControllerBase implements Controller {
 
             @Override
             public void message(String msg) {
+                torgoPanel.appendToOutputTextArea(msg);
             }
 
             @Override
@@ -497,6 +498,7 @@ public abstract class ControllerBase implements Controller {
 
             @Override
             public void message(String msg) {
+                torgoPanel.appendToOutputTextArea(msg);
             }
 
             @Override

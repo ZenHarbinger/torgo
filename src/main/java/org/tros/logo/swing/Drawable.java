@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.swing;
+package org.tros.logo.swing;
+
+import java.awt.Graphics2D;
+import org.tros.logo.swing.LogoPanel.TurtleState;
 
 /**
  *
  * @author matta
  */
-public interface DrawListener {
+public interface Drawable {
 
-    void drawn(Drawable sender);
+    void draw(Graphics2D g, TurtleState turtleState);
+
+    void addListener(DrawListener listener);
+
+    void removeListener(DrawListener listener);
+    
+    public Drawable cloneDrawable();
 }
