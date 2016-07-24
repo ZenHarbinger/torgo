@@ -24,6 +24,8 @@ import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,6 +50,7 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoToolkit;
@@ -126,7 +129,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
         SVGGraphics2D svgGenerator = new SVGGraphics2D(ctx, false);
 
         TurtleState ts = new TurtleState();
-        
+
         p.draw(svgGenerator, ts);
         // Create the SVG DOM tree.
         Writer out = new OutputStreamWriter(outStream, "UTF-8");
@@ -313,7 +316,10 @@ public final class LogoMenuBar extends TorgoMenuBar {
         exportMenu.add(exportSvg);
         exportMenu.add(exportGif);
         exportMenu.add(exportPng);
-
+        exportMenu.setMnemonic('X');
+        exportSvg.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.ALT_MASK));
+        exportGif.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.ALT_MASK));
+        exportPng.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.ALT_MASK));
         return (exportMenu);
     }
 
