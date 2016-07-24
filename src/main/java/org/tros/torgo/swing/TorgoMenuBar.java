@@ -30,7 +30,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import static org.tros.torgo.Main.IMAGE_ICON_CLASS_PATH;
 import org.tros.utils.logging.LogConsole;
 
 /**
