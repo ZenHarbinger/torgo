@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,23 +47,6 @@ import org.tros.torgo.TorgoTextConsole;
  * @author matta
  */
 public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, BufferedImageProvider, Drawable {
-
-    public static class TurtleState {
-
-        protected Color penColor;
-        protected Font font;
-        protected boolean penup;
-        protected boolean showTurtle;
-        protected double angle;
-        protected double penX;
-        protected double penY;
-
-        public TurtleState() {
-            penColor = Color.BLACK;
-            penup = false;
-            showTurtle = true;
-        }
-    }
 
     private final TorgoTextConsole console;
     private BufferedImage turtle;
@@ -324,8 +307,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
-                double x2 = (getWidth()) / 2.0 + x;
-                double y2 = (getHeight()) / 2.0 + y;
+                double x2 = (turtleState.width > 0 ? turtleState.width : getWidth()) / 2.0 + x;
+                double y2 = (turtleState.height > 0 ? turtleState.height : getHeight()) / 2.0 + y;
 
                 if (!turtleState.penup) {
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -345,37 +328,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public Drawable cloneDrawable() {
-                final int width = getWidth();
-                final int height = getHeight();
-                Drawable d = new Drawable() {
-
-                    @Override
-                    public void draw(Graphics2D g2, TurtleState turtleState) {
-                        double x2 = (width) / 2.0 + x;
-                        double y2 = (height) / 2.0 + y;
-
-                        if (!turtleState.penup) {
-                            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            g2.draw(new Line2D.Double(turtleState.penX, turtleState.penY, x2, y2));
-                        }
-                        turtleState.penX = x2;
-                        turtleState.penY = y2;
-                    }
-
-                    @Override
-                    public void addListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public void removeListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public Drawable cloneDrawable() {
-                        return this;
-                    }
-                };
-                return d;
+                return this;
             }
         };
         submitCommand(command);
@@ -436,16 +389,18 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         Drawable command = new Drawable() {
 
             @Override
-            public void draw(Graphics2D g, TurtleState turtleState) {
+            public void draw(Graphics2D g2, TurtleState turtleState) {
                 try {
-                    g.setColor(Color.white);
-                    g.fillRect(0, 0, getWidth(), getHeight());
+                    g2.setColor(Color.white);
+                    g2.fillRect(0, 0,
+                        turtleState.width > 0 ? (int) turtleState.width : getWidth(),
+                        turtleState.height > 0 ? (int) turtleState.height : getHeight());
                     turtleState.penColor = Color.black;
-                    g.setColor(turtleState.penColor);
+                    g2.setColor(turtleState.penColor);
 
                     turtleState.font = new Font(null, 0, 12);
 
-                    g.setFont(turtleState.font);
+                    g2.setFont(turtleState.font);
                 } catch (Exception ex) {
 
                 }
@@ -461,41 +416,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public Drawable cloneDrawable() {
-                final int width = getWidth();
-                final int height = getHeight();
-
-                Drawable d = new Drawable() {
-                    @Override
-                    public void draw(Graphics2D g, TurtleState turtleState) {
-                        try {
-                            g.setColor(Color.white);
-                            g.fillRect(0, 0, width, height);
-                            turtleState.penColor = Color.black;
-                            g.setColor(turtleState.penColor);
-
-                            turtleState.font = new Font(null, 0, 12);
-
-                            g.setFont(turtleState.font);
-                        } catch (Exception ex) {
-
-                        }
-                    }
-
-                    @Override
-                    public void addListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public void removeListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public Drawable cloneDrawable() {
-                        return this;
-                    }
-                };
-
-                return d;
+                return this;
             }
         };
         submitCommand(command);
@@ -507,8 +428,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
-                turtleState.penX = getWidth() / 2.0;
-                turtleState.penY = getHeight() / 2.0;
+                turtleState.penX = turtleState.width > 0 ? turtleState.width / 2.0 : getWidth() / 2.0;
+                turtleState.penY = turtleState.height > 0 ? turtleState.height / 2.0 : getHeight() / 2.0;
                 turtleState.angle = -1.0 * (Math.PI / 2.0);
             }
 
@@ -522,32 +443,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public Drawable cloneDrawable() {
-                final int width = getWidth();
-                final int height = getHeight();
-
-                Drawable d = new Drawable() {
-                    @Override
-                    public void draw(Graphics2D g, TurtleState turtleState) {
-                        turtleState.penX = width / 2.0;
-                        turtleState.penY = height / 2.0;
-                        turtleState.angle = -1.0 * (Math.PI / 2.0);
-                    }
-
-                    @Override
-                    public void addListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public void removeListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public Drawable cloneDrawable() {
-                        return this;
-                    }
-
-                };
-                return d;
+                return this;
             }
         };
         submitCommand(command);
@@ -562,7 +458,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 Color canvasColor = getColorByName(color);
 
                 g2.setColor(canvasColor);
-                g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.fillRect(0, 0,
+                        turtleState.width > 0 ? (int) turtleState.width : getWidth(),
+                        turtleState.height > 0 ? (int) turtleState.height : getHeight());
                 g2.setColor(turtleState.penColor);
             }
 
@@ -576,35 +474,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public Drawable cloneDrawable() {
-                final int width = getWidth();
-                final int height = getHeight();
-
-                Drawable d = new Drawable() {
-                    @Override
-                    public void draw(Graphics2D g2, TurtleState turtleState) {
-                        Color canvasColor = getColorByName(color);
-
-                        g2.setColor(canvasColor);
-                        g2.fillRect(0, 0, width, height);
-                        g2.setColor(turtleState.penColor);
-                    }
-
-                    @Override
-                    public void addListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public void removeListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public Drawable cloneDrawable() {
-                        return this;
-                    }
-
-                };
-
-                return d;
+                return this;
             }
         };
         submitCommand(command);
@@ -616,7 +486,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
                 g2.setColor(color);
-                g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.fillRect(0, 0,
+                        turtleState.width > 0 ? (int) turtleState.width : getWidth(),
+                        turtleState.height > 0 ? (int) turtleState.height : getHeight());
                 g2.setColor(turtleState.penColor);
             }
 
@@ -630,32 +502,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public Drawable cloneDrawable() {
-                final int width = getWidth();
-                final int height = getHeight();
-
-                Drawable d = new Drawable() {
-                    @Override
-                    public void draw(Graphics2D g2, TurtleState turtleState) {
-                        g2.setColor(color);
-                        g2.fillRect(0, 0, width, height);
-                        g2.setColor(turtleState.penColor);
-                    }
-
-                    @Override
-                    public void addListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public void removeListener(DrawListener listener) {
-                    }
-
-                    @Override
-                    public Drawable cloneDrawable() {
-                        return this;
-                    }
-
-                };
-                return d;
+                return this;
             }
         };
         submitCommand(command);

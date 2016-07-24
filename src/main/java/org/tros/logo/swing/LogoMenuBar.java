@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,7 +125,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         SVGGraphics2D svgGenerator = new SVGGraphics2D(ctx, false);
 
-        LogoPanel.TurtleState ts = new LogoPanel.TurtleState();
+        TurtleState ts = new TurtleState();
         
         p.draw(svgGenerator, ts);
         // Create the SVG DOM tree.
@@ -161,7 +161,9 @@ public final class LogoMenuBar extends TorgoMenuBar {
         };
         p.addListener(dl);
 
-        LogoPanel.TurtleState ts = new LogoPanel.TurtleState();
+        TurtleState ts = new TurtleState();
+        ts.width = image.getWidth();
+        ts.height = image.getHeight();
 
         p.draw(g2d, ts);
         writer.close();
