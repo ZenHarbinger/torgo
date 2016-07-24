@@ -137,10 +137,10 @@ public class LogoMenuBarTest {
 
             System.out.println("exportSVG");
             exportSVG(robot);
-            System.out.println("exportGIF");
-            exportGIF(robot);
             System.out.println("exportPNG");
             exportPNG(robot);
+            System.out.println("exportGIF");
+            exportGIF(robot);
         }
 
         controller.close();
@@ -161,6 +161,11 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
+        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
@@ -188,13 +193,19 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
+        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_I}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_F}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+        robot.delay(5000);
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
         if (t.isFile()) {
             t.delete();
@@ -214,6 +225,11 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
+        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_M}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_SLASH}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_S}, 100);
