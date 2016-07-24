@@ -225,9 +225,6 @@ public final class LogoMenuBar extends TorgoMenuBar {
         exportSvg.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                
-                System.out.println("exporting SVG!");
-                
                 JFileChooser chooser = new JFileChooser();
                 chooser.setMultiSelectionEnabled(false);
                 java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
@@ -237,7 +234,6 @@ public final class LogoMenuBar extends TorgoMenuBar {
                 int result = chooser.showSaveDialog(parent);
 
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    System.out.println("exporting SVG: " + chooser.getSelectedFile().getAbsolutePath());
                     String filename = chooser.getSelectedFile().getPath();
                     prefs.put("export-directory", chooser.getSelectedFile().getParent());
                     if (Drawable.class.isAssignableFrom(canvas.getClass())) {

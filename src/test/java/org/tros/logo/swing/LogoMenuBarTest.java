@@ -184,7 +184,6 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
 
-        assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
@@ -219,7 +218,6 @@ public class LogoMenuBarTest {
         robot.delay(5000);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
-        assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
@@ -252,7 +250,6 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(500);
 
-        assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
