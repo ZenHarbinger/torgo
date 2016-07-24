@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.swing;
+package org.tros.logo.swing;
+
+import java.awt.Color;
+import java.awt.Font;
 
 /**
  *
  * @author matta
  */
-public interface DrawListener {
+public class TurtleState {
 
-    void drawn(Drawable sender);
+    protected Color penColor;
+    protected Font font;
+    protected boolean penup;
+    protected boolean showTurtle;
+    protected double angle;
+    protected double penX;
+    protected double penY;
+
+    protected double height;
+    protected double width;
+
+    public TurtleState() {
+        penColor = Color.BLACK;
+        penup = false;
+        showTurtle = true;
+
+        width = -1;
+        height = -1;
+    }
 }

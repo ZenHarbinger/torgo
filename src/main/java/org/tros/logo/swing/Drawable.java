@@ -13,15 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.interpreter.types;
+package org.tros.logo.swing;
 
-import org.tros.torgo.interpreter.InterpreterType;
+import java.awt.Graphics2D;
 
 /**
  *
  * @author matta
  */
-public class StringType extends InterpreterTypeImpl implements InterpreterType {
+public interface Drawable {
 
-    public static final InterpreterType INSTANCE = new StringType();
+    void draw(Graphics2D g, TurtleState turtleState);
+
+    void addListener(DrawListener listener);
+
+    void removeListener(DrawListener listener);
+    
+    public Drawable cloneDrawable();
 }

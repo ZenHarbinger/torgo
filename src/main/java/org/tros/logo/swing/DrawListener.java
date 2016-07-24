@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.swing;
-
-import java.awt.Graphics2D;
+package org.tros.logo.swing;
 
 /**
  *
  * @author matta
  */
-public interface Drawable {
+public interface DrawListener {
 
-    void draw(Graphics2D g);
-
-    void addListener(DrawListener listener);
-
-    void removeListener(DrawListener listener);
+    void drawn(Drawable sender);
 }
