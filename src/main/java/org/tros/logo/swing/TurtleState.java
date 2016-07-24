@@ -22,7 +22,7 @@ import java.awt.Font;
  *
  * @author matta
  */
-public class TurtleState {
+class TurtleState {
 
     protected Color penColor;
     protected Font font;

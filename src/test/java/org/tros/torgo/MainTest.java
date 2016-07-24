@@ -25,7 +25,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.tros.logo.swing.LogoMenuBarTest;
 import org.tros.utils.logging.Logging;
 
 /**
