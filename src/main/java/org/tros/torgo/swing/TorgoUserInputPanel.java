@@ -20,16 +20,23 @@ import java.awt.Component;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rtextarea.Gutter;
+import org.fife.ui.rtextarea.GutterIconInfo;
+import org.fife.ui.rtextarea.RTextScrollPane;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.interpreter.InterpreterListener;
@@ -38,12 +45,18 @@ import org.tros.torgo.TorgoTextConsole;
 
 public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextConsole {
 
-    protected final JTextArea inputTextArea;
+    protected final RSyntaxTextArea inputTextArea;
+    protected final RTextScrollPane scrollPane;
+    protected final Gutter gutter;
+
     private final JConsole outputTextArea;
     private final JSplitPane splitPane;
     private final JPanel inputTab;
     private final JTabbedPane tabs;
 
+    public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
+    protected final Controller controller;
+    
     /**
      * Constructor.
      *
@@ -53,6 +66,7 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public TorgoUserInputPanel(Controller controller, String name, boolean editable) {
+        this.controller = controller;
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
 
@@ -61,24 +75,23 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
         BorderLayout intputLayout = new BorderLayout();
         inputTab.setLayout(intputLayout);
 
-        JTextArea area = null;
-        JScrollPane inputScrollPane = null;
-        //currently commented out for working with snapd
+        inputTextArea = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        inputTextArea.setAntiAliasingEnabled(true);
+        inputTextArea.setCodeFoldingEnabled(true);
+        scrollPane = new org.fife.ui.rtextarea.RTextScrollPane(inputTextArea);
+        scrollPane.setIconRowHeaderEnabled(true);
+        gutter = scrollPane.getGutter();
         try {
-            Class<?> syntax = Class.forName("org.fife.ui.rsyntaxtextarea.RSyntaxTextArea");
-            area = (JTextArea) syntax.newInstance();
-            syntax.getMethod("setAntiAliasingEnabled", boolean.class).invoke(area, true);
-            syntax.getMethod("setCodeFoldingEnabled", boolean.class).invoke(area, true);
-            Class<?> syntaxScroll = Class.forName("org.fife.ui.rtextarea.RTextScrollPane");
-            inputScrollPane = (JScrollPane) syntaxScroll.getConstructor(Component.class).newInstance(area);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
+            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(DEBUG_ICON);
+            ImageIcon imageIcon = new ImageIcon(resources.nextElement());
+            gutter.setBookmarkIcon(imageIcon);
+        } catch (IOException ex) {
+            Logger.getLogger(TorgoUserInputPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        inputTextArea = area == null ? new JTextArea() : area;
-        inputScrollPane = inputScrollPane == null ? new JScrollPane(inputTextArea) : inputScrollPane;
+        gutter.setBookmarkingEnabled(true);
 
         inputTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        inputTab.add(inputScrollPane, BorderLayout.CENTER);
+        inputTab.add(scrollPane, BorderLayout.CENTER);
 
         //TABS
         tabs = new JTabbedPane();
@@ -168,6 +181,7 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
     public void reset() {
         clearSource();
         clearOutputTextArea();
+        gutter.removeAllTrackingIcons();
     }
 
     /**
@@ -288,6 +302,17 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
                 hl.addHighlight(startChar, endChar + 1, DefaultHighlighter.DefaultPainter);
             } catch (BadLocationException ex) {
                 org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
+            }
+        }
+        for(GutterIconInfo gii : gutter.getBookmarks()) {
+            int offset = 0;
+            try {
+                //Not sure why a -1 here works, needs more testing.
+                offset = inputTextArea.getLineStartOffset(line - 1);
+            } catch (BadLocationException ex) {
+            }
+            if (gii.getMarkedOffset() == offset) {
+                controller.pauseInterpreter();
             }
         }
     }
