@@ -16,6 +16,7 @@
 package org.tros.torgo.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
@@ -33,6 +34,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
+import javax.swing.text.LayeredHighlighter;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
@@ -57,6 +59,7 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
     public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
     protected final Controller controller;
     
+    private final LayeredHighlighter.LayerPainter defaultHighlighter;    
     /**
      * Constructor.
      *
@@ -69,6 +72,7 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
         this.controller = controller;
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
+        defaultHighlighter = DefaultHighlighter.DefaultPainter;
 
         //SOURCE
         inputTab = new JPanel();
@@ -299,7 +303,8 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
             Highlighter hl = inputTextArea.getHighlighter();
             hl.removeAllHighlights();
             try {
-                hl.addHighlight(startChar, endChar + 1, DefaultHighlighter.DefaultPainter);
+                hl.addHighlight(startChar, endChar + 1, defaultHighlighter);
+                inputTextArea.setCaretPosition(startChar);
             } catch (BadLocationException ex) {
                 org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
             }
@@ -313,6 +318,14 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
             }
             if (gii.getMarkedOffset() == offset) {
                 controller.pauseInterpreter();
+                inputTextArea.setCaretPosition(startChar);
+                Highlighter hl = inputTextArea.getHighlighter();
+                hl.removeAllHighlights();
+                try {
+                    hl.addHighlight(startChar, endChar + 1, new DefaultHighlighter.DefaultHighlightPainter(Color.PINK));
+                } catch (BadLocationException ex) {
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
+                }
             }
         }
     }
