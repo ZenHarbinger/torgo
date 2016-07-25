@@ -122,27 +122,12 @@ public class TorgoToolBarTest {
         robot.delay(500);
 
         LOGGER.info("debug");
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_SPACE}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_F5}, 100);
 
         while (!finished.get()) {
             robot.delay(100);
         }
-        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        //        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        //        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        //        robot.delay(200);
-        //add load/save/save as
-        //add debugging steps...
-        //add run command
+
         //close app
         controller.close();
     }
