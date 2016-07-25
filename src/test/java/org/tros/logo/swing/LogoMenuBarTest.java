@@ -20,7 +20,6 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -28,15 +27,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.tros.logo.DynamicLogoController;
-import org.tros.torgo.Main;
-import org.tros.torgo.MainTest;
 import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
-import org.tros.torgo.interpreter.CodeBlock;
-import org.tros.torgo.interpreter.InterpreterListener;
-import org.tros.torgo.interpreter.Scope;
 import org.tros.utils.logging.Logging;
 
 /**
@@ -45,15 +38,18 @@ import org.tros.utils.logging.Logging;
  */
 public class LogoMenuBarTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
 
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(LogoMenuBarTest.class.getName());
+    }
+    
     public LogoMenuBarTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(LogoMenuBarTest.class.getName());
     }
 
     @AfterClass
@@ -74,8 +70,9 @@ public class LogoMenuBarTest {
     @Test
     public void testExportCanvas() {
         LOGGER.info("testExportCanvas");
-        String[] args = new String[]{"-l", "dynamic-logo"};
-        Main.main(args);
+        DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
+        controller.run();
+
         Robot robot = null;
         try {
             robot = new Robot();
@@ -105,6 +102,7 @@ public class LogoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
@@ -118,6 +116,13 @@ public class LogoMenuBarTest {
 
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        pressKey(robot, new int[]{KeyEvent.VK_F6}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+//        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+
+        robot.delay(5000);
 //////        for (String file : files) {
 ////            LOGGER.info(file);
 ////            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
@@ -174,7 +179,7 @@ public class LogoMenuBarTest {
             exportGIF(robot);
 //        }
 //
-//        controller.close();
+        controller.close();
     }
 
     private void exportPNG(Robot robot) {

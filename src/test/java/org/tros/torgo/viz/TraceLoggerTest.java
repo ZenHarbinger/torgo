@@ -15,7 +15,6 @@
  */
 package org.tros.torgo.viz;
 
-import java.awt.Robot;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -138,16 +137,5 @@ public class TraceLoggerTest {
 
         controller.close();
         prefs.putBoolean("wait-for-repaint", checked);
-    }
-
-    void pressKey(Robot robot, int[] keys, int delay) {
-        for (int key : keys) {
-            robot.keyPress(key);
-        }
-        robot.delay(delay);
-        for (int key : keys) {
-            robot.keyRelease(key);
-        }
-        robot.delay(delay);
     }
 }
