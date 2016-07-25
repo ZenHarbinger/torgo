@@ -108,6 +108,20 @@ public interface Controller {
     void insertCommand(String command);
 
     /**
+     * Add a controller listener.
+     *
+     * @param listener
+     */
+    void addControllerListener(ControllerListener listener);
+
+    /**
+     * Remove Controller Listener.
+     *
+     * @param listener
+     */
+    void removeControllerListener(ControllerListener listener);
+
+    /**
      * Add an interpreter listener.
      *
      * @param listener
@@ -139,18 +153,18 @@ public interface Controller {
      * Start up the application/controller.
      */
     void run();
-    
+
     /**
      * Enable
-     * 
-     * @param name 
+     *
+     * @param name
      */
     void enable(String name);
 
     /**
      * Disable
-     * 
-     * @param name 
+     *
+     * @param name
      */
     void disable(String name);
 }

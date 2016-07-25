@@ -23,6 +23,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -30,18 +31,40 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import org.tros.torgo.ControllerListener;
+import org.tros.torgo.interpreter.CodeBlock;
+import org.tros.torgo.interpreter.InterpreterListener;
+import org.tros.torgo.interpreter.Scope;
 import org.tros.utils.logging.LogConsole;
 
 /**
- * Builds the base menu.
+ * TODO: detect "pause" and "debug" across controllers...
  *
  * @author matta
  */
-public class TorgoMenuBar extends JMenuBar {
+public class TorgoMenuBar extends JMenuBar implements ControllerListener {
+
+    private final JMenu interpreterMenu;
+    private final JMenuItem fileStart;
+    private final JMenuItem fileStop;
+    private final JMenuItem fileDebug;
+    private final JMenuItem filePause;
+    private final JMenuItem fileStep;
+
+    private final JMenu fileMenu;
+    private final JMenuItem fileNew;
+    private final JMenuItem fileOpen;
+    private final JMenuItem fileClose;
+    private final JMenuItem fileSave;
+    private final JMenuItem fileSaveAs;
+    private final JMenuItem fileQuit;
+    private final JMenuItem logConsole;
 
     protected final Controller controller;
-
     protected final Component parent;
+
+    private final AtomicBoolean paused;
+    private final AtomicBoolean debugging;
 
     /**
      * Constructor.
@@ -53,6 +76,26 @@ public class TorgoMenuBar extends JMenuBar {
     public TorgoMenuBar(Component parent, Controller controller) {
         this.controller = controller;
         this.parent = parent;
+        this.controller.addControllerListener((ControllerListener) this);
+
+        interpreterMenu = new JMenu("Interpreter");
+        fileStart = new JMenuItem("Start");
+        fileStop = new JMenuItem("Stop");
+        fileDebug = new JMenuItem("Debug");
+        filePause = new JMenuItem("Pause");
+        fileStep = new JMenuItem("Step");
+
+        fileMenu = new JMenu(Localization.getLocalizedString("FileMenu"));
+        fileNew = new JMenuItem(Localization.getLocalizedString("FileNew"));
+        fileClose = new JMenuItem(Localization.getLocalizedString("FileClose"));
+        fileSave = new JMenuItem(Localization.getLocalizedString("FileSave"));
+        fileSaveAs = new JMenuItem(Localization.getLocalizedString("FileSaveAs"));
+        fileOpen = new JMenuItem(Localization.getLocalizedString("FileOpen"));
+        fileQuit = new JMenuItem(Localization.getLocalizedString("FileQuit"));
+        logConsole = new JMenuItem("View Log Console");
+
+        debugging = new AtomicBoolean(false);
+        paused = new AtomicBoolean(false);
 
         try {
             add(setupFileMenu());
@@ -63,10 +106,6 @@ public class TorgoMenuBar extends JMenuBar {
     }
 
     private JMenu setupInterpreterMenu() throws IOException {
-        LogConsole.CONSOLE.setVisible(false);
-        JMenu interpreterMenu = new JMenu("Interpreter");
-
-        JMenuItem fileStart = new JMenuItem("Start");
         java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("projectui/runProject.png");
         ImageIcon ico = new ImageIcon(resources.nextElement());
         fileStart.setIcon(ico);
@@ -74,48 +113,56 @@ public class TorgoMenuBar extends JMenuBar {
         fileStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (paused.get()) {
+                    controller.resumeInterpreter();
+                } else {
+                    controller.startInterpreter();
+                }
             }
         });
 
         resources = ClassLoader.getSystemClassLoader().getResources("projectui/stop.png");
         ico = new ImageIcon(resources.nextElement());
-        JMenuItem fileStop = new JMenuItem("Stop");
         fileStop.setIcon(ico);
         fileStop.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent event) {
+                controller.stopInterpreter();
             }
         });
 
-        JMenuItem fileDebug = new JMenuItem("Debug");
         resources = ClassLoader.getSystemClassLoader().getResources("debugging/debugProject.png");
         ico = new ImageIcon(resources.nextElement());
         fileDebug.setIcon(ico);
         fileDebug.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                controller.debugInterpreter();
             }
         });
 
-        JMenuItem filePause = new JMenuItem("Pause");
         resources = ClassLoader.getSystemClassLoader().getResources("debugging/actions/Pause.png");
         ico = new ImageIcon(resources.nextElement());
         filePause.setIcon(ico);
         filePause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                controller.pauseInterpreter();
             }
         });
 
-        JMenuItem fileStep = new JMenuItem("Step");
         resources = ClassLoader.getSystemClassLoader().getResources("debugging/actions/StepOver.png");
         ico = new ImageIcon(resources.nextElement());
         fileStep.setIcon(ico);
         fileStep.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                controller.stepOver();
             }
         });
+        fileStop.setEnabled(false);
+        fileStep.setEnabled(false);
+        filePause.setEnabled(false);
 
         interpreterMenu.add(fileStart);
         interpreterMenu.add(fileStop);
@@ -123,7 +170,53 @@ public class TorgoMenuBar extends JMenuBar {
         interpreterMenu.add(filePause);
         interpreterMenu.add(fileStep);
 
+        fileStart.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
+//        fileStep.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
+//        fileStop.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, KeyEvent.VK_SHIFT));
+        fileDebug.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+
         interpreterMenu.setMnemonic('I');
+
+        controller.addInterpreterListener(new InterpreterListener() {
+
+            @Override
+            public void started() {
+                fileDebug.setEnabled(false);
+                fileStart.setEnabled(false);
+                fileStop.setEnabled(true);
+                paused.set(false);
+            }
+
+            @Override
+            public void finished() {
+                controller.resumeInterpreter();
+                fileStep.setEnabled(false);
+                fileDebug.setEnabled(true);
+                fileStart.setEnabled(true);
+                fileStop.setEnabled(false);
+                paused.set(false);
+                debugging.set(false);
+                filePause.setEnabled(false);
+            }
+
+            @Override
+            public void error(Exception e) {
+                controller.resumeInterpreter();
+                fileStep.setEnabled(false);
+                fileStart.setEnabled(true);
+                fileStop.setEnabled(false);
+                paused.set(false);
+                debugging.set(false);
+            }
+
+            @Override
+            public void message(String msg) {
+            }
+
+            @Override
+            public void currStatement(CodeBlock block, Scope scope) {
+            }
+        });
 
         return interpreterMenu;
     }
@@ -135,32 +228,22 @@ public class TorgoMenuBar extends JMenuBar {
      */
     private JMenu setupFileMenu() throws IOException {
         LogConsole.CONSOLE.setVisible(false);
-        JMenu fileMenu = new JMenu(Localization.getLocalizedString("FileMenu"));
 
-        JMenuItem fileNew = new JMenuItem(Localization.getLocalizedString("FileNew"));
         java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("projectui/newFile.png");
         ImageIcon ico = new ImageIcon(resources.nextElement());
         fileNew.setIcon(ico);
 
-        JMenuItem fileOpen = new JMenuItem(Localization.getLocalizedString("FileOpen"));
         resources = ClassLoader.getSystemClassLoader().getResources("projectui/open.png");
         ico = new ImageIcon(resources.nextElement());
         fileOpen.setIcon(ico);
 
-        JMenuItem fileClose = new JMenuItem(Localization.getLocalizedString("FileClose"));
-        JMenuItem fileSave = new JMenuItem(Localization.getLocalizedString("FileSave"));
         resources = ClassLoader.getSystemClassLoader().getResources("actions/save.png");
         ico = new ImageIcon(resources.nextElement());
         fileSave.setIcon(ico);
 
-        JMenuItem fileSaveAs = new JMenuItem(Localization.getLocalizedString("FileSaveAs"));
         resources = ClassLoader.getSystemClassLoader().getResources("profiler/actions/icons/saveAs.png");
         ico = new ImageIcon(resources.nextElement());
         fileSaveAs.setIcon(ico);
-
-        JMenuItem fileQuit = new JMenuItem(Localization.getLocalizedString("FileQuit"));
-
-        JMenuItem logConsole = new JMenuItem("View Log Console");
 
         fileNew.addActionListener(new ActionListener() {
 
@@ -243,5 +326,45 @@ public class TorgoMenuBar extends JMenuBar {
         fileMenu.setMnemonic('F');
 
         return (fileMenu);
+    }
+
+    @Override
+    public void onStartInterpreter() {
+        if (debugging.get()) {
+            filePause.setEnabled(true);
+            fileStart.setEnabled(false);
+        }
+        fileStep.setEnabled(false);
+    }
+
+    @Override
+    public void onStopInterpreter() {
+    }
+
+    @Override
+    public void onDebugInterpreter() {
+        filePause.setEnabled(true);
+        debugging.set(true);
+    }
+
+    @Override
+    public void onStepOver() {
+    }
+
+    @Override
+    public void onPauseInterpreter() {
+        paused.set(true);
+        fileStart.setEnabled(true);
+        filePause.setEnabled(false);
+        fileStep.setEnabled(true);
+    }
+
+    @Override
+    public void onResumeInterpreter() {
+        if (debugging.get()) {
+            filePause.setEnabled(true);
+            fileStart.setEnabled(false);
+        }
+        fileStep.setEnabled(false);
     }
 }
