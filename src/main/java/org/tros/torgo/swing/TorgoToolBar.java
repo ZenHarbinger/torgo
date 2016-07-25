@@ -123,7 +123,7 @@ public class TorgoToolBar extends JToolBar implements ControllerListener {
             }
         };
 
-        stepOverAction = new ToolBarAction("Step Over", "debugging/actions/StepOver.png", "Step Over") {
+        stepOverAction = new ToolBarAction("Step Over", "debugging/actions/StepOver.png", "Step Over (F2)") {
             @Override
             public void actionPerformed(ActionEvent event) {
                 controller.stepOver();

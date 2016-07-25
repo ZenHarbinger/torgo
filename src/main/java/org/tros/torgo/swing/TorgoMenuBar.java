@@ -160,9 +160,6 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
                 controller.stepOver();
             }
         });
-        fileStop.setEnabled(false);
-        fileStep.setEnabled(false);
-        filePause.setEnabled(false);
 
         interpreterMenu.add(fileStart);
         interpreterMenu.add(fileStop);
@@ -171,9 +168,13 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
         interpreterMenu.add(fileStep);
 
         fileStart.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
-//        fileStep.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
 //        fileStop.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, KeyEvent.VK_SHIFT));
         fileDebug.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+        fileStep.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+
+        fileStop.setEnabled(false);
+        fileStep.setEnabled(false);
+        filePause.setEnabled(false);
 
         interpreterMenu.setMnemonic('I');
 
