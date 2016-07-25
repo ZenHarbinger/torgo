@@ -48,7 +48,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.event.EventListenerSupport;
-import static org.tros.torgo.Main.IMAGE_ICON_CLASS_PATH;
 import org.tros.torgo.swing.AboutWindow;
 import org.tros.torgo.swing.Localization;
 import org.tros.torgo.swing.TorgoMenuBar;
@@ -74,6 +73,8 @@ public abstract class ControllerBase implements Controller {
 
     protected final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
+    protected final EventListenerSupport<ControllerListener> controllerListeners
+            = EventListenerSupport.create(ControllerListener.class);
 
     /**
      * Add a listener
@@ -93,6 +94,26 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void removeInterpreterListener(InterpreterListener listener) {
         listeners.removeListener(listener);
+    }
+
+    /**
+     * Add a listener
+     *
+     * @param listener
+     */
+    @Override
+    public void addControllerListener(ControllerListener listener) {
+        controllerListeners.addListener(listener);
+    }
+
+    /**
+     * Remove a listener
+     *
+     * @param listener
+     */
+    @Override
+    public void removeControllerListener(ControllerListener listener) {
+        controllerListeners.removeListener(listener);
     }
 
     /**
@@ -402,7 +423,7 @@ public abstract class ControllerBase implements Controller {
          printJob.setPrintable(torgoCanvas, pageFormat);
          */
     }
-    
+
     @Override
     public void enable(String name) {
         for (JCheckBoxMenuItem item : viz) {
@@ -467,6 +488,7 @@ public abstract class ControllerBase implements Controller {
             }
         });
 
+        controllerListeners.fire().onStartInterpreter();
         interp.start();
     }
 
@@ -530,6 +552,8 @@ public abstract class ControllerBase implements Controller {
                 torgoPanel.highlight(line, start, end);
             }
         });
+
+        controllerListeners.fire().onDebugInterpreter();
         interp.start();
     }
 
@@ -538,6 +562,7 @@ public abstract class ControllerBase implements Controller {
      */
     @Override
     public void stepOver() {
+        controllerListeners.fire().onStepOver();
         step.set();
     }
 
@@ -546,6 +571,7 @@ public abstract class ControllerBase implements Controller {
      */
     @Override
     public void pauseInterpreter() {
+        controllerListeners.fire().onPauseInterpreter();
         isStepping.set(true);
     }
 
@@ -554,6 +580,7 @@ public abstract class ControllerBase implements Controller {
      */
     @Override
     public void resumeInterpreter() {
+        controllerListeners.fire().onResumeInterpreter();
         isStepping.set(false);
         step.set();
     }
@@ -566,6 +593,7 @@ public abstract class ControllerBase implements Controller {
         if (interp != null) {
             interp.halt();
             step.set();
+            controllerListeners.fire().onStopInterpreter();
         }
     }
 
