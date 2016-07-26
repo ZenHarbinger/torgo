@@ -62,6 +62,7 @@ public class BasicStatement extends BasicBlock {
 
         LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex()));
         ReturnValue success = ReturnValue.SUCCESS;
+        listeners.fire().currStatement(this, scope);
 
         if (null != command) {
             switch (command) {
