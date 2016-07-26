@@ -70,7 +70,7 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
      * @param editable
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public TorgoUserInputPanel(Controller controller, String name, boolean editable) {
+    public TorgoUserInputPanel(Controller controller, String name, boolean editable, String syntax) {
         this.controller = controller;
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
@@ -84,6 +84,7 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
         inputTextArea = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         inputTextArea.setAntiAliasingEnabled(true);
         inputTextArea.setCodeFoldingEnabled(true);
+        inputTextArea.setSyntaxEditingStyle(syntax);
         scrollPane = new org.fife.ui.rtextarea.RTextScrollPane(inputTextArea);
         scrollPane.setIconRowHeaderEnabled(true);
         gutter = scrollPane.getGutter();

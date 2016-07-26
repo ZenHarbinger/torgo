@@ -6,14 +6,12 @@
  */
 package org.tros.utils;
 
-import java.io.Serializable;
-
 /**
  * Useful constants
  *
  * @author matta
  */
-public final class TimeUtils implements Serializable {
+public interface TimeUtils {
 
     public static final int SECONDS_IN_MINUTE = 60;
     public static final long SECONDS_IN_MINUTE_L = 60;
@@ -49,7 +47,4 @@ public final class TimeUtils implements Serializable {
 
     public static final long NANO = 1000000000L;
     public static final double NANO_D = 1000000000.0;
-
-    protected TimeUtils() {
-    }
 }
