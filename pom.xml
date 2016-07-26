@@ -123,7 +123,7 @@
                                             <type>file</type>
                                             <mapper>
                                                 <type>perm</type>
-                                                <prefix>/opt/${project.artifactId}</prefix>
+                                                <prefix>/opt/extras.ubuntu.com/${project.artifactId}</prefix>
                                             </mapper>
                                         </data>
                                         <data>
@@ -131,7 +131,7 @@
                                             <type>directory</type>
                                             <mapper>
                                                 <type>perm</type>
-                                                <prefix>/opt/${project.artifactId}/lib</prefix>
+                                                <prefix>/opt/extras.ubuntu.com/${project.artifactId}/lib</prefix>
                                             </mapper>
                                         </data>
                                         <data>
@@ -139,7 +139,7 @@
                                             <type>file</type>
                                             <mapper>
                                                 <type>perm</type>
-                                                <prefix>/opt/${project.artifactId}</prefix>
+                                                <prefix>/opt/extras.ubuntu.com/${project.artifactId}</prefix>
                                             </mapper>
                                         </data>
                                         <data>
