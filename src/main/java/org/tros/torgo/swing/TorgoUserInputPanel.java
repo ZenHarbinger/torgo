@@ -68,6 +68,7 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
      * @param controller
      * @param name
      * @param editable
+     * @param syntax
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public TorgoUserInputPanel(Controller controller, String name, boolean editable, String syntax) {
