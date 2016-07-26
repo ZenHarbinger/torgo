@@ -26,6 +26,6 @@ public final class LogoUserInputPanel extends TorgoUserInputPanel {
      * @param controller
      */
     public LogoUserInputPanel(Controller controller) {
-        super(controller, "Logo", false);
+        super(controller, "Logo", false, "text/logo");
     }
 }

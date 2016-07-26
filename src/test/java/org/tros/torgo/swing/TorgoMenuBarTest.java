@@ -87,7 +87,7 @@ public class TorgoMenuBarTest {
             b.delete();
         }
 
-        robot.delay(2000);
+        robot.delay(3000);
         LOGGER.info("new");
         //new
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
@@ -100,12 +100,14 @@ public class TorgoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
         LOGGER.info("reset trace");
         //reset trace
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
@@ -160,6 +162,7 @@ public class TorgoMenuBarTest {
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
@@ -198,10 +201,12 @@ public class TorgoMenuBarTest {
     void pressKey(Robot robot, int[] keys, int delay) {
         for (int key : keys) {
             robot.keyPress(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
         for (int key : keys) {
             robot.keyRelease(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
     }
