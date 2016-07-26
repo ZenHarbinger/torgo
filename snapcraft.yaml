@@ -21,6 +21,7 @@ parts:
       - openjdk-8-jre
       - fonts-dejavu-extra
       - fonts-ipafont-gothic
+      - xdg-utils
   torgo-dep:
     plugin: copy
     files:
