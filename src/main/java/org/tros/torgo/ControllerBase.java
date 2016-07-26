@@ -76,6 +76,8 @@ public abstract class ControllerBase implements Controller {
     protected final EventListenerSupport<ControllerListener> controllerListeners
             = EventListenerSupport.create(ControllerListener.class);
 
+    public final static String ABOUT_MENU_TORGO_ICON = "torgo-16x16.png";
+    
     /**
      * Add a listener
      *
@@ -191,7 +193,7 @@ public abstract class ControllerBase implements Controller {
         JMenu helpMenu = new JMenu("Help");
         JMenuItem aboutMenu = new JMenuItem("About Torgo");
         try {
-            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("torgo-16x16.png");
+            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(ABOUT_MENU_TORGO_ICON);
             ImageIcon ico = new ImageIcon(resources.nextElement());
             aboutMenu.setIcon(ico);
         } catch (IOException ex) {

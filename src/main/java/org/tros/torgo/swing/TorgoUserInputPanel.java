@@ -47,9 +47,9 @@ import org.tros.torgo.TorgoTextConsole;
 
 public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextConsole {
 
-    protected final RSyntaxTextArea inputTextArea;
-    protected final RTextScrollPane scrollPane;
-    protected final Gutter gutter;
+    private final RSyntaxTextArea inputTextArea;
+    private final RTextScrollPane scrollPane;
+    private final Gutter gutter;
 
     private final JConsole outputTextArea;
     private final JSplitPane splitPane;
@@ -58,8 +58,10 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
 
     public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
     protected final Controller controller;
-    
-    private final LayeredHighlighter.LayerPainter defaultHighlighter;    
+
+    private final LayeredHighlighter.LayerPainter defaultHighlighter;
+    private final LayeredHighlighter.LayerPainter breakpointHighlighter;
+
     /**
      * Constructor.
      *
@@ -73,11 +75,11 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
         defaultHighlighter = DefaultHighlighter.DefaultPainter;
+        breakpointHighlighter = new DefaultHighlighter.DefaultHighlightPainter(Color.PINK);
 
         //SOURCE
         inputTab = new JPanel();
-        BorderLayout intputLayout = new BorderLayout();
-        inputTab.setLayout(intputLayout);
+        inputTab.setLayout(new BorderLayout());
 
         inputTextArea = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         inputTextArea.setAntiAliasingEnabled(true);
@@ -287,11 +289,16 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
      */
     @Override
     public void gotoPosition(int position) {
-        inputTextArea.setCaretPosition(position);
+        try {
+            inputTextArea.setCaretPosition(position);
+        } catch (Exception ex) {
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).warn(null, ex);
+        }
     }
 
     /**
-     * Highlight a section of the source.
+     * Highlight a section of the source. Check for set breakpoints from the
+     * RTextScrollPane object and pause there.
      *
      * @param line
      * @param startChar
@@ -299,17 +306,8 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
      */
     @Override
     public void highlight(int line, int startChar, int endChar) {
-        if (line > 0) {
-            Highlighter hl = inputTextArea.getHighlighter();
-            hl.removeAllHighlights();
-            try {
-                hl.addHighlight(startChar, endChar + 1, defaultHighlighter);
-                inputTextArea.setCaretPosition(startChar);
-            } catch (BadLocationException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
-            }
-        }
-        for(GutterIconInfo gii : gutter.getBookmarks()) {
+        boolean paused = false;
+        for (GutterIconInfo gii : gutter.getBookmarks()) {
             int offset = 0;
             try {
                 //Not sure why a -1 here works, needs more testing.
@@ -318,14 +316,25 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
             }
             if (gii.getMarkedOffset() == offset) {
                 controller.pauseInterpreter();
-                inputTextArea.setCaretPosition(startChar);
+                paused = true;
+                gotoPosition(startChar);
                 Highlighter hl = inputTextArea.getHighlighter();
                 hl.removeAllHighlights();
                 try {
-                    hl.addHighlight(startChar, endChar + 1, new DefaultHighlighter.DefaultHighlightPainter(Color.PINK));
+                    hl.addHighlight(startChar, endChar + 1, breakpointHighlighter);
                 } catch (BadLocationException ex) {
                     org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
                 }
+            }
+        }
+        if (!paused && line > 0) {
+            Highlighter hl = inputTextArea.getHighlighter();
+            hl.removeAllHighlights();
+            try {
+                hl.addHighlight(startChar, endChar + 1, defaultHighlighter);
+                gotoPosition(startChar);
+            } catch (BadLocationException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
             }
         }
     }
