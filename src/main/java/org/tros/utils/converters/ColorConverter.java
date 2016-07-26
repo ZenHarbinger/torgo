@@ -42,7 +42,6 @@ public class ColorConverter implements Converter, ConverterRegister {
             try {
                 return (T) Color.class.getField(value.toString()).get(null);
             } catch (NoSuchFieldException ex) {
-                return (T) Color.decode(value.toString());
             } catch (SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             }
             return (T) Color.decode(value.toString());

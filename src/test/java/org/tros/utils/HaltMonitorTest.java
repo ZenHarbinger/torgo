@@ -32,15 +32,18 @@ import org.tros.utils.logging.Logging;
  */
 public class HaltMonitorTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(HaltMonitorTest.class.getName());
+    }
 
     public HaltMonitorTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(HaltMonitorTest.class.getName());
     }
 
     @AfterClass

@@ -31,15 +31,18 @@ import org.tros.utils.logging.Logging;
  */
 public class GzipTest {
     
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(GzipTest.class.getName());
+    }
 
     public GzipTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(GzipTest.class.getName());
     }
     
     @AfterClass

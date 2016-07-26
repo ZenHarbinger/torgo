@@ -32,15 +32,18 @@ import org.tros.utils.logging.Logging;
  */
 public class MailboxTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(MailboxTest.class.getName());
+    }
 
     public MailboxTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(MailboxTest.class.getName());
     }
 
     @AfterClass
