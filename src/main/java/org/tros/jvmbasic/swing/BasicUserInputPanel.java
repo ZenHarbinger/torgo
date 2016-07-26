@@ -27,6 +27,6 @@ public final class BasicUserInputPanel extends TorgoUserInputPanel {
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public BasicUserInputPanel(Controller controller) {
-        super(controller, "Basic", true);
+        super(controller, "Basic", true, "text/vb");
     }
 }
