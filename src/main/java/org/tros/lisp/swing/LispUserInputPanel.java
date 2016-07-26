@@ -35,9 +35,9 @@ import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
-import org.tros.torgo.TorgoTextConsole;
+import org.tros.torgo.swing.TorgoUserInputPanel;
 
-public final class LispUserInputPanel extends JPanel implements TorgoTextConsole {
+public final class LispUserInputPanel extends TorgoUserInputPanel {
 
     protected final JTextArea inputTextArea;
     private final JTextArea outputTextArea;
@@ -52,6 +52,7 @@ public final class LispUserInputPanel extends JPanel implements TorgoTextConsole
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public LispUserInputPanel(Controller controller) {
+        super(controller, "Lisp", false, "text/lisp");
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
 
