@@ -80,7 +80,9 @@ public class CanvasColorTest {
             return;
         }
 
+        robot.delay(3000);
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
         pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
@@ -93,10 +95,12 @@ public class CanvasColorTest {
     void pressKey(Robot robot, int[] keys, int delay) {
         for (int key : keys) {
             robot.keyPress(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
         for (int key : keys) {
             robot.keyRelease(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
     }

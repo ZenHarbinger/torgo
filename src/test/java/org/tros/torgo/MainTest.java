@@ -81,7 +81,7 @@ public class MainTest {
             return;
         }
 
-        robot.delay(2000);
+        robot.delay(3000);
 
         //close app
         pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
@@ -93,10 +93,12 @@ public class MainTest {
     void pressKey(Robot robot, int[] keys, int delay) {
         for (int key : keys) {
             robot.keyPress(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
         for (int key : keys) {
             robot.keyRelease(key);
+            robot.delay(delay);
         }
         robot.delay(delay);
     }
