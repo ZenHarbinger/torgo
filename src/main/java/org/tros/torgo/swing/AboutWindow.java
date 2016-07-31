@@ -25,13 +25,17 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import org.tros.torgo.Main;
 import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.UpdateChecker;
 import org.tros.utils.BuildInfo;
 import org.tros.utils.ImageUtils;
 import org.tros.utils.swing.JLinkButton;
@@ -47,6 +51,8 @@ public class AboutWindow extends JDialog {
      * TORGO web address.
      */
     public static final String TORGO_ADDRESS = "http://tros.org/torgo/";
+
+    public static final String RELEASE_ADDRESS = UpdateChecker.UPDATE_ADDRESS;
 
     /**
      * License Address.
@@ -111,7 +117,7 @@ public class AboutWindow extends JDialog {
 
         //init the text portion of the window.
         JPanel text_panel = new JPanel();
-        text_panel.setLayout(new GridLayout(6, 1));
+        text_panel.setLayout(new GridLayout(7, 1));
 
         BuildInfo toroInfo = TorgoInfo.INSTANCE;
         torgoButton.setText(String.format("Torgo %s", toroInfo.getVersion()));
@@ -140,6 +146,46 @@ public class AboutWindow extends JDialog {
         ta.setText("Torgo is a flexible interpreter written in Java.");
         ta.setEditable(false);
         text_panel.add(ta);
+
+        //add update alert area
+        JPanel updateArea = new JPanel();
+        updateArea.setLayout(new GridLayout(1, 2));
+        final UpdateChecker uc = new UpdateChecker();
+        final JCheckBox checkForUpdate = new JCheckBox("Check For Update");
+        final JLinkButton button = new JLinkButton("");
+        checkForUpdate.setSelected(uc.getCheckForUpdate());
+        checkForUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                uc.setCheckForUpdate(checkForUpdate.isSelected());
+                boolean enabled = uc.getCheckForUpdate() && uc.hasUpdate();
+                button.setEnabled(enabled);
+                if (button.isEnabled()) {
+                    button.setText("Update Available");
+                }
+            }
+        });
+        updateArea.add(checkForUpdate);
+
+        boolean enabled = uc.getCheckForUpdate() && uc.hasUpdate();
+        button.setEnabled(enabled);
+        if (button.isEnabled()) {
+            button.setText("Update Available");
+        }
+        updateArea.add(button);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
+                    Desktop.getDesktop().browse(uri);
+                } catch (URISyntaxException | IOException ex) {
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+                }
+            }
+        });
+
+        text_panel.add(updateArea);
 
         container.add(text_panel, BorderLayout.CENTER);
         setLocationRelativeTo(null);
