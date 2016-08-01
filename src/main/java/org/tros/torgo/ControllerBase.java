@@ -21,6 +21,7 @@ import org.tros.torgo.interpreter.InterpreterThread;
 import org.tros.torgo.interpreter.Scope;
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -31,7 +32,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
@@ -43,11 +47,13 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.event.EventListenerSupport;
+import static org.tros.torgo.Main.IMAGE_ICON_CLASS_PATH;
 import org.tros.torgo.swing.AboutWindow;
 import org.tros.torgo.swing.Localization;
 import org.tros.torgo.swing.TorgoMenuBar;
@@ -77,7 +83,7 @@ public abstract class ControllerBase implements Controller {
             = EventListenerSupport.create(ControllerListener.class);
 
     public final static String ABOUT_MENU_TORGO_ICON = "torgo-16x16.png";
-    
+
     /**
      * Add a listener
      *
@@ -208,7 +214,29 @@ public abstract class ControllerBase implements Controller {
                 aw.setVisible(true);
             }
         });
+        JMenuItem updateMenu = new JMenuItem("Check for Update");
+        updateMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpdateChecker uc = new UpdateChecker();
+                if (uc.hasUpdate()) {
+                    try {
+                        java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(IMAGE_ICON_CLASS_PATH);
+                        ImageIcon ico = new ImageIcon(resources.nextElement());
+                        int showConfirmDialog = JOptionPane.showConfirmDialog(window, MessageFormat.format("Update is Available:\n{0}\nView Update?", uc.getUpdateVersion()), "Update is Available", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ico);
+                        if (showConfirmDialog == JOptionPane.YES_OPTION) {
+                            URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
+                            Desktop.getDesktop().browse(uri);
+                        }
+                    } catch (IOException | URISyntaxException ex) {
+                        Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+
         helpMenu.add(aboutMenu);
+        helpMenu.add(updateMenu);
 
         JMenu vizMenu = new JMenu("Visualization");
         for (String name : TorgoToolkit.getVisualizers()) {

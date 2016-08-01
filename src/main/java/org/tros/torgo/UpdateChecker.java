@@ -32,6 +32,7 @@ public class UpdateChecker {
     public static final String UPDATE_ADDRESS = "https://github.com/ZenHarbinger/torgo/releases/latest";
     private static final String TAG = "title";
     private static final String SNAPSHOT = "SNAPSHOT";
+    private String updateVersion;
 
     private boolean checkForUpdate;
 
@@ -46,10 +47,10 @@ public class UpdateChecker {
             if (checkForUpdate) {
                 Document doc = org.jsoup.Jsoup.connect(UPDATE_ADDRESS).get();
                 Elements elementsByTag = doc.getElementsByTag(TAG);
-                String text = elementsByTag.text();
+                updateVersion = elementsByTag.text();
                 String version = TorgoInfo.INSTANCE.getVersion();
                 if (!version.contains(SNAPSHOT)) {
-                    ret = !text.contains(version);
+                    ret = !updateVersion.contains(version);
                 }
             }
         } catch (MalformedURLException ex) {
@@ -64,6 +65,10 @@ public class UpdateChecker {
     
     public boolean getCheckForUpdate() {
         return checkForUpdate;
+    }
+    
+    public String getUpdateVersion() {
+        return updateVersion;
     }
     
     public void setCheckForUpdate(boolean value) {
