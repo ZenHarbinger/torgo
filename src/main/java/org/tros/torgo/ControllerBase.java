@@ -216,22 +216,47 @@ public abstract class ControllerBase implements Controller {
         });
         JMenuItem updateMenu = new JMenuItem("Check for Update");
         updateMenu.addActionListener(new ActionListener() {
+            /**
+             * Check for update.
+             *
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
-                UpdateChecker uc = new UpdateChecker();
-                if (uc.hasUpdate()) {
-                    try {
-                        java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(IMAGE_ICON_CLASS_PATH);
-                        ImageIcon ico = new ImageIcon(resources.nextElement());
-                        int showConfirmDialog = JOptionPane.showConfirmDialog(window, MessageFormat.format("Update is Available:\n{0}\nView Update?", uc.getUpdateVersion()), "Update is Available", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ico);
-                        if (showConfirmDialog == JOptionPane.YES_OPTION) {
-                            URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
-                            Desktop.getDesktop().browse(uri);
+
+                Thread t = new Thread(new Runnable() {
+                    /**
+                     * Check in a separate thread to avoid blocking.
+                     */
+                    @Override
+                    public void run() {
+                        final UpdateChecker uc = new UpdateChecker();
+                        if (uc.hasUpdate()) {
+                            SwingUtilities.invokeLater(new Runnable() {
+                                /**
+                                 * Take the result and perform UI notifications
+                                 * back in the UI thread.
+                                 */
+                                @Override
+                                public void run() {
+                                    try {
+                                        java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(IMAGE_ICON_CLASS_PATH);
+                                        ImageIcon ico = new ImageIcon(resources.nextElement());
+                                        int showConfirmDialog = JOptionPane.showConfirmDialog(window, MessageFormat.format("Update is Available:\n{0}\nView Update?", uc.getUpdateVersion()), "Update is Available", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ico);
+                                        if (showConfirmDialog == JOptionPane.YES_OPTION) {
+                                            URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
+                                            Desktop.getDesktop().browse(uri);
+                                        }
+                                    } catch (IOException | URISyntaxException ex) {
+                                        Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                            });
                         }
-                    } catch (IOException | URISyntaxException ex) {
-                        Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
+                });
+                t.setDaemon(true);
+                t.start();
             }
         });
 
