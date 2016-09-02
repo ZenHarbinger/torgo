@@ -44,11 +44,12 @@ prog
 line
     : cmd+ comment?
     | comment
-    | print comment?
+    | print_command
+ comment?
     | procedureDeclaration
     | EOL
     ;
-     
+
 cmd
     : repeat
     | fd
@@ -75,8 +76,10 @@ cmd
     | fontsize
     | fontstyle
     | fontname
-/*-- print was not originally here, so could not print in if/repeat blocks--*/
-    | print
+/*-- print_command was not originally here, so could not print_command
+ in if/repeat blocks--*/
+    | print_command
+
     ;
 
 procedureInvocation
@@ -119,8 +122,8 @@ comparison
 
 /*--added more compare operators--*/
 comparisonOperator
-    : '<' 
-    | '>' 
+    : '<'
+    | '>'
     | '='
     | '!'
     | '<='
@@ -138,7 +141,7 @@ localmake
     : 'localmake' STRINGLITERAL value
     ;
 
-print
+print_command
     : 'print' (value | quotedstring)
     ;
 
@@ -154,7 +157,7 @@ name
 value
     : STRINGLITERAL
     | expression
-    | deref 
+    | deref
     ;
 
 /**--Added parenthesis for better order of operations control--**/
@@ -162,7 +165,7 @@ parenExpression
     : '(' expression ')'
     ;
 
-signExpression 
+signExpression
     : ('+'|'-')? (number | deref | func | parenExpression)
     ;
 
@@ -176,7 +179,7 @@ multiplyingExpression
     : powerExpression (('*' | '/' | '\\' | '%') powerExpression)*
     ;
 
-expression 
+expression
      : multiplyingExpression (('+'|'-') multiplyingExpression)*
      ;
 
@@ -227,7 +230,7 @@ home
 stop
     : 'stop'
     ;
-        
+
 setxy
     : 'setxy' expression expression
     ;
@@ -310,7 +313,7 @@ number
 comment
     : COMMENT
     ;
-     
+
 STRINGLITERAL
     : '"' STRING
     ;
@@ -318,7 +321,7 @@ STRINGLITERAL
 STRING
     : [a-zA-Z] [a-zA-Z0-9_]*
     ;
-    
+
 NUMBER
     : [0-9]+ ('.'[0-9]+)?
     ;

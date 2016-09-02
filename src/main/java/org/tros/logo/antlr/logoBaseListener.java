@@ -186,13 +186,13 @@ public class logoBaseListener implements logoListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrint(logoParser.PrintContext ctx) { }
+	@Override public void enterPrint_command(logoParser.Print_commandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrint(logoParser.PrintContext ctx) { }
+	@Override public void exitPrint_command(logoParser.Print_commandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

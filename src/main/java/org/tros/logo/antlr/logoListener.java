@@ -150,15 +150,15 @@ public interface logoListener extends ParseTreeListener {
 	 */
 	void exitLocalmake(logoParser.LocalmakeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link logoParser#print}.
+	 * Enter a parse tree produced by {@link logoParser#print_command}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrint(logoParser.PrintContext ctx);
+	void enterPrint_command(logoParser.Print_commandContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link logoParser#print}.
+	 * Exit a parse tree produced by {@link logoParser#print_command}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrint(logoParser.PrintContext ctx);
+	void exitPrint_command(logoParser.Print_commandContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link logoParser#quotedstring}.
 	 * @param ctx the parse tree

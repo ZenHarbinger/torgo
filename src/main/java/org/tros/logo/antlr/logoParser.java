@@ -35,7 +35,7 @@ public class logoParser extends Parser {
 		RULE_prog = 0, RULE_line = 1, RULE_cmd = 2, RULE_procedureInvocation = 3, 
 		RULE_procedureDeclaration = 4, RULE_parameterDeclarations = 5, RULE_func = 6, 
 		RULE_repeat = 7, RULE_block = 8, RULE_ife = 9, RULE_comparison = 10, RULE_comparisonOperator = 11, 
-		RULE_make = 12, RULE_localmake = 13, RULE_print = 14, RULE_quotedstring = 15, 
+		RULE_make = 12, RULE_localmake = 13, RULE_print_command = 14, RULE_quotedstring = 15, 
 		RULE_name = 16, RULE_value = 17, RULE_parenExpression = 18, RULE_signExpression = 19, 
 		RULE_powerExpression = 20, RULE_multiplyingExpression = 21, RULE_expression = 22, 
 		RULE_deref = 23, RULE_fd = 24, RULE_bk = 25, RULE_rt = 26, RULE_lt = 27, 
@@ -48,12 +48,12 @@ public class logoParser extends Parser {
 	public static final String[] ruleNames = {
 		"prog", "line", "cmd", "procedureInvocation", "procedureDeclaration", 
 		"parameterDeclarations", "func", "repeat", "block", "ife", "comparison", 
-		"comparisonOperator", "make", "localmake", "print", "quotedstring", "name", 
-		"value", "parenExpression", "signExpression", "powerExpression", "multiplyingExpression", 
-		"expression", "deref", "fd", "bk", "rt", "lt", "cs", "pu", "pd", "ht", 
-		"st", "home", "stop", "setxy", "random", "getangle", "getx", "gety", "repcount", 
-		"fore", "pc", "cc", "hexcolor", "pause", "ds", "fontname", "fontsize", 
-		"fontstyle", "style", "number", "comment"
+		"comparisonOperator", "make", "localmake", "print_command", "quotedstring", 
+		"name", "value", "parenExpression", "signExpression", "powerExpression", 
+		"multiplyingExpression", "expression", "deref", "fd", "bk", "rt", "lt", 
+		"cs", "pu", "pd", "ht", "st", "home", "stop", "setxy", "random", "getangle", 
+		"getx", "gety", "repcount", "fore", "pc", "cc", "hexcolor", "pause", "ds", 
+		"fontname", "fontsize", "fontstyle", "style", "number", "comment"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -236,8 +236,8 @@ public class logoParser extends Parser {
 		public CommentContext comment() {
 			return getRuleContext(CommentContext.class,0);
 		}
-		public PrintContext print() {
-			return getRuleContext(PrintContext.class,0);
+		public Print_commandContext print_command() {
+			return getRuleContext(Print_commandContext.class,0);
 		}
 		public ProcedureDeclarationContext procedureDeclaration() {
 			return getRuleContext(ProcedureDeclarationContext.class,0);
@@ -311,7 +311,7 @@ public class logoParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(129);
-				print();
+				print_command();
 				setState(131);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
@@ -427,8 +427,8 @@ public class logoParser extends Parser {
 		public FontnameContext fontname() {
 			return getRuleContext(FontnameContext.class,0);
 		}
-		public PrintContext print() {
-			return getRuleContext(PrintContext.class,0);
+		public Print_commandContext print_command() {
+			return getRuleContext(Print_commandContext.class,0);
 		}
 		public CmdContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -645,7 +645,7 @@ public class logoParser extends Parser {
 				enterOuterAlt(_localctx, 26);
 				{
 				setState(162);
-				print();
+				print_command();
 				}
 				break;
 			default:
@@ -1313,30 +1313,30 @@ public class logoParser extends Parser {
 		return _localctx;
 	}
 
-	public static class PrintContext extends ParserRuleContext {
+	public static class Print_commandContext extends ParserRuleContext {
 		public ValueContext value() {
 			return getRuleContext(ValueContext.class,0);
 		}
 		public QuotedstringContext quotedstring() {
 			return getRuleContext(QuotedstringContext.class,0);
 		}
-		public PrintContext(ParserRuleContext parent, int invokingState) {
+		public Print_commandContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_print; }
+		@Override public int getRuleIndex() { return RULE_print_command; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterPrint(this);
+			if ( listener instanceof logoListener ) ((logoListener)listener).enterPrint_command(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitPrint(this);
+			if ( listener instanceof logoListener ) ((logoListener)listener).exitPrint_command(this);
 		}
 	}
 
-	public final PrintContext print() throws RecognitionException {
-		PrintContext _localctx = new PrintContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_print);
+	public final Print_commandContext print_command() throws RecognitionException {
+		Print_commandContext _localctx = new Print_commandContext(_ctx, getState());
+		enterRule(_localctx, 28, RULE_print_command);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
