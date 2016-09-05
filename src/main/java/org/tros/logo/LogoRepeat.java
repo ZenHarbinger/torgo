@@ -17,7 +17,7 @@ package org.tros.logo;
 
 import java.text.MessageFormat;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.tros.logo.antlr.logoParser;
+import org.tros.logo.antlr.LogoParser;
 import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.interpreter.ReturnValue;
 import org.tros.torgo.interpreter.ReturnValue.ProcessResult;
@@ -61,7 +61,7 @@ class LogoRepeat extends LogoBlock {
         listeners.fire().currStatement(this, scope);
         
         ReturnValue success = ReturnValue.SUCCESS;
-        int repeat = ((Number) ExpressionListener.evaluate(scope, ((logoParser.RepeatContext) ctx).expression()).getValue()).intValue();
+        int repeat = ((Number) ExpressionListener.evaluate(scope, ((LogoParser.RepeatContext) ctx).expression()).getValue()).intValue();
         for (int ii = 0; ii < repeat && success.getResult() == ProcessResult.SUCCESS; ii++) {
             //this sets the repcount variable for dereferencing in the block.
             scope.setNew(REPCOUNT_VAR, new InterpreterValue(NumberType.INSTANCE, ii + 1));
