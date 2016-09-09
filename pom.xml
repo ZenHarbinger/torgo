@@ -265,6 +265,9 @@
                             <mainClass>org.tros.torgo.Main</mainClass>
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
+                        <manifestEntries>
+                            <SplashScreen-Image>org/tros/images/splash.png</SplashScreen-Image>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
