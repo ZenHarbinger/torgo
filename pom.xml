@@ -131,7 +131,7 @@
                                             <type>directory</type>
                                             <mapper>
                                                 <type>perm</type>
-                                                <prefix>/opt/extras.ubuntu.com/${project.artifactId}/</prefix>
+                                                <prefix>/opt/extras.ubuntu.com/${project.artifactId}</prefix>
                                             </mapper>
                                         </data>
                                         <data>

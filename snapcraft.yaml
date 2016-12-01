@@ -22,14 +22,6 @@ parts:
       - openjdk-8-jre
       - fonts-dejavu-extra
       - fonts-ipafont-gothic
-  # torgo-dep:
-  #   plugin: dump
-  #   source: ../build/target
-  #   organize:
-  #     lib: jar/lib
-  #   after:
-  #     - torgo-mvn
-  #   snap: [lib]
   torgo-files:
     plugin: dump
     source: .
