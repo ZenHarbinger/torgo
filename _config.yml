@@ -11,7 +11,7 @@ title                    : Torgo
 email                    : matt@tros.org
 description              : "Torgo"
 baseurl                  : "/torgo" # the subpath of your site, e.g. /blog
-url                      : "http://tros.org"
+url                      : "http://tros.org/torgo/"
 
 twitter_username         : matt_aguirre
 github_username          : ZenHarbinger
@@ -66,7 +66,7 @@ author:
   bio              : "This space intentionally left blank."
   location         : "Bristow, VA"
   email            : "matt@tros.org"
-  uri              : "http://tros.org/"
+  uri              : "http://tros.org/torgo/"
   bitbucket        : "matt_aguirre"
   codepen          :
   dribbble         :
