@@ -249,6 +249,13 @@ public abstract class ControllerBase implements Controller {
                                         }
                                     } catch (IOException | URISyntaxException ex) {
                                         Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                                    } catch (UnsupportedOperationException ex) {
+                                        ProcessBuilder pb = new ProcessBuilder("xdg-open", UpdateChecker.UPDATE_ADDRESS);
+                                        try {
+                                            pb.start();
+                                        } catch (IOException ex1) {
+                                            org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex1);
+                                        }
                                     }
                                 }
                             });

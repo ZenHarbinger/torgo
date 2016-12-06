@@ -9,7 +9,7 @@ confinement: strict
 apps:
   torgo:
     command: bin/wrapper
-    plugs: [home, x11, opengl, unity7]
+    plugs: [home, x11, opengl, network, unity7]
   # xdg:
   #   command: bin/wrapper0
   #   plugs: [unity7]
