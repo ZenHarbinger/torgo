@@ -34,15 +34,18 @@ import org.tros.utils.logging.Logging;
  */
 public class AboutWindowTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(AboutWindowTest.class.getName());
+    }
 
     public AboutWindowTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(AboutWindowTest.class.getName());
     }
 
     @AfterClass

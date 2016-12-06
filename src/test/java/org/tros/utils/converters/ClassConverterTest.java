@@ -33,15 +33,18 @@ import org.tros.utils.logging.Logging;
  */
 public class ClassConverterTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(ClassConverterTest.class.getName());
+    }
 
     public ClassConverterTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(ClassConverterTest.class.getName());
     }
 
     @AfterClass

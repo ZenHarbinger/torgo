@@ -210,6 +210,16 @@ public final class LogoMenuBar extends TorgoMenuBar {
         return samplesMenu;
     }
 
+    private void generatePNG(BufferedImageProvider bip, String filename) {
+        BufferedImage bi = bip.getBufferedImage();
+        File outputfile = new File(filename);
+        try {
+            ImageIO.write(bi, "png", outputfile);
+        } catch (IOException ex) {
+            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Set up the export menu.
      *
@@ -300,14 +310,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
                     prefs.put("export-directory", chooser.getSelectedFile().getParent());
                     // retrieve image
                     if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
-                        BufferedImageProvider bip = (BufferedImageProvider) canvas;
-                        BufferedImage bi = bip.getBufferedImage();
-                        File outputfile = new File(filename);
-                        try {
-                            ImageIO.write(bi, "png", outputfile);
-                        } catch (IOException ex) {
-                            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        generatePNG((BufferedImageProvider) canvas, filename);
                     }
                 }
             }

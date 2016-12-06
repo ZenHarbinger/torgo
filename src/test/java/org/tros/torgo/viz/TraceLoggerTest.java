@@ -40,15 +40,18 @@ import org.tros.utils.logging.Logging;
  */
 public class TraceLoggerTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(TraceLoggerTest.class.getName());
+    }
     
     public TraceLoggerTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(TraceLoggerTest.class.getName());
     }
 
     @AfterClass

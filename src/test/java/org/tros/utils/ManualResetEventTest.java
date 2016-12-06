@@ -34,15 +34,18 @@ import org.tros.utils.logging.Logging;
  */
 public class ManualResetEventTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(ManualResetEventTest.class.getName());
+    }
 
     public ManualResetEventTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(ManualResetEventTest.class.getName());
     }
 
     @AfterClass
