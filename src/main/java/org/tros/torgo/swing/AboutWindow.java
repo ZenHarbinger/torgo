@@ -83,6 +83,13 @@ public class AboutWindow extends JDialog {
                     Desktop.getDesktop().browse(uri);
                 } catch (URISyntaxException | IOException ex) {
                     org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+                } catch (UnsupportedOperationException ex) {
+                    ProcessBuilder pb = new ProcessBuilder("xdg-open", APACHE_LICENSE_ADDRESS);
+                    try {
+                        pb.start();
+                    } catch (IOException ex1) {
+                        org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
+                    }
                 }
             }
         });
@@ -95,9 +102,15 @@ public class AboutWindow extends JDialog {
                 try {
                     URI uri = new URI(TORGO_ADDRESS);
                     Desktop.getDesktop().browse(uri);
-                } catch (URISyntaxException ex) {
-                } catch (IOException ex) {
+                } catch (URISyntaxException | IOException ex) {
                     org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+                } catch (UnsupportedOperationException ex) {
+                    ProcessBuilder pb = new ProcessBuilder("xdg-open", TORGO_ADDRESS);
+                    try {
+                        pb.start();
+                    } catch (IOException ex1) {
+                        org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
+                    }
                 }
             }
         });
