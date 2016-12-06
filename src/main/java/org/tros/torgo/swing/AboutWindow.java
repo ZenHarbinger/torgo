@@ -253,6 +253,13 @@ public class AboutWindow extends JDialog {
                     Desktop.getDesktop().browse(uri);
                 } catch (URISyntaxException | IOException ex) {
                     org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+                } catch (UnsupportedOperationException ex) {
+                    ProcessBuilder pb = new ProcessBuilder("xdg-open", UpdateChecker.UPDATE_ADDRESS);
+                    try {
+                        pb.start();
+                    } catch (IOException ex1) {
+                        org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
+                    }
                 }
             }
         });
