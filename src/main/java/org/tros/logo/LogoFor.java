@@ -17,7 +17,7 @@ package org.tros.logo;
 
 import java.text.MessageFormat;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.tros.logo.antlr.logoParser;
+import org.tros.logo.antlr.LogoParser;
 import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.interpreter.ReturnValue;
 import org.tros.torgo.interpreter.ReturnValue.ProcessResult;
@@ -66,7 +66,7 @@ class LogoFor extends LogoBlock {
         scope.push(this);
         listeners.fire().currStatement(this, scope);
 
-        logoParser.ForeContext fore = (logoParser.ForeContext) ctx;
+        LogoParser.ForeContext fore = (LogoParser.ForeContext) ctx;
         String variable = fore.name().STRING().getText();
 
         double start = ((Number) ExpressionListener.evaluate(scope, fore.expression(0)).getValue()).doubleValue();

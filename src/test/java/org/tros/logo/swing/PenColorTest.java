@@ -38,15 +38,18 @@ import org.tros.utils.logging.Logging;
  */
 public class PenColorTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(PenColorTest.class.getName());
+    }
 
     public PenColorTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(PenColorTest.class.getName());
     }
 
     @AfterClass

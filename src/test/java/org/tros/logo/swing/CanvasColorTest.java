@@ -37,15 +37,18 @@ import org.tros.utils.logging.Logging;
  */
 public class CanvasColorTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(CanvasColorTest.class.getName());
+    }
 
     public CanvasColorTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(CanvasColorTest.class.getName());
     }
 
     @AfterClass

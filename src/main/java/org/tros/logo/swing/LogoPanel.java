@@ -115,6 +115,11 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         }
     }
 
+    /**
+     *
+     * @param g2d
+     * @param turtleState
+     */
     @Override
     public void draw(Graphics2D g2d, TurtleState turtleState) {
         if (g2d == null) {

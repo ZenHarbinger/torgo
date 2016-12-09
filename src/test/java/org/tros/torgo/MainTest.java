@@ -33,15 +33,18 @@ import org.tros.utils.logging.Logging;
  */
 public class MainTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(MainTest.class.getName());
+    }
 
     public MainTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(MainTest.class.getName());
     }
 
     @AfterClass
