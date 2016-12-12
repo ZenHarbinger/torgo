@@ -129,4 +129,11 @@ public interface Scope {
      * @return
      */
     Collection<String> localVariables();
+
+    /**
+     * Get the names of variables.
+     *
+     * @return
+     */
+    Collection<String> variables();
 }

@@ -16,6 +16,7 @@
 package org.tros.torgo.interpreter;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  *
@@ -158,5 +159,21 @@ public class LexicalScope extends ScopeImpl implements Scope {
     @Override
     public Collection<String> localVariables() {
         return stack.get(0).localVariables();
+    }
+
+    /**
+     * Get the names of variables.
+     *
+     * @return
+     */
+    @Override
+    public Collection<String> variables() {
+        HashSet<String> keys = new HashSet<>();
+        CodeBlock cb = stack.get(0);
+        while (cb != null) {
+            keys.addAll(cb.localVariables());
+            cb = cb.getParent();
+        }
+        return keys;
     }
 }
