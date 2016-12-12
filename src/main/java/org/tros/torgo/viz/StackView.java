@@ -15,10 +15,20 @@
  */
 package org.tros.torgo.viz;
 
+import java.awt.BorderLayout;
 import org.tros.utils.swing.NamedWindow;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
+import java.util.Stack;
+import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
@@ -44,6 +54,7 @@ public class StackView implements InterpreterVisualization {
     private boolean isFinished;
     private InterpreterThread interpreter;
     private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(StackView.class);
+    private static final org.tros.utils.logging.Logger LOGGER2 = org.tros.utils.logging.Logging.getLogFactory().getLogger(TraceLogger.class);
 
     private NamedWindow window;
 
@@ -101,18 +112,85 @@ public class StackView implements InterpreterVisualization {
 
         window = new NamedWindow(name + "-" + this.getClass().getSimpleName(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
         window.setTitle(controller.getLang() + " - Stack View");
+
+        window.setLayout(new BorderLayout());
+
+        final DefaultListModel listModel = new DefaultListModel();
+        final JList list = new JList(listModel);
+        list.setLayoutOrientation(JList.VERTICAL);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.setVisibleRowCount(-1);
+
+        JScrollPane scrollPane = new JScrollPane(list);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        JPanel contentPane = new JPanel();
+        contentPane.setLayout(new BorderLayout());
+        contentPane.add(scrollPane, BorderLayout.CENTER);
+        window.add(contentPane, BorderLayout.CENTER);
+
         Main.loadIcon(window);
+        final Stack<ScopePanel> labels = new Stack<>();
 
-        this.interpreter.addScopeListener(new ScopeListener() {
-
+        this.interpreter.addInterpreterListener(new InterpreterListener() {
             @Override
-            public void scopePopped(Scope scope, CodeBlock block) {
-                LOGGER.verbose(MessageFormat.format("Scope Popped: {0}", new Object[]{block.getClass().getName()}));
+            public void started() {
             }
 
             @Override
-            public void scopePushed(Scope scope, CodeBlock block) {
-                LOGGER.verbose(MessageFormat.format("Scope Pushed: {0}", new Object[]{block.getClass().getName()}));
+            public void finished() {
+                window.dispose();
+            }
+
+            @Override
+            public void error(Exception e) {
+            }
+
+            @Override
+            public void message(String msg) {
+            }
+
+            @Override
+            public void currStatement(CodeBlock block, Scope scope) {
+            }
+        });
+        
+        this.interpreter.addScopeListener(new ScopeListener() {
+
+            @Override
+            public void scopePopped(Scope scope, final CodeBlock block) {
+                try {
+                    SwingUtilities.invokeAndWait(new Runnable() {
+                        @Override
+                        public void run() {
+                            int start = list.getComponentCount();
+                            ScopePanel popped = labels.pop();
+                            listModel.removeElement(popped);
+                            int end = list.getComponentCount();
+                            window.revalidate();
+                        }
+                    });
+                } catch (InterruptedException | InvocationTargetException ex) {
+                    LOGGER.warn("Scope Pushed: {0}", ex);
+                }
+            }
+
+            @Override
+            public void scopePushed(Scope scope, final CodeBlock block) {
+                try {
+                    SwingUtilities.invokeAndWait(new Runnable() {
+                        @Override
+                        public void run() {
+                            ScopePanel sp = new ScopePanel(block);
+                            listModel.addElement(sp);
+                            labels.push(sp);
+                            window.revalidate();
+                        }
+                    });
+                } catch (InterruptedException | InvocationTargetException ex) {
+                    LOGGER.warn("Scope Pushed: {0}", ex);
+                }
             }
 
             @Override
