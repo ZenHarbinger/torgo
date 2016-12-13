@@ -136,6 +136,7 @@ public class StackView implements InterpreterVisualization {
         public SliceWatchFrame(ScopeItem item) {
             this.item = item;
             refresh(item.scope);
+            Main.loadIcon((JFrame) this);
             super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         }
 
@@ -183,6 +184,8 @@ public class StackView implements InterpreterVisualization {
         public VariableWatchFrame(Scope scope) {
             super("Variable-Watch");
             super.setTitle("Variable Watch");
+
+            Main.loadIcon((JFrame) this);
 
             refresh(scope);
 
