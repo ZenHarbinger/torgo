@@ -21,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -180,7 +179,7 @@ public class StackView implements InterpreterVisualization {
      * @param interpreter
      */
     @Override
-    public void watch(String name, Controller controller, InterpreterThread interpreter) {
+    public void watch(String name, final Controller controller, InterpreterThread interpreter) {
         this.interpreter = interpreter;
         final ArrayList<ScopeFrame> frames = new ArrayList<>();
 
@@ -288,6 +287,7 @@ public class StackView implements InterpreterVisualization {
             public void scopePushed(final Scope scope, final CodeBlock block) {
                 if (frames.isEmpty()) {
                     ScopeFrame sf = new ScopeFrame(scope);
+                    sf.setTitle(controller.getLang() + " - Variable View");
                     sf.setVisible(true);
                     frames.add(sf);
                 }
