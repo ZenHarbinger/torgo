@@ -104,7 +104,7 @@ public class StackView implements InterpreterVisualization {
          * @return
          */
         public String getToolTip() {
-            Map<String, InterpreterValue> vars = scope.variablesPeek(depth);
+            TreeMap<String, InterpreterValue> vars = new TreeMap<>(scope.variablesPeek(depth));
             StringBuilder sb = new StringBuilder();
             sb.append("<html>");
             for (String var : vars.keySet()) {
