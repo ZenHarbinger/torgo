@@ -22,7 +22,6 @@ import java.awt.event.MouseMotionAdapter;
 import org.tros.utils.swing.NamedWindow;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
@@ -114,6 +113,12 @@ public class StackView implements InterpreterVisualization {
             return sb.toString().trim();
         }
 
+        /**
+         * Create the SliceWatchFrame if one does not exist, otherwise return
+         * the one that already exists.
+         *
+         * @return
+         */
         public SliceWatchFrame createWatchFrame() {
             if (swf == null) {
                 swf = new SliceWatchFrame(this);
@@ -121,6 +126,9 @@ public class StackView implements InterpreterVisualization {
             return swf;
         }
 
+        /**
+         * Handle when the sliced is popped off the stack.
+         */
         public void onPopped() {
             if (swf != null) {
                 swf.dispose();
@@ -129,10 +137,18 @@ public class StackView implements InterpreterVisualization {
         }
     }
 
+    /**
+     * Frame for viewing the variables at a particular point in the stack.
+     */
     public class SliceWatchFrame extends JFrame implements StackViewFrame {
 
         final private ScopeItem item;
 
+        /**
+         * Constructor.
+         *
+         * @param item
+         */
         public SliceWatchFrame(ScopeItem item) {
             this.item = item;
             refresh(item.scope);
@@ -140,6 +156,11 @@ public class StackView implements InterpreterVisualization {
             super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         }
 
+        /**
+         * Refresh the contents of the frame.
+         *
+         * @param scope
+         */
         @Override
         final public void refresh(Scope scope) {
             TreeMap<String, InterpreterValue> variables = new TreeMap<>(scope.variablesPeek(item.depth));
@@ -336,6 +357,11 @@ public class StackView implements InterpreterVisualization {
         final JList list = new JList(listModel);
 
         list.addMouseMotionListener(new MouseMotionAdapter() {
+            /**
+             * Show a tool tip.
+             *
+             * @param e
+             */
             @Override
             public void mouseMoved(MouseEvent e) {
                 int index = list.locationToIndex(e.getPoint());
@@ -347,6 +373,11 @@ public class StackView implements InterpreterVisualization {
             }
         });
         list.addMouseListener(new MouseAdapter() {
+            /**
+             * Pop up a frame with the variables at the specified stack point.
+             * 
+             * @param evt
+             */
             @Override
             public void mouseClicked(final MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
