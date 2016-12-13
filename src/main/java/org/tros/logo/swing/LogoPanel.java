@@ -794,7 +794,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     @Override
     public double getTurtleY() {
-        return turtleState.penX;
+        return turtleState.penY;
     }
 
     @Override
