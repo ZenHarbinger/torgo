@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Implements a dynamic scope which just looks down the call stack for an
@@ -71,6 +72,20 @@ public class DynamicScope extends ScopeImpl implements Scope {
         InterpreterValue ret = InterpreterValue.NULL;
 
         for (HashMap<String, InterpreterValue> map : scope) {
+            if (map.containsKey(name)) {
+                ret = map.get(name);
+                break;
+            }
+        }
+
+        return ret;
+    }
+
+    private InterpreterValue get(int value, String name) {
+        InterpreterValue ret = InterpreterValue.NULL;
+
+        for(int ii = scope.size() - value; ii < scope.size(); ii++) {
+            HashMap<String, InterpreterValue> map = scope.get(ii);
             if (map.containsKey(name)) {
                 ret = map.get(name);
                 break;
@@ -182,6 +197,25 @@ public class DynamicScope extends ScopeImpl implements Scope {
         HashSet<String> keys = new HashSet<>();
         for(HashMap<String, InterpreterValue> slice : scope) {
             keys.addAll(slice.keySet());
+        }
+        return keys;
+    }
+
+    /**
+     * Get the names of variables.
+     *
+     * @param value
+     * @return
+     */
+    @Override
+    public Map<String, InterpreterValue> variablesPeek(int value) {
+        HashMap<String, InterpreterValue> keys = new HashMap<>();
+        for(int ii = scope.size() - 1; ii >= 0 && value >= 0; ii--, value--) {
+            HashMap<String, InterpreterValue> slice = scope.get(ii);
+            for(String key : slice.keySet()) {
+                keys.put(key, slice.get(key));
+            }
+//            keys.addAll(slice.keySet());
         }
         return keys;
     }

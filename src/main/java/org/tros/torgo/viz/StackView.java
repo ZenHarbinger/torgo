@@ -16,9 +16,13 @@
 package org.tros.torgo.viz;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import org.tros.utils.swing.NamedWindow;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
@@ -50,21 +54,35 @@ import org.tros.torgo.interpreter.ScopeListener;
  */
 public class StackView implements InterpreterVisualization {
 
+    public interface StackViewFrame {
+
+        void refresh(Scope scope);
+
+        void dispose();
+    }
+
     /**
      * Represents a CodeBlock in the list.
      */
     public class ScopeItem {
 
         final private CodeBlock cb;
+        final private int depth;
+        final private Scope scope;
+        private SliceWatchFrame swf;
 
         /**
          * Constructor.
          *
          * @param cb
+         * @param depth
+         * @param scope
          */
-        public ScopeItem(CodeBlock cb) {
+        public ScopeItem(CodeBlock cb, int depth, Scope scope) {
             super();
+            this.depth = depth;
             this.cb = cb;
+            this.scope = scope;
         }
 
         /**
@@ -75,10 +93,79 @@ public class StackView implements InterpreterVisualization {
         @Override
         public String toString() {
             if (CodeFunction.class.isAssignableFrom(cb.getClass())) {
-                return ((CodeFunction)cb).getFunctionName();
+                return ((CodeFunction) cb).getFunctionName();
             } else {
                 return cb.getClass().getSimpleName();
             }
+        }
+
+        /**
+         *
+         * @return
+         */
+        public String getToolTip() {
+            Map<String, InterpreterValue> vars = scope.variablesPeek(depth);
+            StringBuilder sb = new StringBuilder();
+            sb.append("<html>");
+            for (String var : vars.keySet()) {
+                sb.append(var).append(": ").append(vars.get(var).getValue().toString()).append("<br>");
+            }
+            sb.append("</html>");
+            return sb.toString().trim();
+        }
+
+        public SliceWatchFrame createWatchFrame() {
+            if (swf == null) {
+                swf = new SliceWatchFrame(this);
+            }
+            return swf;
+        }
+
+        public void onPopped() {
+            if (swf != null) {
+                swf.dispose();
+                swf = null;
+            }
+        }
+    }
+
+    public class SliceWatchFrame extends JFrame implements StackViewFrame {
+
+        final private ScopeItem item;
+
+        public SliceWatchFrame(ScopeItem item) {
+            this.item = item;
+            refresh(item.scope);
+            super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        }
+
+        @Override
+        final public void refresh(Scope scope) {
+            TreeMap<String, InterpreterValue> variables = new TreeMap<>(scope.variablesPeek(item.depth));
+
+            int size = variables.size();
+
+            //Create and populate the panel.
+            JPanel panel = new JPanel(new SpringLayout());
+            for (String name : variables.keySet()) {
+                JLabel l = new JLabel(name, JLabel.TRAILING);
+                panel.add(l);
+                JTextField textField = new JTextField(10);
+                textField.setText(variables.get(name).toString());
+                l.setLabelFor(textField);
+                panel.add(textField);
+            }
+
+            if (size > 0) {
+                //Lay out the panel.
+                SpringUtilities.makeCompactGrid(panel,
+                        size, 2, //rows, cols
+                        6, 6, //initX, initY
+                        6, 6);      //xPad, yPad
+            }
+            super.setContentPane(panel);
+
+            super.pack();
         }
 
     }
@@ -86,29 +173,29 @@ public class StackView implements InterpreterVisualization {
     /**
      * Class to show values of variables in the interpreted code.
      */
-    public class ScopeFrame extends NamedWindow {
-
-        private final Scope scope;
+    public class VariableWatchFrame extends NamedWindow implements StackViewFrame {
 
         /**
          * Constructor.
          *
          * @param scope
          */
-        public ScopeFrame(Scope scope) {
+        public VariableWatchFrame(Scope scope) {
             super("Variable-Watch");
             super.setTitle("Variable Watch");
-            this.scope = scope;
 
-            refresh();
+            refresh(scope);
 
             super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         }
 
         /**
          * Refresh all values in this frame.
+         *
+         * @param scope
          */
-        public final void refresh() {
+        @Override
+        public final void refresh(Scope scope) {
             TreeMap<String, String> variables = new TreeMap<>();
             for (String name : scope.variables()) {
                 variables.put(name, scope.get(name).getValue().toString());
@@ -186,7 +273,7 @@ public class StackView implements InterpreterVisualization {
     @Override
     public void watch(String name, final Controller controller, InterpreterThread interpreter) {
         this.interpreter = interpreter;
-        final ArrayList<ScopeFrame> frames = new ArrayList<>();
+        final ArrayList<StackViewFrame> frames = new ArrayList<>();
 
         this.interpreter.addInterpreterListener(new InterpreterListener() {
 
@@ -204,8 +291,10 @@ public class StackView implements InterpreterVisualization {
             @Override
             public void finished() {
                 window.dispose();
-                for (JFrame frame : frames) {
-                    frame.dispose();
+                synchronized (frames) {
+                    for (StackViewFrame frame : frames) {
+                        frame.dispose();
+                    }
                 }
             }
 
@@ -243,6 +332,33 @@ public class StackView implements InterpreterVisualization {
         final DefaultListModel listModel = new DefaultListModel();
         final JList list = new JList(listModel);
 
+        list.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int index = list.locationToIndex(e.getPoint());
+                if (index > -1) {
+                    ScopeItem item = (ScopeItem) listModel.getElementAt(index);
+                    String tip = item.toString();
+                    list.setToolTipText(item.getToolTip());
+                }
+            }
+        });
+        list.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    ScopeItem item = (ScopeItem) listModel.getElementAt(index);
+                    SliceWatchFrame swf = item.createWatchFrame();
+                    synchronized (frames) {
+                        frames.add(swf);
+                    }
+                    swf.setTitle("Stack - " + item.depth);
+                    swf.setVisible(true);
+                }
+            }
+        });
+
         list.setLayoutOrientation(JList.VERTICAL);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setVisibleRowCount(-1);
@@ -274,6 +390,10 @@ public class StackView implements InterpreterVisualization {
                         @Override
                         public void run() {
                             ScopeItem popped = labels.pop();
+                            synchronized (frames) {
+                                frames.remove(popped.swf);
+                            }
+                            popped.onPopped();
                             listModel.removeElement(popped);
                         }
                     });
@@ -290,17 +410,19 @@ public class StackView implements InterpreterVisualization {
              */
             @Override
             public void scopePushed(final Scope scope, final CodeBlock block) {
-                if (frames.isEmpty()) {
-                    ScopeFrame sf = new ScopeFrame(scope);
-                    sf.setTitle(controller.getLang() + " - Variable View");
-                    sf.setVisible(true);
-                    frames.add(sf);
+                synchronized (frames) {
+                    if (frames.isEmpty()) {
+                        VariableWatchFrame sf = new VariableWatchFrame(scope);
+                        sf.setTitle(controller.getLang() + " - Variable View");
+                        sf.setVisible(true);
+                        frames.add(sf);
+                    }
                 }
                 try {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
                         public void run() {
-                            ScopeItem sp = new ScopeItem(block);
+                            ScopeItem sp = new ScopeItem(block, listModel.size(), scope);
                             listModel.addElement(sp);
                             labels.push(sp);
                         }
@@ -318,10 +440,11 @@ public class StackView implements InterpreterVisualization {
              * @param value
              */
             @Override
-            public void variableSet(Scope scope, String name, InterpreterValue value) {
-                //TODO: refresh all frames
-                for (ScopeFrame frame : frames) {
-                    frame.refresh();
+            public void variableSet(final Scope scope, String name, InterpreterValue value) {
+                synchronized (frames) {
+                    for (StackViewFrame frame : frames) {
+                        frame.refresh(scope);
+                    }
                 }
             }
         });
