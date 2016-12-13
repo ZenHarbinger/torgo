@@ -39,6 +39,7 @@ import org.tros.torgo.interpreter.InterpreterThread;
 import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.InterpreterVisualization;
 import org.tros.torgo.Main;
+import org.tros.torgo.interpreter.CodeFunction;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.interpreter.ScopeListener;
 
@@ -73,7 +74,11 @@ public class StackView implements InterpreterVisualization {
          */
         @Override
         public String toString() {
-            return cb.getClass().getName();
+            if (CodeFunction.class.isAssignableFrom(cb.getClass())) {
+                return ((CodeFunction)cb).getFunctionName();
+            } else {
+                return cb.getClass().getSimpleName();
+            }
         }
 
     }
