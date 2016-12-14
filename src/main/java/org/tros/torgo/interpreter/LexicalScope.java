@@ -187,13 +187,14 @@ public class LexicalScope extends ScopeImpl implements Scope {
      */
     @Override
     public Map<String, InterpreterValue> variablesPeek(int value) {
-//        HashSet<String> keys = new HashSet<>();
-//        CodeBlock cb = stack.get(stack.size() - value - 1);
-//        while (cb != null) {
-//            keys.addAll(cb.localVariables());
-//            cb = cb.getParent();
-//        }
-//        return keys;
-        return new HashMap<>();
+        HashMap<String, InterpreterValue> keys = new HashMap<>();
+        CodeBlock cb = stack.get(stack.size() - value - 1);
+        while (cb != null) {
+            for(String v : cb.localVariables()) {
+                keys.put(v, cb.getVariable(v));
+            }
+            cb = cb.getParent();
+        }
+        return keys;
     }
 }
