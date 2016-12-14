@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Scopes
-date: '2016-06-30 12:05:00 -0400'
+date: '2016-06-30 12:05:00 -0500'
 categories: dev
 tags:
   - example
