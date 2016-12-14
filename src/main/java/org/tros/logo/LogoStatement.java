@@ -86,9 +86,9 @@ class LogoStatement extends LogoBlock {
         //value right off of the stack again.
         listeners.fire().currStatement(this, scope);
 
-        scope.set(TURTLE_X_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleX()));
-        scope.set(TURTLE_Y_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleY()));
-        scope.set(TURTLE_ANGLE_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleAngle()));
+        scope.setGlobal(TURTLE_X_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleX()));
+        scope.setGlobal(TURTLE_Y_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleY()));
+        scope.setGlobal(TURTLE_ANGLE_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleAngle()));
 
         ReturnValue success = ReturnValue.SUCCESS;
         if (null != command) {

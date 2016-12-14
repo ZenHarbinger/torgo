@@ -16,6 +16,7 @@
 package org.tros.logo;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.logo.antlr.LogoParser;
 import org.tros.torgo.interpreter.InterpreterValue;
@@ -64,6 +65,7 @@ class LogoFor extends LogoBlock {
     public ReturnValue process(Scope scope) {
         LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
+        super.variables.add(0, new HashMap<String, InterpreterValue>());
         listeners.fire().currStatement(this, scope);
 
         LogoParser.ForeContext fore = (LogoParser.ForeContext) ctx;
@@ -113,6 +115,7 @@ class LogoFor extends LogoBlock {
             }
         }
 
+        super.variables.remove(0);
         scope.pop();
 
         return ReturnValue.SUCCESS;

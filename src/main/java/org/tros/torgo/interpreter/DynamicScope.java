@@ -78,20 +78,9 @@ public class DynamicScope extends ScopeImpl implements Scope {
             }
         }
 
-        return ret;
-    }
-
-    private InterpreterValue get(int value, String name) {
-        InterpreterValue ret = InterpreterValue.NULL;
-
-        for(int ii = scope.size() - value; ii < scope.size(); ii++) {
-            HashMap<String, InterpreterValue> map = scope.get(ii);
-            if (map.containsKey(name)) {
-                ret = map.get(name);
-                break;
-            }
-        }
-
+        if(ret == InterpreterValue.NULL) {
+            return super.get(name);
+        } 
         return ret;
     }
 

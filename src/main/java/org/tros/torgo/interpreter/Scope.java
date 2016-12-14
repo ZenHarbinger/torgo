@@ -79,6 +79,14 @@ public interface Scope {
     void set(String name, InterpreterValue value);
 
     /**
+     * Set a name value pair in the scope.
+     *
+     * @param name
+     * @param value
+     */
+    void setGlobal(String name, InterpreterValue value);
+
+    /**
      * Set a name value pair in the scope at the top level.
      *
      * @param name

@@ -41,7 +41,7 @@ public class LexicalScope extends ScopeImpl implements Scope {
             }
             p = p.getParent();
         }
-        return InterpreterValue.NULL;
+        return super.get(name);
     }
 
     /**
@@ -190,11 +190,12 @@ public class LexicalScope extends ScopeImpl implements Scope {
         HashMap<String, InterpreterValue> keys = new HashMap<>();
         CodeBlock cb = stack.get(stack.size() - value - 1);
         while (cb != null) {
-            for(String v : cb.localVariables()) {
+            for (String v : cb.localVariables()) {
                 keys.put(v, cb.getVariable(v));
             }
             cb = cb.getParent();
         }
         return keys;
     }
+
 }
