@@ -16,6 +16,7 @@
 package org.tros.torgo.interpreter;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Scoping interface. Not sure that this is sufficient to describe lexical
@@ -78,6 +79,14 @@ public interface Scope {
     void set(String name, InterpreterValue value);
 
     /**
+     * Set a name value pair in the scope.
+     *
+     * @param name
+     * @param value
+     */
+    void setGlobal(String name, InterpreterValue value);
+
+    /**
      * Set a name value pair in the scope at the top level.
      *
      * @param name
@@ -129,4 +138,19 @@ public interface Scope {
      * @return
      */
     Collection<String> localVariables();
+
+    /**
+     * Get the names of variables.
+     *
+     * @return
+     */
+    Collection<String> variables();
+
+    /**
+     * Get the names of variables.
+     *
+     * @param val
+     * @return
+     */
+    Map<String, InterpreterValue> variablesPeek(int val);
 }

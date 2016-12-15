@@ -16,6 +16,7 @@
 package org.tros.torgo.interpreter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.apache.commons.lang3.event.EventListenerSupport;
 
 /**
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.event.EventListenerSupport;
  */
 abstract class ScopeImpl implements Scope {
 
+    protected final HashMap<String, InterpreterValue> globals = new HashMap<>();
     protected final ArrayList<CodeBlock> stack = new ArrayList<>();
     private final EventListenerSupport<ScopeListener> listeners
             = EventListenerSupport.create(ScopeListener.class);
@@ -106,4 +108,24 @@ abstract class ScopeImpl implements Scope {
     protected final void fireVariableSet(String name, InterpreterValue value) {
         listeners.fire().variableSet(this, name, value);
     }
+
+    /**
+     * Set a global value.
+     *
+     * @param name
+     * @param value
+     */
+    @Override
+    public void setGlobal(String name, InterpreterValue value) {
+        globals.put(name, value);
+    }
+
+    @Override
+    public InterpreterValue get(String name) {
+        if (this.globals.containsKey(name)) {
+            return this.globals.get(name);
+        }
+        return InterpreterValue.NULL;
+    }
+
 }

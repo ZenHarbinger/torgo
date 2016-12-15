@@ -16,7 +16,9 @@
 package org.tros.logo;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.interpreter.ReturnValue;
 import org.tros.torgo.interpreter.Scope;
 
@@ -50,10 +52,12 @@ class LogoProg extends LogoBlock {
     public ReturnValue process(Scope scope) {
         LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
+        super.variables.add(0, new HashMap<String, InterpreterValue>());
         listeners.fire().currStatement(this, scope);
 
         ReturnValue success = super.process(scope);
 
+        super.variables.remove(0);
         scope.pop();
         return success;
     }

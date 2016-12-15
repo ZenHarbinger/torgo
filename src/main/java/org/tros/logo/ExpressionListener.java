@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.tros.logo.antlr.logoBaseListener;
-import org.tros.logo.antlr.logoParser;
+import org.tros.logo.antlr.LogoBaseListener;
+import org.tros.logo.antlr.LogoParser;
 import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.interpreter.types.NumberType;
@@ -33,7 +33,7 @@ import org.tros.torgo.interpreter.types.StringType;
  *
  * @author matta
  */
-class ExpressionListener extends logoBaseListener {
+class ExpressionListener extends LogoBaseListener {
 
     private final Scope scope;
     private final Stack<ArrayList<InterpreterValue>> value = new Stack<>();
@@ -93,12 +93,12 @@ class ExpressionListener extends logoBaseListener {
     }
 
     @Override
-    public void enterExpression(logoParser.ExpressionContext ctx) {
+    public void enterExpression(LogoParser.ExpressionContext ctx) {
         value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
-    public void exitExpression(logoParser.ExpressionContext ctx) {
+    public void exitExpression(LogoParser.ExpressionContext ctx) {
         ArrayList<InterpreterValue> values = value.pop();
         for (int ii = 1; ii < ctx.getChildCount(); ii += 2) {
             values.add(0, mathExpression(values.remove(0), values.remove(0), ctx.getChild(ii).getText()));
@@ -107,24 +107,24 @@ class ExpressionListener extends logoBaseListener {
     }
 
     @Override
-    public void enterDeref(logoParser.DerefContext ctx) {
+    public void enterDeref(LogoParser.DerefContext ctx) {
         InterpreterValue s = scope.get(ctx.name().STRING().getText());
         value.peek().add(s);
     }
 
     @Override
-    public void enterNumber(logoParser.NumberContext ctx) {
+    public void enterNumber(LogoParser.NumberContext ctx) {
         Double d = Double.parseDouble(ctx.NUMBER().getSymbol().getText());
         value.peek().add(new InterpreterValue(NumberType.INSTANCE, d));
     }
 
     @Override
-    public void enterMultiplyingExpression(logoParser.MultiplyingExpressionContext ctx) {
+    public void enterMultiplyingExpression(LogoParser.MultiplyingExpressionContext ctx) {
         value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
-    public void exitMultiplyingExpression(logoParser.MultiplyingExpressionContext ctx) {
+    public void exitMultiplyingExpression(LogoParser.MultiplyingExpressionContext ctx) {
         ArrayList<InterpreterValue> values = value.pop();
         for (int ii = 1; ii < ctx.getChildCount(); ii += 2) {
             values.add(0, mathExpression(values.remove(0), values.remove(0), ctx.getChild(ii).getText()));
@@ -133,14 +133,14 @@ class ExpressionListener extends logoBaseListener {
     }
 
     @Override
-    public void enterPowerExpression(logoParser.PowerExpressionContext ctx) {
+    public void enterPowerExpression(LogoParser.PowerExpressionContext ctx) {
         if (ctx.getChildCount() > 1) {
             value.push(new ArrayList<InterpreterValue>());
         }
     }
 
     @Override
-    public void exitPowerExpression(logoParser.PowerExpressionContext ctx) {
+    public void exitPowerExpression(LogoParser.PowerExpressionContext ctx) {
         if (ctx.getChildCount() > 1) {
             ArrayList<InterpreterValue> values = value.pop();
             for (int ii = 1; ii < ctx.getChildCount(); ii += 2) {
@@ -151,12 +151,12 @@ class ExpressionListener extends logoBaseListener {
     }
 
     @Override
-    public void enterRandom(logoParser.RandomContext ctx) {
+    public void enterRandom(LogoParser.RandomContext ctx) {
         value.push(new ArrayList<InterpreterValue>());
     }
 
     @Override
-    public void exitRandom(logoParser.RandomContext ctx) {
+    public void exitRandom(LogoParser.RandomContext ctx) {
         ArrayList<InterpreterValue> values = value.pop();
         int max = ((Number) values.get(0).getValue()).intValue();
         InterpreterValue v = new InterpreterValue(NumberType.INSTANCE, org.tros.utils.Random.nextInt(max));
@@ -164,7 +164,7 @@ class ExpressionListener extends logoBaseListener {
     }
 
     @Override
-    public void exitSignExpression(logoParser.SignExpressionContext ctx) {
+    public void exitSignExpression(LogoParser.SignExpressionContext ctx) {
         String x = ctx.getChild(0).getText();
         ArrayList<InterpreterValue> peek = this.value.peek();
         int index = peek.size() - 1;
@@ -180,27 +180,27 @@ class ExpressionListener extends logoBaseListener {
     }
 
     @Override
-    public void enterGetx(logoParser.GetxContext ctx) {
+    public void enterGetx(LogoParser.GetxContext ctx) {
         value.peek().add(scope.get(LogoStatement.TURTLE_X_VAR));
     }
 
     @Override
-    public void enterGety(logoParser.GetyContext ctx) {
+    public void enterGety(LogoParser.GetyContext ctx) {
         value.peek().add(scope.get(LogoStatement.TURTLE_Y_VAR));
     }
 
     @Override
-    public void enterGetangle(logoParser.GetangleContext ctx) {
+    public void enterGetangle(LogoParser.GetangleContext ctx) {
         value.peek().add(scope.get(LogoStatement.TURTLE_ANGLE_VAR));
     }
 
     @Override
-    public void enterRepcount(logoParser.RepcountContext ctx) {
+    public void enterRepcount(LogoParser.RepcountContext ctx) {
         value.peek().add(scope.get(LogoRepeat.REPCOUNT_VAR));
     }
 
     @Override
-    public void enterValue(logoParser.ValueContext ctx) {
+    public void enterValue(LogoParser.ValueContext ctx) {
         if (ctx.STRINGLITERAL() != null) {
             value.peek().add(new InterpreterValue(StringType.INSTANCE, ctx.STRINGLITERAL().getText().substring(1)));
         }

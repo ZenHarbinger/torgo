@@ -21,6 +21,7 @@ import org.apache.commons.beanutils.Converter;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,15 +35,18 @@ import org.tros.utils.logging.Logging;
  */
 public class ColorConverterTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
 
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(ColorConverterTest.class.getName());
+    }
+    
     public ColorConverterTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(ColorConverterTest.class.getName());
     }
 
     @AfterClass
@@ -64,6 +68,7 @@ public class ColorConverterTest {
     public void testConvert() {
         LOGGER.info("color convert test");
         Converter lookup = UtilsBeanFactory.getConverter(String.class, Color.class);
+        assertEquals("blue", lookup.convert(String.class, "blue"));
         String hex = "0x0dff00";
         Color convert = lookup.convert(Color.class, hex);
         Assert.assertNotNull(convert);

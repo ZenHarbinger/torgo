@@ -38,16 +38,16 @@ import org.tros.utils.logging.Logging;
  *
  * @author matta
  */
-public class TraceLoggerTest {
+public class StackViewTest {
 
     private final static Logger LOGGER;
     
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(TraceLoggerTest.class.getName());
+        LOGGER = Logger.getLogger(StackViewTest.class.getName());
     }
     
-    public TraceLoggerTest() {
+    public StackViewTest() {
     }
 
     @BeforeClass
@@ -70,8 +70,8 @@ public class TraceLoggerTest {
      * Test of create method, of class TraceLogger.
      */
     @Test
-    public void traceLoggerTest() {
-        LOGGER.info("traceLoggerTest");
+    public void stackViewLoggerTest() {
+        LOGGER.info("stackViewLoggerTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
@@ -79,7 +79,7 @@ public class TraceLoggerTest {
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
 
-        controller.enable("TraceLogger");
+        controller.enable("StackView");
 
         String[] files = new String[]{
             "logo/examples/tortue/octagon.logo",

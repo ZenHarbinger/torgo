@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2016 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,6 +16,9 @@
 package org.tros.torgo.interpreter;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  *
@@ -38,7 +41,7 @@ public class LexicalScope extends ScopeImpl implements Scope {
             }
             p = p.getParent();
         }
-        return InterpreterValue.NULL;
+        return super.get(name);
     }
 
     /**
@@ -142,10 +145,10 @@ public class LexicalScope extends ScopeImpl implements Scope {
     public boolean hasFunction(String name) {
         CodeBlock cb = stack.get(0);
         while (cb != null) {
-            cb = cb.getParent();
             if (cb.hasFunction(name)) {
                 return true;
             }
+            cb = cb.getParent();
         }
         return false;
     }
@@ -159,4 +162,40 @@ public class LexicalScope extends ScopeImpl implements Scope {
     public Collection<String> localVariables() {
         return stack.get(0).localVariables();
     }
+
+    /**
+     * Get the names of variables.
+     *
+     * @return
+     */
+    @Override
+    public Collection<String> variables() {
+        HashSet<String> keys = new HashSet<>();
+        CodeBlock cb = stack.get(0);
+        while (cb != null) {
+            keys.addAll(cb.localVariables());
+            cb = cb.getParent();
+        }
+        return keys;
+    }
+
+    /**
+     * Get the names of variables.
+     *
+     * @param value
+     * @return
+     */
+    @Override
+    public Map<String, InterpreterValue> variablesPeek(int value) {
+        HashMap<String, InterpreterValue> keys = new HashMap<>();
+        CodeBlock cb = stack.get(stack.size() - value - 1);
+        while (cb != null) {
+            for (String v : cb.localVariables()) {
+                keys.put(v, cb.getVariable(v));
+            }
+            cb = cb.getParent();
+        }
+        return keys;
+    }
+
 }

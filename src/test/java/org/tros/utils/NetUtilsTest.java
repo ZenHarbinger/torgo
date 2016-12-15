@@ -32,15 +32,18 @@ import org.tros.utils.logging.Logging;
  */
 public class NetUtilsTest {
     
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(NetUtilsTest.class.getName());
+    }
 
     public NetUtilsTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(NetUtilsTest.class.getName());
     }
     
     @AfterClass

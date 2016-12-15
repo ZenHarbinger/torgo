@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2016 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,8 +21,8 @@ import java.util.Collection;
 import java.util.Stack;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.tros.logo.antlr.logoBaseListener;
-import org.tros.logo.antlr.logoParser;
+import org.tros.logo.antlr.LogoBaseListener;
+import org.tros.logo.antlr.LogoParser;
 import org.tros.torgo.interpreter.LexicalAnalyzer;
 
 /**
@@ -32,7 +32,7 @@ import org.tros.torgo.interpreter.LexicalAnalyzer;
  *
  * @author matta
  */
-class LexicalListener extends logoBaseListener implements LexicalAnalyzer {
+class LexicalListener extends LogoBaseListener implements LexicalAnalyzer {
 
     private final Stack<CodeBlock> stack = new Stack<>();
     private final ArrayList<CodeBlock> blocks = new ArrayList<>();
@@ -58,7 +58,7 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer {
     }
 
     @Override
-    public void enterProcedureDeclaration(logoParser.ProcedureDeclarationContext ctx) {
+    public void enterProcedureDeclaration(LogoParser.ProcedureDeclarationContext ctx) {
         LogoFunction lf = new LogoFunction(ctx.name().getText(), ctx);
         blocks.add(lf);
         stack.peek().addFunction(lf);
@@ -67,164 +67,164 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer {
     }
 
     @Override
-    public void exitProcedureDeclaration(logoParser.ProcedureDeclarationContext ctx) {
+    public void exitProcedureDeclaration(LogoParser.ProcedureDeclarationContext ctx) {
         stack.pop();
     }
 
     @Override
-    public void enterDs(logoParser.DsContext ctx) {
+    public void enterDs(LogoParser.DsContext ctx) {
         LogoStatement logoStatement = new LogoStatement("ds", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterCc(logoParser.CcContext ctx) {
+    public void enterCc(LogoParser.CcContext ctx) {
         LogoStatement logoStatement = new LogoStatement("cc", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterPc(logoParser.PcContext ctx) {
+    public void enterPc(LogoParser.PcContext ctx) {
         LogoStatement logoStatement = new LogoStatement("pc", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterFontname(logoParser.FontnameContext ctx) {
+    public void enterFontname(LogoParser.FontnameContext ctx) {
         LogoStatement logoStatement = new LogoStatement("fontname", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterFontstyle(logoParser.FontstyleContext ctx) {
+    public void enterFontstyle(LogoParser.FontstyleContext ctx) {
         LogoStatement logoStatement = new LogoStatement("fontstyle", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterFontsize(logoParser.FontsizeContext ctx) {
+    public void enterFontsize(LogoParser.FontsizeContext ctx) {
         LogoStatement logoStatement = new LogoStatement("fontsize", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterProg(logoParser.ProgContext ctx) {
+    public void enterProg(LogoParser.ProgContext ctx) {
         stack.push(new LogoProg(ctx));
     }
 
     @Override
-    public void enterPrint(logoParser.PrintContext ctx) {
+    public void enterPrint_command(LogoParser.Print_commandContext ctx) {
         LogoStatement logoStatement = new LogoStatement("print", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterFd(logoParser.FdContext ctx) {
+    public void enterFd(LogoParser.FdContext ctx) {
         LogoStatement logoStatement = new LogoStatement("fd", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterBk(logoParser.BkContext ctx) {
+    public void enterBk(LogoParser.BkContext ctx) {
         LogoStatement logoStatement = new LogoStatement("bk", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterRt(logoParser.RtContext ctx) {
+    public void enterRt(LogoParser.RtContext ctx) {
         LogoStatement logoStatement = new LogoStatement("rt", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterLt(logoParser.LtContext ctx) {
+    public void enterLt(LogoParser.LtContext ctx) {
         LogoStatement logoStatement = new LogoStatement("lt", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterPu(logoParser.PuContext ctx) {
+    public void enterPu(LogoParser.PuContext ctx) {
         LogoStatement logoStatement = new LogoStatement("pu", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterPd(logoParser.PdContext ctx) {
+    public void enterPd(LogoParser.PdContext ctx) {
         LogoStatement logoStatement = new LogoStatement("pd", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterCs(logoParser.CsContext ctx) {
+    public void enterCs(LogoParser.CsContext ctx) {
         LogoStatement logoStatement = new LogoStatement("cs", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterHt(logoParser.HtContext ctx) {
+    public void enterHt(LogoParser.HtContext ctx) {
         LogoStatement logoStatement = new LogoStatement("ht", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterSt(logoParser.StContext ctx) {
+    public void enterSt(LogoParser.StContext ctx) {
         LogoStatement logoStatement = new LogoStatement("st", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterHome(logoParser.HomeContext ctx) {
+    public void enterHome(LogoParser.HomeContext ctx) {
         LogoStatement logoStatement = new LogoStatement("home", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterSetxy(logoParser.SetxyContext ctx) {
+    public void enterSetxy(LogoParser.SetxyContext ctx) {
         LogoStatement logoStatement = new LogoStatement("setxy", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterProcedureInvocation(logoParser.ProcedureInvocationContext ctx) {
+    public void enterProcedureInvocation(LogoParser.ProcedureInvocationContext ctx) {
         LogoStatement logoStatement = new LogoStatement(ctx.name().getText(), ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterMake(logoParser.MakeContext ctx) {
+    public void enterMake(LogoParser.MakeContext ctx) {
         LogoStatement logoStatement = new LogoStatement("make", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterLocalmake(logoParser.LocalmakeContext ctx) {
+    public void enterLocalmake(LogoParser.LocalmakeContext ctx) {
         LogoStatement logoStatement = new LogoStatement("localmake", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterIfe(logoParser.IfeContext ctx) {
+    public void enterIfe(LogoParser.IfeContext ctx) {
         //LogoIf ife = new LogoIf(ctx.comparison());
         LogoIf lc = new LogoIf(ctx);
         blocks.add(lc);
@@ -234,19 +234,19 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer {
     }
 
     @Override
-    public void exitIfe(logoParser.IfeContext ctx) {
+    public void exitIfe(LogoParser.IfeContext ctx) {
         stack.pop();
     }
 
     @Override
-    public void enterStop(logoParser.StopContext ctx) {
+    public void enterStop(LogoParser.StopContext ctx) {
         LogoStatement logoStatement = new LogoStatement("stop", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void enterFore(logoParser.ForeContext ctx) {
+    public void enterFore(LogoParser.ForeContext ctx) {
         LogoFor lc = new LogoFor(ctx);
         blocks.add(lc);
         stack.peek().addCommand(lc);
@@ -255,12 +255,12 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer {
     }
 
     @Override
-    public void exitFore(logoParser.ForeContext ctx) {
+    public void exitFore(LogoParser.ForeContext ctx) {
         stack.pop();
     }
 
     @Override
-    public void enterRepeat(logoParser.RepeatContext ctx) {
+    public void enterRepeat(LogoParser.RepeatContext ctx) {
         LogoRepeat lc = new LogoRepeat(ctx);
         blocks.add(lc);
         stack.peek().addCommand(lc);
@@ -269,14 +269,14 @@ class LexicalListener extends logoBaseListener implements LexicalAnalyzer {
     }
 
     @Override
-    public void enterPause(logoParser.PauseContext ctx) {
+    public void enterPause(LogoParser.PauseContext ctx) {
         LogoStatement logoStatement = new LogoStatement("pause", ctx, canvas);
         blocks.add(logoStatement);
         stack.peek().addCommand(logoStatement);
     }
 
     @Override
-    public void exitRepeat(logoParser.RepeatContext ctx) {
+    public void exitRepeat(LogoParser.RepeatContext ctx) {
         stack.pop();
     }
 

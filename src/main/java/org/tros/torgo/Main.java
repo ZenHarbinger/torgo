@@ -15,10 +15,20 @@
  */
 package org.tros.torgo;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.SplashScreen;
 import java.awt.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -35,6 +45,105 @@ import org.apache.commons.cli.ParseException;
  */
 public class Main {
 
+    private static SplashScreen mySplash;
+    private static Graphics2D splashGraphics;
+    private static Image splashImage;
+    private static Font font;
+    private static Dimension splashDimension;
+    private static double currPercent = 0;
+
+    /**
+     * Initialize the splash graphic.
+     */
+    private static void splashInit() {
+        mySplash = SplashScreen.getSplashScreen();
+        if (mySplash != null) {
+            try {
+                // if there are any problems displaying the splash this will be null
+                splashDimension = mySplash.getSize();
+                splashImage = ImageIO.read(mySplash.getImageURL());
+
+                // create the Graphics environment for drawing status info
+                splashGraphics = mySplash.createGraphics();
+                font = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
+                splashGraphics.setFont(font);
+                splashGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+
+                // initialize the status info
+                splashText("Starting");
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    /**
+     * Display text in status area of Splash. Note: no validation it will fit.
+     *
+     * @param str - text to be displayed
+     */
+    public static void splashText(String str) {
+        if (mySplash != null && mySplash.isVisible()) {
+            splashGraphics.drawImage(splashImage, 0, 0, null);
+
+            splashGraphics.setPaint(Color.BLACK);
+            splashGraphics.drawString(str, 27, (int) (splashDimension.getHeight() - 12));
+            splashProgress(currPercent);
+
+            mySplash.update();
+        }
+    }
+
+    public static double numSteps = 1;
+    public static double currStep = 0;
+
+    /**
+     * Set the number of steps to be completed.
+     *
+     * This number can be updated.
+     *
+     * @param steps
+     */
+    public static void setNumSteps(int steps) {
+        if (steps > 0) {
+            numSteps = steps;
+        }
+    }
+
+    /**
+     * Perform a step.
+     */
+    public static void splashStep() {
+        currStep += 1.0;
+        currStep = Math.min(currStep, numSteps);
+        splashProgress(currStep / numSteps);
+    }
+
+    /**
+     * Add a specified number of steps to the completed.
+     *
+     * @param steps
+     */
+    public static void addSteps(int steps) {
+        if (steps > 0) {
+            numSteps += steps;
+        }
+    }
+
+    /**
+     * Update splash progress.
+     *
+     * @param percent
+     */
+    private static void splashProgress(double percent) {
+        if (mySplash != null && mySplash.isVisible()) {
+            currPercent = percent;
+            splashGraphics.setColor(Color.RED);
+            splashGraphics.fillRect(0, splashDimension.height - 5, (int) (splashDimension.getWidth() * percent), 5);
+            mySplash.update();
+        }
+    }
+
     /**
      * Entry Point
      *
@@ -42,6 +151,7 @@ public class Main {
      */
     public static void main(String[] args) {
         //initialize the logging
+        splashInit();
         org.tros.utils.logging.Logging.initLogging(TorgoInfo.INSTANCE);
         Options options = new Options();
         options.addOption("l", "lang", true, "Open using the desired language. [default is 'logo']");

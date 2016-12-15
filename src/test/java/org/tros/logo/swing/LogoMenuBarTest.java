@@ -19,17 +19,29 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.tros.logo.DynamicLogoController;
+import org.tros.logo.LogoCanvas;
+import org.tros.logo.LogoController;
+import org.tros.torgo.ControllerBase;
 import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
+import org.tros.torgo.swing.BufferedImageProvider;
 import org.tros.utils.logging.Logging;
 
 /**
@@ -44,7 +56,7 @@ public class LogoMenuBarTest {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(LogoMenuBarTest.class.getName());
     }
-    
+
     public LogoMenuBarTest() {
     }
 
@@ -72,6 +84,18 @@ public class LogoMenuBarTest {
         LOGGER.info("testExportCanvas");
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
+        JFrame window = null;
+
+        try {
+            Method method = ControllerBase.class.getDeclaredMethod("getWindow");
+            method.setAccessible(true);
+            Object invoke = method.invoke(controller);
+            if (invoke != null && JFrame.class.isAssignableFrom(invoke.getClass())) {
+                window = (JFrame) invoke;
+            }
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         Robot robot = null;
         try {
@@ -98,152 +122,156 @@ public class LogoMenuBarTest {
 //            "logo/examples/antlr/fractal.txt"
 //        };
         robot.delay(3000);
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+        controller.openFile(ClassLoader.getSystemClassLoader().getResource("logo/examples/antlr/fractal.txt"));
+        controller.startInterpreter();
+        robot.delay(3000);
 
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        System.out.println("exportSVG");
+        exportSVG(robot, window, controller);
+        System.out.println("exportPNG");
+        exportPNG(robot, window, controller);
+        System.out.println("exportGIF");
+        exportGIF(robot, window, controller);
 
-        pressKey(robot, new int[]{KeyEvent.VK_F6}, 100);
-//        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-//        pressKey(robot, new int[]{KeyEvent.VK_RIGHT}, 100);
-//        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-//        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-
-        robot.delay(5000);
-//////        for (String file : files) {
-////            LOGGER.info(file);
-////            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
-////            controller.disable("TraceLogger");
-////
-////            final AtomicBoolean started = new AtomicBoolean(false);
-////            final AtomicBoolean finished = new AtomicBoolean(false);
-////            controller.addInterpreterListener(new InterpreterListener() {
-////                @Override
-////                public void started() {
-////                    started.set(true);
-////                }
-////
-////                @Override
-////                public void finished() {
-////                    finished.set(true);
-////                }
-////
-////                @Override
-////                public void error(Exception e) {
-////                }
-////
-////                @Override
-////                public void message(String msg) {
-////                }
-////
-////                @Override
-////                public void currStatement(CodeBlock block, Scope scope) {
-////                }
-////            });
-////
-////            controller.startInterpreter();
-//
-//            try {
-//                while (!finished.get()) {
-//                    Thread.sleep(10);
-//                }
-//            } catch (InterruptedException ex) {
-//                LOGGER.log(Level.SEVERE, null, ex);
-//            }
-//            assertTrue(started.get());
-//            assertTrue(finished.get());
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException ex) {
-//                LOGGER.log(Level.SEVERE, null, ex);
-//            }
-
-            System.out.println("exportSVG");
-            exportSVG(robot);
-            System.out.println("exportPNG");
-            exportPNG(robot);
-            System.out.println("exportGIF");
-            exportGIF(robot);
-//        }
-//
         controller.close();
     }
 
-    private void exportPNG(Robot robot) {
+    private void exportSVG(Robot robot, JFrame window, DynamicLogoController controller) {
+        final JFrame f = new JFrame();
+        final LogoMenuBar lmb = (LogoMenuBar) window.getJMenuBar();
+        LogoCanvas lc2 = null;
+        try {
+            //        LogoMenuBar lmb = new LogoMenuBar(window, controller, canvas);
+            Field declaredField = LogoController.class.getDeclaredField("canvas");
+            declaredField.setAccessible(true);
+            Object get = declaredField.get(controller);
+            if (get != null && LogoCanvas.class.isAssignableFrom(get.getClass())) {
+                lc2 = (LogoCanvas) get;
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String tmpDir = System.getProperty("java.io.tmpdir");
-        File t = new File(tmpDir + System.getProperty("file.separator") + "t.png");
-
+        final File t = new File(tmpDir + System.getProperty("file.separator") + "t.png");
+        final LogoCanvas lc = lc2;
         if (t.isFile()) {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_P}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_N}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Method generateSVG = LogoMenuBar.class.getDeclaredMethod("generateSVG", Drawable.class, OutputStream.class);
+                    generateSVG.setAccessible(true);
+                    FileOutputStream fos = new FileOutputStream(t);
+                    generateSVG.invoke(lmb, (Drawable) lc, fos);
+                    fos.close();
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | FileNotFoundException ex) {
+                    Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        th.start();
 
-        if (t.isFile()) {
-            t.delete();
-        }
-    }
-
-    private void exportGIF(Robot robot) {
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        File t = new File(tmpDir + System.getProperty("file.separator") + "t.gif");
-
-        if (t.isFile()) {
-            t.delete();
-        }
-
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_G}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_I}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         robot.delay(5000);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
     }
 
-    private void exportSVG(Robot robot) {
+    private void exportGIF(Robot robot, JFrame window, DynamicLogoController controller) {
+        final JFrame f = new JFrame();
+        final LogoMenuBar lmb = (LogoMenuBar) window.getJMenuBar();
+        LogoCanvas lc2 = null;
+        try {
+            //        LogoMenuBar lmb = new LogoMenuBar(window, controller, canvas);
+            Field declaredField = LogoController.class.getDeclaredField("canvas");
+            declaredField.setAccessible(true);
+            Object get = declaredField.get(controller);
+            if (get != null && LogoCanvas.class.isAssignableFrom(get.getClass())) {
+                lc2 = (LogoCanvas) get;
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String tmpDir = System.getProperty("java.io.tmpdir");
-        File t = new File(tmpDir + System.getProperty("file.separator") + "t.svg");
-
+        final File t = new File(tmpDir + System.getProperty("file.separator") + "t.gif");
+        final LogoCanvas lc = lc2;
         if (t.isFile()) {
             t.delete();
         }
 
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_V}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_S}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_V}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
-        robot.delay(500);
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Method generateGIF = LogoMenuBar.class.getDeclaredMethod("generateGIF", Drawable.class, BufferedImageProvider.class, String.class);
+                    generateGIF.setAccessible(true);
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    generateGIF.invoke(lmb, (Drawable) lc, (BufferedImageProvider) lc, t.getPath());
+//            outputStream.close();
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        th.start();
 
+        robot.delay(5000);
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+
+        assertTrue(t.isFile());
+        if (t.isFile()) {
+            t.delete();
+        }
+    }
+
+    private void exportPNG(Robot robot, JFrame window, DynamicLogoController controller) {
+        final JFrame f = new JFrame();
+        final LogoMenuBar lmb = (LogoMenuBar) window.getJMenuBar();
+        LogoCanvas lc2 = null;
+        try {
+            //        LogoMenuBar lmb = new LogoMenuBar(window, controller, canvas);
+            Field declaredField = LogoController.class.getDeclaredField("canvas");
+            declaredField.setAccessible(true);
+            Object get = declaredField.get(controller);
+            if (get != null && LogoCanvas.class.isAssignableFrom(get.getClass())) {
+                lc2 = (LogoCanvas) get;
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String tmpDir = System.getProperty("java.io.tmpdir");
+        final File t = new File(tmpDir + System.getProperty("file.separator") + "t.png");
+        final LogoCanvas lc = lc2;
+        if (t.isFile()) {
+            t.delete();
+        }
+
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Method generatePNG = LogoMenuBar.class.getDeclaredMethod("generatePNG", BufferedImageProvider.class, String.class);
+                    generatePNG.setAccessible(true);
+                    generatePNG.invoke(lmb, (Drawable) lc, t.getPath());
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        th.start();
+
+        robot.delay(5000);
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+
+        assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
