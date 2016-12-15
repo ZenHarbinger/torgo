@@ -1,4 +1,4 @@
-// Generated from logo.g4 by ANTLR 4.5.3
+// Generated from Logo.g4 by ANTLR 4.5.3
 
 package org.tros.logo.antlr;
 
@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class logoLexer extends Lexer {
+public class LogoLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -106,13 +106,13 @@ public class logoLexer extends Lexer {
 	}
 
 
-	public logoLexer(CharStream input) {
+	public LogoLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "logo.g4"; }
+	public String getGrammarFileName() { return "Logo.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

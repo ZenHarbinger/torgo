@@ -1,4 +1,4 @@
-// Generated from logo.g4 by ANTLR 4.5.3
+// Generated from Logo.g4 by ANTLR 4.5.3
 
 package org.tros.logo.antlr;
 
@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class logoParser extends Parser {
+public class LogoParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -35,7 +35,7 @@ public class logoParser extends Parser {
 		RULE_prog = 0, RULE_line = 1, RULE_cmd = 2, RULE_procedureInvocation = 3, 
 		RULE_procedureDeclaration = 4, RULE_parameterDeclarations = 5, RULE_func = 6, 
 		RULE_repeat = 7, RULE_block = 8, RULE_ife = 9, RULE_comparison = 10, RULE_comparisonOperator = 11, 
-		RULE_make = 12, RULE_localmake = 13, RULE_print = 14, RULE_quotedstring = 15, 
+		RULE_make = 12, RULE_localmake = 13, RULE_print_command = 14, RULE_quotedstring = 15, 
 		RULE_name = 16, RULE_value = 17, RULE_parenExpression = 18, RULE_signExpression = 19, 
 		RULE_powerExpression = 20, RULE_multiplyingExpression = 21, RULE_expression = 22, 
 		RULE_deref = 23, RULE_fd = 24, RULE_bk = 25, RULE_rt = 26, RULE_lt = 27, 
@@ -48,12 +48,12 @@ public class logoParser extends Parser {
 	public static final String[] ruleNames = {
 		"prog", "line", "cmd", "procedureInvocation", "procedureDeclaration", 
 		"parameterDeclarations", "func", "repeat", "block", "ife", "comparison", 
-		"comparisonOperator", "make", "localmake", "print", "quotedstring", "name", 
-		"value", "parenExpression", "signExpression", "powerExpression", "multiplyingExpression", 
-		"expression", "deref", "fd", "bk", "rt", "lt", "cs", "pu", "pd", "ht", 
-		"st", "home", "stop", "setxy", "random", "getangle", "getx", "gety", "repcount", 
-		"fore", "pc", "cc", "hexcolor", "pause", "ds", "fontname", "fontsize", 
-		"fontstyle", "style", "number", "comment"
+		"comparisonOperator", "make", "localmake", "print_command", "quotedstring", 
+		"name", "value", "parenExpression", "signExpression", "powerExpression", 
+		"multiplyingExpression", "expression", "deref", "fd", "bk", "rt", "lt", 
+		"cs", "pu", "pd", "ht", "st", "home", "stop", "setxy", "random", "getangle", 
+		"getx", "gety", "repcount", "fore", "pc", "cc", "hexcolor", "pause", "ds", 
+		"fontname", "fontsize", "fontstyle", "style", "number", "comment"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -113,7 +113,7 @@ public class logoParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "logo.g4"; }
+	public String getGrammarFileName() { return "Logo.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -124,7 +124,7 @@ public class logoParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public logoParser(TokenStream input) {
+	public LogoParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
@@ -135,9 +135,9 @@ public class logoParser extends Parser {
 		public LineContext line(int i) {
 			return getRuleContext(LineContext.class,i);
 		}
-		public List<TerminalNode> EOL() { return getTokens(logoParser.EOL); }
+		public List<TerminalNode> EOL() { return getTokens(LogoParser.EOL); }
 		public TerminalNode EOL(int i) {
-			return getToken(logoParser.EOL, i);
+			return getToken(LogoParser.EOL, i);
 		}
 		public ProgContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -145,11 +145,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_prog; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterProg(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterProg(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitProg(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitProg(this);
 		}
 	}
 
@@ -236,24 +236,24 @@ public class logoParser extends Parser {
 		public CommentContext comment() {
 			return getRuleContext(CommentContext.class,0);
 		}
-		public PrintContext print() {
-			return getRuleContext(PrintContext.class,0);
+		public Print_commandContext print_command() {
+			return getRuleContext(Print_commandContext.class,0);
 		}
 		public ProcedureDeclarationContext procedureDeclaration() {
 			return getRuleContext(ProcedureDeclarationContext.class,0);
 		}
-		public TerminalNode EOL() { return getToken(logoParser.EOL, 0); }
+		public TerminalNode EOL() { return getToken(LogoParser.EOL, 0); }
 		public LineContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_line; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterLine(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterLine(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitLine(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitLine(this);
 		}
 	}
 
@@ -311,7 +311,7 @@ public class logoParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(129);
-				print();
+				print_command();
 				setState(131);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
@@ -427,8 +427,8 @@ public class logoParser extends Parser {
 		public FontnameContext fontname() {
 			return getRuleContext(FontnameContext.class,0);
 		}
-		public PrintContext print() {
-			return getRuleContext(PrintContext.class,0);
+		public Print_commandContext print_command() {
+			return getRuleContext(Print_commandContext.class,0);
 		}
 		public CmdContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -436,11 +436,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_cmd; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterCmd(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterCmd(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitCmd(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitCmd(this);
 		}
 	}
 
@@ -645,7 +645,7 @@ public class logoParser extends Parser {
 				enterOuterAlt(_localctx, 26);
 				{
 				setState(162);
-				print();
+				print_command();
 				}
 				break;
 			default:
@@ -679,11 +679,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_procedureInvocation; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterProcedureInvocation(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterProcedureInvocation(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitProcedureInvocation(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitProcedureInvocation(this);
 		}
 	}
 
@@ -733,9 +733,9 @@ public class logoParser extends Parser {
 		public ParameterDeclarationsContext parameterDeclarations(int i) {
 			return getRuleContext(ParameterDeclarationsContext.class,i);
 		}
-		public List<TerminalNode> EOL() { return getTokens(logoParser.EOL); }
+		public List<TerminalNode> EOL() { return getTokens(LogoParser.EOL); }
 		public TerminalNode EOL(int i) {
-			return getToken(logoParser.EOL, i);
+			return getToken(LogoParser.EOL, i);
 		}
 		public List<LineContext> line() {
 			return getRuleContexts(LineContext.class);
@@ -749,11 +749,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_procedureDeclaration; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterProcedureDeclaration(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterProcedureDeclaration(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitProcedureDeclaration(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitProcedureDeclaration(this);
 		}
 	}
 
@@ -847,11 +847,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_parameterDeclarations; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterParameterDeclarations(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterParameterDeclarations(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitParameterDeclarations(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitParameterDeclarations(this);
 		}
 	}
 
@@ -919,11 +919,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_func; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterFunc(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterFunc(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitFunc(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitFunc(this);
 		}
 	}
 
@@ -996,11 +996,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_repeat; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterRepeat(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterRepeat(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitRepeat(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitRepeat(this);
 		}
 	}
 
@@ -1042,11 +1042,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_block; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterBlock(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterBlock(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitBlock(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitBlock(this);
 		}
 	}
 
@@ -1101,11 +1101,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_ife; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterIfe(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterIfe(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitIfe(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitIfe(this);
 		}
 	}
 
@@ -1150,11 +1150,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_comparison; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterComparison(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterComparison(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitComparison(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitComparison(this);
 		}
 	}
 
@@ -1190,11 +1190,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_comparisonOperator; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterComparisonOperator(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterComparisonOperator(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitComparisonOperator(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitComparisonOperator(this);
 		}
 	}
 
@@ -1226,7 +1226,7 @@ public class logoParser extends Parser {
 	}
 
 	public static class MakeContext extends ParserRuleContext {
-		public TerminalNode STRINGLITERAL() { return getToken(logoParser.STRINGLITERAL, 0); }
+		public TerminalNode STRINGLITERAL() { return getToken(LogoParser.STRINGLITERAL, 0); }
 		public ValueContext value() {
 			return getRuleContext(ValueContext.class,0);
 		}
@@ -1236,11 +1236,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_make; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterMake(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterMake(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitMake(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitMake(this);
 		}
 	}
 
@@ -1270,7 +1270,7 @@ public class logoParser extends Parser {
 	}
 
 	public static class LocalmakeContext extends ParserRuleContext {
-		public TerminalNode STRINGLITERAL() { return getToken(logoParser.STRINGLITERAL, 0); }
+		public TerminalNode STRINGLITERAL() { return getToken(LogoParser.STRINGLITERAL, 0); }
 		public ValueContext value() {
 			return getRuleContext(ValueContext.class,0);
 		}
@@ -1280,11 +1280,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_localmake; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterLocalmake(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterLocalmake(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitLocalmake(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitLocalmake(this);
 		}
 	}
 
@@ -1313,30 +1313,30 @@ public class logoParser extends Parser {
 		return _localctx;
 	}
 
-	public static class PrintContext extends ParserRuleContext {
+	public static class Print_commandContext extends ParserRuleContext {
 		public ValueContext value() {
 			return getRuleContext(ValueContext.class,0);
 		}
 		public QuotedstringContext quotedstring() {
 			return getRuleContext(QuotedstringContext.class,0);
 		}
-		public PrintContext(ParserRuleContext parent, int invokingState) {
+		public Print_commandContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_print; }
+		@Override public int getRuleIndex() { return RULE_print_command; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterPrint(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterPrint_command(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitPrint(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitPrint_command(this);
 		}
 	}
 
-	public final PrintContext print() throws RecognitionException {
-		PrintContext _localctx = new PrintContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_print);
+	public final Print_commandContext print_command() throws RecognitionException {
+		Print_commandContext _localctx = new Print_commandContext(_ctx, getState());
+		enterRule(_localctx, 28, RULE_print_command);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -1395,11 +1395,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_quotedstring; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterQuotedstring(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterQuotedstring(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitQuotedstring(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitQuotedstring(this);
 		}
 	}
 
@@ -1459,18 +1459,18 @@ public class logoParser extends Parser {
 	}
 
 	public static class NameContext extends ParserRuleContext {
-		public TerminalNode STRING() { return getToken(logoParser.STRING, 0); }
+		public TerminalNode STRING() { return getToken(LogoParser.STRING, 0); }
 		public NameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_name; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterName(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterName(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitName(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitName(this);
 		}
 	}
 
@@ -1496,7 +1496,7 @@ public class logoParser extends Parser {
 	}
 
 	public static class ValueContext extends ParserRuleContext {
-		public TerminalNode STRINGLITERAL() { return getToken(logoParser.STRINGLITERAL, 0); }
+		public TerminalNode STRINGLITERAL() { return getToken(LogoParser.STRINGLITERAL, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -1509,11 +1509,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_value; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterValue(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterValue(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitValue(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitValue(this);
 		}
 	}
 
@@ -1568,11 +1568,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_parenExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterParenExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterParenExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitParenExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitParenExpression(this);
 		}
 	}
 
@@ -1620,11 +1620,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_signExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterSignExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterSignExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitSignExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitSignExpression(this);
 		}
 	}
 
@@ -1708,11 +1708,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_powerExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterPowerExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterPowerExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitPowerExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitPowerExpression(this);
 		}
 	}
 
@@ -1762,11 +1762,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_multiplyingExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterMultiplyingExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterMultiplyingExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitMultiplyingExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitMultiplyingExpression(this);
 		}
 	}
 
@@ -1829,11 +1829,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_expression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitExpression(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitExpression(this);
 		}
 	}
 
@@ -1893,11 +1893,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_deref; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterDeref(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterDeref(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitDeref(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitDeref(this);
 		}
 	}
 
@@ -1934,11 +1934,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_fd; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterFd(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterFd(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitFd(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitFd(this);
 		}
 	}
 
@@ -1981,11 +1981,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_bk; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterBk(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterBk(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitBk(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitBk(this);
 		}
 	}
 
@@ -2028,11 +2028,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_rt; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterRt(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterRt(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitRt(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitRt(this);
 		}
 	}
 
@@ -2075,11 +2075,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_lt; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterLt(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterLt(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitLt(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitLt(this);
 		}
 	}
 
@@ -2119,11 +2119,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_cs; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterCs(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterCs(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitCs(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitCs(this);
 		}
 	}
 
@@ -2161,11 +2161,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_pu; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterPu(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterPu(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitPu(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitPu(this);
 		}
 	}
 
@@ -2203,11 +2203,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_pd; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterPd(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterPd(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitPd(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitPd(this);
 		}
 	}
 
@@ -2245,11 +2245,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_ht; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterHt(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterHt(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitHt(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitHt(this);
 		}
 	}
 
@@ -2287,11 +2287,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_st; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterSt(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterSt(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitSt(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitSt(this);
 		}
 	}
 
@@ -2329,11 +2329,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_home; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterHome(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterHome(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitHome(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitHome(this);
 		}
 	}
 
@@ -2365,11 +2365,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_stop; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterStop(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterStop(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitStop(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitStop(this);
 		}
 	}
 
@@ -2407,11 +2407,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_setxy; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterSetxy(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterSetxy(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitSetxy(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitSetxy(this);
 		}
 	}
 
@@ -2450,11 +2450,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_random; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterRandom(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterRandom(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitRandom(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitRandom(this);
 		}
 	}
 
@@ -2488,11 +2488,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_getangle; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterGetangle(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterGetangle(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitGetangle(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitGetangle(this);
 		}
 	}
 
@@ -2524,11 +2524,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_getx; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterGetx(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterGetx(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitGetx(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitGetx(this);
 		}
 	}
 
@@ -2560,11 +2560,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_gety; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterGety(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterGety(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitGety(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitGety(this);
 		}
 	}
 
@@ -2596,11 +2596,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_repcount; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterRepcount(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterRepcount(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitRepcount(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitRepcount(this);
 		}
 	}
 
@@ -2644,11 +2644,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_fore; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterFore(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterFore(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitFore(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitFore(this);
 		}
 	}
 
@@ -2714,11 +2714,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_pc; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterPc(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterPc(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitPc(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitPc(this);
 		}
 	}
 
@@ -2813,11 +2813,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_cc; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterCc(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterCc(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitCc(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitCc(this);
 		}
 	}
 
@@ -2885,18 +2885,18 @@ public class logoParser extends Parser {
 	}
 
 	public static class HexcolorContext extends ParserRuleContext {
-		public TerminalNode HEX() { return getToken(logoParser.HEX, 0); }
+		public TerminalNode HEX() { return getToken(LogoParser.HEX, 0); }
 		public HexcolorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_hexcolor; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterHexcolor(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterHexcolor(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitHexcolor(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitHexcolor(this);
 		}
 	}
 
@@ -2933,11 +2933,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_pause; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterPause(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterPause(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitPause(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitPause(this);
 		}
 	}
 
@@ -2974,11 +2974,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_ds; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterDs(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterDs(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitDs(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitDs(this);
 		}
 	}
 
@@ -3021,11 +3021,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_fontname; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterFontname(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterFontname(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitFontname(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitFontname(this);
 		}
 	}
 
@@ -3062,11 +3062,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_fontsize; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterFontsize(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterFontsize(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitFontsize(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitFontsize(this);
 		}
 	}
 
@@ -3103,11 +3103,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_fontstyle; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterFontstyle(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterFontstyle(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitFontstyle(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitFontstyle(this);
 		}
 	}
 
@@ -3141,11 +3141,11 @@ public class logoParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_style; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterStyle(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterStyle(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitStyle(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitStyle(this);
 		}
 	}
 
@@ -3177,18 +3177,18 @@ public class logoParser extends Parser {
 	}
 
 	public static class NumberContext extends ParserRuleContext {
-		public TerminalNode NUMBER() { return getToken(logoParser.NUMBER, 0); }
+		public TerminalNode NUMBER() { return getToken(LogoParser.NUMBER, 0); }
 		public NumberContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_number; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterNumber(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterNumber(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitNumber(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitNumber(this);
 		}
 	}
 
@@ -3214,18 +3214,18 @@ public class logoParser extends Parser {
 	}
 
 	public static class CommentContext extends ParserRuleContext {
-		public TerminalNode COMMENT() { return getToken(logoParser.COMMENT, 0); }
+		public TerminalNode COMMENT() { return getToken(LogoParser.COMMENT, 0); }
 		public CommentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_comment; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).enterComment(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).enterComment(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof logoListener ) ((logoListener)listener).exitComment(this);
+			if ( listener instanceof LogoListener ) ((LogoListener)listener).exitComment(this);
 		}
 	}
 

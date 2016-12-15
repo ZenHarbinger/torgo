@@ -42,15 +42,18 @@ import org.tros.utils.logging.Logging;
  */
 public class DebugInterpreterTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(DebugInterpreterTest.class.getName());
+    }
 
     public DebugInterpreterTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(DebugInterpreterTest.class.getName());
     }
 
     @AfterClass

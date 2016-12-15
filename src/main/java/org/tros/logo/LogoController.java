@@ -21,8 +21,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.tros.logo.antlr.logoLexer;
-import org.tros.logo.antlr.logoParser;
+import org.tros.logo.antlr.LogoLexer;
+import org.tros.logo.antlr.LogoParser;
 import org.tros.logo.swing.LogoPanel;
 import org.tros.logo.swing.LogoMenuBar;
 import org.tros.logo.swing.LogoUserInputPanel;
@@ -106,8 +106,8 @@ public abstract class LogoController extends ControllerBase {
                     canvas.reset();
                 }
                 //lexical analysis and parsing with ANTLR
-                logoLexer lexer = new logoLexer(new ANTLRInputStream(source));
-                logoParser parser = new logoParser(new CommonTokenStream(lexer));
+                LogoLexer lexer = new LogoLexer(new ANTLRInputStream(source));
+                LogoParser parser = new LogoParser(new CommonTokenStream(lexer));
                 //get the prog element from the parse tree
                 //the prog element is the root element defined in the logo.g4 grammar.
                 return LexicalListener.lexicalAnalysis(parser.prog(), canvas);

@@ -16,6 +16,7 @@
 package org.tros.logo;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Map;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.torgo.interpreter.CodeFunction;
@@ -65,6 +66,8 @@ class LogoFunction extends LogoBlock implements CodeFunction {
     public ReturnValue process(Scope scope, Map<String, InterpreterValue> params) {
         LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
+        
+        super.variables.add(0, new HashMap<String, InterpreterValue>());
 
         for (String key : params.keySet()) {
             scope.setNew(key, params.get(key));
@@ -85,6 +88,9 @@ class LogoFunction extends LogoBlock implements CodeFunction {
             //HALT or ERROR (possible null)!
             ret = ReturnValue.HALT;
         }
+
+        super.variables.remove(0);
+
         scope.pop();
 
         return ret;

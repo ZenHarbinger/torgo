@@ -18,6 +18,8 @@ package org.tros.torgo.interpreter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Implements a dynamic scope which just looks down the call stack for an
@@ -76,6 +78,9 @@ public class DynamicScope extends ScopeImpl implements Scope {
             }
         }
 
+        if(ret == InterpreterValue.NULL) {
+            return super.get(name);
+        } 
         return ret;
     }
 
@@ -169,5 +174,38 @@ public class DynamicScope extends ScopeImpl implements Scope {
     @Override
     public Collection<String> localVariables() {
         return scope.get(0).keySet();
+    }
+
+    /**
+     * Get the names of variables.
+     *
+     * @return
+     */
+    @Override
+    public Collection<String> variables() {
+        HashSet<String> keys = new HashSet<>();
+        for(HashMap<String, InterpreterValue> slice : scope) {
+            keys.addAll(slice.keySet());
+        }
+        return keys;
+    }
+
+    /**
+     * Get the names of variables.
+     *
+     * @param value
+     * @return
+     */
+    @Override
+    public Map<String, InterpreterValue> variablesPeek(int value) {
+        HashMap<String, InterpreterValue> keys = new HashMap<>();
+        for(int ii = scope.size() - 1; ii >= 0 && value >= 0; ii--, value--) {
+            HashMap<String, InterpreterValue> slice = scope.get(ii);
+            for(String key : slice.keySet()) {
+                keys.put(key, slice.get(key));
+            }
+//            keys.addAll(slice.keySet());
+        }
+        return keys;
     }
 }

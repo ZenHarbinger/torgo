@@ -19,7 +19,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.tros.logo.antlr.logoParser;
+import org.tros.logo.antlr.LogoParser;
 import org.tros.torgo.interpreter.CodeFunction;
 import org.tros.torgo.interpreter.InterpreterValue;
 import org.tros.torgo.interpreter.ReturnValue;
@@ -86,27 +86,27 @@ class LogoStatement extends LogoBlock {
         //value right off of the stack again.
         listeners.fire().currStatement(this, scope);
 
-        scope.set(TURTLE_X_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleX()));
-        scope.set(TURTLE_Y_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleY()));
-        scope.set(TURTLE_ANGLE_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleAngle()));
+        scope.setGlobal(TURTLE_X_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleX()));
+        scope.setGlobal(TURTLE_Y_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleY()));
+        scope.setGlobal(TURTLE_ANGLE_VAR, new InterpreterValue(NumberType.INSTANCE, canvas.getTurtleAngle()));
 
         ReturnValue success = ReturnValue.SUCCESS;
         if (null != command) {
             switch (command) {
                 case "fd":
-                    canvas.forward(((Number) ExpressionListener.evaluate(scope, ((logoParser.FdContext) ctx).expression()).getValue()).doubleValue());
+                    canvas.forward(((Number) ExpressionListener.evaluate(scope, ((LogoParser.FdContext) ctx).expression()).getValue()).doubleValue());
                     break;
                 case "bk":
-                    canvas.backward(((Number) ExpressionListener.evaluate(scope, ((logoParser.BkContext) ctx).expression()).getValue()).doubleValue());
+                    canvas.backward(((Number) ExpressionListener.evaluate(scope, ((LogoParser.BkContext) ctx).expression()).getValue()).doubleValue());
                     break;
                 case "lt":
-                    canvas.left(((Number) ExpressionListener.evaluate(scope, ((logoParser.LtContext) ctx).expression()).getValue()).doubleValue());
+                    canvas.left(((Number) ExpressionListener.evaluate(scope, ((LogoParser.LtContext) ctx).expression()).getValue()).doubleValue());
                     break;
                 case "rt":
-                    canvas.right(((Number) ExpressionListener.evaluate(scope, ((logoParser.RtContext) ctx).expression()).getValue()).doubleValue());
+                    canvas.right(((Number) ExpressionListener.evaluate(scope, ((LogoParser.RtContext) ctx).expression()).getValue()).doubleValue());
                     break;
                 case "setxy": {
-                    logoParser.SetxyContext fd = (logoParser.SetxyContext) ctx;
+                    LogoParser.SetxyContext fd = (LogoParser.SetxyContext) ctx;
                     double x = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).doubleValue();
                     double y = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).doubleValue();
                     canvas.setXY(x, y);
@@ -124,7 +124,7 @@ class LogoStatement extends LogoBlock {
                     success = ReturnValue.RETURN;
                     break;
                 case "pc": {
-                    logoParser.PcContext fd = (logoParser.PcContext) ctx;
+                    LogoParser.PcContext fd = (LogoParser.PcContext) ctx;
                     if (fd.expression().size() >= 3) {
                         int a = 255;
                         int r = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).intValue();
@@ -143,7 +143,7 @@ class LogoStatement extends LogoBlock {
                     break;
                 }
                 case "cc": {
-                    logoParser.CcContext fd = (logoParser.CcContext) ctx;
+                    LogoParser.CcContext fd = (LogoParser.CcContext) ctx;
                     if (fd.expression().size() == 3) {
                         int r = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).intValue();
                         int g = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).intValue();
@@ -158,7 +158,7 @@ class LogoStatement extends LogoBlock {
                     break;
                 }
                 case "ds": {
-                    logoParser.DsContext fd = (logoParser.DsContext) ctx;
+                    LogoParser.DsContext fd = (LogoParser.DsContext) ctx;
                     String str = null;
                     if (fd.value().STRINGLITERAL() != null) {
                         str = fd.value().STRINGLITERAL().getText().substring(1);
@@ -176,10 +176,10 @@ class LogoStatement extends LogoBlock {
                     break;
                 }
                 case "fontsize":
-                    canvas.fontSize(((Number) ExpressionListener.evaluate(scope, ((logoParser.FontsizeContext) ctx).expression()).getValue()).intValue());
+                    canvas.fontSize(((Number) ExpressionListener.evaluate(scope, ((LogoParser.FontsizeContext) ctx).expression()).getValue()).intValue());
                     break;
                 case "fontstyle": {
-                    logoParser.FontstyleContext fd = (logoParser.FontstyleContext) ctx;
+                    LogoParser.FontstyleContext fd = (LogoParser.FontstyleContext) ctx;
                     String styleString = fd.style().getText();
                     if (null != styleString) {
                         switch (styleString) {
@@ -201,13 +201,13 @@ class LogoStatement extends LogoBlock {
                     break;
                 }
                 case "fontname": {
-                    logoParser.FontnameContext fd = (logoParser.FontnameContext) ctx;
+                    LogoParser.FontnameContext fd = (LogoParser.FontnameContext) ctx;
                     String name = fd.name().STRING().getText();
                     canvas.fontName(name);
                     break;
                 }
                 case "pause":
-                    canvas.pause(((Number) ExpressionListener.evaluate(scope, ((logoParser.PauseContext) ctx).expression()).getValue()).intValue());
+                    canvas.pause(((Number) ExpressionListener.evaluate(scope, ((LogoParser.PauseContext) ctx).expression()).getValue()).intValue());
                     break;
                 case "cs":
                     canvas.clear();
@@ -245,16 +245,16 @@ class LogoStatement extends LogoBlock {
                     CodeFunction lf = getFunction(command, scope);
                     if (lf != null) {
                         //get the procedure declaration so we can get the parameter names to set to values from the invocation.
-                        logoParser.ProcedureDeclarationContext funct = (logoParser.ProcedureDeclarationContext) lf.getParserRuleContext();
+                        LogoParser.ProcedureDeclarationContext funct = (LogoParser.ProcedureDeclarationContext) lf.getParserRuleContext();
                         ArrayList<String> paramNames = new ArrayList<>();
                         HashMap<String, InterpreterValue> paramValues = new HashMap<>();
 
                         //get the parameter names
-                        for (logoParser.ParameterDeclarationsContext param : funct.parameterDeclarations()) {
+                        for (LogoParser.ParameterDeclarationsContext param : funct.parameterDeclarations()) {
                             paramNames.add(param.getText().substring(1));
                         }
 
-                        logoParser.ProcedureInvocationContext context = (logoParser.ProcedureInvocationContext) ctx;
+                        LogoParser.ProcedureInvocationContext context = (LogoParser.ProcedureInvocationContext) ctx;
 
                         //get the paremeter values
                         for (int ii = 0; ii < paramNames.size(); ii++) {

@@ -18,6 +18,7 @@ package org.tros.logo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.apache.commons.lang3.event.EventListenerSupport;
@@ -46,7 +47,7 @@ abstract class LogoBlock implements CodeBlock {
             = EventListenerSupport.create(InterpreterListener.class);
     private final AtomicBoolean halted = new AtomicBoolean(false);
 
-    private final HashMap<String, InterpreterValue> variables = new HashMap<>();
+    protected final ArrayList<HashMap<String, InterpreterValue>> variables = new ArrayList<>();
     private CodeBlock parent;
 
     @Override
@@ -204,7 +205,12 @@ abstract class LogoBlock implements CodeBlock {
      */
     @Override
     public boolean hasVariable(String name) {
-        return variables.containsKey(name);
+        for (HashMap<String, InterpreterValue> item : variables) {
+            if (item.containsKey(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -215,7 +221,7 @@ abstract class LogoBlock implements CodeBlock {
      */
     @Override
     public void setVariable(String name, InterpreterValue value) {
-        variables.put(name, value);
+        variables.get(0).put(name, value);
     }
 
     /**
@@ -226,7 +232,13 @@ abstract class LogoBlock implements CodeBlock {
      */
     @Override
     public InterpreterValue getVariable(String name) {
-        return variables.get(name);
+        for(int ii = 0; ii <= variables.size(); ii++) {
+            HashMap<String, InterpreterValue> item = variables.get(ii);
+            if (item.containsKey(name)) {
+                return item.get(name);
+            }
+        }
+        return InterpreterValue.NULL;
     }
 
     /**
@@ -255,6 +267,9 @@ abstract class LogoBlock implements CodeBlock {
      */
     @Override
     public Collection<String> localVariables() {
-        return variables.keySet();
+        if (variables.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return variables.get(0).keySet();
     }
 }

@@ -35,15 +35,18 @@ import org.tros.utils.logging.Logging;
  */
 public class DateConverterTest {
 
-    private static Logger LOGGER;
+    private final static Logger LOGGER;
+    
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(DateConverterTest.class.getName());
+    }
 
     public DateConverterTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(DateConverterTest.class.getName());
     }
 
     @AfterClass
@@ -78,6 +81,17 @@ public class DateConverterTest {
         lookup = UtilsBeanFactory.getConverter(Date.class, String.class);
         Date convert2 = lookup.convert(Date.class, hex);
         String hex3 = TypeHandler.dateToString(convert2);
+
+        lookup = UtilsBeanFactory.getConverter(String.class, Date.class);
+        String convert3 = lookup.convert(String.class, convert2);
+        assertEquals(convert3, hex);
+
+        lookup = UtilsBeanFactory.getConverter(String.class, Calendar.class);
+        String convert4 = lookup.convert(String.class, convert);
+        assertEquals(convert4, hex2);
+        
+        assertNull(lookup.convert(String.class, null));
+        assertEquals(lookup.convert(DateConverterTest.class, "demo"), "demo");
 
         assertEquals(hex, hex3);
     }
