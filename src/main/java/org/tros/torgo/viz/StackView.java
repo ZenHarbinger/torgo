@@ -210,7 +210,7 @@ public class StackView implements InterpreterVisualization {
 
             refresh(scope);
 
-            super.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         }
 
         /**
@@ -483,6 +483,6 @@ public class StackView implements InterpreterVisualization {
             }
         });
 
-        window.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 }
