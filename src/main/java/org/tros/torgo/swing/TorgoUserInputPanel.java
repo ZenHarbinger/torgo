@@ -18,12 +18,14 @@ package org.tros.torgo.swing;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -35,6 +37,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.LayeredHighlighter;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
@@ -347,7 +350,10 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
      * @return
      */
     @Override
-    public Component getComponent() {
-        return this;
+    public ArrayList<ImmutablePair<String, Component>> getTorgoComponents() {
+        ArrayList<ImmutablePair<String, Component>> ret = new ArrayList<>();
+        ret.add(new ImmutablePair("Input", tabs));
+        ret.add(new ImmutablePair("Output", outputTextArea));
+        return ret;
     }
 }
