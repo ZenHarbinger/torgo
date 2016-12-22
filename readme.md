@@ -34,6 +34,8 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
     - Allows pause/resume/stop
     - Can see the current operation highlighted in the script window
 - Trace Logging of execution
+- Call Stack Watch
+- Breakpoints
 - Export to various image types:
     - PNG
     - SVG
@@ -41,8 +43,6 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
 
 # Future
 
-- Call Stack Watch
-- Breakpoints
 - jvmBasic and Lisp
 
 # Install on Recent Linux Distros
