@@ -39,7 +39,7 @@ import org.tros.utils.logging.Logging;
 public class LogoControllerTest {
 
     private final static Logger LOGGER;
-    
+
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(LogoControllerTest.class.getName());
@@ -80,7 +80,7 @@ public class LogoControllerTest {
             "logo/examples/antlr/example3.txt",
             "logo/examples/antlr/example4.txt",
             "logo/examples/antlr/expression.txt",
-            "logo/examples/antlr/flower.txt",
+            //            "logo/examples/antlr/flower.txt",
             "logo/examples/antlr/fractal.txt",
             "logo/examples/antlr/make.txt",
             "logo/examples/antlr/octagon.txt",
@@ -116,7 +116,7 @@ public class LogoControllerTest {
             LOGGER.info(file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             controller.disable("TraceLogger");
-            
+
             try {
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
@@ -191,7 +191,7 @@ public class LogoControllerTest {
             "logo/examples/antlr/example3.txt",
             "logo/examples/antlr/example4.txt",
             "logo/examples/antlr/expression.txt",
-            "logo/examples/antlr/flower.txt",
+            //            "logo/examples/antlr/flower.txt",
             "logo/examples/antlr/fractal.txt",
             "logo/examples/antlr/make.txt",
             "logo/examples/antlr/octagon.txt",
@@ -227,7 +227,7 @@ public class LogoControllerTest {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             controller.disable("TraceLogger");
-            
+
             try {
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
