@@ -24,7 +24,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.tros.jvmbasic.antlr.jvmBasicLexer;
 import org.tros.jvmbasic.antlr.jvmBasicParser;
 import org.tros.jvmbasic.swing.BasicMenuBar;
-import org.tros.jvmbasic.swing.BasicUserInputPanel;
 import org.tros.torgo.ControllerBase;
 import org.tros.torgo.Controller;
 import org.tros.torgo.TorgoScreen;
@@ -35,6 +34,7 @@ import org.tros.torgo.interpreter.LexicalAnalyzer;
 import org.tros.torgo.interpreter.LexicalScope;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.swing.TorgoToolBar;
+import org.tros.torgo.swing.TorgoUserInputPanel;
 
 /**
  * This is going to take more work than I first though since I will have to come
@@ -44,12 +44,12 @@ import org.tros.torgo.swing.TorgoToolBar;
  */
 public class BasicController extends ControllerBase {
 
-    private BasicUserInputPanel panel;
+    private TorgoUserInputPanel panel;
 
     @Override
     protected TorgoTextConsole createConsole(Controller app) {
         if (panel == null) {
-            panel = new BasicUserInputPanel(app);
+            panel = new TorgoUserInputPanel(app, "Basic", true, "text/vb");
         }
 
         return panel;
