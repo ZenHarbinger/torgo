@@ -200,9 +200,9 @@ public abstract class ControllerBase implements Controller {
 
         int count = 1;
         for (ImmutablePair<String, Component> key : input) {
-            DefaultSingleCDockable green = new TorgoSingleDockable(key.left, key.right);
-            grid.add(10, 0, 6, count, green);
-            green.setExtendedMode(ExtendedMode.NORMALIZED);
+            DefaultSingleCDockable dock = new TorgoSingleDockable(key.left, key.right);
+            grid.add(10, 0, 6, count, dock);
+            dock.setExtendedMode(ExtendedMode.NORMALIZED);
             count += 1;
         }
 
@@ -293,8 +293,8 @@ public abstract class ControllerBase implements Controller {
                 return null;
             }
         });
-
         control.readXML(createLayout(torgoCanvas != null ? torgoCanvas.getComponent() : null, torgoPanel.getTorgoComponents()));
+
         JMenuBar mb = createMenuBar();
         if (mb == null) {
             mb = new TorgoMenuBar(window, this);
