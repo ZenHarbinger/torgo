@@ -19,22 +19,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.LayeredHighlighter;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
@@ -45,15 +43,12 @@ import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.TorgoTextConsole;
 
-public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextConsole {
+public abstract class TorgoUserInputPanel implements TorgoTextConsole {
 
     private final RSyntaxTextArea inputTextArea;
-    private final RTextScrollPane scrollPane;
     private final Gutter gutter;
 
     private final JConsole outputTextArea;
-    private final JSplitPane splitPane;
-    private final JPanel inputTab;
     private final JTabbedPane tabs;
 
     public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
@@ -73,20 +68,18 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public TorgoUserInputPanel(Controller controller, String name, boolean editable, String syntax) {
         this.controller = controller;
-        BorderLayout layout = new BorderLayout();
-        setLayout(layout);
         defaultHighlighter = DefaultHighlighter.DefaultPainter;
         breakpointHighlighter = new DefaultHighlighter.DefaultHighlightPainter(Color.PINK);
 
         //SOURCE
-        inputTab = new JPanel();
+        JPanel inputTab = new JPanel();
         inputTab.setLayout(new BorderLayout());
 
         inputTextArea = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         inputTextArea.setAntiAliasingEnabled(true);
         inputTextArea.setCodeFoldingEnabled(true);
         inputTextArea.setSyntaxEditingStyle(syntax);
-        scrollPane = new org.fife.ui.rtextarea.RTextScrollPane(inputTextArea);
+        RTextScrollPane scrollPane = new org.fife.ui.rtextarea.RTextScrollPane(inputTextArea);
         scrollPane.setIconRowHeaderEnabled(true);
         gutter = scrollPane.getGutter();
         try {
@@ -105,35 +98,9 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
         tabs = new JTabbedPane();
         tabs.add(name, inputTab);
 
-        JPanel output = new JPanel();
-        BorderLayout outputLayout = new BorderLayout();
-        output.setLayout(outputLayout);
 
         outputTextArea = new JConsole();
-//        outputTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         outputTextArea.setEditable(editable);
-//        JScrollPane outputScrollPane = new JScrollPane(outputTextArea);
-
-        JLabel messagesLabel = new JLabel(Localization.getLocalizedString("MessagesLabel"));
-        JPanel messages = new JPanel();
-        messages.setLayout(new BorderLayout());
-        messages.add(messagesLabel, BorderLayout.PAGE_START);
-        messages.add(outputTextArea, BorderLayout.CENTER);
-        output.add(messages, BorderLayout.CENTER);
-
-        splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tabs, output);
-        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoUserInputPanel.class);
-        int dividerLocation = prefs.getInt(TorgoUserInputPanel.class.getName() + "divider-location", 0);
-        dividerLocation = dividerLocation == 0 ? 400 : dividerLocation;
-        splitPane.setDividerLocation(dividerLocation);
-        splitPane.addPropertyChangeListener(new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent pce) {
-                prefs.putInt(TorgoUserInputPanel.class.getName() + "divider-location", splitPane.getDividerLocation());
-            }
-        });
-        this.add(splitPane);
 
         controller.addInterpreterListener(new InterpreterListener() {
 
@@ -347,7 +314,10 @@ public abstract class TorgoUserInputPanel extends JPanel implements TorgoTextCon
      * @return
      */
     @Override
-    public Component getComponent() {
-        return this;
+    public ArrayList<ImmutablePair<String, Component>> getTorgoComponents() {
+        ArrayList<ImmutablePair<String, Component>> ret = new ArrayList<>();
+        ret.add(new ImmutablePair("Input", tabs));
+        ret.add(new ImmutablePair("Output", outputTextArea));
+        return ret;
     }
 }

@@ -16,6 +16,9 @@
 package org.tros.torgo;
 
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Map;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 /**
  * I/O interface. Get source and print messages.
@@ -98,5 +101,5 @@ public interface TorgoTextConsole {
      *
      * @return
      */
-    Component getComponent();
+    ArrayList<ImmutablePair<String, Component>> getTorgoComponents();
 }
