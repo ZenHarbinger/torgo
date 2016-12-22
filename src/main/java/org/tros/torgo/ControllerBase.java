@@ -281,16 +281,22 @@ public abstract class ControllerBase implements Controller {
         control.addSingleDockableFactory(filter, new SingleCDockableFactory() {
             @Override
             public SingleCDockable createBackup(String id) {
+                TorgoSingleDockable ret = null;
                 if ("Display".equals(id)) {
-                    return new TorgoSingleDockable(id, torgoCanvas.getComponent());
+                    ret = new TorgoSingleDockable(id, torgoCanvas.getComponent());
                 } else {
                     for (ImmutablePair<String, Component> pair : torgoPanel.getTorgoComponents()) {
                         if (pair.left.equals(id)) {
-                            return new TorgoSingleDockable(pair.left, pair.right);
+                            ret = new TorgoSingleDockable(pair.left, pair.right);
                         }
                     }
                 }
-                return null;
+                if(ret != null) {
+                    //TODO: find good icons for this....
+                    ImageIcon icon = Main.getIcon(ret.getTitleText().toLowerCase() + "-24x24.png");
+                    ret.setTitleIcon(icon);
+                }
+                return ret;
             }
         });
         control.readXML(createLayout(torgoCanvas != null ? torgoCanvas.getComponent() : null, torgoPanel.getTorgoComponents()));
