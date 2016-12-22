@@ -37,11 +37,15 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
     - PNG
     - SVG
     - Animated GIF
+- Switch between any available languages
+    - dynamic-logo
+    - lexical-logo
+    - *jvmBasic*
+    - *lisp*
 
 ## Future
 
 - jvmBasic and Lisp
-- Switch between languages other than at start up
 - Register with file/mime types (.logo)
 
 ## Download and Install
