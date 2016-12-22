@@ -24,6 +24,7 @@ import bibliothek.gui.dock.common.mode.ExtendedMode;
 import bibliothek.gui.dock.common.SingleCDockable;
 import bibliothek.gui.dock.common.SingleCDockableFactory;
 import bibliothek.util.xml.XElement;
+import bibliothek.util.xml.XIO;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.InterpreterThread;
@@ -37,6 +38,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -67,6 +70,7 @@ import org.tros.torgo.swing.Localization;
 import org.tros.torgo.swing.TorgoMenuBar;
 import org.tros.utils.swing.NamedWindow;
 import org.tros.utils.AutoResetEvent;
+import org.tros.utils.PathUtils;
 
 /**
  * The main application. Controls GUI and interpreting process.
@@ -82,6 +86,7 @@ public abstract class ControllerBase implements Controller {
     private String filename;
     protected final AutoResetEvent step;
     protected final AtomicBoolean isStepping;
+    private CControl dockControl;
 
     private final ArrayList<JCheckBoxMenuItem> viz = new ArrayList<>();
 
@@ -165,7 +170,7 @@ public abstract class ControllerBase implements Controller {
      */
     protected abstract InterpreterThread createInterpreterThread(String source);
 
-    public class TorgoSingleDockable extends DefaultSingleCDockable {
+    public static class TorgoSingleDockable extends DefaultSingleCDockable {
 
         public TorgoSingleDockable(String title, final Component panel) {
             super(title);
@@ -174,7 +179,7 @@ public abstract class ControllerBase implements Controller {
         }
     }
 
-    public class TorgoDockable extends DefaultDockable {
+    public static class TorgoDockable extends DefaultDockable {
 
         public TorgoDockable(String title, final Component panel) {
             super(title);
@@ -184,7 +189,7 @@ public abstract class ControllerBase implements Controller {
     }
 
     /* This method simulates the creation of a layout */
-    private XElement createLayout(Component display, ArrayList<ImmutablePair<String, Component>> input) {
+    private static XElement createLayout(Component display, ArrayList<ImmutablePair<String, Component>> input) {
         /* This method simulates the creation of a layout */
         CControl control = new CControl();
         control.getContentArea();
@@ -230,46 +235,13 @@ public abstract class ControllerBase implements Controller {
             contentPane.add(tb, BorderLayout.NORTH);
         }
 
-//        SplitDockStation station = new SplitDockStation();
-//        DockFrontend frontend = new DockFrontend(window);
-//        frontend.addRoot("station", station);
-//        window.add(station);
-//
-//        /* The Perspective object is needed to convert the layout to the perspective-format. */
-//        DockFrontendPerspective perspective = frontend.getPerspective(false);
-//        /* And trough the Perspective object we can directly access the root stations. */
-//        SplitDockPerspective stationPerspective = (SplitDockPerspective) perspective.getRoot("station");
-//
-//        /* We are now creating the representation of the Dockables we are later going to add */
-//        PerspectiveDockable dockableRed = torgoCanvas != null ? new FrontendDockablePerspective("Display") : null;
-//        PerspectiveDockable dockableGreen = new FrontendDockablePerspective("Input");
-//        PerspectiveDockable dockableBlue = new FrontendDockablePerspective("Output");
-//        /* Then we put two dockables in the same stack. */
-//        StackDockPerspective stack = new StackDockPerspective(new PerspectiveDockable[]{dockableGreen, dockableBlue}, dockableGreen);
-//        /* The SplitDockStation internally uses a tree to represents its layout, here we create such a tree */
-//        SplitDockPerspective.Leaf childRed = new SplitDockPerspective.Leaf(dockableRed, null, null, -1);
-////        SplitDockPerspective.Leaf childGreen = new SplitDockPerspective.Leaf( dockableGreen, null, null, -1 );
-////        SplitDockPerspective.Leaf childBlue = new SplitDockPerspective.Leaf( dockableBlue, null, null, -1 );
-//        SplitDockPerspective.Leaf childStack = new SplitDockPerspective.Leaf(stack, null, null, -1);
-//        SplitDockPerspective.Node node = new SplitDockPerspective.Node(Orientation.HORIZONTAL, 0.4, childRed, childStack, null, null, -1);
-//        stationPerspective.getRoot().setChild(node);
-//
-//        if (dockableRed != null) {
-//            frontend.addDockable("Display", new TorgoDockable("Display", torgoCanvas.getComponent()));
-//        }
-//        for(ImmutablePair<String, Component> pair : torgoPanel.getTorgoComponents()) {
-//            frontend.addDockable(pair.left, new TorgoDockable(pair.left, pair.right));
-//        }
-//        /* Finally the perspective is applied to the DockFrontend */
-//        perspective.apply();
-
-        CControl control = new CControl(window);
-        window.add(control.getContentArea(), BorderLayout.CENTER);
+        dockControl = new CControl(window);
+        window.add(dockControl.getContentArea(), BorderLayout.CENTER);
         final ArrayList<String> presetFilter = new ArrayList<>();
         if (torgoCanvas != null) {
             presetFilter.add("Display");
         }
-        for(ImmutablePair<String, Component> pair : torgoPanel.getTorgoComponents()) {
+        for (ImmutablePair<String, Component> pair : torgoPanel.getTorgoComponents()) {
             presetFilter.add(pair.left);
         }
         bibliothek.util.Filter<String> filter = new bibliothek.util.Filter<String>() {
@@ -278,7 +250,7 @@ public abstract class ControllerBase implements Controller {
                 return presetFilter.contains(item);
             }
         };
-        control.addSingleDockableFactory(filter, new SingleCDockableFactory() {
+        dockControl.addSingleDockableFactory(filter, new SingleCDockableFactory() {
             @Override
             public SingleCDockable createBackup(String id) {
                 TorgoSingleDockable ret = null;
@@ -291,15 +263,45 @@ public abstract class ControllerBase implements Controller {
                         }
                     }
                 }
-                if(ret != null) {
-                    //TODO: find good icons for this....
-                    ImageIcon icon = Main.getIcon(ret.getTitleText().toLowerCase() + "-24x24.png");
+                if (ret != null) {
+                    ImageIcon icon = Main.getIcon("layouts/" + ret.getTitleText().toLowerCase() + "-24x24.png");
                     ret.setTitleIcon(icon);
                 }
                 return ret;
             }
         });
-        control.readXML(createLayout(torgoCanvas != null ? torgoCanvas.getComponent() : null, torgoPanel.getTorgoComponents()));
+
+        // Try to load a saved layout.
+        // If no layout exists or it fails, load from CLASSPATH/resources.
+        // If that fails, dynamically generate something.
+        String layoutFileName = PathUtils.getApplicationConfigDirectory(TorgoInfo.INSTANCE) + java.io.File.separatorChar + getLang() + "-layout.xml";
+        File layoutFile = new File(layoutFileName);
+        boolean loaded = false;
+        if (layoutFile.exists()) {
+            try {
+                XElement elem = XIO.readUTF(new FileInputStream(layoutFile));
+                dockControl.readXML(elem);
+                loaded = true;
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (!loaded) {
+            try {
+                java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("layouts/" + this.getLang() + "-layout.xml");
+                XElement elem = XIO.readUTF(resources.nextElement().openStream());
+                dockControl.readXML(elem);
+                loaded = true;
+            } catch (IOException | java.util.NoSuchElementException ex) {
+                Logger.getLogger(ControllerBase.class.getName()).log(Level.WARNING, "Layout Error: Auto-generating: {0}", ex.getMessage());
+            }
+        }
+        if (!loaded) {
+            XElement elem = createLayout(torgoCanvas != null ? torgoCanvas.getComponent() : null, torgoPanel.getTorgoComponents());
+            dockControl.readXML(elem);
+        }
 
         JMenuBar mb = createMenuBar();
         if (mb == null) {
@@ -401,13 +403,19 @@ public abstract class ControllerBase implements Controller {
 
             /**
              * We only care if the window is closing so we can kill the
-             * interpreter thread.
+             * interpreter thread and save the layout.
              *
              * @param e
              */
             @Override
             public void windowClosing(WindowEvent e) {
                 stopInterpreter();
+                try {
+                    String layoutFile = PathUtils.getApplicationConfigDirectory(TorgoInfo.INSTANCE) + java.io.File.separatorChar + getLang() + "-layout.xml";
+                    dockControl.writeXML(new java.io.File(layoutFile));
+                } catch (IOException ex) {
+                    Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
             @Override
@@ -627,9 +635,6 @@ public abstract class ControllerBase implements Controller {
                 TorgoToolkit.getVisualization(item.getText()).create().watch(this.getLang(), this, interp);
             }
         }
-//        viz.stream().filter((item) -> (item.getState())).map((item) -> TorgoToolkit.getVisualization(item.getText()).create()).forEach((visualization) -> {
-//            visualization.watch(this.getLang(), this, interp);
-//        });
 
         for (InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);
@@ -678,9 +683,6 @@ public abstract class ControllerBase implements Controller {
                 TorgoToolkit.getVisualization(item.getText()).create().watch(this.getLang(), this, interp);
             }
         }
-//        viz.stream().filter((item) -> (item.getState())).map((item) -> TorgoToolkit.getVisualization(item.getText()).create()).forEach((visualization) -> {
-//            visualization.watch(this.getLang(), this, interp);
-//        });
 
         for (InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);
