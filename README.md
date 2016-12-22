@@ -19,43 +19,51 @@ Some goals for Torgo are:
 
 This project was inspired by [Tortue](http://tortue.sourceforge.net/).
 
-# Languages
+## Languages
 
 Torgo currently supports logo; jvmBasic and lisp are in development.
 
-# Features
+## Features
 
+- Customizable GUI with [DockingFrames](https://github.com/Benoker/DockingFrames)
 - 'Debugging' a script
     - Allows pause/resume/stop
-    - Can see the current operation highlighted in the script window.
+    - Can see the current operation highlighted in the script window
 - Trace Logging of execution
+- Call-Stack Watch
+- Variable Watch
+- Breakpoints
+- Export to various image types:
+    - PNG
+    - SVG
+    - Animated GIF
 
-# Future
+## Future
 
-- Call Stack Watch
-- Export to animated GIF
-- Export to SVG
 - jvmBasic and Lisp
+- Switch between languages other than at start up
+- Register with file/mime types (.logo)
 
-# Install on Recent Linux Distros
+## Download and Install
 
-`sudo snap install torgo`
+- [Download Installer](https://github.com/ZenHarbinger/torgo/releases/latest)
+- `sudo snap install torgo`
 
-# Download Snapshot
+## Download Snapshot
 
 - git clone: `git clone https://github.com/ZenHarbinger/torgo.git`
 - [tarball](https://github.com/ZenHarbinger/torgo/tarball/master)
 - [zipball](https://github.com/ZenHarbinger/torgo/zipball/master)
 
-# Compile
+## Compile
 
 ```sh
 git clone https://github.com/ZenHarbinger/torgo.git
 cd torgo
-mvn clean package
+mvn -DskipTests clean package
 ```
 
-# Run
+## Run
 
 ```sh
 java -jar target/torgo-1.4.1.jar
