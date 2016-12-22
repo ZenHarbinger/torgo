@@ -22,7 +22,6 @@ import javax.swing.JToolBar;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.tros.lisp.swing.LispMenuBar;
-import org.tros.lisp.swing.LispUserInputPanel;
 import org.tros.lisp.antlr.lispLexer;
 import org.tros.lisp.antlr.lispParser;
 import org.tros.torgo.ControllerBase;
@@ -35,6 +34,7 @@ import org.tros.torgo.interpreter.DynamicScope;
 import org.tros.torgo.interpreter.LexicalAnalyzer;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.swing.TorgoToolBar;
+import org.tros.torgo.swing.TorgoUserInputPanel;
 
 /**
  * This is going to take more work than I first though since I will have to come
@@ -44,12 +44,12 @@ import org.tros.torgo.swing.TorgoToolBar;
  */
 public class LispController extends ControllerBase {
 
-    private LispUserInputPanel panel;
+    private TorgoUserInputPanel panel;
 
     @Override
     protected TorgoTextConsole createConsole(Controller app) {
         if (panel == null) {
-            panel = new LispUserInputPanel(app);
+            panel = new TorgoUserInputPanel(app, "Lisp", true, "text/vb");
         }
 
         return panel;
