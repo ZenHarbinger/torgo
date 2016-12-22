@@ -1,5 +1,5 @@
 name: torgo
-version: 1.4.0
+version: 1.4.1
 summary: A Logo interpreter written in Java.
 description: A Logo interpreter written in Java.
 grade: stable
@@ -10,9 +10,6 @@ apps:
   torgo:
     command: bin/wrapper
     plugs: [home, x11, opengl, network, unity7]
-  # xdg:
-  #   command: bin/wrapper0
-  #   plugs: [unity7]
 
 parts:
   torgo:
@@ -32,28 +29,3 @@ parts:
     organize:
       ../build/target/lib: jar/lib
       ../build/wrapper: bin/
-  # torgo:
-  #   plugin: dump
-  #   source: .
-  #   stage-packages:
-  #     - fontconfig-config
-  #     - fonts-dejavu-extra
-  #     - fonts-ipafont-gothic
-  #   organize:
-  #     ../build/target/*.jar: jar/
-  #     ../build/target/lib: jar/lib
-  #     ../build/wrapper: bin/
-  # java8:
-  #   plugin: dump
-  #   source: jre-8u111-linux-x64.tar.gz
-  #   organize:
-  #       ./*: java8/
-  #   stage:
-  #     - -LICENSE
-  #   snap:
-  #     - -LICENSE
-  # xdg-test:
-  #   plugin: dump
-  #   source: .
-  #   organize:
-  #     ../build/wrapper0: bin/

@@ -13,4 +13,4 @@ export LIBGL_DEBUG=verbose
 
 export PATH=$PATH:/usr/local/bin
 
-java -Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel -Duser.home=$HOME -Dsun.java2d.opengl=true -jar $SNAP/jar/torgo-1.4.0.jar "$@"
+java -Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel -Duser.home=$HOME -Dsun.java2d.opengl=true -jar $SNAP/jar/torgo-1.4.1.jar "$@"

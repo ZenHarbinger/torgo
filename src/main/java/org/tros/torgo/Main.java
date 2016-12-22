@@ -199,12 +199,21 @@ public class Main {
     public static final String IMAGE_ICON_CLASS_PATH = "torgo-48x48.png";
 
     public static void loadIcon(Window frame) {
+        frame.setIconImage(getIcon().getImage());
+    }
+
+    public static ImageIcon getIcon() {
+        return getIcon(IMAGE_ICON_CLASS_PATH);
+    }
+
+    public static ImageIcon getIcon(String path) {
         try {
-            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(IMAGE_ICON_CLASS_PATH);
+            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(path);
             ImageIcon ico = new ImageIcon(resources.nextElement());
-            frame.setIconImage(ico.getImage());
+            return ico;
         } catch (IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).warn(null, ex);
         }
+        return null;
     }
 }

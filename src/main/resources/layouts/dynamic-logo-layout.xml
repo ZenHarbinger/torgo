@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2015-2016 Matthew Aguirre
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<root>
+    <resource name="dock.ui.ThemeMap">
+        <key>smooth</key>
+    </resource>
+    <resource name="ccontrol.frontend">
+        <frontend>
+            <current>
+                <base>
+                    <roots>
+                        <root name="external">
+                            <layout factory="predefined">
+                                <replacement id="rootexternal"/>
+                                <delegate id="delegate_CommonDockStationFactory">
+                                    <root>true</root>
+                                    <content delegate="screen dock">
+                                        <placeholders>
+                                            <version>0</version>
+                                            <format>dock.PlaceholderList</format>
+                                        </placeholders>
+                                    </content>
+                                </delegate>
+                            </layout>
+                            <adjacent>
+                                <layout factory="dock.RootStationAdjacentFactory">
+                                    <type>dock.CExternalizeArea</type>
+                                </layout>
+                            </adjacent>
+                            <children ignore="false"/>
+                        </root>
+                        <root name="ccontrol north">
+                            <layout factory="predefined">
+                                <replacement id="rootccontrol north"/>
+                                <delegate id="delegate_CommonDockStationFactory">
+                                    <root>true</root>
+                                    <content delegate="flap dock">
+                                        <window auto="false" direction="SOUTH"/>
+                                        <placeholders>
+                                            <version>0</version>
+                                            <format>dock.PlaceholderList</format>
+                                        </placeholders>
+                                    </content>
+                                </delegate>
+                            </layout>
+                            <adjacent>
+                                <layout factory="dock.RootStationAdjacentFactory">
+                                    <type>dock.CContentArea.minimize</type>
+                                </layout>
+                            </adjacent>
+                            <children ignore="false"/>
+                        </root>
+                        <root name="ccontrol south">
+                            <layout factory="predefined">
+                                <replacement id="rootccontrol south"/>
+                                <delegate id="delegate_CommonDockStationFactory">
+                                    <root>true</root>
+                                    <content delegate="flap dock">
+                                        <window auto="false" direction="NORTH"/>
+                                        <placeholders>
+                                            <version>0</version>
+                                            <format>dock.PlaceholderList</format>
+                                        </placeholders>
+                                    </content>
+                                </delegate>
+                            </layout>
+                            <adjacent>
+                                <layout factory="dock.RootStationAdjacentFactory">
+                                    <type>dock.CContentArea.minimize</type>
+                                </layout>
+                            </adjacent>
+                            <children ignore="false"/>
+                        </root>
+                        <root name="ccontrol east">
+                            <layout factory="predefined">
+                                <replacement id="rootccontrol east"/>
+                                <delegate id="delegate_CommonDockStationFactory">
+                                    <root>true</root>
+                                    <content delegate="flap dock">
+                                        <window auto="false" direction="WEST"/>
+                                        <placeholders>
+                                            <version>0</version>
+                                            <format>dock.PlaceholderList</format>
+                                        </placeholders>
+                                    </content>
+                                </delegate>
+                            </layout>
+                            <adjacent>
+                                <layout factory="dock.RootStationAdjacentFactory">
+                                    <type>dock.CContentArea.minimize</type>
+                                </layout>
+                            </adjacent>
+                            <children ignore="false"/>
+                        </root>
+                        <root name="ccontrol center">
+                            <layout factory="predefined" placeholder="dock.single.ccontrol\ center">
+                                <replacement id="rootccontrol center"/>
+                                <delegate id="delegate_CommonDockStationFactory">
+                                    <id>ccontrol center</id>
+                                    <root>true</root>
+                                    <content delegate="SplitDockStationFactory">
+                                        <fullscreen-action>false</fullscreen-action>
+                                        <node nodeId="1482410500727" orientation="HORIZONTAL" divider="0.66">
+                                            <leaf id="2" nodeId="1482410500729">
+                                                <placeholders>
+                                                    <placeholder>dock.single.Display</placeholder>
+                                                </placeholders>
+                                            </leaf>
+                                            <node nodeId="1482410500731" orientation="VERTICAL" divider="0.60">
+                                                <leaf id="1" nodeId="1482410500733">
+                                                    <placeholders>
+                                                        <placeholder>dock.single.Input</placeholder>
+                                                    </placeholders>
+                                                </leaf>
+                                                <leaf id="0" nodeId="1482410500735">
+                                                    <placeholders>
+                                                        <placeholder>dock.single.Output</placeholder>
+                                                    </placeholders>
+                                                </leaf>
+                                            </node>
+                                        </node>
+                                    </content>
+                                </delegate>
+                            </layout>
+                            <adjacent>
+                                <layout factory="dock.RootStationAdjacentFactory">
+                                    <type>dock.CContentArea.center</type>
+                                </layout>
+                            </adjacent>
+                            <children ignore="false">
+                                <child>
+                                    <layout factory="predefined" placeholder="dock.single.Output">
+                                        <replacement id="dockablesingle Output"/>
+                                        <delegate id="delegate_ccontrol backup factory id">
+                                            <id>Output</id>
+                                            <area/>
+                                        </delegate>
+                                    </layout>
+                                    <children ignore="false"/>
+                                </child>
+                                <child>
+                                    <layout factory="predefined" placeholder="dock.single.Input">
+                                        <replacement id="dockablesingle Input"/>
+                                        <delegate id="delegate_ccontrol backup factory id">
+                                            <id>Input</id>
+                                            <area/>
+                                        </delegate>
+                                    </layout>
+                                    <children ignore="false"/>
+                                </child>
+                                <child>
+                                    <layout factory="predefined" placeholder="dock.single.Display">
+                                        <replacement id="dockablesingle Display"/>
+                                        <delegate id="delegate_ccontrol backup factory id">
+                                            <id>Display</id>
+                                            <area/>
+                                        </delegate>
+                                    </layout>
+                                    <children ignore="false"/>
+                                </child>
+                            </children>
+                        </root>
+                        <root name="ccontrol west">
+                            <layout factory="predefined">
+                                <replacement id="rootccontrol west"/>
+                                <delegate id="delegate_CommonDockStationFactory">
+                                    <root>true</root>
+                                    <content delegate="flap dock">
+                                        <window auto="false" direction="EAST"/>
+                                        <placeholders>
+                                            <version>0</version>
+                                            <format>dock.PlaceholderList</format>
+                                        </placeholders>
+                                    </content>
+                                </delegate>
+                            </layout>
+                            <adjacent>
+                                <layout factory="dock.RootStationAdjacentFactory">
+                                    <type>dock.CContentArea.minimize</type>
+                                </layout>
+                            </adjacent>
+                            <children ignore="false"/>
+                        </root>
+                    </roots>
+                    <children/>
+                </base>
+                <modes>
+                    <dockables>
+                        <entry id="single Output" current="dock.mode.normal">
+                            <history>
+                                <mode>dock.mode.normal</mode>
+                            </history>
+                            <properties>
+                                <property id="dock.mode.normal">
+                                    <mode>dock.mode.normal</mode>
+                                    <root>ccontrol center</root>
+                                    <location>
+                                        <property factory="SplitDockPlaceholderProperty">
+                                            <placeholder>dock.single.Output</placeholder>
+                                            <backup-path>
+                                                <node location="TOP" size="0.5" id="1482410500723"/>
+                                                <leaf id="1482410500721"/>
+                                            </backup-path>
+                                        </property>
+                                    </location>
+                                </property>
+                            </properties>
+                        </entry>
+                        <entry id="single Input" current="dock.mode.normal">
+                            <history>
+                                <mode>dock.mode.normal</mode>
+                            </history>
+                            <properties>
+                                <property id="dock.mode.normal">
+                                    <mode>dock.mode.normal</mode>
+                                    <root>ccontrol center</root>
+                                    <location>
+                                        <property factory="SplitDockPlaceholderProperty">
+                                            <placeholder>dock.single.Input</placeholder>
+                                            <backup-path>
+                                                <node location="TOP" size="0.5" id="1482410500716"/>
+                                                <leaf id="1482410500715"/>
+                                            </backup-path>
+                                        </property>
+                                    </location>
+                                </property>
+                            </properties>
+                        </entry>
+                        <entry id="single Display" current="dock.mode.normal">
+                            <history>
+                                <mode>dock.mode.normal</mode>
+                            </history>
+                            <properties>
+                                <property id="dock.mode.normal">
+                                    <mode>dock.mode.normal</mode>
+                                    <root>ccontrol center</root>
+                                    <location>
+                                        <property factory="SplitDockPlaceholderProperty">
+                                            <placeholder>dock.single.Display</placeholder>
+                                            <backup-path>
+                                                <leaf id="1482410500677"/>
+                                            </backup-path>
+                                        </property>
+                                    </location>
+                                </property>
+                            </properties>
+                        </entry>
+                    </dockables>
+                    <modes>
+                        <entry id="dock.mode.maximized"/>
+                    </modes>
+                </modes>
+            </current>
+        </frontend>
+    </resource>
+    <resource name="ccontrol.preferences"/>
+</root>

@@ -8,4 +8,4 @@ before_script:
 branches:
   only:
     - master
-    - tests/gui
+    - tests

@@ -39,7 +39,7 @@ import org.tros.utils.logging.Logging;
 public class LogoControllerTest {
 
     private final static Logger LOGGER;
-    
+
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(LogoControllerTest.class.getName());
@@ -80,7 +80,7 @@ public class LogoControllerTest {
             "logo/examples/antlr/example3.txt",
             "logo/examples/antlr/example4.txt",
             "logo/examples/antlr/expression.txt",
-            "logo/examples/antlr/flower.txt",
+            //            "logo/examples/antlr/flower.txt",
             "logo/examples/antlr/fractal.txt",
             "logo/examples/antlr/make.txt",
             "logo/examples/antlr/octagon.txt",
@@ -92,23 +92,23 @@ public class LogoControllerTest {
             "logo/examples/antlr/repeat.txt",
             "logo/examples/antlr/spiral2.txt",
             "logo/examples/antlr/spiral.txt",
-            "logo/examples/antlr/tree2.txt",
-            "logo/examples/antlr/tree.txt",
-            "logo/examples/tortue/box.logo",
-            "logo/examples/tortue/canvas-color-test.logo",
-            "logo/examples/tortue/fail.logo",
-            "logo/examples/tortue/fibonacci.logo",
-            "logo/examples/tortue/flower2.logo",
-            "logo/examples/tortue/flower.logo",
+            //            "logo/examples/antlr/tree2.txt",
+            //            "logo/examples/antlr/tree.txt",
+            //            "logo/examples/tortue/box.logo",
+            //            "logo/examples/tortue/canvas-color-test.logo",
+            //            "logo/examples/tortue/fail.logo",
+            //            "logo/examples/tortue/fibonacci.logo",
+            //            "logo/examples/tortue/flower2.logo",
+            //            "logo/examples/tortue/flower.logo",
             //            "logo/examples/tortue/Getriebe.logo",
             //            "logo/examples/tortue/grayscale-fun.logo",
             //            "logo/examples/tortue/iris.logo",
             //            "logo/examples/tortue/MetallRahmen.logo",
-            "logo/examples/tortue/octagon.logo",
-            "logo/examples/tortue/pretty.logo",
-            "logo/examples/tortue/snowflake.logo",
-            "logo/examples/tortue/spiral.logo",
-            "logo/examples/tortue/spokes.logo",
+            //            "logo/examples/tortue/octagon.logo",
+            //            "logo/examples/tortue/pretty.logo",
+            //            "logo/examples/tortue/snowflake.logo",
+            //            "logo/examples/tortue/spiral.logo",
+            //            "logo/examples/tortue/spokes.logo",
             "logo/examples/tortue/test.logo",
             "logo/examples/tortue/tortue-text.logo"};
 
@@ -116,7 +116,7 @@ public class LogoControllerTest {
             LOGGER.info(file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             controller.disable("TraceLogger");
-            
+
             try {
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
@@ -185,13 +185,14 @@ public class LogoControllerTest {
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
         assertEquals("dynamic-logo", controller.getLang());
-        String[] files = new String[]{"logo/examples/antlr/dynamic_scope.txt",
+        String[] files = new String[]{
+            "logo/examples/antlr/dynamic_scope.txt",
             "logo/examples/antlr/example1.txt",
             "logo/examples/antlr/example2.txt",
             "logo/examples/antlr/example3.txt",
             "logo/examples/antlr/example4.txt",
             "logo/examples/antlr/expression.txt",
-            "logo/examples/antlr/flower.txt",
+            //            "logo/examples/antlr/flower.txt",
             "logo/examples/antlr/fractal.txt",
             "logo/examples/antlr/make.txt",
             "logo/examples/antlr/octagon.txt",
@@ -203,23 +204,23 @@ public class LogoControllerTest {
             "logo/examples/antlr/repeat.txt",
             "logo/examples/antlr/spiral2.txt",
             "logo/examples/antlr/spiral.txt",
-            "logo/examples/antlr/tree2.txt",
-            "logo/examples/antlr/tree.txt",
-            "logo/examples/tortue/box.logo",
-            "logo/examples/tortue/canvas-color-test.logo",
-            "logo/examples/tortue/fail.logo",
-            "logo/examples/tortue/fibonacci.logo",
-            "logo/examples/tortue/flower2.logo",
-            "logo/examples/tortue/flower.logo",
+            //            "logo/examples/antlr/tree2.txt",
+            //            "logo/examples/antlr/tree.txt",
+            //            "logo/examples/tortue/box.logo",
+            //            "logo/examples/tortue/canvas-color-test.logo",
+            //            "logo/examples/tortue/fail.logo",
+            //            "logo/examples/tortue/fibonacci.logo",
+            //            "logo/examples/tortue/flower2.logo",
+            //            "logo/examples/tortue/flower.logo",
             //            "logo/examples/tortue/Getriebe.logo",
             //            "logo/examples/tortue/grayscale-fun.logo",
             //            "logo/examples/tortue/iris.logo",
             //            "logo/examples/tortue/MetallRahmen.logo",
-            "logo/examples/tortue/octagon.logo",
-            "logo/examples/tortue/pretty.logo",
-            "logo/examples/tortue/snowflake.logo",
-            "logo/examples/tortue/spiral.logo",
-            "logo/examples/tortue/spokes.logo",
+            //            "logo/examples/tortue/octagon.logo",
+            //            "logo/examples/tortue/pretty.logo",
+            //            "logo/examples/tortue/snowflake.logo",
+            //            "logo/examples/tortue/spiral.logo",
+            //            "logo/examples/tortue/spokes.logo",
             "logo/examples/tortue/test.logo",
             "logo/examples/tortue/tortue-text.logo"};
 
@@ -227,7 +228,7 @@ public class LogoControllerTest {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
             controller.disable("TraceLogger");
-            
+
             try {
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
