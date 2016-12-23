@@ -1,4 +1,4 @@
 #!/bin/bash
 
 /opt/launch4j/launch4j torgo.cfg.xml
-/opt/installbuilder-16.11.1/bin/builder build TorgoInstallBuilder.xml windows --setvars project.outputDirectory=. project.version=1.5.0
+/opt/installbuilder-16.11.1/bin/builder build TorgoInstallBuilder.xml windows --setvars project.outputDirectory=. project.version=1.4.2
