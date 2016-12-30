@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -96,12 +95,8 @@ public final class LogoMenuBar extends TorgoMenuBar {
         final JCheckBoxMenuItem speedMenu = new JCheckBoxMenuItem("Wait for Repaint");
         boolean checked = prefs.getBoolean(WAIT_FOR_REPAINT, true);
         speedMenu.setSelected(checked);
-        speedMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                prefs.putBoolean(WAIT_FOR_REPAINT, speedMenu.isSelected());
-            }
+        speedMenu.addActionListener((ActionEvent e) -> {
+            prefs.putBoolean(WAIT_FOR_REPAINT, speedMenu.isSelected());
         });
         menu.add(speedMenu);
         add(menu);
@@ -153,13 +148,10 @@ public final class LogoMenuBar extends TorgoMenuBar {
         final BufferedImage image = canvas.getBufferedImage();
 
         final Graphics2D g2d = image.createGraphics();
-        DrawListener dl = new DrawListener() {
-            @Override
-            public void drawn(Drawable sender) {
-                try {
-                    writer.writeToSequence(image);
-                } catch (IOException ex) {
-                }
+        DrawListener dl = (Drawable sender) -> {
+            try {
+                writer.writeToSequence(image);
+            } catch (IOException ex) {
             }
         };
         p.addListener(dl);
@@ -189,21 +181,16 @@ public final class LogoMenuBar extends TorgoMenuBar {
             InputStream resourceAsStream = TorgoToolkit.getDefaultResourceAccessor().open(base + "/resource.manifest");
             List<String> readLines = IOUtils.readLines(resourceAsStream, "utf-8");
             Collections.sort(readLines);
-            for (String line : readLines) {
-                JMenuItem jmi = new JMenuItem(base + "/" + line);
-                if (!jmi.getText().endsWith("manifest")) {
-                    samplesMenu.add(jmi);
-                    jmi.addActionListener(new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            String val = e.getActionCommand();
-                            URL resource = ClassLoader.getSystemClassLoader().getResource(val);
-                            LogoMenuBar.this.controller.openFile(resource);
-                        }
-                    });
-                }
-            }
+            readLines.stream().map((line) -> new JMenuItem(base + "/" + line)).filter((jmi) -> (!jmi.getText().endsWith("manifest"))).map((JMenuItem jmi) -> {
+                samplesMenu.add(jmi);
+                return jmi;
+            }).forEachOrdered((JMenuItem jmi) -> {
+                jmi.addActionListener((ActionEvent e) -> {
+                    String val = e.getActionCommand();
+                    URL resource = ClassLoader.getSystemClassLoader().getResource(val);
+                    LogoMenuBar.this.controller.openFile(resource);
+                });
+            });
         } catch (IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).fatal(null, ex);
         }
@@ -232,86 +219,72 @@ public final class LogoMenuBar extends TorgoMenuBar {
         JMenuItem exportPng = new JMenuItem(Localization.getLocalizedString("ExportPNG"));
         JMenuItem exportSvg = new JMenuItem(Localization.getLocalizedString("ExportSVG"));
 
-        exportSvg.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                JFileChooser chooser = new JFileChooser();
-                chooser.setMultiSelectionEnabled(false);
-                java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
-                chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
+        exportSvg.addActionListener((ActionEvent ae) -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setMultiSelectionEnabled(false);
+            java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+            chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
+            
+            chooser.setVisible(true);
+            int result = chooser.showSaveDialog(parent);
+            
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String filename = chooser.getSelectedFile().getPath();
+                prefs.put("export-directory", chooser.getSelectedFile().getParent());
+                if (Drawable.class.isAssignableFrom(canvas.getClass())) {
+                    try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
+                        generateSVG((Drawable) canvas, fos);
+                        fos.flush();
+                    } catch (IOException ex) {
+                        org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                    }
+                }
+            }
+        });
 
-                chooser.setVisible(true);
-                int result = chooser.showSaveDialog(parent);
-
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    String filename = chooser.getSelectedFile().getPath();
-                    prefs.put("export-directory", chooser.getSelectedFile().getParent());
-                    if (Drawable.class.isAssignableFrom(canvas.getClass())) {
-                        try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
-                            generateSVG((Drawable) canvas, fos);
-                            fos.flush();
+        exportGif.addActionListener((ActionEvent ae) -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setMultiSelectionEnabled(false);
+            java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+            chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
+            
+            chooser.setVisible(true);
+            int result = chooser.showSaveDialog(parent);
+            
+            if (result == JFileChooser.APPROVE_OPTION) {
+                final String filename = chooser.getSelectedFile().getPath();
+                prefs.put("export-directory", chooser.getSelectedFile().getParent());
+                Thread t = new Thread(() -> {
+                    if (Drawable.class.isAssignableFrom(canvas.getClass())
+                            && BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
+                        try {
+                            generateGIF(((Drawable) canvas).cloneDrawable(), (BufferedImageProvider) canvas, filename);
+                        } catch (SVGGraphics2DIOException ex) {
+                            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (IOException ex) {
-                            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
+                            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                }
+                });
+                t.setDaemon(true);
+                t.start();
             }
         });
-
-        exportGif.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                JFileChooser chooser = new JFileChooser();
-                chooser.setMultiSelectionEnabled(false);
-                java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
-                chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
-
-                chooser.setVisible(true);
-                int result = chooser.showSaveDialog(parent);
-
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    final String filename = chooser.getSelectedFile().getPath();
-                    prefs.put("export-directory", chooser.getSelectedFile().getParent());
-                    Thread t = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Drawable.class.isAssignableFrom(canvas.getClass())
-                                    && BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
-                                try {
-                                    generateGIF(((Drawable) canvas).cloneDrawable(), (BufferedImageProvider) canvas, filename);
-                                } catch (SVGGraphics2DIOException ex) {
-                                    Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
-                                } catch (IOException ex) {
-                                    Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        }
-                    });
-                    t.setDaemon(true);
-                    t.start();
-                }
-            }
-        });
-        exportPng.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                JFileChooser chooser = new JFileChooser();
-                chooser.setMultiSelectionEnabled(false);
-                java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
-                chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
-
-                chooser.setVisible(true);
-                int result = chooser.showSaveDialog(parent);
-
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    String filename = chooser.getSelectedFile().getPath();
-                    prefs.put("export-directory", chooser.getSelectedFile().getParent());
-                    // retrieve image
-                    if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
-                        generatePNG((BufferedImageProvider) canvas, filename);
-                    }
+        exportPng.addActionListener((ActionEvent ae) -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setMultiSelectionEnabled(false);
+            java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
+            chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
+            
+            chooser.setVisible(true);
+            int result = chooser.showSaveDialog(parent);
+            
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String filename = chooser.getSelectedFile().getPath();
+                prefs.put("export-directory", chooser.getSelectedFile().getParent());
+                // retrieve image
+                if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
+                    generatePNG((BufferedImageProvider) canvas, filename);
                 }
             }
         });
@@ -340,32 +313,24 @@ public final class LogoMenuBar extends TorgoMenuBar {
         toolsPenColorChooser.setMnemonic('P');
         toolsCanvasColorChooser.setMnemonic('C');
 
-        toolsPenColorChooser.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                Color selected = JColorChooser.showDialog(parent, Localization.getLocalizedString("ColorChooser"), null);
-                if (selected != null) {
-                    int red = selected.getRed();
-                    int green = selected.getGreen();
-                    int blue = selected.getBlue();
-                    String hex = String.format("#%02x%02x%02x", red, green, blue);
-                    controller.insertCommand("pencolor" + " " + hex);
-                }
+        toolsPenColorChooser.addActionListener((ActionEvent ae) -> {
+            Color selected = JColorChooser.showDialog(parent, Localization.getLocalizedString("ColorChooser"), null);
+            if (selected != null) {
+                int red = selected.getRed();
+                int green = selected.getGreen();
+                int blue = selected.getBlue();
+                String hex = String.format("#%02x%02x%02x", red, green, blue);
+                controller.insertCommand("pencolor" + " " + hex);
             }
         });
-        toolsCanvasColorChooser.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                Color selected = JColorChooser.showDialog(parent, Localization.getLocalizedString("ColorChooser"), null);
-                if (selected != null) {
-                    int red = selected.getRed();
-                    int green = selected.getGreen();
-                    int blue = selected.getBlue();
-                    String hex = String.format("#%02x%02x%02x", red, green, blue);
-                    controller.insertCommand("canvascolor" + " " + hex);
-                }
+        toolsCanvasColorChooser.addActionListener((ActionEvent ae) -> {
+            Color selected = JColorChooser.showDialog(parent, Localization.getLocalizedString("ColorChooser"), null);
+            if (selected != null) {
+                int red = selected.getRed();
+                int green = selected.getGreen();
+                int blue = selected.getBlue();
+                String hex = String.format("#%02x%02x%02x", red, green, blue);
+                controller.insertCommand("canvascolor" + " " + hex);
             }
         });
 

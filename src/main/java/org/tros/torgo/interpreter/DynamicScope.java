@@ -44,7 +44,7 @@ public class DynamicScope extends ScopeImpl implements Scope {
      */
     @Override
     public void push(CodeBlock block) {
-        scope.add(0, new HashMap<String, InterpreterValue>());
+        scope.add(0, new HashMap<>());
         stack.add(0, block);
         firePushed(block);
     }
@@ -184,9 +184,9 @@ public class DynamicScope extends ScopeImpl implements Scope {
     @Override
     public Collection<String> variables() {
         HashSet<String> keys = new HashSet<>();
-        for(HashMap<String, InterpreterValue> slice : scope) {
+        scope.forEach((slice) -> {
             keys.addAll(slice.keySet());
-        }
+        });
         return keys;
     }
 
@@ -201,10 +201,9 @@ public class DynamicScope extends ScopeImpl implements Scope {
         HashMap<String, InterpreterValue> keys = new HashMap<>();
         for(int ii = scope.size() - 1; ii >= 0 && value >= 0; ii--, value--) {
             HashMap<String, InterpreterValue> slice = scope.get(ii);
-            for(String key : slice.keySet()) {
+            slice.keySet().forEach((key) -> {
                 keys.put(key, slice.get(key));
-            }
-//            keys.addAll(slice.keySet());
+            });//            keys.addAll(slice.keySet());
         }
         return keys;
     }

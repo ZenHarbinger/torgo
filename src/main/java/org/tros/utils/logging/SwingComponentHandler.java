@@ -248,60 +248,55 @@ public final class SwingComponentHandler extends Handler {
         final java.util.logging.Formatter f = getFormatter();
         final Date dat = new Date();
 
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                for (LogRecord record : rec) {
-                    try {
-                        Style s = STYLE_MAP.containsKey(record.getLevel()) ? STYLE_MAP.get(record.getLevel()) : DEFAULT_STYLE;
-
-                        dat.setTime(record.getMillis());
-                        String source;
-                        if (record.getSourceClassName() != null) {
-                            source = record.getSourceClassName();
-                            if (record.getSourceMethodName() != null) {
-                                source += " " + record.getSourceMethodName();
-                            }
-                        } else {
-                            source = record.getLoggerName();
+        SwingUtilities.invokeLater(() -> {
+            rec.forEach((record) -> {
+                try {
+                    Style s = STYLE_MAP.containsKey(record.getLevel()) ? STYLE_MAP.get(record.getLevel()) : DEFAULT_STYLE;
+                    
+                    dat.setTime(record.getMillis());
+                    String source;
+                    if (record.getSourceClassName() != null) {
+                        source = record.getSourceClassName();
+                        if (record.getSourceMethodName() != null) {
+                            source += " " + record.getSourceMethodName();
                         }
-                        StringBuilder nameBuilder = new StringBuilder();
-
-                        String[] names = record.getLoggerName().split("\\.");
-                        for (int ii = 0; ii < names.length - 1; ii++) {
-                            nameBuilder.append(names[ii].charAt(0));
-                        }
-                        nameBuilder.append(".").append(names[names.length - 1]);
-
-                        String throwable = "";
-                        if (record.getThrown() != null) {
-                            StringWriter sw = new StringWriter();
-                            try (PrintWriter pw = new PrintWriter(sw)) {
-                                pw.println();
-                                record.getThrown().printStackTrace(pw);
-                            }
-                            throwable = sw.toString();
-                        }
-                        String toInsert = String.format(FORMAT,
-                                dat,
-                                source,
-                                nameBuilder.toString(),
-                                record.getLevel().getLocalizedName(),
-                                record.getMessage(),
-                                throwable);
-
-                        StyleConstants.setBold(s, true);
-                        DOC.insertString(DOC.getLength(), toInsert + " ", s);
-                        StyleConstants.setBold(s, false);
-                        DOC.insertString(DOC.getLength(), f.format(record), s);
-                    } catch (BadLocationException ex) {
-                        Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    } else {
+                        source = record.getLoggerName();
                     }
+                    StringBuilder nameBuilder = new StringBuilder();
+                    
+                    String[] names = record.getLoggerName().split("\\.");
+                    for (int ii = 0; ii < names.length - 1; ii++) {
+                        nameBuilder.append(names[ii].charAt(0));
+                    }
+                    nameBuilder.append(".").append(names[names.length - 1]);
+                    
+                    String throwable = "";
+                    if (record.getThrown() != null) {
+                        StringWriter sw = new StringWriter();
+                        try (PrintWriter pw = new PrintWriter(sw)) {
+                            pw.println();
+                            record.getThrown().printStackTrace(pw);
+                        }
+                        throwable = sw.toString();
+                    }
+                    String toInsert = String.format(FORMAT,
+                            dat,
+                            source,
+                            nameBuilder.toString(),
+                            record.getLevel().getLocalizedName(),
+                            record.getMessage(),
+                            throwable);
+                    
+                    StyleConstants.setBold(s, true);
+                    DOC.insertString(DOC.getLength(), toInsert + " ", s);
+                    StyleConstants.setBold(s, false);
+                    DOC.insertString(DOC.getLength(), f.format(record), s);
+                } catch (BadLocationException ex) {
+                    Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                TEXT_AREA.select(DOC.getLength(), DOC.getLength());
-            }
-
+            });
+            TEXT_AREA.select(DOC.getLength(), DOC.getLength());
         });
     }
 }

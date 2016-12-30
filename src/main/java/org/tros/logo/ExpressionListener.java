@@ -58,43 +58,45 @@ class ExpressionListener extends LogoBaseListener {
      */
     private ExpressionListener(Scope scope) {
         this.scope = scope;
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     private InterpreterValue mathExpression(InterpreterValue val1, InterpreterValue val2, String op) {
         double num1 = ((Number) val1.getValue()).doubleValue();
         double num2 = ((Number) val2.getValue()).doubleValue();
-        if (null != op) switch (op) {
-            case "-":
-                num1 = num1 - num2;
-                break;
-            case "+":
-                num1 = num1 + num2;
-                break;
-            case "*":
-                num1 = num1 * num2;
-                break;
-            case "%":
-                num1 = num1 % num2;
-                break;
-            case "/":
-                num1 = num1 / num2;
-                break;
-            case "\\":
-                num1 = (int) (num1 / num2);
-                break;
-            case "^":
-                num1 = Math.pow(num1, num2);
-                break;
-            default:
-                break;
+        if (null != op) {
+            switch (op) {
+                case "-":
+                    num1 = num1 - num2;
+                    break;
+                case "+":
+                    num1 = num1 + num2;
+                    break;
+                case "*":
+                    num1 = num1 * num2;
+                    break;
+                case "%":
+                    num1 = num1 % num2;
+                    break;
+                case "/":
+                    num1 = num1 / num2;
+                    break;
+                case "\\":
+                    num1 = (int) (num1 / num2);
+                    break;
+                case "^":
+                    num1 = Math.pow(num1, num2);
+                    break;
+                default:
+                    break;
+            }
         }
         return new InterpreterValue(NumberType.INSTANCE, num1);
     }
 
     @Override
     public void enterExpression(LogoParser.ExpressionContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -120,7 +122,7 @@ class ExpressionListener extends LogoBaseListener {
 
     @Override
     public void enterMultiplyingExpression(LogoParser.MultiplyingExpressionContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -135,7 +137,7 @@ class ExpressionListener extends LogoBaseListener {
     @Override
     public void enterPowerExpression(LogoParser.PowerExpressionContext ctx) {
         if (ctx.getChildCount() > 1) {
-            value.push(new ArrayList<InterpreterValue>());
+            value.push(new ArrayList<>());
         }
     }
 
@@ -152,7 +154,7 @@ class ExpressionListener extends LogoBaseListener {
 
     @Override
     public void enterRandom(LogoParser.RandomContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override

@@ -164,9 +164,9 @@ public class Main {
                 lang = cmd.getOptionValue("lang");
             } else if (cmd.hasOption("i") || cmd.hasOption("list")) {
                 Set<String> toolkits = TorgoToolkit.getToolkits();
-                for (String name : toolkits) {
+                toolkits.forEach((name) -> {
                     System.out.println(name);
-                }
+                });
                 //will force an exit
                 lang = null;
             }
@@ -185,13 +185,10 @@ public class Main {
         }
 
         final String controlLang = lang;
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Controller controller = TorgoToolkit.getController(controlLang);
-                if (controller != null) {
-                    controller.run();
-                }
+        SwingUtilities.invokeLater(() -> {
+            Controller controller = TorgoToolkit.getController(controlLang);
+            if (controller != null) {
+                controller.run();
             }
         });
     }

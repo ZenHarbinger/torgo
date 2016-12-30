@@ -250,9 +250,9 @@ class LogoStatement extends LogoBlock {
                         HashMap<String, InterpreterValue> paramValues = new HashMap<>();
 
                         //get the parameter names
-                        for (LogoParser.ParameterDeclarationsContext param : funct.parameterDeclarations()) {
+                        funct.parameterDeclarations().forEach((param) -> {
                             paramNames.add(param.getText().substring(1));
-                        }
+                        });
 
                         LogoParser.ProcedureInvocationContext context = (LogoParser.ProcedureInvocationContext) ctx;
 

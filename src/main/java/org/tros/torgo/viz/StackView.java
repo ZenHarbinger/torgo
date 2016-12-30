@@ -34,7 +34,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
-import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.interpreter.InterpreterListener;
@@ -106,9 +105,9 @@ public class StackView implements InterpreterVisualization {
             TreeMap<String, InterpreterValue> vars = new TreeMap<>(scope.variablesPeek(depth));
             StringBuilder sb = new StringBuilder();
             sb.append("<html>");
-            for (String var : vars.keySet()) {
+            vars.keySet().forEach((var) -> {
                 sb.append(var).append(": ").append(vars.get(var).getValue().toString()).append("<br>");
-            }
+            });
             sb.append("</html>");
             return sb.toString().trim();
         }
@@ -169,14 +168,16 @@ public class StackView implements InterpreterVisualization {
 
             //Create and populate the panel.
             JPanel panel = new JPanel(new SpringLayout());
-            for (String name : variables.keySet()) {
+            variables.keySet().stream().map((name) -> {
                 JLabel l = new JLabel(name, JLabel.TRAILING);
                 panel.add(l);
                 JTextField textField = new JTextField(10);
                 textField.setText(variables.get(name).toString());
                 l.setLabelFor(textField);
+                return textField;
+            }).forEachOrdered((textField) -> {
                 panel.add(textField);
-            }
+            });
 
             if (size > 0) {
                 //Lay out the panel.
@@ -221,22 +222,24 @@ public class StackView implements InterpreterVisualization {
         @Override
         public final void refresh(Scope scope) {
             TreeMap<String, String> variables = new TreeMap<>();
-            for (String name : scope.variables()) {
+            scope.variables().forEach((name) -> {
                 variables.put(name, scope.get(name).getValue().toString());
-            }
+            });
 
             int size = variables.size();
 
             //Create and populate the panel.
             JPanel panel = new JPanel(new SpringLayout());
-            for (String name : variables.keySet()) {
+            variables.keySet().stream().map((name) -> {
                 JLabel l = new JLabel(name, JLabel.TRAILING);
                 panel.add(l);
                 JTextField textField = new JTextField(10);
                 textField.setText(variables.get(name));
                 l.setLabelFor(textField);
+                return textField;
+            }).forEachOrdered((textField) -> {
                 panel.add(textField);
-            }
+            });
 
             if (size > 0) {
                 //Lay out the panel.
@@ -316,9 +319,9 @@ public class StackView implements InterpreterVisualization {
             public void finished() {
                 window.dispose();
                 synchronized (frames) {
-                    for (StackViewFrame frame : frames) {
+                    frames.forEach((frame) -> {
                         frame.dispose();
-                    }
+                    });
                 }
             }
 
@@ -420,16 +423,13 @@ public class StackView implements InterpreterVisualization {
             @Override
             public void scopePopped(Scope scope, final CodeBlock block) {
                 try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            ScopeItem popped = labels.pop();
-                            synchronized (frames) {
-                                frames.remove(popped.swf);
-                            }
-                            popped.onPopped();
-                            listModel.removeElement(popped);
+                    SwingUtilities.invokeAndWait(() -> {
+                        ScopeItem popped = labels.pop();
+                        synchronized (frames) {
+                            frames.remove(popped.swf);
                         }
+                        popped.onPopped();
+                        listModel.removeElement(popped);
                     });
                 } catch (InterruptedException | InvocationTargetException ex) {
                     LOGGER.warn("Scope Popped: {0}", ex);
@@ -453,13 +453,10 @@ public class StackView implements InterpreterVisualization {
                     }
                 }
                 try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            ScopeItem sp = new ScopeItem(block, listModel.size(), scope);
-                            listModel.addElement(sp);
-                            labels.push(sp);
-                        }
+                    SwingUtilities.invokeAndWait(() -> {
+                        ScopeItem sp = new ScopeItem(block, listModel.size(), scope);
+                        listModel.addElement(sp);
+                        labels.push(sp);
                     });
                 } catch (InterruptedException | InvocationTargetException ex) {
                     LOGGER.warn("Scope Pushed: {0}", ex);
@@ -476,9 +473,9 @@ public class StackView implements InterpreterVisualization {
             @Override
             public void variableSet(final Scope scope, String name, InterpreterValue value) {
                 synchronized (frames) {
-                    for (StackViewFrame frame : frames) {
+                    frames.forEach((frame) -> {
                         frame.refresh(scope);
-                    }
+                    });
                 }
             }
         });

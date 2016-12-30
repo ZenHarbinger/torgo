@@ -42,8 +42,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -577,13 +575,10 @@ public class JConsole extends JScrollPane
 
     @Override
     public void print(final Object o) {
-        invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                append(String.valueOf(o));
-                resetCommandStart();
-                text.setCaretPosition(cmdStart);
-            }
+        invokeAndWait(() -> {
+            append(String.valueOf(o));
+            resetCommandStart();
+            text.setCaretPosition(cmdStart);
         });
     }
 
@@ -611,13 +606,10 @@ public class JConsole extends JScrollPane
             return;
         }
 
-        invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                text.insertIcon(icon);
-                resetCommandStart();
-                text.setCaretPosition(cmdStart);
-            }
+        invokeAndWait(() -> {
+            text.insertIcon(icon);
+            resetCommandStart();
+            text.setCaretPosition(cmdStart);
         });
     }
 
@@ -631,16 +623,13 @@ public class JConsole extends JScrollPane
     }
 
     public void print(final Object o, final Font font, final Color color) {
-        invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                AttributeSet old = getStyle();
-                setStyle(font, color);
-                append(String.valueOf(o));
-                resetCommandStart();
-                text.setCaretPosition(cmdStart);
-                setStyle(old, true);
-            }
+        invokeAndWait(() -> {
+            AttributeSet old = getStyle();
+            setStyle(font, color);
+            append(String.valueOf(o));
+            resetCommandStart();
+            text.setCaretPosition(cmdStart);
+            setStyle(old, true);
         });
     }
 
@@ -663,16 +652,13 @@ public class JConsole extends JScrollPane
             final boolean italic,
             final boolean underline
     ) {
-        invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                AttributeSet old = getStyle();
-                setStyle(fontFamilyName, size, color, bold, italic, underline);
-                append(String.valueOf(o));
-                resetCommandStart();
-                text.setCaretPosition(cmdStart);
-                setStyle(old, true);
-            }
+        invokeAndWait(() -> {
+            AttributeSet old = getStyle();
+            setStyle(fontFamilyName, size, color, bold, italic, underline);
+            append(String.valueOf(o));
+            resetCommandStart();
+            text.setCaretPosition(cmdStart);
+            setStyle(old, true);
         });
     }
 

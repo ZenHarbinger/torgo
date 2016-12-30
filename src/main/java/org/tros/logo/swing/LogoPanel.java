@@ -146,9 +146,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
              * Clone all internal drawable objects.
              */
             {
-                for (Drawable d : queuedCommands) {
+                queuedCommands.forEach((d) -> {
                     queuedCommandsCopy.add(d.cloneDrawable());
-                }
+                });
             }
 
             @Override
@@ -821,24 +821,12 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             if (prefs.getBoolean(LogoMenuBar.WAIT_FOR_REPAINT, true)) {
                 try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            LogoPanel.super.repaint();
-                        }
-                    });
+                    SwingUtilities.invokeAndWait(LogoPanel.super::repaint);
                 } catch (InterruptedException | InvocationTargetException ex) {
                     org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
                 }
             } else {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        LogoPanel.super.repaint();
-                    }
-                });
+                SwingUtilities.invokeLater(LogoPanel.super::repaint);
             }
         }
     }

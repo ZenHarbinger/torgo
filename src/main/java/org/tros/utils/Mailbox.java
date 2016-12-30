@@ -106,7 +106,7 @@ public class Mailbox<T> {
                 return null;
             }
         }
-        ArrayList<T> ret = new ArrayList<T>(m_msgs);
+        ArrayList<T> ret = new ArrayList<>(m_msgs);
         m_msgs.clear();
         return ret;
     }

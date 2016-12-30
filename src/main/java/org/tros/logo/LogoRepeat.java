@@ -59,7 +59,7 @@ class LogoRepeat extends LogoBlock {
     public ReturnValue process(Scope scope) {
         LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
-        super.variables.add(0, new HashMap<String, InterpreterValue>());
+        super.variables.add(0, new HashMap<>());
         listeners.fire().currStatement(this, scope);
         
         ReturnValue success = ReturnValue.SUCCESS;
