@@ -157,11 +157,13 @@ public class Main {
         options.addOption("l", "lang", true, "Open using the desired language. [default is 'logo']");
         options.addOption("i", "list", false, "List available languages.");
         String lang = "dynamic-logo";
+        boolean customLangUsed = false;
         try {
             CommandLineParser parser = new org.apache.commons.cli.DefaultParser();
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption("lang") || cmd.hasOption("l")) {
                 lang = cmd.getOptionValue("lang");
+                customLangUsed = true;
             } else if (cmd.hasOption("i") || cmd.hasOption("list")) {
                 Set<String> toolkits = TorgoToolkit.getToolkits();
                 toolkits.forEach((name) -> {
@@ -184,7 +186,13 @@ public class Main {
             }
         }
 
+        java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoToolkit.class);
+        if (!customLangUsed) {
+            lang = prefs.get("lang", lang);
+        }
         final String controlLang = lang;
+
+        prefs.put("lang", lang);
         SwingUtilities.invokeLater(() -> {
             Controller controller = TorgoToolkit.getController(controlLang);
             if (controller != null) {

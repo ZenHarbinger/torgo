@@ -1,7 +1,7 @@
 <project>
     <shortName>Torgo</shortName>
     <fullName>Torgo</fullName>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <!-- <logoImage>48x48.png</logoImage> -->
     <!-- <splashImage>splash.png</splashImage> -->
     <componentList>

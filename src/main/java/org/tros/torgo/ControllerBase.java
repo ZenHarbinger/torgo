@@ -436,7 +436,7 @@ public abstract class ControllerBase implements Controller {
     public void newFile() {
         if (this.window.isVisible()) {
             filename = null;
-            window.setTitle("Torgo - " + Localization.getLocalizedString("UntitledLabel"));
+            window.setTitle("Torgo [" + getLang() + "] - " + Localization.getLocalizedString("UntitledLabel"));
 
             init();
         }
@@ -491,7 +491,7 @@ public abstract class ControllerBase implements Controller {
             //handle windows, jar, and linux path.  Not sure if necessary, but should work.
             String toSplit = file.getFile().replace("/", "|").replace("\\", "|");//.split("|");
             String[] split = toSplit.split("\\|");
-            this.window.setTitle("Torgo - " + split[split.length - 1]);
+            this.window.setTitle("Torgo [" + getLang() + "] - " + split[split.length - 1]);
         } catch (IOException ex) {
             init();
             org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
@@ -553,7 +553,7 @@ public abstract class ControllerBase implements Controller {
             }
 
             out.write(sourceArray);
-            window.setTitle("Torgo - " + filename);
+            window.setTitle("Torgo [" + getLang() + "] - " + filename);
             out.flush();
         } catch (Exception ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
