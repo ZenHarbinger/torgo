@@ -11,6 +11,7 @@
   <supportUrl>http://tros.org/torgo/</supportUrl>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
+  <icon>src/main/resources/torgo-128x128.ico</icon>
   <!-- <icon>App.ico</icon> -->
   <jre>
     <path></path>
