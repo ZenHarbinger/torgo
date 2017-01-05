@@ -9,6 +9,6 @@ Icon=/opt/extras.ubuntu.com/torgo/torgo-64x64.ico
 Terminal=false
 Type=Application
 Categories=Interpreter;Development;Application
-MimeType=
+MimeType=text/x-logo;text/x-lisp;text/x-bas;text/plain
 X-KDE-Protocols=
 Keywords=Interpreter;Logo

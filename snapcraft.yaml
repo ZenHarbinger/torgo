@@ -26,6 +26,8 @@ parts:
       - -lib/x86_64-linux-gnu/libdbus-1**
     snap:
       - -lib/x86_64-linux-gnu/libdbus-1**
+#    after: [desktop-glib-only]
     organize:
       ../build/target/lib: jar/lib
       ../build/wrapper: bin/
+      ../build/torgo-mime.xml: usr/share/mime/packages/torgo-mime.xml

@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../InstallBuilder.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <project>
     <shortName>Torgo</shortName>
     <fullName>Torgo</fullName>
     <version>1.4.2</version>
     <logoImage>src/main/resources/torgo-48x48.png</logoImage>
     <splashImage>src/main/resources/org/tros/images/splash.png</splashImage>
-    <!-- <splashImage>splash.png</splashImage> -->
     <componentList>
         <component>
             <name>default</name>
@@ -41,6 +42,18 @@
                         </distributionDirectory>
                     </distributionFileList>
                     <shortcutList/>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>iconfile</name>
+                    <platforms>windows</platforms>
+                    <actionList/>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>src/main/resources/torgo-128x128.ico</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
                 </folder>
                 <folder>
                     <description>Program Files</description>
@@ -113,13 +126,31 @@
             </startMenuShortcutList>
         </component>
     </componentList>
-<readyToInstallActionList>
-    <actionGroup>
-    </actionGroup>
-</readyToInstallActionList>
+    <readyToInstallActionList>
+        <actionGroup></actionGroup>
+        <associateWindowsFileExtension>
+            <extensions>.logo</extensions>
+            <progID>torgo.logo.1</progID>
+            <icon>${installdir}\torgo-128x128.ico</icon>
+            <mimeType>text/x-logo</mimeType>
+            <commandList>
+                <!-- Defining the 'Open' command -->
+                <command>
+                    <verb>Open</verb>
+                    <runProgram>${installdir}\torgo.exe</runProgram>
+                    <runProgramArguments>"%1"</runProgramArguments>
+                </command>
+            </commandList>
+        </associateWindowsFileExtension>
+        <!-- <removeWindowsFileAssociation>
+            <extensions>.logo</extensions>
+            <progID>trogo.logo.1</progID>
+            <mimeType>text/x-logo</mimeType>
+        </removeWindowsFileAssociation> -->
+    </readyToInstallActionList>
     <enableRollback>1</enableRollback>
     <enableTimestamp>1</enableTimestamp>
-    <vendor>Matt Aguirre</vendor>
+    <vendor>Matthew Aguirre</vendor>
     <parameterList>
         <directoryParameter>
             <name>installdir</name>
