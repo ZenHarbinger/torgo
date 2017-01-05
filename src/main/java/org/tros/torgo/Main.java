@@ -160,6 +160,7 @@ public class Main {
         String lang = "dynamic-logo";
         final String fileArgument = args.length - 1 >= 0 ? args[args.length - 1] : null;
         String ext = null;
+        boolean quit = false;
         if (fileArgument != null) {
             int index = fileArgument.lastIndexOf('.');
             if (index >= 0) {
@@ -181,6 +182,7 @@ public class Main {
                 }
                 //will force an exit
                 lang = null;
+                quit = true;
             }
         } catch (ParseException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
@@ -204,22 +206,24 @@ public class Main {
             lang = ext;
         }
 
-        final String controlLang = lang;
-        prefs.put("lang", lang);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Controller controller = TorgoToolkit.getController(controlLang);
-                if (controller != null) {
-                    controller.run();
-                    if (fileArgument != null) {
-                        controller.openFile(new File(fileArgument));
-                    } else {
-                        controller.newFile();
+        if (!quit) {
+            final String controlLang = lang;
+            prefs.put("lang", lang);
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    Controller controller = TorgoToolkit.getController(controlLang);
+                    if (controller != null) {
+                        controller.run();
+                        if (fileArgument != null) {
+                            controller.openFile(new File(fileArgument));
+                        } else {
+                            controller.newFile();
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     public static final String IMAGE_ICON_CLASS_PATH = "torgo-48x48.png";
