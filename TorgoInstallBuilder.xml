@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../InstallBuilder.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <project>
     <shortName>Torgo</shortName>
     <fullName>Torgo</fullName>
     <version>1.4.2</version>
-    <logoImage>src/main/resources/torgo-48x48.png</logoImage>
-    <splashImage>src/main/resources/org/tros/images/splash.png</splashImage>
+    <logoImage>C:/Users/matta/Documents/GitHub/torgo/src/main/resources/torgo-48x48.png</logoImage>
+    <splashImage>C:/Users/matta/Documents/GitHub/torgo/src/main/resources/org/tros/images/splash.png</splashImage>
     <componentList>
         <component>
             <name>default</name>
@@ -35,23 +33,20 @@
                     <destination>${installdir}</destination>
                     <name>distfile</name>
                     <platforms>all</platforms>
-                    <actionList/>
                     <distributionFileList>
                         <distributionDirectory>
-                            <origin>target/torgo-${product_version}.jar</origin>
+                            <origin>C:/Users/matta/Documents/GitHub/torgo/target/torgo-${product_version}.jar</origin>
                         </distributionDirectory>
                     </distributionFileList>
-                    <shortcutList/>
                 </folder>
                 <folder>
                     <description>Program Files</description>
                     <destination>${installdir}</destination>
                     <name>iconfile</name>
                     <platforms>windows</platforms>
-                    <actionList/>
                     <distributionFileList>
                         <distributionDirectory>
-                            <origin>src/main/resources/torgo-128x128.ico</origin>
+                            <origin>C:/Users/matta/Documents/GitHub/torgo/src/main/resources/torgo-128x128.ico</origin>
                         </distributionDirectory>
                     </distributionFileList>
                 </folder>
@@ -60,13 +55,11 @@
                     <destination>${installdir}/lib</destination>
                     <name>libfiles</name>
                     <platforms>all</platforms>
-                    <actionList/>
                     <distributionFileList>
                         <distributionDirectory>
-                            <origin>target/lib</origin>
+                            <origin>C:/Users/matta/Documents/GitHub/torgo/target/lib</origin>
                         </distributionDirectory>
                     </distributionFileList>
-                    <shortcutList/>
                 </folder>
                 <folder>
                     <description>Program Files</description>
@@ -97,7 +90,7 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>torgo.exe</origin>
+                            <origin>C:/Users/matta/Documents/GitHub/torgo/torgo.exe</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -126,28 +119,31 @@
             </startMenuShortcutList>
         </component>
     </componentList>
-    <readyToInstallActionList>
-        <actionGroup></actionGroup>
+    <postInstallationActionList>
         <associateWindowsFileExtension>
             <extensions>.logo</extensions>
-            <progID>torgo.logo.1</progID>
+            <friendlyName>Torgo Logo File</friendlyName>
             <icon>${installdir}\torgo-128x128.ico</icon>
             <mimeType>text/x-logo</mimeType>
+            <progID>torgo.logo.1</progID>
             <commandList>
                 <!-- Defining the 'Open' command -->
                 <command>
-                    <verb>Open</verb>
+                    <makeDefault>0</makeDefault>
                     <runProgram>${installdir}\torgo.exe</runProgram>
                     <runProgramArguments>"%1"</runProgramArguments>
+                    <verb>Open</verb>
                 </command>
             </commandList>
         </associateWindowsFileExtension>
-        <!-- <removeWindowsFileAssociation>
+    </postInstallationActionList>
+    <postUninstallationActionList>
+        <removeWindowsFileAssociation>
             <extensions>.logo</extensions>
-            <progID>trogo.logo.1</progID>
             <mimeType>text/x-logo</mimeType>
-        </removeWindowsFileAssociation> -->
-    </readyToInstallActionList>
+            <progID>trogo.logo.1</progID>
+        </removeWindowsFileAssociation>
+    </postUninstallationActionList>
     <enableRollback>1</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <vendor>Matthew Aguirre</vendor>
