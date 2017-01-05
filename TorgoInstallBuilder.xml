@@ -121,11 +121,27 @@
     </componentList>
     <postInstallationActionList>
         <associateWindowsFileExtension>
-            <extensions>.logo</extensions>
+            <extensions>.static-logo</extensions>
             <friendlyName>Torgo Logo File</friendlyName>
             <icon>${installdir}\torgo-128x128.ico</icon>
-            <mimeType>text/x-logo</mimeType>
-            <progID>torgo.logo.1</progID>
+            <mimeType>text/x-static-logo</mimeType>
+            <progID>torgo.static-logo.1</progID>
+            <commandList>
+                <!-- Defining the 'Open' command -->
+                <command>
+                    <makeDefault>0</makeDefault>
+                    <runProgram>${installdir}\torgo.exe</runProgram>
+                    <runProgramArguments>"%1"</runProgramArguments>
+                    <verb>Open</verb>
+                </command>
+            </commandList>
+        </associateWindowsFileExtension>
+        <associateWindowsFileExtension>
+            <extensions>.lexical-logo</extensions>
+            <friendlyName>Torgo Logo File</friendlyName>
+            <icon>${installdir}\torgo-128x128.ico</icon>
+            <mimeType>text/x-lexical-logo</mimeType>
+            <progID>torgo.lexical-logo.1</progID>
             <commandList>
                 <!-- Defining the 'Open' command -->
                 <command>
@@ -139,9 +155,14 @@
     </postInstallationActionList>
     <postUninstallationActionList>
         <removeWindowsFileAssociation>
-            <extensions>.logo</extensions>
-            <mimeType>text/x-logo</mimeType>
-            <progID>trogo.logo.1</progID>
+            <extensions>.lexical-logo</extensions>
+            <mimeType>text/x-lexical-logo</mimeType>
+            <progID>trogo.lexical-logo.1</progID>
+        </removeWindowsFileAssociation>
+        <removeWindowsFileAssociation>
+            <extensions>.static-logo</extensions>
+            <mimeType>text/x-static-logo</mimeType>
+            <progID>trogo.static-logo.1</progID>
         </removeWindowsFileAssociation>
     </postUninstallationActionList>
     <enableRollback>1</enableRollback>

@@ -15,8 +15,6 @@
  */
 package org.tros.logo;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -118,14 +116,5 @@ public abstract class LogoController extends ControllerBase {
                 entryPoint.process(scope);
             }
         };
-    }
-
-    @Override
-    public void openFile(File file) {
-        try {
-            openFile(file.toURI().toURL());
-        } catch (MalformedURLException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(DynamicLogoController.class).fatal(null, ex);
-        }
     }
 }
