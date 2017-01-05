@@ -30,4 +30,4 @@ parts:
     organize:
       ../build/target/lib: jar/lib
       ../build/wrapper: bin/
-      ../build/torgo-mime.xml: usr/share/mime/packages/torgo-mime.xml
+#      ../build/torgo-mime.xml: usr/share/mime/packages/torgo-mime.xml
