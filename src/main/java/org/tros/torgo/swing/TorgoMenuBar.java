@@ -31,7 +31,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import org.tros.torgo.ControllerListener;
+import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
@@ -50,6 +52,8 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
     private final JMenuItem fileDebug;
     private final JMenuItem filePause;
     private final JMenuItem fileStep;
+
+    private final JMenu languagesMenu;
 
     private final JMenu fileMenu;
     private final JMenuItem fileNew;
@@ -73,7 +77,7 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
      * @param controller
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public TorgoMenuBar(Component parent, Controller controller) {
+    public TorgoMenuBar(Component parent, final Controller controller) {
         this.controller = controller;
         this.parent = parent;
         this.controller.addControllerListener((ControllerListener) this);
@@ -84,6 +88,31 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
         fileDebug = new JMenuItem("Debug");
         filePause = new JMenuItem("Pause");
         fileStep = new JMenuItem("Step");
+
+        languagesMenu = new JMenu("Switch Language");
+        for (final String lang : TorgoToolkit.getToolkits()) {
+            if (!lang.equals(controller.getLang())) {
+                JMenuItem langItem = new JMenuItem(lang);
+                languagesMenu.add(langItem);
+                langItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoToolkit.class);
+                        prefs.put("lang", lang);
+                        controller.close();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                Controller controller = TorgoToolkit.getController(lang);
+                                if (controller != null) {
+                                    controller.run();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }
 
         fileMenu = new JMenu(Localization.getLocalizedString("FileMenu"));
         fileNew = new JMenuItem(Localization.getLocalizedString("FileNew"));
@@ -161,6 +190,10 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
             }
         });
 
+        if (languagesMenu.getItemCount() > 0) {
+            interpreterMenu.add(languagesMenu);
+            interpreterMenu.addSeparator();
+        }
         interpreterMenu.add(fileStart);
         interpreterMenu.add(fileStop);
         interpreterMenu.add(fileDebug);

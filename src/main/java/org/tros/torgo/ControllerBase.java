@@ -43,6 +43,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -463,7 +464,7 @@ public abstract class ControllerBase implements Controller {
     public void newFile() {
         if (this.window.isVisible()) {
             filename = null;
-            window.setTitle("Torgo - " + Localization.getLocalizedString("UntitledLabel"));
+            window.setTitle("Torgo [" + getLang() + "] - " + Localization.getLocalizedString("UntitledLabel"));
 
             init();
         }
@@ -484,7 +485,7 @@ public abstract class ControllerBase implements Controller {
 
             @Override
             public void run() {
-                newFile();
+//                newFile();
                 runHelper();
             }
         });
@@ -507,6 +508,26 @@ public abstract class ControllerBase implements Controller {
         }
     }
 
+    @Override
+    public void openFile(File file) {
+        init();
+        if (file.exists()) {
+            StringWriter writer = new StringWriter();
+            try (FileInputStream fis = new FileInputStream(file)) {
+                IOUtils.copy(fis, writer, "utf-8");
+            } catch (IOException ex) {
+                init();
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
+            }
+            this.setSource(writer.toString());
+        }
+        //handle windows, jar, and linux path.  Not sure if necessary, but should work.
+        String toSplit = file.getAbsolutePath().replace("/", "|").replace("\\", "|");//.split("|");
+        String[] split = toSplit.split("\\|");
+        this.window.setTitle("Torgo [" + getLang() + "] - " + split[split.length - 1]);
+        filename = file.getAbsolutePath();
+    }
+
     /**
      * Open a file based on URL.
      *
@@ -522,7 +543,7 @@ public abstract class ControllerBase implements Controller {
             //handle windows, jar, and linux path.  Not sure if necessary, but should work.
             String toSplit = file.getFile().replace("/", "|").replace("\\", "|");//.split("|");
             String[] split = toSplit.split("\\|");
-            this.window.setTitle("Torgo - " + split[split.length - 1]);
+            this.window.setTitle("Torgo [" + getLang() + "] - " + split[split.length - 1]);
         } catch (IOException ex) {
             init();
             org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
@@ -584,7 +605,7 @@ public abstract class ControllerBase implements Controller {
             }
 
             out.write(sourceArray);
-            window.setTitle("Torgo - " + filename);
+            window.setTitle("Torgo [" + getLang() + "] - " + filename);
             out.flush();
         } catch (Exception ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);

@@ -1,9 +1,9 @@
 <project>
     <shortName>Torgo</shortName>
     <fullName>Torgo</fullName>
-    <version>1.4.1</version>
-    <!-- <logoImage>48x48.png</logoImage> -->
-    <!-- <splashImage>splash.png</splashImage> -->
+    <version>1.4.2</version>
+    <logoImage>src/main/resources/torgo-48x48.png</logoImage>
+    <splashImage>src/main/resources/org/tros/images/splash.png</splashImage>
     <componentList>
         <component>
             <name>default</name>
@@ -29,20 +29,40 @@
             </desktopShortcutList>
             <folderList>
                 <folder>
-                    <description>Program Files</description>
+                    <description>Torgo Jar</description>
                     <destination>${installdir}</destination>
-                    <name>distfiles</name>
+                    <name>distfile</name>
                     <platforms>all</platforms>
-                    <actionList/>
                     <distributionFileList>
                         <distributionDirectory>
-                            <origin>target</origin>
+                            <origin>target/torgo-${product_version}.jar</origin>
                         </distributionDirectory>
                     </distributionFileList>
-                    <shortcutList/>
                 </folder>
                 <folder>
-                    <description>Program Files</description>
+                    <description>Torgo Icon</description>
+                    <destination>${installdir}</destination>
+                    <name>iconfile</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>src/main/resources/torgo-128x128.ico</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Torgo Dependencies</description>
+                    <destination>${installdir}</destination>
+                    <name>libfiles</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>target/lib</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Uninstaller</description>
                     <destination>${installdir}</destination>
                     <name>programfiles</name>
                     <platforms>windows</platforms>
@@ -64,7 +84,7 @@
                     </shortcutList>
                 </folder>
                 <folder>
-                    <description>Program Files</description>
+                    <description>Torgo Launcher</description>
                     <destination>${installdir}</destination>
                     <name>programfileswindows</name>
                     <platforms>windows</platforms>
@@ -87,7 +107,7 @@
                     <windowsPath>${installdir}/</windowsPath>
                 </startMenuShortcut>
                 <startMenuShortcut>
-                    <comment></comment>
+                    <comment>Torgo Logo Interpreter</comment>
                     <name>${product_fullname}</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
@@ -99,13 +119,55 @@
             </startMenuShortcutList>
         </component>
     </componentList>
-<readyToInstallActionList>
-    <actionGroup>
-    </actionGroup>
-</readyToInstallActionList>
+    <postInstallationActionList>
+        <associateWindowsFileExtension>
+            <extensions>.dynamic-logo</extensions>
+            <friendlyName>Torgo Dynamic Logo File</friendlyName>
+            <icon>${installdir}\torgo-128x128.ico</icon>
+            <mimeType>text/x-dynamic-logo</mimeType>
+            <progID>torgo.dynamic-logo.1</progID>
+            <commandList>
+                <!-- Defining the 'Open' command -->
+                <command>
+                    <makeDefault>0</makeDefault>
+                    <runProgram>${installdir}\torgo.exe</runProgram>
+                    <runProgramArguments>"%1"</runProgramArguments>
+                    <verb>Open</verb>
+                </command>
+            </commandList>
+        </associateWindowsFileExtension>
+        <associateWindowsFileExtension>
+            <extensions>.lexical-logo</extensions>
+            <friendlyName>Torgo Lexical Logo File</friendlyName>
+            <icon>${installdir}\torgo-128x128.ico</icon>
+            <mimeType>text/x-lexical-logo</mimeType>
+            <progID>torgo.lexical-logo.1</progID>
+            <commandList>
+                <!-- Defining the 'Open' command -->
+                <command>
+                    <makeDefault>0</makeDefault>
+                    <runProgram>${installdir}\torgo.exe</runProgram>
+                    <runProgramArguments>"%1"</runProgramArguments>
+                    <verb>Open</verb>
+                </command>
+            </commandList>
+        </associateWindowsFileExtension>
+    </postInstallationActionList>
+    <postUninstallationActionList>
+        <removeWindowsFileAssociation>
+            <extensions>.lexical-logo</extensions>
+            <mimeType>text/x-lexical-logo</mimeType>
+            <progID>trogo.lexical-logo.1</progID>
+        </removeWindowsFileAssociation>
+        <removeWindowsFileAssociation>
+            <extensions>.dynamic-logo</extensions>
+            <mimeType>text/x-dynamic-logo</mimeType>
+            <progID>trogo.dynamic-logo.1</progID>
+        </removeWindowsFileAssociation>
+    </postUninstallationActionList>
     <enableRollback>1</enableRollback>
     <enableTimestamp>1</enableTimestamp>
-    <vendor>Matt Aguirre</vendor>
+    <vendor>Matthew Aguirre</vendor>
     <parameterList>
         <directoryParameter>
             <name>installdir</name>
