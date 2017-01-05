@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="text/x-dynamic-logo">
+      <comment>Torgo Dynamic Logo Script File</comment>
+      <!-- <magic priority="50">
+        <match value="search-string" type="string" offset="10:140"/>
+      </magic> -->
+      <sub-class-of type="text/plain"/>
+      <glob pattern="*.dynamic-logo"/>
+      <icon name="torgo"/>
+    </mime-type>
+    <mime-type type="text/x-lexical-logo">
+      <comment>Torgo Lexical Logo Script File</comment>
+      <!-- <magic priority="50">
+        <match value="search-string" type="string" offset="10:140"/>
+      </magic> -->
+      <sub-class-of type="text/plain"/>
+      <glob pattern="*.lexical-logo"/>
+      <icon name="torgo"/>
+    </mime-type>
+    <mime-type type="text/x-lisp">
+      <comment>Torgo Lisp Script File</comment>
+      <!-- <magic priority="50">
+        <match value="search-string" type="string" offset="10:140"/>
+      </magic> -->
+      <sub-class-of type="text/plain"/>
+      <glob pattern="*.lisp"/>
+      <icon name="torgo"/>
+    </mime-type>
+    <mime-type type="text/x-bas">
+      <comment>Torgo jvmBasic Script File</comment>
+      <!-- <magic priority="50">
+        <match value="search-string" type="string" offset="10:140"/>
+      </magic> -->
+      <sub-class-of type="text/plain"/>
+      <glob pattern="*.jvmBasic"/>
+      <icon name="torgo"/>
+    </mime-type>
+</mime-info>

@@ -43,7 +43,7 @@ import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.TorgoTextConsole;
 
-public abstract class TorgoUserInputPanel implements TorgoTextConsole {
+public class TorgoUserInputPanel implements TorgoTextConsole {
 
     private final RSyntaxTextArea inputTextArea;
     private final Gutter gutter;

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.tros</groupId>
     <artifactId>torgo</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <packaging>jar</packaging>
     <name>torgo</name>
     <url>http://tros.org/torgo/</url>
@@ -148,6 +148,14 @@
                                             <mapper>
                                                 <type>perm</type>
                                                 <prefix>/usr/share/applications</prefix>
+                                            </mapper>
+                                        </data>
+                                        <data>
+                                            <src>${project.basedir}/torgo-mime.xml</src>
+                                            <type>file</type>
+                                            <mapper>
+                                                <type>perm</type>
+                                                <prefix>/usr/share/mime/packages</prefix>
                                             </mapper>
                                         </data>
                                     </dataSet>
