@@ -121,11 +121,11 @@
     </componentList>
     <postInstallationActionList>
         <associateWindowsFileExtension>
-            <extensions>.static-logo</extensions>
-            <friendlyName>Torgo Logo File</friendlyName>
+            <extensions>.dynamic-logo</extensions>
+            <friendlyName>Torgo Dynamic Logo File</friendlyName>
             <icon>${installdir}\torgo-128x128.ico</icon>
-            <mimeType>text/x-static-logo</mimeType>
-            <progID>torgo.static-logo.1</progID>
+            <mimeType>text/x-dynamic-logo</mimeType>
+            <progID>torgo.dynamic-logo.1</progID>
             <commandList>
                 <!-- Defining the 'Open' command -->
                 <command>
@@ -138,7 +138,7 @@
         </associateWindowsFileExtension>
         <associateWindowsFileExtension>
             <extensions>.lexical-logo</extensions>
-            <friendlyName>Torgo Logo File</friendlyName>
+            <friendlyName>Torgo Lexical Logo File</friendlyName>
             <icon>${installdir}\torgo-128x128.ico</icon>
             <mimeType>text/x-lexical-logo</mimeType>
             <progID>torgo.lexical-logo.1</progID>
@@ -160,9 +160,9 @@
             <progID>trogo.lexical-logo.1</progID>
         </removeWindowsFileAssociation>
         <removeWindowsFileAssociation>
-            <extensions>.static-logo</extensions>
-            <mimeType>text/x-static-logo</mimeType>
-            <progID>trogo.static-logo.1</progID>
+            <extensions>.dynamic-logo</extensions>
+            <mimeType>text/x-dynamic-logo</mimeType>
+            <progID>trogo.dynamic-logo.1</progID>
         </removeWindowsFileAssociation>
     </postUninstallationActionList>
     <enableRollback>1</enableRollback>
