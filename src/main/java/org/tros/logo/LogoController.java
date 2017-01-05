@@ -15,8 +15,6 @@
  */
 package org.tros.logo;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -25,7 +23,6 @@ import org.tros.logo.antlr.LogoLexer;
 import org.tros.logo.antlr.LogoParser;
 import org.tros.logo.swing.LogoPanel;
 import org.tros.logo.swing.LogoMenuBar;
-import org.tros.logo.swing.LogoUserInputPanel;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.Controller;
 import org.tros.torgo.ControllerBase;
@@ -35,6 +32,7 @@ import org.tros.torgo.TorgoScreen;
 import org.tros.torgo.TorgoTextConsole;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.swing.TorgoToolBar;
+import org.tros.torgo.swing.TorgoUserInputPanel;
 
 /**
  * The Logo factory/controller.
@@ -44,7 +42,7 @@ import org.tros.torgo.swing.TorgoToolBar;
 public abstract class LogoController extends ControllerBase {
 
     private LogoPanel canvas;
-    private LogoUserInputPanel panel;
+    private TorgoUserInputPanel panel;
 
     /**
      * Constructor, must be public for the ServiceLoader. Only initializes basic
@@ -56,7 +54,7 @@ public abstract class LogoController extends ControllerBase {
     @Override
     protected TorgoTextConsole createConsole(Controller app) {
         if (panel == null) {
-            panel = new LogoUserInputPanel(app);
+            panel = new TorgoUserInputPanel(app, "Logo", false, "text/logo");
         }
 
         return panel;
@@ -118,14 +116,5 @@ public abstract class LogoController extends ControllerBase {
                 entryPoint.process(scope);
             }
         };
-    }
-
-    @Override
-    public void openFile(File file) {
-        try {
-            openFile(file.toURI().toURL());
-        } catch (MalformedURLException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(DynamicLogoController.class).fatal(null, ex);
-        }
     }
 }
