@@ -1,24 +1,34 @@
 <launch4jConfig>
-  <dontWrapJar>true</dontWrapJar>
-  <headerType>gui</headerType>
-  <jar>target/torgo-1.5.0.jar</jar>
-  <outfile>torgo.exe</outfile>
-  <errTitle></errTitle>
-  <cmdLine></cmdLine>
-  <chdir></chdir>
-  <priority>normal</priority>
-  <downloadUrl>http://java.com/download</downloadUrl>
-  <supportUrl>http://tros.org/torgo/</supportUrl>
-  <stayAlive>false</stayAlive>
-  <manifest></manifest>
-  <icon>src/main/resources/torgo-128x128.ico</icon>
-  <!-- <icon>App.ico</icon> -->
-  <jre>
-    <path></path>
-    <bundledJre64Bit>false</bundledJre64Bit>
-    <minVersion>1.7.0</minVersion>
-    <maxVersion></maxVersion>
-    <jdkPreference>preferJre</jdkPreference>
-    <opt>-Dsun.java2d.opengl=true -jar target/torgo-1.4.2.jar</opt>
-  </jre>
+    <dontWrapJar>true</dontWrapJar>
+    <headerType>gui</headerType>
+    <jar>torgo-1.4.2.jar</jar>
+    <outfile>torgo.exe</outfile>
+    <errTitle>Torgo</errTitle>
+    <priority>normal</priority>
+    <downloadUrl>http://java.com/download</downloadUrl>
+    <supportUrl>http://tros.org/torgo/</supportUrl>
+    <stayAlive>false</stayAlive>
+    <icon>src/main/resources/torgo-128x128.ico</icon>
+    <jre>
+        <path></path>
+        <bundledJre64Bit>false</bundledJre64Bit>
+        <minVersion>1.7.0</minVersion>
+        <maxVersion></maxVersion>
+        <jdkPreference>preferJre</jdkPreference>
+        <opt>-Dsun.java2d.opengl=true</opt>
+    </jre>
+    <versionInfo>
+        <fileVersion>1.4.2.0</fileVersion>
+        <txtFileVersion>1.4.2</txtFileVersion>
+        <fileDescription>Torgo 1.4.2</fileDescription>
+        <copyright>Matthew Aguire</copyright>
+        <productVersion>1.4.2.0</productVersion>
+        <txtProductVersion>1.4.2</txtProductVersion>
+        <productName>Torgo</productName>
+        <companyName>tros</companyName>
+        <internalName>torgo</internalName>
+        <originalFilename>torgo.exe</originalFilename>
+        <trademarks></trademarks>
+        <language>ENGLISH_US</language>
+    </versionInfo>
 </launch4jConfig>

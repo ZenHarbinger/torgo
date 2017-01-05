@@ -23,6 +23,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.SplashScreen;
 import java.awt.Window;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
@@ -157,6 +158,15 @@ public class Main {
         options.addOption("l", "lang", true, "Open using the desired language. [default is 'logo']");
         options.addOption("i", "list", false, "List available languages.");
         String lang = "dynamic-logo";
+        final String fileArgument = args.length - 1 >= 0 ? args[args.length - 1] : null;
+        String ext = null;
+        if (fileArgument != null) {
+            int index = fileArgument.lastIndexOf('.');
+            if (index >= 0) {
+                ext = fileArgument.substring(index + 1);
+            }
+        }
+
         boolean customLangUsed = false;
         try {
             CommandLineParser parser = new org.apache.commons.cli.DefaultParser();
@@ -190,6 +200,10 @@ public class Main {
         if (!customLangUsed) {
             lang = prefs.get("lang", lang);
         }
+        if (ext != null && TorgoToolkit.getToolkits().contains(ext)) {
+            lang = ext;
+        }
+
         final String controlLang = lang;
         prefs.put("lang", lang);
         SwingUtilities.invokeLater(new Runnable() {
@@ -198,6 +212,11 @@ public class Main {
                 Controller controller = TorgoToolkit.getController(controlLang);
                 if (controller != null) {
                     controller.run();
+                    if (fileArgument != null) {
+                        controller.openFile(new File(fileArgument));
+                    } else {
+                        controller.newFile();
+                    }
                 }
             }
         });

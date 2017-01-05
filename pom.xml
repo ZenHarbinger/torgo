@@ -150,6 +150,14 @@
                                                 <prefix>/usr/share/applications</prefix>
                                             </mapper>
                                         </data>
+                                        <data>
+                                            <src>${project.basedir}/torgo-mime.xml</src>
+                                            <type>file</type>
+                                            <mapper>
+                                                <type>perm</type>
+                                                <prefix>/usr/share/mime/packages</prefix>
+                                            </mapper>
+                                        </data>
                                     </dataSet>
                                 </configuration>
                             </execution>

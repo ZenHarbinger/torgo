@@ -15,9 +15,6 @@
  */
 package org.tros.torgo;
 
-import java.io.File;
-import java.net.URL;
-
 /**
  *
  * @author matta
