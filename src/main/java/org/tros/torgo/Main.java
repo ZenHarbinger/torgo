@@ -214,6 +214,8 @@ public class Main {
                     controller.run();
                     if (fileArgument != null) {
                         controller.openFile(new File(fileArgument));
+                    } else {
+                        controller.newFile();
                     }
                 }
             }
