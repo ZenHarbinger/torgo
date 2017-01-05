@@ -52,7 +52,7 @@
                 </folder>
                 <folder>
                     <description>Torgo Dependencies</description>
-                    <destination>${installdir}/lib</destination>
+                    <destination>${installdir}</destination>
                     <name>libfiles</name>
                     <platforms>all</platforms>
                     <distributionFileList>

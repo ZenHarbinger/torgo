@@ -160,6 +160,9 @@ public class Main {
         String lang = "dynamic-logo";
         final String fileArgument = args.length - 1 >= 0 ? args[args.length - 1] : null;
         String ext = null;
+        for(String arg : args) {
+            System.out.println(arg);
+        }
         if (fileArgument != null) {
             int index = fileArgument.lastIndexOf('.');
             if(index >= 0) {

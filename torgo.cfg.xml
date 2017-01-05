@@ -1,16 +1,13 @@
 <launch4jConfig>
     <dontWrapJar>true</dontWrapJar>
-    <headerType>gui</headerType>
+    <headerType>console</headerType>
     <jar>target/torgo-1.4.2.jar</jar>
     <outfile>torgo.exe</outfile>
-    <errTitle></errTitle>
-    <cmdLine></cmdLine>
-    <chdir></chdir>
+    <errTitle>Torgo</errTitle>
     <priority>normal</priority>
     <downloadUrl>http://java.com/download</downloadUrl>
     <supportUrl>http://tros.org/torgo/</supportUrl>
-    <stayAlive>false</stayAlive>
-    <manifest></manifest>
+    <stayAlive>true</stayAlive>
     <icon>src/main/resources/torgo-128x128.ico</icon>
     <jre>
         <path></path>
