@@ -510,7 +510,6 @@ public abstract class ControllerBase implements Controller {
 
     @Override
     public void openFile(File file) {
-        System.out.println(file.getAbsolutePath());
         init();
         if (file.exists()) {
             StringWriter writer = new StringWriter();

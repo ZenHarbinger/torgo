@@ -160,12 +160,9 @@ public class Main {
         String lang = "dynamic-logo";
         final String fileArgument = args.length - 1 >= 0 ? args[args.length - 1] : null;
         String ext = null;
-        for(String arg : args) {
-            System.out.println(arg);
-        }
         if (fileArgument != null) {
             int index = fileArgument.lastIndexOf('.');
-            if(index >= 0) {
+            if (index >= 0) {
                 ext = fileArgument.substring(index + 1);
             }
         }
@@ -215,7 +212,9 @@ public class Main {
                 Controller controller = TorgoToolkit.getController(controlLang);
                 if (controller != null) {
                     controller.run();
-                    controller.openFile(new File(fileArgument));
+                    if (fileArgument != null) {
+                        controller.openFile(new File(fileArgument));
+                    }
                 }
             }
         });
