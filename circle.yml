@@ -2,8 +2,9 @@ machine:
   java:
     version: oraclejdk8
 test:
+  override:
+    - mvn -DskipTests=false clean cobertura:cobertura
   post:
-    - mvn clean cobertura:cobertura
     - bash <(curl -s https://codecov.io/bash)
 #general:
 #  branches:
