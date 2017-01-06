@@ -15,7 +15,6 @@
  */
 package org.tros.torgo;
 
-import bibliothek.gui.dock.DefaultDockable;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CGrid;
 import bibliothek.gui.dock.common.CLocation;
@@ -170,15 +169,6 @@ public abstract class ControllerBase implements Controller {
     public static class TorgoSingleDockable extends DefaultSingleCDockable {
 
         public TorgoSingleDockable(String title, final Component panel) {
-            super(title);
-            super.setTitleText(title);
-            super.add(panel);
-        }
-    }
-
-    public static class TorgoDockable extends DefaultDockable {
-
-        public TorgoDockable(String title, final Component panel) {
             super(title);
             super.setTitleText(title);
             super.add(panel);
