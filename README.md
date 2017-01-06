@@ -46,7 +46,6 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
 ## Future
 
 - jvmBasic and Lisp
-- Register with file/mime types (.logo)
 
 ## Download and Install
 
