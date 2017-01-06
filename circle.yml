@@ -3,12 +3,12 @@ machine:
     version: oraclejdk8
 test:
   post:
-#    - mvn clean cobertura:cobertura coveralls:report
+    - mvn clean cobertura:cobertura
     - bash <(curl -s https://codecov.io/bash)
-general:
-  branches:
-    only:
-     - java8
-     - master
-     - tests
+#general:
+#  branches:
+#    only:
+#     - java8
+#     - master
+#     - tests
 #     - /feature-.*/ # or regexes
