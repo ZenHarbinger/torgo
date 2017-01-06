@@ -165,6 +165,12 @@ to test
     forward 10
     pencolor YELLOW
     forward 10
+
+    for [i 10 10] [fd :i rt 90]
+    for [i 10 10 1] [fd :i rt 90]
+;   look into this to see if we can make it not subtract but step down then no-op
+;   will require a change to the grammar
+    for [i 10 10 -1] [fd :i rt 90]
 end
 
 test

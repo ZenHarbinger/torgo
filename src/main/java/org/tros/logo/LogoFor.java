@@ -79,7 +79,7 @@ class LogoFor extends LogoBlock {
         double step;
         if (start > stop) {
             type = ForType.DECREASE;
-            step = -1.0;
+            step = 1.0;
         } else if (stop > start) {
             type = ForType.INCREASE;
             step = 1.0;

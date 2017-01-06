@@ -75,12 +75,8 @@ class LogoFunction extends LogoBlock implements CodeFunction {
 
         listeners.fire().currStatement(this, scope);
 
-        ReturnValue ret = null;
-        try {
-            ret = super.process(scope);
-        } catch (Exception ex) {
-            LOGGER.warn(MessageFormat.format("{0} -> {1}", ex.getClass().getName(), ex.getMessage()), ex);
-        }
+        ReturnValue ret = super.process(scope);
+
         if (ret != null && ret.getResult() != ProcessResult.HALT) {
             //NOT HALT!
             ret = new ReturnValue(ret.getType(), ret.getValue(), ProcessResult.SUCCESS);
