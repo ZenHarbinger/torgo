@@ -70,5 +70,5 @@ mvn -DskipTests clean package
 ## Run
 
 ```sh
-java -jar target/torgo-1.4.2.jar
+java -jar target/torgo-1.5.0.jar
 ```
