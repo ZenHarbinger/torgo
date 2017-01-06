@@ -5,3 +5,10 @@ test:
   post:
 #    - mvn clean cobertura:cobertura coveralls:report
     - bash <(curl -s https://codecov.io/bash)
+general:
+  branches:
+    only:
+     - master # list of branches to build
+     - java8
+     - tests
+#     - /feature-.*/ # or regexes
