@@ -2,11 +2,12 @@ machine:
   java:
     version: oraclejdk8
 test:
+  override:
+    - mvn clean cobertura:cobertura
   post:
-    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    # - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    # - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
     - bash <(curl -s https://codecov.io/bash)
-#    - mvn clean cobertura:cobertura coveralls:report
 general:
   branches:
     only:
