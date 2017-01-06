@@ -8,7 +8,7 @@ test:
 general:
   branches:
     only:
-     - master # list of branches to build
      - java8
+     - master
      - tests
 #     - /feature-.*/ # or regexes
