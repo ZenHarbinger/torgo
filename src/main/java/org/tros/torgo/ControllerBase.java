@@ -454,7 +454,7 @@ public abstract class ControllerBase implements Controller {
         this.window.setVisible(true);
 
         SwingUtilities.invokeLater(() -> {
-            newFile();
+//            newFile();
             runHelper();
         });
     }
@@ -474,6 +474,26 @@ public abstract class ControllerBase implements Controller {
         if (torgoCanvas != null) {
             torgoCanvas.reset();
         }
+    }
+
+    @Override
+    public void openFile(File file) {
+        init();
+        if (file.exists()) {
+            StringWriter writer = new StringWriter();
+            try (FileInputStream fis = new FileInputStream(file)) {
+                IOUtils.copy(fis, writer, "utf-8");
+            } catch (IOException ex) {
+                init();
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
+            }
+            this.setSource(writer.toString());
+        }
+        //handle windows, jar, and linux path.  Not sure if necessary, but should work.
+        String toSplit = file.getAbsolutePath().replace("/", "|").replace("\\", "|");//.split("|");
+        String[] split = toSplit.split("\\|");
+        this.window.setTitle("Torgo [" + getLang() + "] - " + split[split.length - 1]);
+        filename = file.getAbsolutePath();
     }
 
     /**

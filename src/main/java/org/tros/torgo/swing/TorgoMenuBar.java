@@ -100,6 +100,7 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
                     Controller controller1 = TorgoToolkit.getController(lang);
                     if (controller1 != null) {
                         controller1.run();
+                        controller.newFile();
                     }
                 });
             });

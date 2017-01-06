@@ -1,7 +1,7 @@
 ![](http://tros.org/torgo/tros-images/torgo-orange-and-green.svg)  
 
-[![Build Status](https://travis-ci.org/ZenHarbinger/torgo.svg?branch=master)](https://travis-ci.org/ZenHarbinger/torgo)
-[![Coverage Status](https://coveralls.io/repos/github/ZenHarbinger/torgo/badge.svg)](https://coveralls.io/github/ZenHarbinger/torgo)
+[![Build Status](https://circleci.com/gh/ZenHarbinger/torgo.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/ZenHarbinger/torgo)
+[![Coverage Status](https://codecov.io/github/ZenHarbinger/torgo/coverage.svg?branch=master)](https://codecov.io/github/ZenHarbinger/torgo)
 [![release](http://github-release-version.herokuapp.com/github/ZenHarbinger/torgo/release.svg?style=flat)](https://github.com/ZenHarbinger/torgo/releases/latest)
 [![Join the chat at https://gitter.im/ZenHarbinger/torgo](https://badges.gitter.im/ZenHarbinger/torgo.svg)](https://gitter.im/ZenHarbinger/torgo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
