@@ -9,7 +9,7 @@ author_profile: true
 
 Since Torgo uses ANTLR for language parsing, a grammar file is used to specify the structure of the code. While not completely documented, this grammar file can give an insight into how the language behaves.
 
-- [Logo Grammar](https://raw.githubusercontent.com/ZenHarbinger/torgo/master/src/main/java/org/tros/logo/antlr/logo.g4)
+- [Logo Grammar](https://raw.githubusercontent.com/ZenHarbinger/torgo/master/src/main/java/org/tros/logo/antlr/Logo.g4)
 
 ## Supported Logo Commands
 
