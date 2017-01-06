@@ -50,6 +50,11 @@ public abstract class LogoController extends ControllerBase {
      */
     public LogoController() {
     }
+    
+    @Override
+    protected String getWindowName() {
+        return LogoController.class.getName();
+    }
 
     @Override
     protected TorgoTextConsole createConsole(Controller app) {
