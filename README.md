@@ -63,7 +63,7 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
 ```sh
 git clone https://github.com/ZenHarbinger/torgo.git
 cd torgo
-mvn -DskipTests clean package
+mvn clean package
 ```
 
 ## Run

@@ -36,7 +36,7 @@ import org.tros.utils.logging.Logging;
 public class DateConverterTest {
 
     private final static Logger LOGGER;
-    
+
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(DateConverterTest.class.getName());
@@ -89,10 +89,27 @@ public class DateConverterTest {
         lookup = UtilsBeanFactory.getConverter(String.class, Calendar.class);
         String convert4 = lookup.convert(String.class, convert);
         assertEquals(convert4, hex2);
-        
+
         assertNull(lookup.convert(String.class, null));
         assertEquals(lookup.convert(DateConverterTest.class, "demo"), "demo");
 
         assertEquals(hex, hex3);
+
+        lookup = UtilsBeanFactory.getConverter(Calendar.class, String.class);
+        boolean thrown = false;
+        try {
+            Calendar x = lookup.convert(Calendar.class, "no.such.value");
+        } catch (ClassCastException ex) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        lookup = UtilsBeanFactory.getConverter(Date.class, String.class);
+        thrown = false;
+        try {
+            Date x = lookup.convert(Date.class, "no.such.value");
+        } catch (ClassCastException ex) {
+            thrown = true;
+        }
+        assertTrue(thrown);
     }
 }

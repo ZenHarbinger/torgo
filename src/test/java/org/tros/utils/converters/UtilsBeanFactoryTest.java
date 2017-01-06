@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  */
 package org.tros.utils.converters;
 
-import java.util.logging.Logger;
+import java.util.Calendar;
+import java.util.Date;
 import org.apache.commons.beanutils.Converter;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -23,57 +24,52 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.torgo.TorgoInfo;
 import org.tros.utils.TypeHandler;
-import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
-public class ClassConverterTest {
-
-    private final static Logger LOGGER;
+public class UtilsBeanFactoryTest {
     
-    static {
-        Logging.initLogging(TorgoInfo.INSTANCE);
-        LOGGER = Logger.getLogger(ClassConverterTest.class.getName());
+    public UtilsBeanFactoryTest() {
     }
-
-    public ClassConverterTest() {
-    }
-
+    
     @BeforeClass
     public static void setUpClass() {
     }
-
+    
     @AfterClass
     public static void tearDownClass() {
     }
-
+    
     @Before
     public void setUp() {
     }
-
+    
     @After
     public void tearDown() {
     }
+    
+    public static class Date2 extends Date{
+        
+    }
 
     /**
-     * Test of convert method, of class ClassConverter.
+     * Test of getConverter method, of class UtilsBeanFactory.
      */
     @Test
-    public void testConvert() {
-        LOGGER.info("class convert test");
-        Converter lookup = UtilsBeanFactory.getConverter(String.class, Class.class);
-        String hex = ClassConverter.class.getName();
-        Class convert = lookup.convert(Class.class, hex);
-        assertNotNull(convert);
-        assertEquals(hex, convert.getName());
-        Class fromString = (Class) TypeHandler.fromString(Class.class, hex);
-        assertNotNull(fromString);
-        assertEquals(hex, fromString.getName());
-        fromString = (Class) TypeHandler.fromString(Class.class, "no.such.class");
-        assertNull(fromString);
+    public void testGetConverter() {
+        System.out.println("getConverter");
+        Class from = TypeHandler.class;
+        Class to = Integer.class;
+        Converter expResult = null;
+        Converter result = UtilsBeanFactory.getConverter(from, to);
+        assertNotNull(result);
+
+        result = UtilsBeanFactory.getConverter(Date2.class, String.class);
+        String res = result.convert(String.class, Calendar.getInstance().getTime());
+        assertNotNull(result);
     }
+    
 }

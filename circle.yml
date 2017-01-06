@@ -3,7 +3,7 @@ machine:
     version: oraclejdk8
 test:
   override:
-    - mvn clean cobertura:cobertura
+    - mvn -DskipTests=false clean integration-test cobertura:cobertura
   post:
     # - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     # - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;

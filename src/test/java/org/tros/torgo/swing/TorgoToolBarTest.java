@@ -72,6 +72,7 @@ public class TorgoToolBarTest {
         LOGGER.info("torgoToolBar");
         LexicalLogoController controller = (LexicalLogoController) TorgoToolkit.getController("lexical-logo");
         controller.run();
+        controller.newFile();
         final AtomicBoolean started = new AtomicBoolean(false);
         final AtomicBoolean finished = new AtomicBoolean(false);
         controller.addInterpreterListener(new InterpreterListener() {

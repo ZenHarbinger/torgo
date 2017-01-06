@@ -84,6 +84,7 @@ public class LogoMenuBarTest {
         LOGGER.info("testExportCanvas");
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
+        controller.newFile();
         JFrame window = null;
 
         try {

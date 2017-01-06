@@ -22,7 +22,7 @@ import org.tros.utils.converters.UtilsBeanFactory;
  */
 public final class TypeHandler {
 
-    public static final FastDateFormat DEFAULT_DATE_FORMAT = DateFormatUtils.ISO_DATETIME_FORMAT;
+    public static final FastDateFormat DEFAULT_DATE_FORMAT = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_FORMAT;
 
     /**
      * Calendar to string.

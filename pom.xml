@@ -220,6 +220,14 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>eu.somatik.serviceloader-maven-plugin</groupId>
                 <artifactId>serviceloader-maven-plugin</artifactId>
                 <version>1.0.7</version>
@@ -402,6 +410,6 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <INSTALL_BUILDER_HOME>/opt/installbuilder-16.11.1</INSTALL_BUILDER_HOME>
         <LAUNCH4J_HOME>/opt/launch4j</LAUNCH4J_HOME>
-        <snapd>false</snapd>
+        <skipTests>false</skipTests>
     </properties>
 </project>
