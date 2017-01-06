@@ -3,11 +3,14 @@ machine:
     version: oraclejdk8
 test:
   post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
     - bash <(curl -s https://codecov.io/bash)
+#    - mvn clean cobertura:cobertura coveralls:report
 general:
   branches:
     only:
+     - master # list of branches to build
      - java8
-     - master
      - tests
 #     - /feature-.*/ # or regexes
