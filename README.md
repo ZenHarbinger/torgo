@@ -9,7 +9,7 @@
 
 Torgo is a Logo interpreter written in Java. It uses [ANTLR](http://www.antlr.org/) as a language parser and for lexical analysis. The parsed scripts are then walked to interpret the commands.
 
-Torgo is built using Java7.
+Torgo is built using Java8.
 
 Some goals for Torgo are:
 
