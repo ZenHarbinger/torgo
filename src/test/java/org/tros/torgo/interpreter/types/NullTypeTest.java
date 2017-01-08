@@ -17,6 +17,7 @@ package org.tros.torgo.interpreter.types;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,5 +51,7 @@ public class NullTypeTest {
     @Test
     public void testInstanceAccess() {
         InterpreterType t = NullType.INSTANCE;
+        assertNotNull(t);
+        t.hashCode();
     }   
 }

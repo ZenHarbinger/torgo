@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,19 @@ package org.tros.torgo.interpreter.types;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.tros.torgo.interpreter.InterpreterType;
 
 /**
  *
  * @author matta
  */
-public class BooleanTypeTest {
+public class NumberTypeTest {
     
-    public BooleanTypeTest() {
+    public NumberTypeTest() {
     }
     
     @BeforeClass
@@ -49,9 +49,10 @@ public class BooleanTypeTest {
     }
 
     @Test
-    public void testInstanceAccess() {
-        InterpreterType t = BooleanType.INSTANCE;
+    public void testSomeMethod() {
+        InterpreterType t = NumberType.INSTANCE;
         assertNotNull(t);
         t.hashCode();
     }
+    
 }
