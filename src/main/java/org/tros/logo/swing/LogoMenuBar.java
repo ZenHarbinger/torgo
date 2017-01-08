@@ -50,6 +50,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoToolkit;
@@ -57,7 +58,6 @@ import org.tros.torgo.swing.TorgoMenuBar;
 import org.w3c.dom.DOMImplementation;
 import org.apache.batik.svggen.*;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
-import org.tros.torgo.swing.OpenFileFilter;
 import org.w3c.dom.Document;
 import org.tros.utils.GifSequenceWriter;
 
@@ -222,7 +222,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         exportSvg.addActionListener((ActionEvent ae) -> {
             JFileChooser chooser = new JFileChooser();
-            chooser.setFileFilter(new OpenFileFilter("svg", "Scalable Vector Graphic"));
+            chooser.setFileFilter(new FileNameExtensionFilter("Scalable Vector Graphic", "svg"));
             chooser.setMultiSelectionEnabled(false);
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
@@ -246,7 +246,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         exportGif.addActionListener((ActionEvent ae) -> {
             JFileChooser chooser = new JFileChooser();
-            chooser.setFileFilter(new OpenFileFilter("gif", "Animated GIF Image"));
+            chooser.setFileFilter(new FileNameExtensionFilter("Animated GIF Image", "gif"));
             chooser.setMultiSelectionEnabled(false);
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
@@ -275,7 +275,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
         });
         exportPng.addActionListener((ActionEvent ae) -> {
             JFileChooser chooser = new JFileChooser();
-            chooser.setFileFilter(new OpenFileFilter("png", "PNG Image"));
+            chooser.setFileFilter(new FileNameExtensionFilter("PNG Image", "png"));
             chooser.setMultiSelectionEnabled(false);
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));

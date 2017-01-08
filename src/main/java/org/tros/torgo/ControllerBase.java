@@ -59,13 +59,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import static org.tros.torgo.Main.IMAGE_ICON_CLASS_PATH;
 import org.tros.torgo.swing.AboutWindow;
 import org.tros.torgo.swing.Localization;
-import org.tros.torgo.swing.OpenFileFilter;
 import org.tros.torgo.swing.TorgoMenuBar;
 import org.tros.utils.swing.NamedWindow;
 import org.tros.utils.AutoResetEvent;
@@ -520,7 +520,7 @@ public abstract class ControllerBase implements Controller {
     }
 
     protected FileFilter getFilter() {
-        return new OpenFileFilter(getLang(), getLang());
+        return new FileNameExtensionFilter(getLang(), getLang());
     }
 
     /**
