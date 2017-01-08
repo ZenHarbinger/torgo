@@ -260,7 +260,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename2 = chooser.getSelectedFile().getPath();
-                String extension = ".svg";
+                String extension = ".gif";
                 if(!filename2.endsWith(extension)) {
                     filename2 = filename2 + extension;
                 }
@@ -294,7 +294,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename2 = chooser.getSelectedFile().getPath();
-                String extension = ".svg";
+                String extension = ".png";
                 if(!filename2.endsWith(extension)) {
                     filename2 = filename2 + extension;
                 }

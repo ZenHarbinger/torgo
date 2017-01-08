@@ -19,11 +19,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
@@ -36,12 +32,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.tros.logo.DynamicLogoController;
-import org.tros.logo.LogoCanvas;
-import org.tros.logo.LogoController;
 import org.tros.torgo.ControllerBase;
 import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
-import org.tros.torgo.swing.BufferedImageProvider;
 import org.tros.utils.logging.Logging;
 
 /**
@@ -115,163 +108,88 @@ public class LogoMenuBarTest {
         } catch (IOException ex) {
             Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        prefs.put("export-directory", f.getParent());
-//        DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
-//        controller.run();
-//        assertEquals("dynamic-logo", controller.getLang());
-//        String[] files gi= new String[]{
-//            "logo/examples/antlr/fractal.txt"
-//        };
+
         robot.delay(3000);
         controller.openFile(ClassLoader.getSystemClassLoader().getResource("logo/examples/antlr/fractal.txt"));
         controller.startInterpreter();
         robot.delay(3000);
 
-        System.out.println("exportSVG");
-        exportSVG(robot, window, controller);
-        System.out.println("exportPNG");
-        exportPNG(robot, window, controller);
-        System.out.println("exportGIF");
-        exportGIF(robot, window, controller);
+        System.out.println("exportSVG - ext");
+        exportSVG(robot, true);
+        System.out.println("exportSVG - no ext");
+        exportSVG(robot, false);
+        System.out.println("exportPNG - ext");
+        exportPNG(robot, true);
+        System.out.println("exportPNG - no ext");
+        exportPNG(robot, false);
+        System.out.println("exportGIF - ext");
+        exportGIF(robot, true);
+        System.out.println("exportGIF - no ext");
+        exportGIF(robot, false);
 
         controller.close();
     }
 
-    private void exportSVG(Robot robot, JFrame window, DynamicLogoController controller) {
-        final JFrame f = new JFrame();
-        final LogoMenuBar lmb = (LogoMenuBar) window.getJMenuBar();
-        LogoCanvas lc2 = null;
-        try {
-            //        LogoMenuBar lmb = new LogoMenuBar(window, controller, canvas);
-            Field declaredField = LogoController.class.getDeclaredField("canvas");
-            declaredField.setAccessible(true);
-            Object get = declaredField.get(controller);
-            if (get != null && LogoCanvas.class.isAssignableFrom(get.getClass())) {
-                lc2 = (LogoCanvas) get;
-            }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+    private void exportSVG(Robot robot, boolean ext) {
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_V}, 100);
+        robot.delay(100);
+        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+        if (ext) {
+            pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_S}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_V}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
         }
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        final File t = new File(tmpDir + System.getProperty("file.separator") + "t.png");
-        final LogoCanvas lc = lc2;
-        if (t.isFile()) {
-            t.delete();
-        }
-
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Method generateSVG = LogoMenuBar.class.getDeclaredMethod("generateSVG", Drawable.class, OutputStream.class);
-                    generateSVG.setAccessible(true);
-                    FileOutputStream fos = new FileOutputStream(t);
-                    generateSVG.invoke(lmb, (Drawable) lc, fos);
-                    fos.close();
-                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | FileNotFoundException ex) {
-                    Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        th.start();
-
-        robot.delay(5000);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        java.nio.file.Path currentRelativePath = java.nio.file.Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        File t = new File(s + File.separator + "t.svg");
         assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
     }
 
-    private void exportGIF(Robot robot, JFrame window, DynamicLogoController controller) {
-        final JFrame f = new JFrame();
-        final LogoMenuBar lmb = (LogoMenuBar) window.getJMenuBar();
-        LogoCanvas lc2 = null;
-        try {
-            //        LogoMenuBar lmb = new LogoMenuBar(window, controller, canvas);
-            Field declaredField = LogoController.class.getDeclaredField("canvas");
-            declaredField.setAccessible(true);
-            Object get = declaredField.get(controller);
-            if (get != null && LogoCanvas.class.isAssignableFrom(get.getClass())) {
-                lc2 = (LogoCanvas) get;
-            }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+    private void exportGIF(Robot robot, boolean ext) {
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_G}, 100);
+        robot.delay(100);
+        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+        if (ext) {
+            pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_I}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_F}, 100);
         }
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        final File t = new File(tmpDir + System.getProperty("file.separator") + "t.gif");
-        final LogoCanvas lc = lc2;
-        if (t.isFile()) {
-            t.delete();
-        }
-
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Method generateGIF = LogoMenuBar.class.getDeclaredMethod("generateGIF", Drawable.class, BufferedImageProvider.class, String.class);
-                    generateGIF.setAccessible(true);
-//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    generateGIF.invoke(lmb, (Drawable) lc, (BufferedImageProvider) lc, t.getPath());
-//            outputStream.close();
-                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                    Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        th.start();
-
-        robot.delay(5000);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        robot.delay(10000);
+
+        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        java.nio.file.Path currentRelativePath = java.nio.file.Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        File t = new File(s + File.separator + "t.gif");
         assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();
         }
     }
 
-    private void exportPNG(Robot robot, JFrame window, DynamicLogoController controller) {
-        final JFrame f = new JFrame();
-        final LogoMenuBar lmb = (LogoMenuBar) window.getJMenuBar();
-        LogoCanvas lc2 = null;
-        try {
-            //        LogoMenuBar lmb = new LogoMenuBar(window, controller, canvas);
-            Field declaredField = LogoController.class.getDeclaredField("canvas");
-            declaredField.setAccessible(true);
-            Object get = declaredField.get(controller);
-            if (get != null && LogoCanvas.class.isAssignableFrom(get.getClass())) {
-                lc2 = (LogoCanvas) get;
-            }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
+    private void exportPNG(Robot robot, boolean ext) {
+        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_P}, 100);
+        robot.delay(100);
+        pressKey(robot, new int[]{KeyEvent.VK_T}, 100);
+        if (ext) {
+            pressKey(robot, new int[]{KeyEvent.VK_PERIOD}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_P}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_N}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_G}, 100);
         }
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        final File t = new File(tmpDir + System.getProperty("file.separator") + "t.png");
-        final LogoCanvas lc = lc2;
-        if (t.isFile()) {
-            t.delete();
-        }
-
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Method generatePNG = LogoMenuBar.class.getDeclaredMethod("generatePNG", BufferedImageProvider.class, String.class);
-                    generatePNG.setAccessible(true);
-                    generatePNG.invoke(lmb, (Drawable) lc, t.getPath());
-                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                    Logger.getLogger(LogoMenuBarTest.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        th.start();
-
-        robot.delay(5000);
         pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
 
+        java.nio.file.Path currentRelativePath = java.nio.file.Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        File t = new File(s + File.separator + "t.png");
         assertTrue(t.isFile());
         if (t.isFile()) {
             t.delete();

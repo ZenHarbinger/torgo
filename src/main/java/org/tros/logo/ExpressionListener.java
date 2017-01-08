@@ -86,8 +86,6 @@ class ExpressionListener extends LogoBaseListener {
             case "^":
                 num1 = Math.pow(num1, num2);
                 break;
-            default:
-                break;
         }
         return new InterpreterValue(NumberType.INSTANCE, num1);
     }
