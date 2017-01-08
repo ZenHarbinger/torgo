@@ -101,6 +101,7 @@ public class MainTest {
             pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
             pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         }
+        Main.main(new String[]{"-l", "no-such-language"});
     }
 
     @Test
