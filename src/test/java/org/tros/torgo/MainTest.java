@@ -107,10 +107,10 @@ public class MainTest {
     public void testMainFileAndClose() {
         LOGGER.info("main");
         ArrayList<String[]> tests = new ArrayList<>();
+        tests.add(new String[]{});
         tests.add(new String[]{"test.lexical-logo"});
         tests.add(new String[]{"test.no-such-logo"});
         for (String[] args : tests) {
-            Main.main(args);
             Main.main(args);
             Robot robot = null;
             try {
