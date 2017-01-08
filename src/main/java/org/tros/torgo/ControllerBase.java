@@ -58,12 +58,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import static org.tros.torgo.Main.IMAGE_ICON_CLASS_PATH;
 import org.tros.torgo.swing.AboutWindow;
 import org.tros.torgo.swing.Localization;
+import org.tros.torgo.swing.OpenFileFilter;
 import org.tros.torgo.swing.TorgoMenuBar;
 import org.tros.utils.swing.NamedWindow;
 import org.tros.utils.AutoResetEvent;
@@ -517,12 +519,17 @@ public abstract class ControllerBase implements Controller {
         }
     }
 
+    protected FileFilter getFilter() {
+        return new OpenFileFilter(getLang(), getLang());
+    }
+
     /**
      * Open a file.
      */
     @Override
     public void openFile() {
         JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(getFilter());
         chooser.setMultiSelectionEnabled(false);
         java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(ControllerBase.class);
         chooser.setCurrentDirectory(new File(prefs.get(ControllerBase.class.getName() + "-working-directory", ".")));
@@ -540,6 +547,7 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void saveFileAs() {
         JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(getFilter());
         chooser.setMultiSelectionEnabled(false);
         java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(ControllerBase.class);
         chooser.setCurrentDirectory(new File(prefs.get(ControllerBase.class.getName() + "-working-directory", ".")));

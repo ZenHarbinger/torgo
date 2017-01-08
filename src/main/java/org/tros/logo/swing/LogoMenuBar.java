@@ -57,6 +57,7 @@ import org.tros.torgo.swing.TorgoMenuBar;
 import org.w3c.dom.DOMImplementation;
 import org.apache.batik.svggen.*;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
+import org.tros.torgo.swing.OpenFileFilter;
 import org.w3c.dom.Document;
 import org.tros.utils.GifSequenceWriter;
 
@@ -221,13 +222,14 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         exportSvg.addActionListener((ActionEvent ae) -> {
             JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new OpenFileFilter("svg", "Scalable Vector Graphic"));
             chooser.setMultiSelectionEnabled(false);
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
-            
+
             chooser.setVisible(true);
             int result = chooser.showSaveDialog(parent);
-            
+
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename = chooser.getSelectedFile().getPath();
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
@@ -244,13 +246,14 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         exportGif.addActionListener((ActionEvent ae) -> {
             JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new OpenFileFilter("gif", "Animated GIF Image"));
             chooser.setMultiSelectionEnabled(false);
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
-            
+
             chooser.setVisible(true);
             int result = chooser.showSaveDialog(parent);
-            
+
             if (result == JFileChooser.APPROVE_OPTION) {
                 final String filename = chooser.getSelectedFile().getPath();
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
@@ -272,13 +275,14 @@ public final class LogoMenuBar extends TorgoMenuBar {
         });
         exportPng.addActionListener((ActionEvent ae) -> {
             JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new OpenFileFilter("png", "PNG Image"));
             chooser.setMultiSelectionEnabled(false);
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
-            
+
             chooser.setVisible(true);
             int result = chooser.showSaveDialog(parent);
-            
+
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename = chooser.getSelectedFile().getPath();
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
