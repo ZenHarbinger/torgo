@@ -26,6 +26,7 @@ import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -238,7 +239,7 @@ public class Main {
             java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(path);
             ImageIcon ico = new ImageIcon(resources.nextElement());
             return ico;
-        } catch (IOException ex) {
+        } catch (NoSuchElementException | IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).warn(null, ex);
         }
         return null;

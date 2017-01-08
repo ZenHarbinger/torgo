@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -136,13 +136,7 @@ public class MainTest {
     @Test
     public void imageIcon() {
         LOGGER.info("main");
-        boolean thrown = false;
-        try {
-            Main.getIcon("no.such.icon");
-        } catch (java.util.NoSuchElementException ex) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        assertNull(Main.getIcon("no.such.icon"));
     }
 
     void pressKey(Robot robot, int[] keys, int delay) {
