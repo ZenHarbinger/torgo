@@ -556,6 +556,10 @@ public abstract class ControllerBase implements Controller {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().getPath();
+            String extension = "." + getLang();
+            if(!filename.endsWith(extension)) {
+                filename = filename + extension;
+            }
             prefs.put(ControllerBase.class.getName() + "-working-directory", chooser.getSelectedFile().getParent());
             saveFile();
         }

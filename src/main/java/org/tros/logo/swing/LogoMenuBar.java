@@ -232,6 +232,10 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename = chooser.getSelectedFile().getPath();
+                String extension = ".svg";
+                if(!filename.endsWith(extension)) {
+                    filename = filename + extension;
+                }
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
                 if (Drawable.class.isAssignableFrom(canvas.getClass())) {
                     try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
@@ -255,7 +259,12 @@ public final class LogoMenuBar extends TorgoMenuBar {
             int result = chooser.showSaveDialog(parent);
 
             if (result == JFileChooser.APPROVE_OPTION) {
-                final String filename = chooser.getSelectedFile().getPath();
+                String filename2 = chooser.getSelectedFile().getPath();
+                String extension = ".svg";
+                if(!filename2.endsWith(extension)) {
+                    filename2 = filename2 + extension;
+                }
+                final String filename = filename2;
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
                 Thread t = new Thread(() -> {
                     if (Drawable.class.isAssignableFrom(canvas.getClass())
@@ -284,7 +293,12 @@ public final class LogoMenuBar extends TorgoMenuBar {
             int result = chooser.showSaveDialog(parent);
 
             if (result == JFileChooser.APPROVE_OPTION) {
-                String filename = chooser.getSelectedFile().getPath();
+                String filename2 = chooser.getSelectedFile().getPath();
+                String extension = ".svg";
+                if(!filename2.endsWith(extension)) {
+                    filename2 = filename2 + extension;
+                }
+                final String filename = filename2;
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
                 // retrieve image
                 if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {
