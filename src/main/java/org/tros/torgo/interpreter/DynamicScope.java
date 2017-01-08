@@ -156,27 +156,6 @@ public class DynamicScope extends ScopeImpl implements Scope {
     }
 
     /**
-     * Check for a function in the scope.
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public boolean hasFunction(String name) {
-        return getFunction(name) != null;
-    }
-
-    /**
-     * Get the names of local variables.
-     *
-     * @return
-     */
-    @Override
-    public Collection<String> localVariables() {
-        return scope.get(0).keySet();
-    }
-
-    /**
      * Get the names of variables.
      *
      * @return
