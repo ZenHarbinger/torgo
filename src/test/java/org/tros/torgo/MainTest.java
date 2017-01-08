@@ -150,7 +150,7 @@ public class MainTest {
             robot.delay(delay);
         }
         robot.delay(delay);
-        for (int key : keys) {
+        for (int key : keys) { 
             robot.keyRelease(key);
             robot.delay(delay);
         }
