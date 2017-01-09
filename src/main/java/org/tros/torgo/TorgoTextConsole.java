@@ -17,7 +17,6 @@ package org.tros.torgo;
 
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Map;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 /**

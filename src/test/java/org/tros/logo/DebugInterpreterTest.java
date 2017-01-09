@@ -79,6 +79,7 @@ public class DebugInterpreterTest {
         prefs.putBoolean("wait-for-repaint", true);
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
+        controller.newFile();
         assertEquals("dynamic-logo", controller.getLang());
         String[] files = new String[]{"logo/examples/antlr/octagon.txt"};
 

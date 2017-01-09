@@ -61,38 +61,34 @@ class ExpressionListener extends jvmBasicBaseListener {
      */
     private ExpressionListener(Scope scope) {
         this.scope = scope;
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     private InterpreterValue mathExpression(InterpreterValue val1, InterpreterValue val2, String op) {
         double num1 = ((Number) val1.getValue()).doubleValue();
         double num2 = ((Number) val2.getValue()).doubleValue();
-        if (null != op) {
-            switch (op) {
-                case "-":
-                    num1 = num1 - num2;
-                    break;
-                case "+":
-                    num1 = num1 + num2;
-                    break;
-                case "*":
-                    num1 = num1 * num2;
-                    break;
-                case "%":
-                    num1 = num1 % num2;
-                    break;
-                case "/":
-                    num1 = num1 / num2;
-                    break;
-                case "\\":
-                    num1 = (int) (num1 / num2);
-                    break;
-                case "^":
-                    num1 = Math.pow(num1, num2);
-                    break;
-                default:
-                    break;
-            }
+        switch (op) {
+            case "-":
+                num1 = num1 - num2;
+                break;
+            case "+":
+                num1 = num1 + num2;
+                break;
+            case "*":
+                num1 = num1 * num2;
+                break;
+            case "%":
+                num1 = num1 % num2;
+                break;
+            case "/":
+                num1 = num1 / num2;
+                break;
+            case "\\":
+                num1 = (int) (num1 / num2);
+                break;
+            case "^":
+                num1 = Math.pow(num1, num2);
+                break;
         }
         return new InterpreterValue(NumberType.INSTANCE, num1);
     }
@@ -102,40 +98,35 @@ class ExpressionListener extends jvmBasicBaseListener {
         double num2 = ((Number) val2.getValue()).doubleValue();
         boolean ret = false;
         boolean success = false;
-        if (null != op) {
-            switch (op) {
-                case "=>":  //GTE
-                case ">=":  //GTE
-                case ">: ": //GTE
-                    success = true;
-                    ret = num1 >= num2;
-                    break;
-                case "<=":  //LTE
-                case "=<":  //LTE
-                case "<: ": //LTE
-                    success = true;
-                    ret = num1 <= num2;
-                    break;
-                case "<":   //lt
-                    success = true;
-                    ret = num1 < num2;
-                    break;
-                case ">":   //gt
-                    success = true;
-                    ret = num1 > num2;
-                    break;
-                case "=":   //eq
-                    success = true;
-                    ret = num1 == num2;
-                    break;
-                case "<>":  //neq
-                    success = true;
-                    ret = num1 != num2;
-                    break;
-                default:
-                    //fail...
-                    break;
-            }
+        switch (op) {
+            case "=>":  //GTE
+            case ">=":  //GTE
+            case ">: ": //GTE
+                success = true;
+                ret = num1 >= num2;
+                break;
+            case "<=":  //LTE
+            case "=<":  //LTE
+            case "<: ": //LTE
+                success = true;
+                ret = num1 <= num2;
+                break;
+            case "<":   //lt
+                success = true;
+                ret = num1 < num2;
+                break;
+            case ">":   //gt
+                success = true;
+                ret = num1 > num2;
+                break;
+            case "=":   //eq
+                success = true;
+                ret = num1 == num2;
+                break;
+            case "<>":  //neq
+                success = true;
+                ret = num1 != num2;
+                break;
         }
         if (success) {
             return new InterpreterValue(BooleanType.INSTANCE, ret);
@@ -195,7 +186,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterExpression(jvmBasicParser.ExpressionContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -220,7 +211,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterRelationalExpression(jvmBasicParser.RelationalExpressionContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -234,7 +225,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterAddingExpression(jvmBasicParser.AddingExpressionContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -248,7 +239,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterMultiplyingExpression(jvmBasicParser.MultiplyingExpressionContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -262,7 +253,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterExponentExpression(jvmBasicParser.ExponentExpressionContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -321,7 +312,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterSqrfunc(jvmBasicParser.SqrfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -337,7 +328,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterSinfunc(jvmBasicParser.SinfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     /**
@@ -358,7 +349,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterCosfunc(jvmBasicParser.CosfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     /**
@@ -379,7 +370,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterTanfunc(jvmBasicParser.TanfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     /**
@@ -400,7 +391,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterAtnfunc(jvmBasicParser.AtnfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     /**
@@ -421,7 +412,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterAbsfunc(jvmBasicParser.AbsfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -437,7 +428,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterExpfunc(jvmBasicParser.ExpfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -453,7 +444,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterLogfunc(jvmBasicParser.LogfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -469,7 +460,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterSgnfunc(jvmBasicParser.SgnfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -486,7 +477,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterRndfunc(jvmBasicParser.RndfuncContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     /**
@@ -508,7 +499,8 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     /**
      * TODO: Ensure PERCENT is handled.
-     * @param ctx 
+     *
+     * @param ctx
      */
     @Override
     public void enterVar(jvmBasicParser.VarContext ctx) {
@@ -525,7 +517,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
     @Override
     public void enterVardecl(jvmBasicParser.VardeclContext ctx) {
-        value.push(new ArrayList<InterpreterValue>());
+        value.push(new ArrayList<>());
     }
 
     @Override
@@ -534,7 +526,7 @@ class ExpressionListener extends jvmBasicBaseListener {
 
         InterpreterValue val = values.remove(0);
         InterpreterValue get = scope.get(val.getValue().toString());
-        
+
         value.peek().add(get);
     }
 

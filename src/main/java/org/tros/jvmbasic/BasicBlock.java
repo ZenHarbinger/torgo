@@ -122,16 +122,13 @@ abstract class BasicBlock implements CodeBlock {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
 
-        for (CodeBlock lc : commands) {
-            if (success.get() && !stop.get()) {
-                ReturnValue pr = lc.process(scope);
-                if (pr.getResult() == ReturnValue.ProcessResult.HALT) {
-                    success.set(false);
-                } else if (pr.getResult() == ProcessResult.RETURN) {
-                    stop.set(true);
-                }
+        commands.stream().filter((lc) -> (success.get() && !stop.get())).map((lc) -> lc.process(scope)).forEachOrdered((pr) -> {
+            if (pr.getResult() == ReturnValue.ProcessResult.HALT) {
+                success.set(false);
+            } else if (pr.getResult() == ProcessResult.RETURN) {
+                stop.set(true);
             }
-        }
+        });
 
         ReturnValue.ProcessResult res = success.get() ? (stop.get() ? ReturnValue.ProcessResult.RETURN : ReturnValue.ProcessResult.SUCCESS) : ReturnValue.ProcessResult.HALT;
         return new ReturnValue(NullType.INSTANCE, null, res);

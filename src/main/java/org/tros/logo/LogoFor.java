@@ -65,7 +65,7 @@ class LogoFor extends LogoBlock {
     public ReturnValue process(Scope scope) {
         LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
-        super.variables.add(0, new HashMap<String, InterpreterValue>());
+        super.variables.add(0, new HashMap<>());
         listeners.fire().currStatement(this, scope);
 
         LogoParser.ForeContext fore = (LogoParser.ForeContext) ctx;
@@ -79,7 +79,7 @@ class LogoFor extends LogoBlock {
         double step;
         if (start > stop) {
             type = ForType.DECREASE;
-            step = -1.0;
+            step = 1.0;
         } else if (stop > start) {
             type = ForType.INCREASE;
             step = 1.0;

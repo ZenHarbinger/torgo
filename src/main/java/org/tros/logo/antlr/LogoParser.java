@@ -1,4 +1,4 @@
-// Generated from Logo.g4 by ANTLR 4.5.3
+// Generated from Logo.g4 by ANTLR 4.6
 
 package org.tros.logo.antlr;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LogoParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.6", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -203,6 +203,7 @@ public class LogoParser extends Parser {
 					_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				setState(116);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__4) | (1L << T__7) | (1L << T__17) | (1L << T__18) | (1L << T__19) | (1L << T__29) | (1L << T__30) | (1L << T__31) | (1L << T__32) | (1L << T__33) | (1L << T__34) | (1L << T__35) | (1L << T__36) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__40) | (1L << T__41) | (1L << T__42) | (1L << T__43) | (1L << T__44) | (1L << T__45) | (1L << T__46) | (1L << T__47) | (1L << T__48) | (1L << T__49) | (1L << T__50) | (1L << T__51) | (1L << T__52) | (1L << T__58) | (1L << T__59) | (1L << T__60) | (1L << T__61) | (1L << T__62))) != 0) || ((((_la - 65)) & ~0x3f) == 0 && ((1L << (_la - 65)) & ((1L << (T__64 - 65)) | (1L << (T__65 - 65)) | (1L << (T__66 - 65)) | (1L << (T__67 - 65)) | (1L << (T__68 - 65)) | (1L << (T__69 - 65)) | (1L << (T__70 - 65)) | (1L << (STRING - 65)) | (1L << (COMMENT - 65)) | (1L << (EOL - 65)))) != 0)) {
 					{
@@ -449,6 +450,7 @@ public class LogoParser extends Parser {
 		enterRule(_localctx, 4, RULE_cmd);
 		try {
 			setState(163);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__4:
 				enterOuterAlt(_localctx, 1);
@@ -932,6 +934,7 @@ public class LogoParser extends Parser {
 		enterRule(_localctx, 12, RULE_func);
 		try {
 			setState(207);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__53:
 				enterOuterAlt(_localctx, 1);
@@ -1209,7 +1212,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << T__16))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -1343,6 +1349,7 @@ public class LogoParser extends Parser {
 			setState(239);
 			match(T__19);
 			setState(242);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__2:
 			case T__20:
@@ -1432,7 +1439,10 @@ public class LogoParser extends Parser {
 					_la = _input.LA(1);
 					if ( _la <= 0 || (_la==T__6) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					}
@@ -1636,6 +1646,7 @@ public class LogoParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(266);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__22 || _la==T__23) {
 				{
@@ -1643,13 +1654,17 @@ public class LogoParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==T__22 || _la==T__23) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				}
 			}
 
 			setState(272);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NUMBER:
 				{
@@ -1791,7 +1806,10 @@ public class LogoParser extends Parser {
 					_la = _input.LA(1);
 					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__25) | (1L << T__26) | (1L << T__27) | (1L << T__28))) != 0)) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					setState(281);
@@ -1858,7 +1876,10 @@ public class LogoParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==T__22 || _la==T__23) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					setState(289);
@@ -1953,7 +1974,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__29 || _la==T__30) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(299);
@@ -2000,7 +2024,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__31) | (1L << T__32) | (1L << T__33))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(302);
@@ -2047,7 +2074,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__34 || _la==T__35) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(305);
@@ -2094,7 +2124,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__36 || _la==T__37) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(308);
@@ -2138,7 +2171,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__38) | (1L << T__39) | (1L << T__40) | (1L << T__41))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -2180,7 +2216,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__42 || _la==T__43) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -2222,7 +2261,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__44 || _la==T__45) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -2264,7 +2306,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__46 || _la==T__47) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -2306,7 +2351,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__48 || _la==T__49) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -2670,6 +2718,7 @@ public class LogoParser extends Parser {
 			setState(343);
 			expression();
 			setState(345);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__20) | (1L << T__22) | (1L << T__23) | (1L << T__53) | (1L << T__54) | (1L << T__55) | (1L << T__56) | (1L << T__57))) != 0) || _la==NUMBER) {
 				{
@@ -2733,10 +2782,14 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__59 || _la==T__60) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(359);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case STRING:
 				{
@@ -2762,6 +2815,7 @@ public class LogoParser extends Parser {
 				setState(354);
 				expression();
 				setState(356);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__20) | (1L << T__22) | (1L << T__23) | (1L << T__53) | (1L << T__54) | (1L << T__55) | (1L << T__56) | (1L << T__57))) != 0) || _la==NUMBER) {
 					{
@@ -2832,10 +2886,14 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__61 || _la==T__62) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(368);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case STRING:
 				{
@@ -2993,7 +3051,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & ((1L << (T__65 - 66)) | (1L << (T__66 - 66)) | (1L << (T__67 - 66)))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(377);
@@ -3160,7 +3221,10 @@ public class LogoParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(((((_la - 72)) & ~0x3f) == 0 && ((1L << (_la - 72)) & ((1L << (T__71 - 72)) | (1L << (T__72 - 72)) | (1L << (T__73 - 72)) | (1L << (T__74 - 72)))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}

@@ -18,7 +18,6 @@ package org.tros.logo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.apache.commons.lang3.event.EventListenerSupport;
@@ -123,16 +122,13 @@ abstract class LogoBlock implements CodeBlock {
         AtomicBoolean success = new AtomicBoolean(true);
         AtomicBoolean stop = new AtomicBoolean(false);
 
-        for (CodeBlock lc : commands) {
-            if (success.get() && !stop.get()) {
-                ReturnValue pr = lc.process(scope);
-                if (pr.getResult() == ReturnValue.ProcessResult.HALT) {
-                    success.set(false);
-                } else if (pr.getResult() == ProcessResult.RETURN) {
-                    stop.set(true);
-                }
+        commands.stream().filter((lc) -> (success.get() && !stop.get())).map((lc) -> lc.process(scope)).forEachOrdered((pr) -> {
+            if (pr.getResult() == ReturnValue.ProcessResult.HALT) {
+                success.set(false);
+            } else if (pr.getResult() == ProcessResult.RETURN) {
+                stop.set(true);
             }
-        }
+        });
 
         ReturnValue.ProcessResult res = success.get() ? (stop.get() ? ReturnValue.ProcessResult.RETURN : ReturnValue.ProcessResult.SUCCESS) : ReturnValue.ProcessResult.HALT;
         return new ReturnValue(NullType.INSTANCE, null, res);
@@ -205,12 +201,7 @@ abstract class LogoBlock implements CodeBlock {
      */
     @Override
     public boolean hasVariable(String name) {
-        for (HashMap<String, InterpreterValue> item : variables) {
-            if (item.containsKey(name)) {
-                return true;
-            }
-        }
-        return false;
+        return variables.stream().anyMatch((item) -> (item.containsKey(name)));
     }
 
     /**
@@ -232,7 +223,7 @@ abstract class LogoBlock implements CodeBlock {
      */
     @Override
     public InterpreterValue getVariable(String name) {
-        for(int ii = 0; ii <= variables.size(); ii++) {
+        for (int ii = 0; ii <= variables.size(); ii++) {
             HashMap<String, InterpreterValue> item = variables.get(ii);
             if (item.containsKey(name)) {
                 return item.get(name);

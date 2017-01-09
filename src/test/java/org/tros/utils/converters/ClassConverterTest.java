@@ -73,5 +73,7 @@ public class ClassConverterTest {
         Class fromString = (Class) TypeHandler.fromString(Class.class, hex);
         assertNotNull(fromString);
         assertEquals(hex, fromString.getName());
+        fromString = (Class) TypeHandler.fromString(Class.class, "no.such.class");
+        assertNull(fromString);
     }
 }

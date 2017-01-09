@@ -44,7 +44,7 @@ public class DynamicScope extends ScopeImpl implements Scope {
      */
     @Override
     public void push(CodeBlock block) {
-        scope.add(0, new HashMap<String, InterpreterValue>());
+        scope.add(0, new HashMap<>());
         stack.add(0, block);
         firePushed(block);
     }
@@ -107,26 +107,6 @@ public class DynamicScope extends ScopeImpl implements Scope {
     }
 
     /**
-     * Check to see if the variable exists at the current scoping level.
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public boolean has(String name) {
-        boolean ret = false;
-
-        for (HashMap<String, InterpreterValue> map : scope) {
-            if (map.containsKey(name)) {
-                ret = true;
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    /**
      * Defines a new variable at the top level of the scope. Once the current
      * level of the scope is popped off, it will no longer be available.
      *
@@ -156,27 +136,6 @@ public class DynamicScope extends ScopeImpl implements Scope {
     }
 
     /**
-     * Check for a function in the scope.
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public boolean hasFunction(String name) {
-        return getFunction(name) != null;
-    }
-
-    /**
-     * Get the names of local variables.
-     *
-     * @return
-     */
-    @Override
-    public Collection<String> localVariables() {
-        return scope.get(0).keySet();
-    }
-
-    /**
      * Get the names of variables.
      *
      * @return
@@ -184,9 +143,9 @@ public class DynamicScope extends ScopeImpl implements Scope {
     @Override
     public Collection<String> variables() {
         HashSet<String> keys = new HashSet<>();
-        for(HashMap<String, InterpreterValue> slice : scope) {
+        scope.forEach((slice) -> {
             keys.addAll(slice.keySet());
-        }
+        });
         return keys;
     }
 
@@ -201,10 +160,9 @@ public class DynamicScope extends ScopeImpl implements Scope {
         HashMap<String, InterpreterValue> keys = new HashMap<>();
         for(int ii = scope.size() - 1; ii >= 0 && value >= 0; ii--, value--) {
             HashMap<String, InterpreterValue> slice = scope.get(ii);
-            for(String key : slice.keySet()) {
+            slice.keySet().forEach((key) -> {
                 keys.put(key, slice.get(key));
-            }
-//            keys.addAll(slice.keySet());
+            });//            keys.addAll(slice.keySet());
         }
         return keys;
     }

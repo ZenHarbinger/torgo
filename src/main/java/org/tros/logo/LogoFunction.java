@@ -67,20 +67,16 @@ class LogoFunction extends LogoBlock implements CodeFunction {
         LOGGER.verbose(MessageFormat.format("[{0}]: Line: {1}, Start: {2}, End: {3}", ctx.getClass().getName(), ctx.getStart().getLine(), ctx.getStart().getStartIndex(), ctx.getStart().getStopIndex()));
         scope.push(this);
         
-        super.variables.add(0, new HashMap<String, InterpreterValue>());
+        super.variables.add(0, new HashMap<>());
 
-        for (String key : params.keySet()) {
+        params.keySet().forEach((key) -> {
             scope.setNew(key, params.get(key));
-        }
+        });
 
         listeners.fire().currStatement(this, scope);
 
-        ReturnValue ret = null;
-        try {
-            ret = super.process(scope);
-        } catch (Exception ex) {
-            LOGGER.warn(MessageFormat.format("{0} -> {1}", ex.getClass().getName(), ex.getMessage()), ex);
-        }
+        ReturnValue ret = super.process(scope);
+
         if (ret != null && ret.getResult() != ProcessResult.HALT) {
             //NOT HALT!
             ret = new ReturnValue(ret.getType(), ret.getValue(), ProcessResult.SUCCESS);

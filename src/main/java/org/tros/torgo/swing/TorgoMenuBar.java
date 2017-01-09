@@ -18,7 +18,6 @@ package org.tros.torgo.swing;
 import org.tros.torgo.Controller;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -90,29 +89,26 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
         fileStep = new JMenuItem("Step");
 
         languagesMenu = new JMenu("Switch Language");
-        for (final String lang : TorgoToolkit.getToolkits()) {
-            if (!lang.equals(controller.getLang())) {
-                JMenuItem langItem = new JMenuItem(lang);
-                languagesMenu.add(langItem);
-                langItem.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoToolkit.class);
-                        prefs.put("lang", lang);
-                        controller.close();
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                Controller controller = TorgoToolkit.getController(lang);
-                                if (controller != null) {
-                                    controller.run();
-                                }
-                            }
-                        });
+        TorgoToolkit.getToolkits().stream().filter((lang) -> (!lang.equals(controller.getLang()))).forEachOrdered((lang) -> {
+            JMenuItem langItem = new JMenuItem(lang);
+            languagesMenu.add(langItem);
+            langItem.addActionListener((ActionEvent ae) -> {
+                final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoToolkit.class);
+                prefs.put("lang", lang);
+                controller.close();
+                SwingUtilities.invokeLater(() -> {
+                    Controller controller1 = TorgoToolkit.getController(lang);
+                    if (controller1 != null) {
+                        controller1.run();
+                        controller1.newFile();
+                        if (controller.getFile() != null) {
+                            controller1.openFile(controller.getFile());
+                        }
+                        controller1.setSource(controller.getSource());
                     }
                 });
-            }
-        }
+            });
+        });
 
         fileMenu = new JMenu(Localization.getLocalizedString("FileMenu"));
         fileNew = new JMenuItem(Localization.getLocalizedString("FileNew"));
@@ -139,55 +135,40 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
         ImageIcon ico = new ImageIcon(resources.nextElement());
         fileStart.setIcon(ico);
 
-        fileStart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (paused.get()) {
-                    controller.resumeInterpreter();
-                } else {
-                    controller.startInterpreter();
-                }
+        fileStart.addActionListener((ActionEvent e) -> {
+            if (paused.get()) {
+                controller.resumeInterpreter();
+            } else {
+                controller.startInterpreter();
             }
         });
 
         resources = ClassLoader.getSystemClassLoader().getResources("projectui/stop.png");
         ico = new ImageIcon(resources.nextElement());
         fileStop.setIcon(ico);
-        fileStop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                controller.stopInterpreter();
-            }
+        fileStop.addActionListener((ActionEvent event) -> {
+            controller.stopInterpreter();
         });
 
         resources = ClassLoader.getSystemClassLoader().getResources("debugging/debugProject.png");
         ico = new ImageIcon(resources.nextElement());
         fileDebug.setIcon(ico);
-        fileDebug.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.debugInterpreter();
-            }
+        fileDebug.addActionListener((ActionEvent e) -> {
+            controller.debugInterpreter();
         });
 
         resources = ClassLoader.getSystemClassLoader().getResources("debugging/actions/Pause.png");
         ico = new ImageIcon(resources.nextElement());
         filePause.setIcon(ico);
-        filePause.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.pauseInterpreter();
-            }
+        filePause.addActionListener((ActionEvent e) -> {
+            controller.pauseInterpreter();
         });
 
         resources = ClassLoader.getSystemClassLoader().getResources("debugging/actions/StepOver.png");
         ico = new ImageIcon(resources.nextElement());
         fileStep.setIcon(ico);
-        fileStep.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.stepOver();
-            }
+        fileStep.addActionListener((ActionEvent e) -> {
+            controller.stepOver();
         });
 
         if (languagesMenu.getItemCount() > 0) {
@@ -279,55 +260,27 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
         ico = new ImageIcon(resources.nextElement());
         fileSaveAs.setIcon(ico);
 
-        fileNew.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                controller.newFile();
-            }
+        fileNew.addActionListener((ActionEvent ae) -> {
+            controller.newFile();
         });
-        fileOpen.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                controller.openFile();
-            }
+        fileOpen.addActionListener((ActionEvent ae) -> {
+            controller.openFile();
         });
-        fileClose.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                controller.close();
-            }
+        fileClose.addActionListener((ActionEvent ae) -> {
+            controller.close();
         });
-        fileSave.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                controller.saveFile();
-            }
+        fileSave.addActionListener((ActionEvent ae) -> {
+            controller.saveFile();
         });
-        fileSaveAs.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                controller.saveFileAs();
-            }
+        fileSaveAs.addActionListener((ActionEvent ae) -> {
+            controller.saveFileAs();
         });
-        fileQuit.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                System.exit(0);
-            }
+        fileQuit.addActionListener((ActionEvent ae) -> {
+            System.exit(0);
         });
 
-        logConsole.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                LogConsole.CONSOLE.setVisible(true);
-            }
+        logConsole.addActionListener((ActionEvent ae) -> {
+            LogConsole.CONSOLE.setVisible(true);
         });
 
         fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK));

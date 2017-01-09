@@ -65,21 +65,16 @@ public final class BasicMenuBar extends TorgoMenuBar {
             InputStream resourceAsStream = TorgoToolkit.getDefaultResourceAccessor().open(base + "/resource.manifest");
             List<String> readLines = IOUtils.readLines(resourceAsStream, "utf-8");
             Collections.sort(readLines);
-            for (String line : readLines) {
-                JMenuItem jmi = new JMenuItem(base + "/" + line);
-                if (!jmi.getText().endsWith("manifest")) {
-                    samplesMenu.add(jmi);
-                    jmi.addActionListener(new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            String val = e.getActionCommand();
-                            URL resource = ClassLoader.getSystemClassLoader().getResource(val);
-                            BasicMenuBar.this.controller.openFile(resource);
-                        }
-                    });
-                }
-            }
+            readLines.stream().map((line) -> new JMenuItem(base + "/" + line)).filter((jmi) -> (!jmi.getText().endsWith("manifest"))).map((jmi) -> {
+                samplesMenu.add(jmi);
+                return jmi;
+            }).forEachOrdered((jmi) -> {
+                jmi.addActionListener((ActionEvent e) -> {
+                    String val = e.getActionCommand();
+                    URL resource = ClassLoader.getSystemClassLoader().getResource(val);
+                    BasicMenuBar.this.controller.openFile(resource);
+                });
+            });
         } catch (IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(BasicMenuBar.class).fatal(null, ex);
         }

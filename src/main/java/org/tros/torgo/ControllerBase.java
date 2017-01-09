@@ -15,14 +15,11 @@
  */
 package org.tros.torgo;
 
-import bibliothek.gui.dock.DefaultDockable;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CGrid;
 import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
 import bibliothek.gui.dock.common.mode.ExtendedMode;
-import bibliothek.gui.dock.common.SingleCDockable;
-import bibliothek.gui.dock.common.SingleCDockableFactory;
 import bibliothek.util.xml.XElement;
 import bibliothek.util.xml.XIO;
 import org.tros.torgo.interpreter.CodeBlock;
@@ -34,7 +31,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -43,6 +39,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -61,6 +58,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -179,15 +178,6 @@ public abstract class ControllerBase implements Controller {
         }
     }
 
-    public static class TorgoDockable extends DefaultDockable {
-
-        public TorgoDockable(String title, final Component panel) {
-            super(title);
-            super.setTitleText(title);
-            super.add(panel);
-        }
-    }
-
     /* This method simulates the creation of a layout */
     private static XElement createLayout(Component display, ArrayList<ImmutablePair<String, Component>> input) {
         /* This method simulates the creation of a layout */
@@ -241,34 +231,26 @@ public abstract class ControllerBase implements Controller {
         if (torgoCanvas != null) {
             presetFilter.add("Display");
         }
-        for (ImmutablePair<String, Component> pair : torgoPanel.getTorgoComponents()) {
+        torgoPanel.getTorgoComponents().forEach((pair) -> {
             presetFilter.add(pair.left);
-        }
-        bibliothek.util.Filter<String> filter = new bibliothek.util.Filter<String>() {
-            @Override
-            public boolean includes(String item) {
-                return presetFilter.contains(item);
-            }
-        };
-        dockControl.addSingleDockableFactory(filter, new SingleCDockableFactory() {
-            @Override
-            public SingleCDockable createBackup(String id) {
-                TorgoSingleDockable ret = null;
-                if ("Display".equals(id)) {
-                    ret = new TorgoSingleDockable(id, torgoCanvas.getComponent());
-                } else {
-                    for (ImmutablePair<String, Component> pair : torgoPanel.getTorgoComponents()) {
-                        if (pair.left.equals(id)) {
-                            ret = new TorgoSingleDockable(pair.left, pair.right);
-                        }
+        });
+        bibliothek.util.Filter<String> filter = presetFilter::contains;
+        dockControl.addSingleDockableFactory(filter, (String id) -> {
+            TorgoSingleDockable ret = null;
+            if ("Display".equals(id)) {
+                ret = new TorgoSingleDockable(id, torgoCanvas.getComponent());
+            } else {
+                for (ImmutablePair<String, Component> pair : torgoPanel.getTorgoComponents()) {
+                    if (pair.left.equals(id)) {
+                        ret = new TorgoSingleDockable(pair.left, pair.right);
                     }
                 }
-                if (ret != null) {
-                    ImageIcon icon = Main.getIcon("layouts/" + ret.getTitleText().toLowerCase() + "-24x24.png");
-                    ret.setTitleIcon(icon);
-                }
-                return ret;
             }
+            if (ret != null) {
+                ImageIcon icon = Main.getIcon("layouts/" + ret.getTitleText().toLowerCase() + "-24x24.png");
+                ret.setTitleIcon(icon);
+            }
+            return ret;
         });
 
         // Try to load a saved layout.
@@ -318,76 +300,51 @@ public abstract class ControllerBase implements Controller {
             Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        aboutMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                AboutWindow aw = new AboutWindow();
-                aw.setVisible(true);
-            }
+        aboutMenu.addActionListener((ActionEvent ae) -> {
+            AboutWindow aw = new AboutWindow();
+            aw.setVisible(true);
         });
         JMenuItem updateMenu = new JMenuItem("Check for Update");
-        updateMenu.addActionListener(new ActionListener() {
-            /**
-             * Check for update.
-             *
-             * @param e
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                Thread t = new Thread(new Runnable() {
-                    /**
-                     * Check in a separate thread to avoid blocking.
-                     */
-                    @Override
-                    public void run() {
-                        final UpdateChecker uc = new UpdateChecker();
-                        if (uc.hasUpdate()) {
-                            SwingUtilities.invokeLater(new Runnable() {
-                                /**
-                                 * Take the result and perform UI notifications
-                                 * back in the UI thread.
-                                 */
-                                @Override
-                                public void run() {
-                                    try {
-                                        java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(IMAGE_ICON_CLASS_PATH);
-                                        ImageIcon ico = new ImageIcon(resources.nextElement());
-                                        int showConfirmDialog = JOptionPane.showConfirmDialog(window, MessageFormat.format("Update is Available:\n{0}\nView Update?", uc.getUpdateVersion()), "Update is Available", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ico);
-                                        if (showConfirmDialog == JOptionPane.YES_OPTION) {
-                                            URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
-                                            Desktop.getDesktop().browse(uri);
-                                        }
-                                    } catch (IOException | URISyntaxException ex) {
-                                        Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
-                                    } catch (UnsupportedOperationException ex) {
-                                        ProcessBuilder pb = new ProcessBuilder("xdg-open", UpdateChecker.UPDATE_ADDRESS);
-                                        try {
-                                            pb.start();
-                                        } catch (IOException ex1) {
-                                            org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex1);
-                                        }
-                                    }
-                                }
-                            });
+        updateMenu.addActionListener((ActionEvent e) -> {
+            Thread t = new Thread(() -> {
+                final UpdateChecker uc = new UpdateChecker();
+                if (uc.hasUpdate()) {
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(IMAGE_ICON_CLASS_PATH);
+                            ImageIcon ico = new ImageIcon(resources.nextElement());
+                            int showConfirmDialog = JOptionPane.showConfirmDialog(window, MessageFormat.format("Update is Available:\n{0}\nView Update?", uc.getUpdateVersion()), "Update is Available", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ico);
+                            if (showConfirmDialog == JOptionPane.YES_OPTION) {
+                                URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
+                                Desktop.getDesktop().browse(uri);
+                            }
+                        } catch (IOException | URISyntaxException ex) {
+                            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (UnsupportedOperationException ex) {
+                            ProcessBuilder pb = new ProcessBuilder("xdg-open", UpdateChecker.UPDATE_ADDRESS);
+                            try {
+                                pb.start();
+                            } catch (IOException ex1) {
+                                org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex1);
+                            }
                         }
-                    }
-                });
-                t.setDaemon(true);
-                t.start();
-            }
+                    });
+                }
+            });
+            t.setDaemon(true);
+            t.start();
         });
 
         helpMenu.add(aboutMenu);
         helpMenu.add(updateMenu);
 
         JMenu vizMenu = new JMenu("Visualization");
-        for (String name : TorgoToolkit.getVisualizers()) {
-            JCheckBoxMenuItem item = new JCheckBoxMenuItem(name);
+        TorgoToolkit.getVisualizers().stream().map((name) -> new JCheckBoxMenuItem(name)).map((item) -> {
             viz.add(item);
+            return item;
+        }).forEachOrdered((item) -> {
             vizMenu.add(item);
-        }
+        });
         if (vizMenu.getItemCount() > 0) {
             mb.add(vizMenu);
         }
@@ -469,24 +426,24 @@ public abstract class ControllerBase implements Controller {
         }
     }
 
+    protected String getWindowName() {
+        return this.getClass().getName();
+    }
+
     /**
      * Sets up the environment.
      */
     @Override
     public final void run() {
-        this.window = new NamedWindow(this.getClass().getName());
+        this.window = new NamedWindow(getWindowName());
         Main.loadIcon(this.window);
 
         initSwing();
         this.window.setVisible(true);
 
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                newFile();
-                runHelper();
-            }
+        SwingUtilities.invokeLater(() -> {
+//            newFile();
+            runHelper();
         });
     }
 
@@ -507,6 +464,38 @@ public abstract class ControllerBase implements Controller {
         }
     }
 
+    @Override
+    public void openFile(File file) {
+        try {
+            openFile(new URL(file.toString()));
+        } catch (MalformedURLException ex) {
+            init();
+            if (file.exists()) {
+                StringWriter writer = new StringWriter();
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    IOUtils.copy(fis, writer, "utf-8");
+                } catch (IOException ex2) {
+                }
+                this.setSource(writer.toString());
+            }
+            //handle windows, jar, and linux path.  Not sure if necessary, but should work.
+            String toSplit = file.getAbsolutePath().replace("/", "|").replace("\\", "|");//.split("|");
+            String[] split = toSplit.split("\\|");
+            this.window.setTitle("Torgo [" + getLang() + "] - " + split[split.length - 1]);
+            filename = file.getAbsolutePath();
+        }
+    }
+
+    /**
+     * Get the current open file.
+     *
+     * @return
+     */
+    @Override
+    public File getFile() {
+        return filename == null ? null : new File(filename);
+    }
+
     /**
      * Open a file based on URL.
      *
@@ -523,10 +512,15 @@ public abstract class ControllerBase implements Controller {
             String toSplit = file.getFile().replace("/", "|").replace("\\", "|");//.split("|");
             String[] split = toSplit.split("\\|");
             this.window.setTitle("Torgo [" + getLang() + "] - " + split[split.length - 1]);
+            filename = file.toString();
         } catch (IOException ex) {
             init();
             org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
         }
+    }
+
+    protected FileFilter getFilter() {
+        return new FileNameExtensionFilter(getLang(), getLang());
     }
 
     /**
@@ -535,6 +529,7 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void openFile() {
         JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(getFilter());
         chooser.setMultiSelectionEnabled(false);
         java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(ControllerBase.class);
         chooser.setCurrentDirectory(new File(prefs.get(ControllerBase.class.getName() + "-working-directory", ".")));
@@ -552,6 +547,7 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void saveFileAs() {
         JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(getFilter());
         chooser.setMultiSelectionEnabled(false);
         java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(ControllerBase.class);
         chooser.setCurrentDirectory(new File(prefs.get(ControllerBase.class.getName() + "-working-directory", ".")));
@@ -560,6 +556,10 @@ public abstract class ControllerBase implements Controller {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().getPath();
+            String extension = "." + getLang();
+            if(!filename.endsWith(extension)) {
+                filename = filename + extension;
+            }
             prefs.put(ControllerBase.class.getName() + "-working-directory", chooser.getSelectedFile().getParent());
             saveFile();
         }
@@ -606,20 +606,16 @@ public abstract class ControllerBase implements Controller {
 
     @Override
     public void enable(String name) {
-        for (JCheckBoxMenuItem item : viz) {
-            if (item.getText().equals(name)) {
-                item.setState(true);
-            }
-        }
+        viz.stream().filter((item) -> (item.getText().equals(name))).forEachOrdered((item) -> {
+            item.setState(true);
+        });
     }
 
     @Override
     public void disable(String name) {
-        for (JCheckBoxMenuItem item : viz) {
-            if (item.getText().equals(name)) {
-                item.setState(false);
-            }
-        }
+        viz.stream().filter((item) -> (item.getText().equals(name))).forEachOrdered((item) -> {
+            item.setState(false);
+        });
     }
 
     /**
@@ -630,11 +626,9 @@ public abstract class ControllerBase implements Controller {
         String source = torgoPanel.getSource();
         interp = createInterpreterThread(source);
 
-        for (JCheckBoxMenuItem item : viz) {
-            if (item.getState()) {
-                TorgoToolkit.getVisualization(item.getText()).create().watch(this.getLang(), this, interp);
-            }
-        }
+        viz.stream().filter((item) -> (item.getState())).forEachOrdered((item) -> {
+            TorgoToolkit.getVisualization(item.getText()).create().watch(this.getLang(), this, interp);
+        });
 
         for (InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);
@@ -678,11 +672,9 @@ public abstract class ControllerBase implements Controller {
         interp = createInterpreterThread(source);
         step.reset();
 
-        for (JCheckBoxMenuItem item : viz) {
-            if (item.getState()) {
-                TorgoToolkit.getVisualization(item.getText()).create().watch(this.getLang(), this, interp);
-            }
-        }
+        viz.stream().filter((item) -> (item.getState())).forEachOrdered((item) -> {
+            TorgoToolkit.getVisualization(item.getText()).create().watch(this.getLang(), this, interp);
+        });
 
         for (InterpreterListener l : listeners.getListeners()) {
             interp.addInterpreterListener(l);
@@ -797,6 +789,11 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void setSource(String src) {
         torgoPanel.setSource(src);
+    }
+
+    @Override
+    public String getSource() {
+        return torgoPanel.getSource();
     }
 
     /**

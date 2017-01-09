@@ -27,8 +27,6 @@ import org.tros.torgo.TorgoToolkit;
  */
 public final class Random {
 
-    private final static boolean LEGACY;
-
     /**
      * Enumeration for a 3 state system
      */
@@ -67,8 +65,6 @@ public final class Random {
      * Static Constructor.
      */
     static {
-        boolean legacy = false;
-
         COUNTERS = new HashMap<>();
         Properties prop = new Properties();
         String prop_file = Random.class.getCanonicalName().replace('.', '/') + ".properties";
@@ -77,11 +73,9 @@ public final class Random {
             _incrementType = UuidIncrementType.valueOf(prop.getProperty("uuidIncrementType"));
             _doSeed = Boolean.parseBoolean(prop.getProperty("doSeed"));
             _seedValue = Integer.parseInt(prop.getProperty("seedValue"));
-            legacy = Boolean.parseBoolean(prop.getProperty("useLegacy"));
         } catch (NullPointerException | IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).fatal(null, ex);
         }
-        LEGACY = legacy;
         RANDOMS = new HashMap<>();
         SPECIFIC_RANDOMS = new HashMap<>();
     }
@@ -566,20 +560,14 @@ public final class Random {
         if (list.isEmpty()) {
             return null;
         }
-        if (LEGACY) {
-            Collection<T> not_list = new ArrayList<>();
-            not_list.add(not);
-            return getRandomNotInList(list, not_list);
-        } else {
-            final T elem = getRandom(list);
-            if (elem != null && elem.equals(not)) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).debug("Creating array copy for finding random item.");
-                ArrayList<T> l = new ArrayList<>(list);
-                l.remove(not);
-                return getRandom(l);
-            }
-            return elem;
+        final T elem = getRandom(list);
+        if (elem != null && elem.equals(not)) {
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).debug("Creating array copy for finding random item.");
+            ArrayList<T> l = new ArrayList<>(list);
+            l.remove(not);
+            return getRandom(l);
         }
+        return elem;
     }
 
     /**
@@ -597,20 +585,14 @@ public final class Random {
         if (list.isEmpty()) {
             return null;
         }
-        if (LEGACY) {
-            Collection<T> not_list = new ArrayList<>();
-            not_list.add(not);
-            return getRandomNotInList(random, list, not_list);
-        } else {
-            final T elem = getRandom(random, list);
-            if (elem != null && elem.equals(not)) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).debug("Creating array copy for finding random item.");
-                ArrayList<T> l = new ArrayList<>(list);
-                l.remove(not);
-                return getRandom(random, l);
-            }
-            return elem;
+        final T elem = getRandom(random, list);
+        if (elem != null && elem.equals(not)) {
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).debug("Creating array copy for finding random item.");
+            ArrayList<T> l = new ArrayList<>(list);
+            l.remove(not);
+            return getRandom(random, l);
         }
+        return elem;
     }
 
     /**
@@ -625,13 +607,7 @@ public final class Random {
      * specified value
      */
     public static <T> T getRandomNotInList(final Collection<T> list, final Collection<T> not) {
-        if (LEGACY) {
-            ArrayList<T> l = new ArrayList<>(list);
-            l.removeAll(not);
-            return getRandom(l);
-        } else {
-            return getRandom(org.apache.commons.collections4.CollectionUtils.subtract(list, not));
-        }
+        return getRandom(org.apache.commons.collections4.CollectionUtils.subtract(list, not));
     }
 
     /**
@@ -647,13 +623,7 @@ public final class Random {
      * specified value
      */
     public static <T> T getRandomNotInList(java.util.Random random, final Collection<T> list, final Collection<T> not) {
-        if (LEGACY) {
-            ArrayList<T> l = new ArrayList<>(list);
-            l.removeAll(not);
-            return getRandom(random, l);
-        } else {
-            return getRandom(random, org.apache.commons.collections4.CollectionUtils.subtract(list, not));
-        }
+        return getRandom(random, org.apache.commons.collections4.CollectionUtils.subtract(list, not));
     }
 
     /**
@@ -667,24 +637,10 @@ public final class Random {
         if (list.isEmpty()) {
             return null;
         }
-        if (LEGACY) {
-            java.util.Random instance = getInstance();
-            int index = Random.nextInt(instance, list.size());
-            Iterator<T> it = list.iterator();
-            int count = 0;
-            while (it.hasNext()) {
-                T ret = it.next();
-                if (count == index) {
-                    return ret;
-                }
-                count++;
-            }
-            return null;
-        } else {
-            java.util.Random instance = getInstance();
-            final int index = Random.nextInt(instance, list.size());
-            return org.apache.commons.collections4.IterableUtils.get(list, index);
-        }
+
+        java.util.Random instance = getInstance();
+        final int index = Random.nextInt(instance, list.size());
+        return org.apache.commons.collections4.IterableUtils.get(list, index);
     }
 
     /**
@@ -699,22 +655,8 @@ public final class Random {
         if (list.isEmpty()) {
             return null;
         }
-        if (LEGACY) {
-            int index = Random.nextInt(random, list.size());
-            Iterator<T> it = list.iterator();
-            int count = 0;
-            while (it.hasNext()) {
-                T ret = it.next();
-                if (count == index) {
-                    return ret;
-                }
-                count++;
-            }
-            return null;
-        } else {
-            final int index = Random.nextInt(random, list.size());
-            return org.apache.commons.collections4.IterableUtils.get(list, index);
-        }
+        final int index = Random.nextInt(random, list.size());
+        return org.apache.commons.collections4.IterableUtils.get(list, index);
     }
 
     /**

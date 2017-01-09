@@ -72,6 +72,7 @@ public class LogoControllerTest {
         prefs.putBoolean("wait-for-repaint", false);
         LexicalLogoController controller = (LexicalLogoController) TorgoToolkit.getController("lexical-logo");
         controller.run();
+        controller.newFile();
         assertEquals("lexical-logo", controller.getLang());
         String[] files = new String[]{
             "logo/examples/antlr/dynamic_scope.txt",
@@ -184,6 +185,7 @@ public class LogoControllerTest {
         prefs.putBoolean("wait-for-repaint", false);
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
+        controller.newFile();
         assertEquals("dynamic-logo", controller.getLang());
         String[] files = new String[]{
             "logo/examples/antlr/dynamic_scope.txt",
@@ -222,7 +224,8 @@ public class LogoControllerTest {
             //            "logo/examples/tortue/spiral.logo",
             //            "logo/examples/tortue/spokes.logo",
             "logo/examples/tortue/test.logo",
-            "logo/examples/tortue/tortue-text.logo"};
+            "logo/examples/tortue/tortue-text.logo"
+        };
 
         for (String file : files) {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);

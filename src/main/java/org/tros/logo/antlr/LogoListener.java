@@ -1,4 +1,4 @@
-// Generated from Logo.g4 by ANTLR 4.5.3
+// Generated from Logo.g4 by ANTLR 4.6
 
 package org.tros.logo.antlr;
 

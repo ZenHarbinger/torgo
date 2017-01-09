@@ -41,8 +41,7 @@ public class ColorConverter implements Converter, ConverterRegister {
         } else {
             try {
                 return (T) Color.class.getField(value.toString()).get(null);
-            } catch (NoSuchFieldException ex) {
-            } catch (SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             }
             return (T) Color.decode(value.toString());
         }
@@ -69,8 +68,8 @@ public class ColorConverter implements Converter, ConverterRegister {
     @Override
     public List<ImmutablePair<Class<?>, Class<?>>> getConversions() {
         ArrayList<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<>();
-        ret.add(new ImmutablePair<Class<?>, Class<?>>(String.class, Color.class));
-        ret.add(new ImmutablePair<Class<?>, Class<?>>(Color.class, String.class));
+        ret.add(new ImmutablePair<>(String.class, Color.class));
+        ret.add(new ImmutablePair<>(Color.class, String.class));
         return ret;
     }
 
