@@ -15,9 +15,21 @@
  */
 package org.tros.torgo.viz;
 
+import java.awt.AWTException;
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.Robot;
+import java.awt.Window;
+import java.awt.event.InputEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,6 +44,8 @@ import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.torgo.viz.StackView.SliceWatchFrame;
+import org.tros.torgo.viz.StackView.StackViewWindow;
 import org.tros.utils.logging.Logging;
 
 /**
@@ -41,12 +55,12 @@ import org.tros.utils.logging.Logging;
 public class StackViewTest {
 
     private final static Logger LOGGER;
-    
+
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(StackViewTest.class.getName());
     }
-    
+
     public StackViewTest() {
     }
 
@@ -83,18 +97,14 @@ public class StackViewTest {
         controller.enable("StackView");
 
         String[] files = new String[]{
-            "logo/examples/tortue/octagon.logo",
-//            "logo/examples/tortue/pretty.logo",
-//            "logo/examples/tortue/snowflake.logo",
-//            "logo/examples/tortue/spokes.logo",
-            "logo/examples/tortue/test.logo"
-//            "logo/examples/tortue/tortue-text.logo"
+            "logo/examples/antlr/tree2.txt"
         };
 
         for (String file : files) {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
+            final AtomicBoolean bool = new AtomicBoolean(false);
             final AtomicBoolean started = new AtomicBoolean(false);
             final AtomicBoolean finished = new AtomicBoolean(false);
             controller.addInterpreterListener(new InterpreterListener() {
@@ -118,6 +128,47 @@ public class StackViewTest {
 
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
+                    Window[] windows = Window.getWindows();
+                    for (Window w : windows) {
+                        if (!bool.get() && StackViewWindow.class.isAssignableFrom(w.getClass())) {
+                            StackViewWindow svw = (StackViewWindow) w;
+                            JRootPane jrp = (JRootPane) svw.getComponent(0);
+                            JPanel contentPane = (JPanel) jrp.getContentPane();
+                            JPanel contentPane2 = (JPanel) contentPane.getComponent(0);
+                            for (Component c : contentPane2.getComponents()) {
+                                if (JScrollPane.class.isAssignableFrom(c.getClass())) {
+                                    JScrollPane jsp = (JScrollPane) c;
+                                    JViewport component = (JViewport) jsp.getComponent(0);
+                                    JList jlist = (JList) component.getComponent(0);
+                                    DefaultListModel model = (DefaultListModel) jlist.getModel();
+                                    if (model.size() >= 2) {
+                                        bool.set(true);
+                                        try {
+                                            Point locationOnScreen = jlist.getLocationOnScreen();
+                                            System.out.println(locationOnScreen);
+                                            Robot robot = new Robot();
+                                            robot.mouseMove(locationOnScreen.x + 10, locationOnScreen.y + 30);
+                                            robot.mousePress(InputEvent.BUTTON1_MASK);
+                                            robot.delay(10);
+                                            robot.mouseRelease(InputEvent.BUTTON1_MASK);
+                                            robot.delay(20);
+                                            robot.mousePress(InputEvent.BUTTON1_MASK);
+                                            robot.delay(10);
+                                            robot.mouseRelease(InputEvent.BUTTON1_MASK);
+                                            robot.mouseMove(locationOnScreen.x + 100, locationOnScreen.y + 45);
+                                        } catch (AWTException ex) {
+                                            Logger.getLogger(StackViewTest.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (SliceWatchFrame.class.isAssignableFrom(w.getClass())) {
+                            SliceWatchFrame swf = (SliceWatchFrame) w;
+                            System.out.println(swf.item.getToolTip());
+                            controller.stopInterpreter();
+                        }
+                    }
                 }
             });
 
@@ -132,6 +183,7 @@ public class StackViewTest {
             }
             assertTrue(started.get());
             assertTrue(finished.get());
+            assertTrue(bool.get());
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
