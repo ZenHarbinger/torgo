@@ -97,7 +97,7 @@ public class StackViewTest {
         LogoController controller = (LogoController) TorgoToolkit.getController(lang);
         controller.run();
         controller.newFile();
-        assertEquals("dynamic-logo", controller.getLang());
+        assertEquals(lang, controller.getLang());
 
         controller.enable("StackView");
 
