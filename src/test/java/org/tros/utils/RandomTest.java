@@ -1055,7 +1055,7 @@ public class RandomTest {
         for (int ii = 0; ii < 100; ii++) {
             arr[ii] = ii;
         }
-        org.tros.utils.Random.shuffle(arr, 25, 75);
+        org.tros.utils.Random.shuffle(arr);
 
         boolean thrown = false;
         try {
