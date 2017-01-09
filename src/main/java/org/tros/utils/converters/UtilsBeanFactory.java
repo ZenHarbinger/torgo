@@ -41,13 +41,15 @@ public final class UtilsBeanFactory {
             BeanUtilsBean bub = new BeanUtilsBean(cub, new PropertyUtilsBean());
             cr.register(cub);
             List<ImmutablePair<Class<?>, Class<?>>> pairs = cr.getConversions();
-            for (ImmutablePair<Class<?>, Class<?>> pair : pairs) {
+            pairs.stream().map((pair) -> {
                 if (!MAP.containsKey(pair.getLeft())) {
-                    MAP.put(pair.getLeft(), new ArrayList<ImmutablePair<Class<?>, BeanUtilsBean>>());
+                    MAP.put(pair.getLeft(), new ArrayList<>());
                 }
+                return pair;
+            }).forEachOrdered((pair) -> {
                 ArrayList<ImmutablePair<Class<?>, BeanUtilsBean>> list = MAP.get(pair.getLeft());
-                list.add(new ImmutablePair<Class<?>, BeanUtilsBean>(pair.getRight(), bub));
-            }
+                list.add(new ImmutablePair<>(pair.getRight(), bub));
+            });
         }
     }
 

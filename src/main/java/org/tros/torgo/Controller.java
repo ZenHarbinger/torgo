@@ -44,6 +44,13 @@ public interface Controller {
     void openFile(File file);
 
     /**
+     * Return the file that is open.  Null if no file open.
+     *
+     * @return
+     */
+    File getFile();
+
+    /**
      * Open a specified location based on URL.
      *
      * @param file
@@ -141,6 +148,13 @@ public interface Controller {
      * @param src
      */
     void setSource(String src);
+
+    /**
+     * Set the source for the interpreter.
+     *
+     * @return
+     */
+    String getSource();
 
     /**
      * Get the language of the interpreter.

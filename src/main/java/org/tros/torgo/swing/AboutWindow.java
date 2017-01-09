@@ -21,7 +21,6 @@ import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -74,43 +73,35 @@ public class AboutWindow extends JDialog {
 
         //create copyright/apache link button
         JLinkButton apacheButton = new JLinkButton();
-        apacheButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
+        apacheButton.addActionListener((ActionEvent ae) -> {
+            try {
+                URI uri = new URI(APACHE_LICENSE_ADDRESS);
+                Desktop.getDesktop().browse(uri);
+            } catch (URISyntaxException | IOException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+            } catch (UnsupportedOperationException ex) {
+                ProcessBuilder pb = new ProcessBuilder("xdg-open", APACHE_LICENSE_ADDRESS);
                 try {
-                    URI uri = new URI(APACHE_LICENSE_ADDRESS);
-                    Desktop.getDesktop().browse(uri);
-                } catch (URISyntaxException | IOException ex) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-                } catch (UnsupportedOperationException ex) {
-                    ProcessBuilder pb = new ProcessBuilder("xdg-open", APACHE_LICENSE_ADDRESS);
-                    try {
-                        pb.start();
-                    } catch (IOException ex1) {
-                        org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-                    }
+                    pb.start();
+                } catch (IOException ex1) {
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
                 }
             }
         });
         //create torgo/source link button
         JLinkButton torgoButton = new JLinkButton();
-        torgoButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
+        torgoButton.addActionListener((ActionEvent ae) -> {
+            try {
+                URI uri = new URI(TORGO_ADDRESS);
+                Desktop.getDesktop().browse(uri);
+            } catch (URISyntaxException | IOException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+            } catch (UnsupportedOperationException ex) {
+                ProcessBuilder pb = new ProcessBuilder("xdg-open", TORGO_ADDRESS);
                 try {
-                    URI uri = new URI(TORGO_ADDRESS);
-                    Desktop.getDesktop().browse(uri);
-                } catch (URISyntaxException | IOException ex) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-                } catch (UnsupportedOperationException ex) {
-                    ProcessBuilder pb = new ProcessBuilder("xdg-open", TORGO_ADDRESS);
-                    try {
-                        pb.start();
-                    } catch (IOException ex1) {
-                        org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-                    }
+                    pb.start();
+                } catch (IOException ex1) {
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
                 }
             }
         });
@@ -168,41 +159,30 @@ public class AboutWindow extends JDialog {
         final JCheckBox checkForUpdate = new JCheckBox("Check For Update");
         final JLinkButton button = new JLinkButton("");
         checkForUpdate.setSelected(uc.getCheckForUpdate());
-        checkForUpdate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                uc.setCheckForUpdate(checkForUpdate.isSelected());
-                boolean enabled = uc.getCheckForUpdate() && uc.hasUpdate();
-                button.setEnabled(enabled);
-                if (button.isEnabled()) {
-                    button.setText("Update Available");
-                }
+        checkForUpdate.addActionListener((ActionEvent e) -> {
+            uc.setCheckForUpdate(checkForUpdate.isSelected());
+            boolean enabled1 = uc.getCheckForUpdate() && uc.hasUpdate();
+            button.setEnabled(enabled1);
+            if (button.isEnabled()) {
+                button.setText("Update Available");
             }
         });
         updateArea.add(checkForUpdate);
 
-        final Thread t = new Thread(new Runnable() {
-            /**
-             * Put the check in a new thread to avoid blocking UI.
-             */
-            @Override
-            public void run() {
-                final boolean enabled = uc.getCheckForUpdate() && uc.hasUpdate();
-                SwingUtilities.invokeLater(new Runnable() {
-                    /**
-                     * Once the value has been received from on-line, update the
-                     * UI.
-                     */
-                    @Override
-                    public void run() {
-                        button.setEnabled(enabled);
-                        if (button.isEnabled()) {
-                            button.setText("Update Available");
-                        }
-                    }
-                });
-            }
-        });
+        final Thread t = new Thread(() -> {
+            final boolean enabled1 = uc.getCheckForUpdate() && uc.hasUpdate();
+            SwingUtilities.invokeLater(() -> {
+                button.setEnabled(enabled1);
+                if (button.isEnabled()) {
+                    button.setText("Update Available");
+                }
+            } /**
+             * Once the value has been received from on-line, update the
+             * UI.
+             */ );
+        } /**
+         * Put the check in a new thread to avoid blocking UI.
+         */ );
         t.setDaemon(true);
 
         /**
@@ -245,21 +225,18 @@ public class AboutWindow extends JDialog {
         });
 
         updateArea.add(button);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        button.addActionListener((ActionEvent e) -> {
+            try {
+                URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
+                Desktop.getDesktop().browse(uri);
+            } catch (URISyntaxException | IOException ex) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+            } catch (UnsupportedOperationException ex) {
+                ProcessBuilder pb = new ProcessBuilder("xdg-open", UpdateChecker.UPDATE_ADDRESS);
                 try {
-                    URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
-                    Desktop.getDesktop().browse(uri);
-                } catch (URISyntaxException | IOException ex) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-                } catch (UnsupportedOperationException ex) {
-                    ProcessBuilder pb = new ProcessBuilder("xdg-open", UpdateChecker.UPDATE_ADDRESS);
-                    try {
-                        pb.start();
-                    } catch (IOException ex1) {
-                        org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-                    }
+                    pb.start();
+                } catch (IOException ex1) {
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
                 }
             }
         });

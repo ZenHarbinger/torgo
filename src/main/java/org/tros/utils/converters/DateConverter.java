@@ -75,10 +75,10 @@ public class DateConverter implements Converter, ConverterRegister {
     @Override
     public List<ImmutablePair<Class<?>, Class<?>>> getConversions() {
         ArrayList<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<>();
-        ret.add(new ImmutablePair<Class<?>, Class<?>>(String.class, Date.class));
-        ret.add(new ImmutablePair<Class<?>, Class<?>>(Date.class, String.class));
-        ret.add(new ImmutablePair<Class<?>, Class<?>>(String.class, Calendar.class));
-        ret.add(new ImmutablePair<Class<?>, Class<?>>(Calendar.class, String.class));
+        ret.add(new ImmutablePair<>(String.class, Date.class));
+        ret.add(new ImmutablePair<>(Date.class, String.class));
+        ret.add(new ImmutablePair<>(String.class, Calendar.class));
+        ret.add(new ImmutablePair<>(Calendar.class, String.class));
         return ret;
     }
 

@@ -7,7 +7,6 @@
 package org.tros.utils.logging;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.logging.Level;
@@ -63,21 +62,12 @@ public final class LogConsole extends JFrame {
         scrollLock_menu.setEnabled(false);
         JMenuItem close_menu = new JMenuItem("Close");
 
-        pause_menu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                SwingComponentHandler.pause();
-            }
+        pause_menu.addActionListener((ActionEvent ae) -> {
+            SwingComponentHandler.pause();
         });
 
-        close_menu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-
-                setVisible(false);
-            }
+        close_menu.addActionListener((ActionEvent ae) -> {
+            setVisible(false);
         });
 
         file_menu.add(pause_menu);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.interpreter.types;
+package org.tros.torgo;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.tros.torgo.interpreter.InterpreterType;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author matta
  */
-public class BooleanTypeTest {
-    
-    public BooleanTypeTest() {
+public class UpdateCheckerTest {
+    private UpdateChecker checker;
+
+    public UpdateCheckerTest() {
     }
     
     @BeforeClass
@@ -42,16 +42,24 @@ public class BooleanTypeTest {
     
     @Before
     public void setUp() {
+        checker = new UpdateChecker();
     }
     
     @After
     public void tearDown() {
     }
 
+    /**
+     * Test of getUpdateVersion method, of class UpdateChecker.
+     */
     @Test
-    public void testInstanceAccess() {
-        InterpreterType t = BooleanType.INSTANCE;
-        assertNotNull(t);
-        t.hashCode();
+    public void testGetUpdateVersion() {
+        checker.setCheckForUpdate(false);
+        assertFalse(checker.getCheckForUpdate());
+        checker.hasUpdate();
+        checker.setCheckForUpdate(true);
+        assertTrue(checker.getCheckForUpdate());
+        checker.hasUpdate();
+        assertNotNull(checker.getUpdateVersion());
     }
 }

@@ -32,37 +32,6 @@ abstract class ScopeImpl implements Scope {
             = EventListenerSupport.create(ScopeListener.class);
 
     /**
-     * Look at the current code block.
-     *
-     * @return
-     */
-    @Override
-    public CodeBlock peek() {
-        return stack.get(0);
-    }
-
-    /**
-     * Look at an inner code block.
-     *
-     * @param val
-     * @return
-     */
-    @Override
-    public CodeBlock peek(int val) {
-        return stack.get(val);
-    }
-
-    /**
-     * The size of the scope.
-     *
-     * @return
-     */
-    @Override
-    public int size() {
-        return stack.size();
-    }
-
-    /**
      * Add a scope listener.
      *
      * @param listener

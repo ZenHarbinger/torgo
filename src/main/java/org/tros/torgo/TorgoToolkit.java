@@ -67,12 +67,14 @@ public final class TorgoToolkit {
         }
         RESOURCE_MAP = new HashMap<>();
         RESOURCES = ServiceLoader.load(ResourceAccessor.class);
+        boolean set = false;
         try {
             for (ResourceAccessor ressource : RESOURCES) {
                 LOGGER.info(MessageFormat.format("Loaded: {0}", ressource.getClass().getName()));
                 RESOURCE_MAP.put(ressource.getName(), ressource);
-                if (defaultResourceAccessor == null) {
+                if (!set) {
                     defaultResourceAccessor = ressource.getName();
+                    set = true;
                 }
             }
         } catch (ServiceConfigurationError serviceError) {

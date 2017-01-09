@@ -1,7 +1,7 @@
 ![](http://tros.org/torgo/tros-images/torgo-orange-and-green.svg)  
 
-[![Build Status](https://travis-ci.org/ZenHarbinger/torgo.svg?branch=master)](https://travis-ci.org/ZenHarbinger/torgo)
-[![Coverage Status](https://coveralls.io/repos/github/ZenHarbinger/torgo/badge.svg)](https://coveralls.io/github/ZenHarbinger/torgo)
+[![Build Status](https://circleci.com/gh/ZenHarbinger/torgo.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/ZenHarbinger/torgo)
+[![Coverage Status](https://codecov.io/github/ZenHarbinger/torgo/coverage.svg?branch=master)](https://codecov.io/github/ZenHarbinger/torgo)
 [![release](http://github-release-version.herokuapp.com/github/ZenHarbinger/torgo/release.svg?style=flat)](https://github.com/ZenHarbinger/torgo/releases/latest)
 [![Join the chat at https://gitter.im/ZenHarbinger/torgo](https://badges.gitter.im/ZenHarbinger/torgo.svg)](https://gitter.im/ZenHarbinger/torgo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -9,7 +9,7 @@
 
 Torgo is a Logo interpreter written in Java. It uses [ANTLR](http://www.antlr.org/) as a language parser and for lexical analysis. The parsed scripts are then walked to interpret the commands.
 
-Torgo is built using Java7.
+Torgo is built using Java8.
 
 Some goals for Torgo are:
 
@@ -37,12 +37,15 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
     - PNG
     - SVG
     - Animated GIF
+- Switch between any available languages
+    - dynamic-logo
+    - lexical-logo
+    - *jvmBasic*
+    - *lisp*
 
 ## Future
 
 - jvmBasic and Lisp
-- Switch between languages other than at start up
-- Register with file/mime types (.logo)
 
 ## Download and Install
 
@@ -60,7 +63,7 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
 ```sh
 git clone https://github.com/ZenHarbinger/torgo.git
 cd torgo
-mvn -DskipTests clean package
+mvn clean package
 ```
 
 ## Run

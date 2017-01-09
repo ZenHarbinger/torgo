@@ -72,6 +72,7 @@ public class PenColorTest {
         LOGGER.info("penColor");
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
+        controller.newFile();
         assertEquals("dynamic-logo", controller.getLang());
 
         Robot robot = null;
