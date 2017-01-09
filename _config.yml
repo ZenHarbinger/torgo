@@ -19,7 +19,7 @@ github_username          : ZenHarbinger
 # Build settings
 markdown: kramdown
 timezone: America/New_York
-paginate: 5
+# paginate: 5
 
 # https://jekyllrb.com/docs/configuration/
 # Where things are
@@ -93,7 +93,7 @@ author:
 
 # Plugins
 gems:
-  - jekyll-paginate
+  # - jekyll-paginate
   # - jekyll-coffeescript
   # - jekyll-sitemap
   # - jekyll-gist
@@ -102,7 +102,7 @@ gems:
 
 # mimic GitHub Pages with --safe
 whitelist:
-  - jekyll-paginate
+  # - jekyll-paginate
   # - jekyll-coffeescript
   # - jekyll-sitemap
   # - jekyll-gist

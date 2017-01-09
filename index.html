@@ -4,43 +4,53 @@ author_profile: true
 ---
 <img src="{{site.baseurl}}/tros-images/torgo-orange-and-green.svg" style="height: 80px;" alt="TORGO"/>
 <div class="home">
-
+<p><a href="https://circleci.com/gh/ZenHarbinger/torgo"><img src="https://circleci.com/gh/ZenHarbinger/torgo.svg?style=shield&amp;circle-token=:circle-token" alt="Build Status" /></a>
+<a href="https://codecov.io/github/ZenHarbinger/torgo"><img src="https://codecov.io/github/ZenHarbinger/torgo/coverage.svg?branch=master" alt="Coverage Status" /></a>
+<a href="https://github.com/ZenHarbinger/torgo/releases/latest"><img src="http://github-release-version.herokuapp.com/github/ZenHarbinger/torgo/release.svg?style=flat" alt="release" /></a>
+<a href="https://gitter.im/ZenHarbinger/torgo?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/ZenHarbinger/torgo.svg" alt="Join the chat at https://gitter.im/ZenHarbinger/torgo" /></a></p>
   <ul class="post-list">
-    {% for post in paginator.posts %}
+      {% for post in site.posts %}
+      <div class="unit whole single-post-excerpt">
+          {% if post.tags contains "release" %}
+          <h2><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h2>
+          <div class="meta-info">
+              <span class="meta"><time class="timeago postlist-meta" datetime="{{ post.date | date: "%Y-%m-%d" }}"><i class="fa fa-calendar"></i>{{ post.date | date: "%B %-d, %Y" }}</time></span>
+              <!-- {% if post.tags and post.tags.size > 0 %}
+                  <div class="tags">
+                      Tagged:
+                      {% for tag in post.tags %}
+                      <span><i class="fa fa-tag"></i>{{ tag }}</span>
+                      {% endfor %}
+                  </div>
+              {% endif %} -->
+          </div>
+          <p class="description">{{ post.excerpt | strip_html}}</p>
+        {% break %}
+        {% endif %}
+      </div>
+    {% endfor %}
+    {% for post in site.posts %}
     <div class="unit whole single-post-excerpt">
-    	<h2><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h2>
-    	<div class="meta-info">
-    		<span class="meta"><time class="timeago postlist-meta" datetime="{{ post.date | date: "%Y-%m-%d" }}"><i class="fa fa-calendar"></i>{{ post.date | date: "%B %-d, %Y" }}</time></span>
-    		<!-- {% if post.tags and post.tags.size > 0 %}
-    			<div class="tags">
-    				Tagged:
-    				{% for tag in post.tags %}
-    				<span><i class="fa fa-tag"></i>{{ tag }}</span>
-    				{% endfor %}
-    			</div>
-    		{% endif %} -->
-    	</div>
-    	<p class="description">{{ post.excerpt | strip_html}}</p>
+        {% if post.tags contains "release" %}
+        {% else %}
+        <h2><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></h2>
+        <div class="meta-info">
+            <span class="meta"><time class="timeago postlist-meta" datetime="{{ post.date | date: "%Y-%m-%d" }}"><i class="fa fa-calendar"></i>{{ post.date | date: "%B %-d, %Y" }}</time></span>
+            <!-- {% if post.tags and post.tags.size > 0 %}
+                <div class="tags">
+                    Tagged:
+                    {% for tag in post.tags %}
+                    <span><i class="fa fa-tag"></i>{{ tag }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %} -->
+        </div>
+        <p class="description">{{ post.excerpt | strip_html}}</p>
+        {% endif %}
     </div>
     {% endfor %}
   </ul>
 
-  <!-- Pagination links -->
-  {% if paginator.total_pages > 1 %}
-     <div class="pagination">
-      {% if paginator.previous_page %}
-        <a href="{{site.baseurl}}{{ paginator.previous_page_path }}" class="previous">Previous</a>
-      {% else %}
-        <span class="previous">Previous</span>
-      {% endif %}
-      <span class="page_number ">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
-      {% if paginator.next_page %}
-        <a href="{{site.baseurl}}{{ paginator.next_page_path }}" class="next">Next</a>
-      {% else %}
-        <span class="next ">Next</span>
-      {% endif %}
-    </div>
-  {% endif %}
   <!-- <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p> -->
 
 </div>
