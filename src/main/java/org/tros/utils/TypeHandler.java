@@ -22,7 +22,7 @@ import org.tros.utils.converters.UtilsBeanFactory;
  */
 public final class TypeHandler {
 
-    public static final FastDateFormat DEFAULT_DATE_FORMAT = DateFormatUtils.ISO_DATETIME_FORMAT;
+    public static final FastDateFormat DEFAULT_DATE_FORMAT = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_FORMAT;
 
     /**
      * Calendar to string.
@@ -89,22 +89,19 @@ public final class TypeHandler {
     public static <T> T fromString(final Class<T> type, final String val) {
         T o = convert(type, val);
         if (o == null) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).warn("Cannot convert {0} to {1}", new Object[]{val, type.getName()});
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(TypeHandler.class).warn("Cannot convert {0} to {1}", new Object[]{val, type.getName()});
         }
         return o;
     }
 
     /**
-     * Convert object to String.
+     * Convert object to String. All objects convert to string.
      *
      * @param val
      * @return
      */
     public static String toString(final Object val) {
         String o = (String) convert(String.class, val);
-        if (o == null) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).warn("Cannot convert {0} to {1}", new Object[]{val, String.class.getName()});
-        }
         return o;
     }
 
@@ -118,10 +115,6 @@ public final class TypeHandler {
      */
     public static <T> T convert(Class<T> to, Object val) {
         Converter lookup = UtilsBeanFactory.getConverter(val.getClass(), to);
-        if (lookup != null) {
-            return lookup.convert(to, val);
-        }
-
-        return null;
+        return lookup.convert(to, val);
     }
 }

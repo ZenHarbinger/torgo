@@ -45,24 +45,6 @@ public class LexicalScope extends ScopeImpl implements Scope {
     }
 
     /**
-     * Check the lexical stack for a variable.
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public boolean has(String name) {
-        CodeBlock p = stack.get(0);
-        while (p != null) {
-            if (p.hasVariable(name)) {
-                return true;
-            }
-            p = p.getParent();
-        }
-        return false;
-    }
-
-    /**
      * Pop the current code block.
      */
     @Override
@@ -133,34 +115,6 @@ public class LexicalScope extends ScopeImpl implements Scope {
             cb = cb.getParent();
         }
         return null;
-    }
-
-    /**
-     * Check to see if a function is in the scope.
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public boolean hasFunction(String name) {
-        CodeBlock cb = stack.get(0);
-        while (cb != null) {
-            if (cb.hasFunction(name)) {
-                return true;
-            }
-            cb = cb.getParent();
-        }
-        return false;
-    }
-
-    /**
-     * Get the names of local variables.
-     *
-     * @return
-     */
-    @Override
-    public Collection<String> localVariables() {
-        return stack.get(0).localVariables();
     }
 
     /**

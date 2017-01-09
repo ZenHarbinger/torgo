@@ -46,7 +46,6 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
 ## Future
 
 - jvmBasic and Lisp
-- Register with file/mime types (.logo)
 
 ## Download and Install
 
@@ -64,11 +63,11 @@ Torgo currently supports logo; jvmBasic and lisp are in development.
 ```sh
 git clone https://github.com/ZenHarbinger/torgo.git
 cd torgo
-mvn -DskipTests clean package
+mvn clean package
 ```
 
 ## Run
 
 ```sh
-java -jar target/torgo-1.4.2.jar
+java -jar target/torgo-1.5.0.jar
 ```

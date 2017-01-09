@@ -70,6 +70,7 @@ public class TorgoMenuBarTest {
         LOGGER.info("torgoMenuBar");
         LexicalLogoController controller = (LexicalLogoController) TorgoToolkit.getController("lexical-logo");
         controller.run();
+        controller.newFile();
         Robot robot = null;
         try {
             robot = new Robot();

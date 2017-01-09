@@ -50,6 +50,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoToolkit;
@@ -221,15 +222,20 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         exportSvg.addActionListener((ActionEvent ae) -> {
             JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new FileNameExtensionFilter("Scalable Vector Graphic", "svg"));
             chooser.setMultiSelectionEnabled(false);
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
-            
+
             chooser.setVisible(true);
             int result = chooser.showSaveDialog(parent);
-            
+
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename = chooser.getSelectedFile().getPath();
+                String extension = ".svg";
+                if(!filename.endsWith(extension)) {
+                    filename = filename + extension;
+                }
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
                 if (Drawable.class.isAssignableFrom(canvas.getClass())) {
                     try (FileOutputStream fos = new FileOutputStream(new File(filename))) {
@@ -244,15 +250,21 @@ public final class LogoMenuBar extends TorgoMenuBar {
 
         exportGif.addActionListener((ActionEvent ae) -> {
             JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new FileNameExtensionFilter("Animated GIF Image", "gif"));
             chooser.setMultiSelectionEnabled(false);
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
-            
+
             chooser.setVisible(true);
             int result = chooser.showSaveDialog(parent);
-            
+
             if (result == JFileChooser.APPROVE_OPTION) {
-                final String filename = chooser.getSelectedFile().getPath();
+                String filename2 = chooser.getSelectedFile().getPath();
+                String extension = ".gif";
+                if(!filename2.endsWith(extension)) {
+                    filename2 = filename2 + extension;
+                }
+                final String filename = filename2;
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
                 Thread t = new Thread(() -> {
                     if (Drawable.class.isAssignableFrom(canvas.getClass())
@@ -272,15 +284,21 @@ public final class LogoMenuBar extends TorgoMenuBar {
         });
         exportPng.addActionListener((ActionEvent ae) -> {
             JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new FileNameExtensionFilter("PNG Image", "png"));
             chooser.setMultiSelectionEnabled(false);
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             chooser.setCurrentDirectory(new File(prefs.get("export-directory", ".")));
-            
+
             chooser.setVisible(true);
             int result = chooser.showSaveDialog(parent);
-            
+
             if (result == JFileChooser.APPROVE_OPTION) {
-                String filename = chooser.getSelectedFile().getPath();
+                String filename2 = chooser.getSelectedFile().getPath();
+                String extension = ".png";
+                if(!filename2.endsWith(extension)) {
+                    filename2 = filename2 + extension;
+                }
+                final String filename = filename2;
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
                 // retrieve image
                 if (BufferedImageProvider.class.isAssignableFrom(canvas.getClass())) {

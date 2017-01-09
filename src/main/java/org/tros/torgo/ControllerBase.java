@@ -15,7 +15,6 @@
  */
 package org.tros.torgo;
 
-import bibliothek.gui.dock.DefaultDockable;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CGrid;
 import bibliothek.gui.dock.common.CLocation;
@@ -40,6 +39,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -58,6 +58,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -170,15 +172,6 @@ public abstract class ControllerBase implements Controller {
     public static class TorgoSingleDockable extends DefaultSingleCDockable {
 
         public TorgoSingleDockable(String title, final Component panel) {
-            super(title);
-            super.setTitleText(title);
-            super.add(panel);
-        }
-    }
-
-    public static class TorgoDockable extends DefaultDockable {
-
-        public TorgoDockable(String title, final Component panel) {
             super(title);
             super.setTitleText(title);
             super.add(panel);
@@ -335,21 +328,12 @@ public abstract class ControllerBase implements Controller {
                                 org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex1);
                             }
                         }
-                    } /**
-                     * Take the result and perform UI notifications
-                     * back in the UI thread.
-                     */ );
+                    });
                 }
-            } /**
-             * Check in a separate thread to avoid blocking.
-             */ );
+            });
             t.setDaemon(true);
             t.start();
-        } /**
-         * Check for update.
-         *
-         * @param e
-         */ );
+        });
 
         helpMenu.add(aboutMenu);
         helpMenu.add(updateMenu);
@@ -442,12 +426,16 @@ public abstract class ControllerBase implements Controller {
         }
     }
 
+    protected String getWindowName() {
+        return this.getClass().getName();
+    }
+
     /**
      * Sets up the environment.
      */
     @Override
     public final void run() {
-        this.window = new NamedWindow(this.getClass().getName());
+        this.window = new NamedWindow(getWindowName());
         Main.loadIcon(this.window);
 
         initSwing();
@@ -478,22 +466,34 @@ public abstract class ControllerBase implements Controller {
 
     @Override
     public void openFile(File file) {
-        init();
-        if (file.exists()) {
-            StringWriter writer = new StringWriter();
-            try (FileInputStream fis = new FileInputStream(file)) {
-                IOUtils.copy(fis, writer, "utf-8");
-            } catch (IOException ex) {
-                init();
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
+        try {
+            openFile(new URL(file.toString()));
+        } catch (MalformedURLException ex) {
+            init();
+            if (file.exists()) {
+                StringWriter writer = new StringWriter();
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    IOUtils.copy(fis, writer, "utf-8");
+                } catch (IOException ex2) {
+                }
+                this.setSource(writer.toString());
             }
-            this.setSource(writer.toString());
+            //handle windows, jar, and linux path.  Not sure if necessary, but should work.
+            String toSplit = file.getAbsolutePath().replace("/", "|").replace("\\", "|");//.split("|");
+            String[] split = toSplit.split("\\|");
+            this.window.setTitle("Torgo [" + getLang() + "] - " + split[split.length - 1]);
+            filename = file.getAbsolutePath();
         }
-        //handle windows, jar, and linux path.  Not sure if necessary, but should work.
-        String toSplit = file.getAbsolutePath().replace("/", "|").replace("\\", "|");//.split("|");
-        String[] split = toSplit.split("\\|");
-        this.window.setTitle("Torgo [" + getLang() + "] - " + split[split.length - 1]);
-        filename = file.getAbsolutePath();
+    }
+
+    /**
+     * Get the current open file.
+     *
+     * @return
+     */
+    @Override
+    public File getFile() {
+        return filename == null ? null : new File(filename);
     }
 
     /**
@@ -512,10 +512,15 @@ public abstract class ControllerBase implements Controller {
             String toSplit = file.getFile().replace("/", "|").replace("\\", "|");//.split("|");
             String[] split = toSplit.split("\\|");
             this.window.setTitle("Torgo [" + getLang() + "] - " + split[split.length - 1]);
+            filename = file.toString();
         } catch (IOException ex) {
             init();
             org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
         }
+    }
+
+    protected FileFilter getFilter() {
+        return new FileNameExtensionFilter(getLang(), getLang());
     }
 
     /**
@@ -524,6 +529,7 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void openFile() {
         JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(getFilter());
         chooser.setMultiSelectionEnabled(false);
         java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(ControllerBase.class);
         chooser.setCurrentDirectory(new File(prefs.get(ControllerBase.class.getName() + "-working-directory", ".")));
@@ -541,6 +547,7 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void saveFileAs() {
         JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(getFilter());
         chooser.setMultiSelectionEnabled(false);
         java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(ControllerBase.class);
         chooser.setCurrentDirectory(new File(prefs.get(ControllerBase.class.getName() + "-working-directory", ".")));
@@ -549,6 +556,10 @@ public abstract class ControllerBase implements Controller {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().getPath();
+            String extension = "." + getLang();
+            if(!filename.endsWith(extension)) {
+                filename = filename + extension;
+            }
             prefs.put(ControllerBase.class.getName() + "-working-directory", chooser.getSelectedFile().getParent());
             saveFile();
         }
@@ -778,6 +789,11 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void setSource(String src) {
         torgoPanel.setSource(src);
+    }
+
+    @Override
+    public String getSource() {
+        return torgoPanel.getSource();
     }
 
     /**

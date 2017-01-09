@@ -18,10 +18,12 @@ package org.tros.torgo;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,7 +36,7 @@ import org.tros.utils.logging.Logging;
 public class MainTest {
 
     private final static Logger LOGGER;
-    
+
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(MainTest.class.getName());
@@ -65,32 +67,76 @@ public class MainTest {
     @Test
     public void testMain() {
         LOGGER.info("main");
-        String[] args = new String[]{"-i"};
-        Main.main(args);
+        ArrayList<String[]> tests = new ArrayList<>();
+        tests.add(new String[]{"-i"});
+        tests.add(new String[]{"-list"});
+        for (String[] args : tests) {
+            Main.main(args);
+        }
     }
 
     @Test
     public void testMainNewAndClose() {
         LOGGER.info("main");
-        String[] args = new String[]{"-l", "dynamic-logo"};
-        Main.main(args);
-        Robot robot = null;
-        try {
-            robot = new Robot();
-        } catch (AWTException ex) {
-            Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (robot == null) {
-            return;
-        }
+        ArrayList<String[]> tests = new ArrayList<>();
+        tests.add(new String[]{"-l", "dynamic-logo"});
+        tests.add(new String[]{"-lang", "lexical-logo"});
+        for (String[] args : tests) {
+            Main.main(args);
+            Robot robot = null;
+            try {
+                robot = new Robot();
+            } catch (AWTException ex) {
+                Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (robot == null) {
+                return;
+            }
 
-        robot.delay(3000);
+            robot.delay(3000);
 
-        //close app
-        pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
-        pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+            //close app
+            pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        }
+        Main.main(new String[]{"-l", "no-such-language"});
+    }
+
+    @Test
+    public void testMainFileAndClose() {
+        LOGGER.info("main");
+        ArrayList<String[]> tests = new ArrayList<>();
+        tests.add(new String[]{});
+        tests.add(new String[]{"test.lexical-logo"});
+        tests.add(new String[]{"test.no-such-logo"});
+        for (String[] args : tests) {
+            Main.main(args);
+            Robot robot = null;
+            try {
+                robot = new Robot();
+            } catch (AWTException ex) {
+                Logger.getLogger(MainTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (robot == null) {
+                return;
+            }
+
+            robot.delay(3000);
+
+            //close app
+            pressKey(robot, new int[]{KeyEvent.VK_ALT, KeyEvent.VK_F}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
+            pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
+        }
+    }
+
+    @Test
+    public void imageIcon() {
+        LOGGER.info("main");
+        assertNull(Main.getIcon("no.such.icon"));
     }
 
     void pressKey(Robot robot, int[] keys, int delay) {
@@ -99,7 +145,7 @@ public class MainTest {
             robot.delay(delay);
         }
         robot.delay(delay);
-        for (int key : keys) {
+        for (int key : keys) { 
             robot.keyRelease(key);
             robot.delay(delay);
         }

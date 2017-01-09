@@ -64,32 +64,28 @@ class ExpressionListener extends LogoBaseListener {
     private InterpreterValue mathExpression(InterpreterValue val1, InterpreterValue val2, String op) {
         double num1 = ((Number) val1.getValue()).doubleValue();
         double num2 = ((Number) val2.getValue()).doubleValue();
-        if (null != op) {
-            switch (op) {
-                case "-":
-                    num1 = num1 - num2;
-                    break;
-                case "+":
-                    num1 = num1 + num2;
-                    break;
-                case "*":
-                    num1 = num1 * num2;
-                    break;
-                case "%":
-                    num1 = num1 % num2;
-                    break;
-                case "/":
-                    num1 = num1 / num2;
-                    break;
-                case "\\":
-                    num1 = (int) (num1 / num2);
-                    break;
-                case "^":
-                    num1 = Math.pow(num1, num2);
-                    break;
-                default:
-                    break;
-            }
+        switch (op) {
+            case "-":
+                num1 = num1 - num2;
+                break;
+            case "+":
+                num1 = num1 + num2;
+                break;
+            case "*":
+                num1 = num1 * num2;
+                break;
+            case "%":
+                num1 = num1 % num2;
+                break;
+            case "/":
+                num1 = num1 / num2;
+                break;
+            case "\\":
+                num1 = (int) (num1 / num2);
+                break;
+            case "^":
+                num1 = Math.pow(num1, num2);
+                break;
         }
         return new InterpreterValue(NumberType.INSTANCE, num1);
     }

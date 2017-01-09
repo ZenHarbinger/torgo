@@ -7,14 +7,14 @@ comment:
   require_changes: false
 coverage:
   precision: 2
-  range:
-  - 70.0
-  - 100.0
+  range: "60...80"
   round: down
   status:
     changes: false
     patch: true
     project: true
+  ignore:
+    - .*/antlr/.*
 parsers:
   gcov:
     branch_detection:

@@ -71,6 +71,7 @@ public class CanvasColorTest {
         LOGGER.info("canvasColor");
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
+        controller.newFile();
         assertEquals("dynamic-logo", controller.getLang());
 
         Robot robot = null;

@@ -141,7 +141,7 @@ public class StackView implements InterpreterVisualization {
      */
     public class SliceWatchFrame extends JFrame implements StackViewFrame {
 
-        final private ScopeItem item;
+        final protected ScopeItem item;
 
         /**
          * Constructor.
@@ -289,6 +289,14 @@ public class StackView implements InterpreterVisualization {
     public String getName() {
         return StackView.class.getSimpleName();
     }
+    
+    public static class StackViewWindow extends NamedWindow {
+        
+        public StackViewWindow(String name, int width, int height) {
+            super(name, width, height);
+        }
+        
+    }
 
     /**
      * Called when executing.
@@ -351,7 +359,7 @@ public class StackView implements InterpreterVisualization {
             }
         });
 
-        window = new NamedWindow(name + "-" + this.getClass().getSimpleName(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        window = new StackViewWindow(name + "-" + this.getClass().getSimpleName(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
         window.setTitle(controller.getLang() + " - Stack View");
 
         window.setLayout(new BorderLayout());

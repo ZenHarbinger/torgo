@@ -1,7 +1,7 @@
 <project>
     <shortName>Torgo</shortName>
     <fullName>Torgo</fullName>
-    <version>1.4.2</version>
+    <version>1.5.0</version>
     <logoImage>src/main/resources/torgo-48x48.png</logoImage>
     <splashImage>src/main/resources/org/tros/images/splash.png</splashImage>
     <componentList>
@@ -47,6 +47,17 @@
                     <distributionFileList>
                         <distributionDirectory>
                             <origin>src/main/resources/torgo-128x128.ico</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Torgo File Icon</description>
+                    <destination>${installdir}</destination>
+                    <name>torgofile</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>torgo-file.ico</origin>
                         </distributionDirectory>
                     </distributionFileList>
                 </folder>
@@ -123,7 +134,7 @@
         <associateWindowsFileExtension>
             <extensions>.dynamic-logo</extensions>
             <friendlyName>Torgo Dynamic Logo File</friendlyName>
-            <icon>${installdir}\torgo-128x128.ico</icon>
+            <icon>${installdir}\torgo-file.ico</icon>
             <mimeType>text/x-dynamic-logo</mimeType>
             <progID>torgo.dynamic-logo.1</progID>
             <commandList>
@@ -139,7 +150,7 @@
         <associateWindowsFileExtension>
             <extensions>.lexical-logo</extensions>
             <friendlyName>Torgo Lexical Logo File</friendlyName>
-            <icon>${installdir}\torgo-128x128.ico</icon>
+            <icon>${installdir}\torgo-file.ico</icon>
             <mimeType>text/x-lexical-logo</mimeType>
             <progID>torgo.lexical-logo.1</progID>
             <commandList>

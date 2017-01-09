@@ -70,9 +70,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         turtleState.showTurtle = true;
         URL resource = ClassLoader.getSystemClassLoader().getResource("turtle.png");
         try {
-            if (resource != null) {
-                turtle = ImageIO.read(resource);
-            }
+            turtle = ImageIO.read(resource);
         } catch (IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
         }
@@ -104,7 +102,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
         draw(g2d, turtleState);
 
-        if (turtleState.showTurtle && turtle != null) {
+        if (turtleState.showTurtle) {
             double x = turtleState.penX - (turtle.getWidth() / 2.0);
             double y = turtleState.penY - (turtle.getHeight() / 2.0);
             AffineTransform translateInstance = AffineTransform.getRotateInstance(turtleState.angle + (Math.PI / 2.0), turtleState.penX, turtleState.penY);
@@ -122,10 +120,6 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
      */
     @Override
     public void draw(Graphics2D g2d, TurtleState turtleState) {
-        if (g2d == null) {
-            return;
-        }
-
         //since this list can be written to, do not swith to for-each
         for (int ii = 0; ii < queuedCommands.size(); ii++) {
             queuedCommands.get(ii).draw(g2d, turtleState);

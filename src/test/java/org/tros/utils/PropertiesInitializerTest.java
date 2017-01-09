@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Matthew Aguirre
+ * Copyright 2015-2016 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.torgo.interpreter.types;
+package org.tros.utils;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.tros.torgo.interpreter.InterpreterType;
+import org.tros.torgo.TorgoInfo;
 
 /**
  *
  * @author matta
  */
-public class BooleanTypeTest {
+public class PropertiesInitializerTest {
     
-    public BooleanTypeTest() {
+    public PropertiesInitializerTest() {
     }
     
     @BeforeClass
@@ -48,10 +49,16 @@ public class BooleanTypeTest {
     public void tearDown() {
     }
 
+    /**
+     * Test of canCopy method, of class PropertiesInitializer.
+     */
     @Test
-    public void testInstanceAccess() {
-        InterpreterType t = BooleanType.INSTANCE;
-        assertNotNull(t);
-        t.hashCode();
+    public void testCopy() {
+        TorgoInfo info = new TorgoInfo();
+        TorgoInfo info2 = (TorgoInfo)info.copy();
+        assertNotNull(info2);
+        Assert.assertNotEquals(info, info2);
+        info2.copy(info);
     }
+    
 }
