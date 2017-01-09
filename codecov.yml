@@ -14,7 +14,12 @@ coverage:
     patch: true
     project: true
   ignore:
+#auto-generated files
     - .*/antlr/.*
+#contrib files
+    - .*/org/tros/torgo/swing/JConsole.*
+    - .*/org/tros/torgo/viz/SpringUtilities.*
+    - .*/org/tros/utils/swing/JLinkButton.*
 parsers:
   gcov:
     branch_detection:
