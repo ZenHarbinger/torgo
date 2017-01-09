@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -82,11 +83,13 @@ public class StackViewTest {
 
     @Test
     public void stackViewLoggerTest() {
-        stackViewLoggerTest("dynamic-logo");
         stackViewLoggerTest("lexical-logo");
+        stackViewLoggerTest("dynamic-logo");
     }
+
     /**
      * Test of create method, of class TraceLogger.
+     *
      * @param lang
      */
     public void stackViewLoggerTest(String lang) {
@@ -105,13 +108,15 @@ public class StackViewTest {
             "logo/examples/antlr/tree2.txt"
         };
 
+        final AtomicBoolean foundStackWindow = new AtomicBoolean(false);
+        final AtomicBoolean bool2 = new AtomicBoolean(false);
+        final AtomicBoolean started = new AtomicBoolean(false);
+        final AtomicBoolean finished = new AtomicBoolean(false);
+
         for (String file : files) {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
             controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
 
-            final AtomicBoolean bool = new AtomicBoolean(false);
-            final AtomicBoolean started = new AtomicBoolean(false);
-            final AtomicBoolean finished = new AtomicBoolean(false);
             controller.addInterpreterListener(new InterpreterListener() {
                 @Override
                 public void started() {
@@ -135,7 +140,7 @@ public class StackViewTest {
                 public void currStatement(CodeBlock block, Scope scope) {
                     Window[] windows = Window.getWindows();
                     for (Window w : windows) {
-                        if (!bool.get() && StackViewWindow.class.isAssignableFrom(w.getClass())) {
+                        if (!bool2.get() && StackViewWindow.class.isAssignableFrom(w.getClass())) {
                             StackViewWindow svw = (StackViewWindow) w;
                             JRootPane jrp = (JRootPane) svw.getComponent(0);
                             JPanel contentPane = (JPanel) jrp.getContentPane();
@@ -147,7 +152,7 @@ public class StackViewTest {
                                     JList jlist = (JList) component.getComponent(0);
                                     DefaultListModel model = (DefaultListModel) jlist.getModel();
                                     if (model.size() >= 2) {
-                                        bool.set(true);
+                                        foundStackWindow.set(true);
                                         try {
                                             Point locationOnScreen = jlist.getLocationOnScreen();
                                             System.out.println(locationOnScreen);
@@ -160,7 +165,7 @@ public class StackViewTest {
                                             robot.mousePress(InputEvent.BUTTON1_MASK);
                                             robot.delay(10);
                                             robot.mouseRelease(InputEvent.BUTTON1_MASK);
-                                            robot.mouseMove(locationOnScreen.x + 100, locationOnScreen.y + 45);
+                                            robot.mouseMove(locationOnScreen.x + 100, locationOnScreen.y + 60);
                                         } catch (AWTException ex) {
                                             Logger.getLogger(StackViewTest.class.getName()).log(Level.SEVERE, null, ex);
                                         }
@@ -168,10 +173,13 @@ public class StackViewTest {
                                 }
                             }
                         }
-                        if (SliceWatchFrame.class.isAssignableFrom(w.getClass())) {
-                            SliceWatchFrame swf = (SliceWatchFrame) w;
-                            System.out.println(swf.item.getToolTip());
-                            controller.stopInterpreter();
+                        if (!bool2.get() && SliceWatchFrame.class.isAssignableFrom(w.getClass())) {
+                            try {
+                                SliceWatchFrame swf = (SliceWatchFrame) w;
+                                System.out.println(swf.item.getToolTip());
+                                bool2.set(true);
+                            } catch(Exception ex) {
+                            }
                         }
                     }
                 }
@@ -180,6 +188,10 @@ public class StackViewTest {
             controller.startInterpreter();
 
             try {
+                while (!foundStackWindow.get() || !bool2.get()) {
+                    Thread.sleep(10);
+                }
+                controller.stopInterpreter();
                 while (!finished.get()) {
                     Thread.sleep(10);
                 }
@@ -188,7 +200,8 @@ public class StackViewTest {
             }
             assertTrue(started.get());
             assertTrue(finished.get());
-            assertTrue(bool.get());
+            assertTrue(foundStackWindow.get());
+            assertTrue(bool2.get());
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
