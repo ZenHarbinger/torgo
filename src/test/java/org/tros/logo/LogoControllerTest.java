@@ -24,7 +24,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.logo.swing.DrawListener;
+import org.tros.logo.swing.Drawable;
 import org.tros.logo.swing.LogoMenuBar;
+import org.tros.logo.swing.LogoPanel;
 import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
@@ -64,6 +67,14 @@ public class LogoControllerTest {
     public void tearDown() {
     }
 
+    public static class DrawListenerImpl implements DrawListener {
+
+        @Override
+        public void drawn(Drawable sender) {
+        }
+        
+    }
+    
     @Test
     public void testLexicalScoping() {
         LOGGER.info("lexicalScopingTest");
@@ -73,6 +84,11 @@ public class LogoControllerTest {
         LexicalLogoController controller = (LexicalLogoController) TorgoToolkit.getController("lexical-logo");
         controller.run();
         controller.newFile();
+        LogoPanel createCanvas = (LogoPanel) controller.createCanvas(null);
+        DrawListenerImpl dl = new DrawListenerImpl();
+        createCanvas.addListener(dl);
+        createCanvas.removeListener(dl);
+        
         assertEquals("lexical-logo", controller.getLang());
         String[] files = new String[]{
             "logo/examples/antlr/dynamic_scope.txt",
@@ -186,6 +202,10 @@ public class LogoControllerTest {
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
         controller.run();
         controller.newFile();
+        LogoPanel createCanvas = (LogoPanel) controller.createCanvas(null);
+        DrawListenerImpl dl = new DrawListenerImpl();
+        createCanvas.addListener(dl);
+        createCanvas.removeListener(dl);
         assertEquals("dynamic-logo", controller.getLang());
         String[] files = new String[]{
             "logo/examples/antlr/dynamic_scope.txt",
