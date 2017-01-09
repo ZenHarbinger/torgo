@@ -70,6 +70,9 @@ public class UtilsBeanFactoryTest {
         result = UtilsBeanFactory.getConverter(Date2.class, String.class);
         String res = result.convert(String.class, Calendar.getInstance().getTime());
         assertNotNull(result);
+
+        result = UtilsBeanFactory.getConverter(Date2.class, UtilsBeanFactoryTest.class);
+        assertNull(result);
     }
     
 }
