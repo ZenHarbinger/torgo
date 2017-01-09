@@ -107,26 +107,6 @@ public class DynamicScope extends ScopeImpl implements Scope {
     }
 
     /**
-     * Check to see if the variable exists at the current scoping level.
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public boolean has(String name) {
-        boolean ret = false;
-
-        for (HashMap<String, InterpreterValue> map : scope) {
-            if (map.containsKey(name)) {
-                ret = true;
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    /**
      * Defines a new variable at the top level of the scope. Once the current
      * level of the scope is popped off, it will no longer be available.
      *

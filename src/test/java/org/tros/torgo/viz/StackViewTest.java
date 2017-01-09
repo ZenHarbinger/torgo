@@ -80,16 +80,21 @@ public class StackViewTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of create method, of class TraceLogger.
-     */
     @Test
     public void stackViewLoggerTest() {
+        stackViewLoggerTest("dynamic-logo");
+        stackViewLoggerTest("lexical-logo");
+    }
+    /**
+     * Test of create method, of class TraceLogger.
+     * @param lang
+     */
+    public void stackViewLoggerTest(String lang) {
         LOGGER.info("stackViewLoggerTest");
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", true);
-        DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
+        DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController(lang);
         controller.run();
         controller.newFile();
         assertEquals("dynamic-logo", controller.getLang());

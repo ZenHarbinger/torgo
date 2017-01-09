@@ -45,24 +45,6 @@ public class LexicalScope extends ScopeImpl implements Scope {
     }
 
     /**
-     * Check the lexical stack for a variable.
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public boolean has(String name) {
-        CodeBlock p = stack.get(0);
-        while (p != null) {
-            if (p.hasVariable(name)) {
-                return true;
-            }
-            p = p.getParent();
-        }
-        return false;
-    }
-
-    /**
      * Pop the current code block.
      */
     @Override

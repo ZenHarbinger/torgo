@@ -49,14 +49,6 @@ public interface Scope {
     InterpreterValue get(String name);
 
     /**
-     * Check to see if the specified variable exists in the current scope.
-     *
-     * @param name
-     * @return
-     */
-    boolean has(String name);
-
-    /**
      * Pop a code block off of the scope.
      *
      * @return
