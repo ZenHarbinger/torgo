@@ -318,8 +318,9 @@ public class MailboxTest {
             }
         }
         AtomicBoolean wa2 = new AtomicBoolean(false);
+        Mailbox<Integer> ints2 = new Mailbox<>();
         Thread read2 = new Thread(() -> {
-            ArrayList<Integer> messages = ints.getMessages();
+            ArrayList<Integer> messages = ints2.getMessages();
             assertNull(messages);
             wa2.set(true);
         });
