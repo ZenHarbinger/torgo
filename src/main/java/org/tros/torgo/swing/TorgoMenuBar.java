@@ -23,8 +23,6 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -126,7 +124,7 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
             add(setupFileMenu());
             add(setupInterpreterMenu());
         } catch (IOException ex) {
-            Logger.getLogger(TorgoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoMenuBar.class).warn(null, ex);
         }
     }
 

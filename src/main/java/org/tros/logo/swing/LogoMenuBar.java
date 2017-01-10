@@ -41,8 +41,6 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
@@ -204,7 +202,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
         try {
             ImageIO.write(bi, "png", outputfile);
         } catch (IOException ex) {
-            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
         }
     }
 
@@ -233,7 +231,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename = chooser.getSelectedFile().getPath();
                 String extension = ".svg";
-                if(!filename.endsWith(extension)) {
+                if (!filename.endsWith(extension)) {
                     filename = filename + extension;
                 }
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
@@ -261,7 +259,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename2 = chooser.getSelectedFile().getPath();
                 String extension = ".gif";
-                if(!filename2.endsWith(extension)) {
+                if (!filename2.endsWith(extension)) {
                     filename2 = filename2 + extension;
                 }
                 final String filename = filename2;
@@ -272,9 +270,9 @@ public final class LogoMenuBar extends TorgoMenuBar {
                         try {
                             generateGIF(((Drawable) canvas).cloneDrawable(), (BufferedImageProvider) canvas, filename);
                         } catch (SVGGraphics2DIOException ex) {
-                            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+                            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
                         } catch (IOException ex) {
-                            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+                            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
                         }
                     }
                 });
@@ -295,7 +293,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename2 = chooser.getSelectedFile().getPath();
                 String extension = ".png";
-                if(!filename2.endsWith(extension)) {
+                if (!filename2.endsWith(extension)) {
                     filename2 = filename2 + extension;
                 }
                 final String filename = filename2;

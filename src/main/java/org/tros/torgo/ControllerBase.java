@@ -46,8 +46,6 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -265,9 +263,9 @@ public abstract class ControllerBase implements Controller {
                 dockControl.readXML(elem);
                 loaded = true;
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex);
             }
         }
         if (!loaded) {
@@ -277,7 +275,7 @@ public abstract class ControllerBase implements Controller {
                 dockControl.readXML(elem);
                 loaded = true;
             } catch (IOException | java.util.NoSuchElementException ex) {
-                Logger.getLogger(ControllerBase.class.getName()).log(Level.WARNING, "Layout Error: Auto-generating: {0}", ex.getMessage());
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn("Layout Error: Auto-generating: {0}", ex.getMessage());
             }
         }
         if (!loaded) {
@@ -297,7 +295,7 @@ public abstract class ControllerBase implements Controller {
             ImageIcon ico = new ImageIcon(resources.nextElement());
             aboutMenu.setIcon(ico);
         } catch (IOException ex) {
-            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex);
         }
 
         aboutMenu.addActionListener((ActionEvent ae) -> {
@@ -319,7 +317,7 @@ public abstract class ControllerBase implements Controller {
                                 Desktop.getDesktop().browse(uri);
                             }
                         } catch (IOException | URISyntaxException ex) {
-                            Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                            org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex);
                         } catch (UnsupportedOperationException ex) {
                             ProcessBuilder pb = new ProcessBuilder("xdg-open", UpdateChecker.UPDATE_ADDRESS);
                             try {
@@ -371,7 +369,7 @@ public abstract class ControllerBase implements Controller {
                     String layoutFile = PathUtils.getApplicationConfigDirectory(TorgoInfo.INSTANCE) + java.io.File.separatorChar + getLang() + "-layout.xml";
                     dockControl.writeXML(new java.io.File(layoutFile));
                 } catch (IOException ex) {
-                    Logger.getLogger(ControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex);
                 }
             }
 
@@ -557,7 +555,7 @@ public abstract class ControllerBase implements Controller {
         if (result == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().getPath();
             String extension = "." + getLang();
-            if(!filename.endsWith(extension)) {
+            if (!filename.endsWith(extension)) {
                 filename = filename + extension;
             }
             prefs.put(ControllerBase.class.getName() + "-working-directory", chooser.getSelectedFile().getParent());

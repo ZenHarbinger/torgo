@@ -23,8 +23,6 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.SplashScreen;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -60,7 +58,7 @@ class MainSplash {
                 // initialize the status info
                 splashText("Starting");
             } catch (IOException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(MainSplash.class).warn(null, ex);
             }
         }
     }
