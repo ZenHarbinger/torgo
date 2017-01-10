@@ -29,6 +29,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.tros.utils.ImageUtils;
 
 /**
  * Main entry point for torgo
@@ -134,13 +135,6 @@ public class Main {
     }
 
     public static ImageIcon getIcon(String path) {
-        try {
-            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(path);
-            ImageIcon ico = new ImageIcon(resources.nextElement());
-            return ico;
-        } catch (NoSuchElementException | IOException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).warn(null, ex);
-        }
-        return null;
+        return ImageUtils.createImageIcon(path, path);
     }
 }
