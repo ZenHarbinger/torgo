@@ -145,6 +145,8 @@ public class Main {
             mySplash.update();
         }
     }
+    
+    private static final String DEFAULT_LANGUAGE = "dynamic-logo";
 
     /**
      * Entry Point
@@ -155,10 +157,11 @@ public class Main {
         //initialize the logging
         splashInit();
         org.tros.utils.logging.Logging.initLogging(TorgoInfo.INSTANCE);
+        org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class);
         Options options = new Options();
         options.addOption("l", "lang", true, "Open using the desired language. [default is 'logo']");
         options.addOption("i", "list", false, "List available languages.");
-        String lang = "dynamic-logo";
+        String lang = DEFAULT_LANGUAGE;
         final String fileArgument = args.length - 1 >= 0 ? args[args.length - 1] : null;
         String ext = null;
         boolean quit = false;
@@ -186,7 +189,7 @@ public class Main {
                 quit = true;
             }
         } catch (ParseException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
+            logger.fatal(null, ex);
         }
 
         //currently commented out for working with snapd
@@ -195,7 +198,7 @@ public class Main {
                 //set look and feel (laf) to that of the system.
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).fatal(null, ex);
+                logger.fatal(null, ex);
             }
         }
 
@@ -205,6 +208,11 @@ public class Main {
         }
         if (ext != null && TorgoToolkit.getToolkits().contains(ext)) {
             lang = ext;
+        }
+        if (!TorgoToolkit.getToolkits().contains(lang)) {
+            logger.warn("Could not load: {0}", lang);
+            logger.warn("Loading Default: {0}", DEFAULT_LANGUAGE);
+            lang = DEFAULT_LANGUAGE;
         }
         final String controlLang = lang;
 
