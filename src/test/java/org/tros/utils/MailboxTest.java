@@ -280,7 +280,7 @@ public class MailboxTest {
 
         final Mailbox<Integer> ints2 = new Mailbox<>();
         read = new Thread(() -> {
-            ArrayList<Integer> messages = ints.getMessages();
+            ArrayList<Integer> messages = ints2.getMessages();
             assertNull(messages);
         });
         read.start();
