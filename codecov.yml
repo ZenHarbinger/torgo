@@ -16,6 +16,7 @@ coverage:
   ignore:
 #auto-generated files
     - .*/antlr/.*
+    - .*/rsyntax/.*
 #contrib files
     - .*/org/tros/torgo/swing/JConsole.*
     - .*/org/tros/torgo/viz/SpringUtilities.*
