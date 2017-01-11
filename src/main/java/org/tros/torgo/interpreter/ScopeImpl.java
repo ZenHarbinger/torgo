@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 Matthew Aguirre
+ * Copyright 2015-2017 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,37 +30,6 @@ abstract class ScopeImpl implements Scope {
     protected final ArrayList<CodeBlock> stack = new ArrayList<>();
     private final EventListenerSupport<ScopeListener> listeners
             = EventListenerSupport.create(ScopeListener.class);
-
-    /**
-     * Look at the current code block.
-     *
-     * @return
-     */
-    @Override
-    public CodeBlock peek() {
-        return stack.get(0);
-    }
-
-    /**
-     * Look at an inner code block.
-     *
-     * @param val
-     * @return
-     */
-    @Override
-    public CodeBlock peek(int val) {
-        return stack.get(val);
-    }
-
-    /**
-     * The size of the scope.
-     *
-     * @return
-     */
-    @Override
-    public int size() {
-        return stack.size();
-    }
 
     /**
      * Add a scope listener.

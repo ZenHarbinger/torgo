@@ -167,6 +167,42 @@
             </build>
         </profile>
         <profile>
+            <id>forMac</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>build.app</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>sh.tak.appbundler</groupId>
+                        <artifactId>appbundle-maven-plugin</artifactId>
+                        <version>1.2.0</version>
+                        <configuration>
+                            <mainClass>org.tros.torgo.Main</mainClass>
+                            <generateDiskImageFile>true</generateDiskImageFile>
+                            <iconFile>torgo.icns</iconFile>
+                            <jvmVersion>1.8+</jvmVersion>
+                            <version>${project.version}</version>
+                            <jvmOptions>Dsun.java2d.opengl=true</jvmOptions>
+                            <NSHumanReadableCopyright>2015-2017 Matthew Aguirre</NSHumanReadableCopyright>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>bundle</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>forWindows</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -219,6 +255,18 @@
     </profiles>
     <build>
         <plugins>
+<!--            <plugin>
+                <groupId>de.jflex</groupId>
+                <artifactId>maven-jflex-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -240,6 +288,7 @@
                         <param>org.apache.commons.beanutils.Converter</param>
                         <param>org.tros.utils.converters.ConverterRegister</param>
                         <param>org.tros.torgo.InterpreterVisualization</param>
+                        <param>org.fife.ui.rsyntaxtextarea.TokenMakerRegistration</param>
                     </services>
                 </configuration>
                 <executions>
@@ -312,7 +361,7 @@
                         <format>html</format>
                         <format>xml</format>
                     </formats>
-                    <check />
+                    <check/>
                 </configuration>
             </plugin>
         </plugins>
@@ -360,7 +409,7 @@
             <version>4.6</version>
         </dependency>
         <dependency>
-            <groupId>com.fifesoft</groupId>
+            <groupId>org.tros</groupId>
             <artifactId>rsyntaxtextarea</artifactId>
             <version>2.6.0</version>
         </dependency>
@@ -369,7 +418,24 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.3</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>${jackson.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-svggen</artifactId>
@@ -410,6 +476,7 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <INSTALL_BUILDER_HOME>/opt/installbuilder-16.11.1</INSTALL_BUILDER_HOME>
         <LAUNCH4J_HOME>/opt/launch4j</LAUNCH4J_HOME>
-        <skipTests>false</skipTests>
+        <jackson.version>2.7.5</jackson.version>
+        <skipTests>true</skipTests>
     </properties>
 </project>

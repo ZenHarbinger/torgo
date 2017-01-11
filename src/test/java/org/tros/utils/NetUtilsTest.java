@@ -79,6 +79,9 @@ public class NetUtilsTest {
         LOGGER.info("getIPs");
         InetAddress[] result = NetUtils.getIPs();
         assertNotNull(result);
+        InetAddress[] result2 = NetUtils.getIPs();
+        assertNotNull(result2);
+        assertArrayEquals(result2, result);
     }
     
 }

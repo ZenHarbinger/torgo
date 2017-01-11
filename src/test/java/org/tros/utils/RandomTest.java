@@ -35,7 +35,7 @@ import org.tros.utils.logging.Logging;
 public class RandomTest {
 
     private final static Logger LOGGER;
-    
+
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(RandomTest.class.getName());
@@ -500,11 +500,11 @@ public class RandomTest {
     @Test
     public void testGetRandom_Collection_Collection() {
         LOGGER.info("getRandom");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
-        ArrayList<Integer> pulled = new ArrayList<Integer>();
+        ArrayList<Integer> pulled = new ArrayList<>();
         while (pulled.size() != coll.size()) {
             Integer result = org.tros.utils.Random.getRandom(coll);
             if (!pulled.contains(result)) {
@@ -519,7 +519,7 @@ public class RandomTest {
     @Test
     public void testGetRandom_3args_1() {
         LOGGER.info("getRandom");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 2; ii++) {
             coll.add(ii);
         }
@@ -533,7 +533,7 @@ public class RandomTest {
     @Test
     public void testGetRandom_Collection_3args_1() {
         LOGGER.info("getRandom");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
@@ -551,9 +551,73 @@ public class RandomTest {
      * Test of getRandom method, of class Random.
      */
     @Test
+    public void testDiscreteDouble() {
+        LOGGER.info("discrete double[]");
+
+        double[] discrete1 = new double[]{0.1, 0.2, 0.3, 0.4};
+        double[] discrete2 = new double[]{-0.1, 0.2, 0.3, 0.4};
+        double[] discrete3 = new double[]{0.1, 0.2, 0.3, 0.4, 0.5};
+
+        org.tros.utils.Random.discrete(discrete1);
+        boolean thrown = false;
+        try {
+            org.tros.utils.Random.discrete(discrete2);
+        } catch (IllegalArgumentException ex) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        thrown = false;
+        try {
+            org.tros.utils.Random.discrete(discrete3);
+        } catch (IllegalArgumentException ex) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
+
+    /**
+     * Test of getRandom method, of class Random.
+     */
+    @Test
+    public void testDiscreteInt() {
+        LOGGER.info("discrete int[]");
+
+        int[] discrete1 = new int[]{1, 2, 3, 4};
+        int[] discrete2 = new int[]{0};
+        int[] discrete3 = new int[]{Integer.MAX_VALUE, 1};
+        int[] discrete4 = new int[]{-1, 1, 2};
+
+        org.tros.utils.Random.discrete(discrete1);
+        boolean thrown = false;
+        try {
+            org.tros.utils.Random.discrete(discrete2);
+        } catch (IllegalArgumentException ex) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        thrown = false;
+        try {
+            org.tros.utils.Random.discrete(discrete3);
+        } catch (IllegalArgumentException ex) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        thrown = false;
+        try {
+            org.tros.utils.Random.discrete(discrete4);
+        } catch (IllegalArgumentException ex) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
+
+    /**
+     * Test of getRandom method, of class Random.
+     */
+    @Test
     public void testGetRandom_int() {
         LOGGER.info("getRandom");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
@@ -573,16 +637,16 @@ public class RandomTest {
     @Test
     public void testGetRandomNotInList_Collection_Collection() {
         LOGGER.info("getRandomNotInList");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
-        ArrayList<Integer> not = new ArrayList<Integer>();
+        ArrayList<Integer> not = new ArrayList<>();
         for (int ii = 0; ii < 50; ii++) {
             not.add(ii);
         }
 
-        ArrayList<Integer> pulled = new ArrayList<Integer>();
+        ArrayList<Integer> pulled = new ArrayList<>();
         while (pulled.size() < coll.size() - not.size()) {
             Integer randomNotInList = org.tros.utils.Random.getRandomNotInList(coll, not);
             if (!pulled.contains(randomNotInList)) {
@@ -597,16 +661,16 @@ public class RandomTest {
     @Test
     public void testGetRandomNotInList_3args() {
         LOGGER.info("getRandomNotInList");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
-        ArrayList<Integer> not = new ArrayList<Integer>();
+        ArrayList<Integer> not = new ArrayList<>();
         for (int ii = 0; ii < 50; ii++) {
             not.add(ii);
         }
 
-        ArrayList<Integer> pulled = new ArrayList<Integer>();
+        ArrayList<Integer> pulled = new ArrayList<>();
         while (pulled.size() < coll.size() - not.size()) {
             Integer randomNotInList = org.tros.utils.Random.getRandomNotInList(new Random(), coll, not);
             if (!pulled.contains(randomNotInList)) {
@@ -621,7 +685,7 @@ public class RandomTest {
     @Test
     public void testGetRandom_Collection_Not() {
         LOGGER.info("getRandom");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 2; ii++) {
             coll.add(ii);
         }
@@ -635,7 +699,7 @@ public class RandomTest {
     @Test
     public void testGetRandom_Random_Collection() {
         LOGGER.info("getRandom");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
@@ -943,13 +1007,21 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_ObjectArr() {
-        LOGGER.info("shuffle");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        LOGGER.info("shuffle Object[]");
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
         Object[] a = (Object[]) coll.toArray(new Integer[]{});
         org.tros.utils.Random.shuffle(a);
+
+        boolean thrown = false;
+        try {
+            org.tros.utils.Random.shuffle((Object[]) null);
+        } catch (NullPointerException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
     }
 
     /**
@@ -957,12 +1029,20 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_doubleArr() {
-        LOGGER.info("shuffle");
+        LOGGER.info("shuffle double[]");
         double[] arr = new double[100];
         for (int ii = 0; ii < 100; ii++) {
             arr[ii] = ii;
         }
         org.tros.utils.Random.shuffle(arr);
+
+        boolean thrown = false;
+        try {
+            org.tros.utils.Random.shuffle((double[]) null);
+        } catch (NullPointerException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
     }
 
     /**
@@ -970,15 +1050,20 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_intArr() {
-        LOGGER.info("shuffle");
-        LOGGER.info("shuffle");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        LOGGER.info("shuffle int[]");
+        int[] arr = new int[100];
         for (int ii = 0; ii < 100; ii++) {
-            coll.add(ii);
+            arr[ii] = ii;
         }
-        Object[] a = (Object[]) coll.toArray(new Integer[]{});
-        org.tros.utils.Random.shuffle(a, 25, 75);
+        org.tros.utils.Random.shuffle(arr);
 
+        boolean thrown = false;
+        try {
+            org.tros.utils.Random.shuffle((int[]) null);
+        } catch (NullPointerException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
     }
 
     /**
@@ -986,26 +1071,86 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_3args_1() {
-        LOGGER.info("shuffle");
-        ArrayList<Integer> coll = new ArrayList<Integer>();
+        LOGGER.info("shuffle Object[] 3");
+        ArrayList<Integer> coll = new ArrayList<>();
         for (int ii = 0; ii < 100; ii++) {
             coll.add(ii);
         }
         Object[] a = (Object[]) coll.toArray(new Integer[]{});
         org.tros.utils.Random.shuffle(a, 25, 75);
-    }
+
+        boolean thrown = false;
+        try {
+            org.tros.utils.Random.shuffle((Object[]) null, 0, 1);
+        } catch (NullPointerException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+
+        thrown = false;
+        try {
+            org.tros.utils.Random.shuffle(a, -1, a.length - 1);
+        } catch (IndexOutOfBoundsException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        thrown = false;
+        try {
+            org.tros.utils.Random.shuffle(a, a.length - 1, 0);
+        } catch (IndexOutOfBoundsException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        thrown = false;
+        try {
+            org.tros.utils.Random.shuffle(a, 0, a.length);
+        } catch (IndexOutOfBoundsException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);    }
 
     /**
      * Test of shuffle method, of class Random.
      */
     @Test
     public void testShuffle_3args_2() {
-        LOGGER.info("shuffle");
+        LOGGER.info("shuffle double[] 3");
         double[] arr = new double[100];
         for (int ii = 0; ii < 100; ii++) {
             arr[ii] = ii;
         }
         org.tros.utils.Random.shuffle(arr, 25, 75);
+
+        boolean thrown = false;
+        try {
+            org.tros.utils.Random.shuffle((double[]) null, 0, 1);
+        } catch (NullPointerException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+
+
+        thrown = false;
+        try {
+            org.tros.utils.Random.shuffle(arr, -1, arr.length - 1);
+        } catch (IndexOutOfBoundsException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        thrown = false;
+        try {
+            org.tros.utils.Random.shuffle(arr, arr.length - 1, 0);
+        } catch (IndexOutOfBoundsException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        thrown = false;
+        try {
+            org.tros.utils.Random.shuffle(arr, 0, arr.length);
+        } catch (IndexOutOfBoundsException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
     }
 
     /**
@@ -1013,11 +1158,41 @@ public class RandomTest {
      */
     @Test
     public void testShuffle_3args_3() {
-        LOGGER.info("shuffle");
+        LOGGER.info("shuffle int[] 3");
         int[] arr = new int[100];
         for (int ii = 0; ii < 100; ii++) {
             arr[ii] = ii;
         }
         org.tros.utils.Random.shuffle(arr, 25, 75);
+
+        boolean thrown = false;
+        try {
+            org.tros.utils.Random.shuffle((int[]) null, 0, 1);
+        } catch (NullPointerException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+
+        thrown = false;
+        try {
+            org.tros.utils.Random.shuffle(arr, -1, arr.length - 1);
+        } catch (IndexOutOfBoundsException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        thrown = false;
+        try {
+            org.tros.utils.Random.shuffle(arr, arr.length - 1, 0);
+        } catch (IndexOutOfBoundsException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+        thrown = false;
+        try {
+            org.tros.utils.Random.shuffle(arr, 0, arr.length);
+        } catch (IndexOutOfBoundsException npe) {
+            thrown = true;
+        }
+        assertTrue(thrown);
     }
 }

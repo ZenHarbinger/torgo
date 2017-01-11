@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 Matthew Aguirre
+ * Copyright 2015-2017 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,6 +70,9 @@ public class UtilsBeanFactoryTest {
         result = UtilsBeanFactory.getConverter(Date2.class, String.class);
         String res = result.convert(String.class, Calendar.getInstance().getTime());
         assertNotNull(result);
+
+        result = UtilsBeanFactory.getConverter(Date2.class, UtilsBeanFactoryTest.class);
+        assertNull(result);
     }
     
 }

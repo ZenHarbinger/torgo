@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 Matthew Aguirre
+ * Copyright 2015-2017 Matthew Aguirre
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,12 +75,8 @@ class LogoFunction extends LogoBlock implements CodeFunction {
 
         listeners.fire().currStatement(this, scope);
 
-        ReturnValue ret = null;
-        try {
-            ret = super.process(scope);
-        } catch (Exception ex) {
-            LOGGER.warn(MessageFormat.format("{0} -> {1}", ex.getClass().getName(), ex.getMessage()), ex);
-        }
+        ReturnValue ret = super.process(scope);
+
         if (ret != null && ret.getResult() != ProcessResult.HALT) {
             //NOT HALT!
             ret = new ReturnValue(ret.getType(), ret.getValue(), ProcessResult.SUCCESS);

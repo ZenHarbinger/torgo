@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -81,6 +81,7 @@ public class MainTest {
         ArrayList<String[]> tests = new ArrayList<>();
         tests.add(new String[]{"-l", "dynamic-logo"});
         tests.add(new String[]{"-lang", "lexical-logo"});
+        tests.add(new String[]{"-lang", "no-such-language"});
         for (String[] args : tests) {
             Main.main(args);
             Robot robot = null;
@@ -107,10 +108,10 @@ public class MainTest {
     public void testMainFileAndClose() {
         LOGGER.info("main");
         ArrayList<String[]> tests = new ArrayList<>();
+        tests.add(new String[]{});
         tests.add(new String[]{"test.lexical-logo"});
         tests.add(new String[]{"test.no-such-logo"});
         for (String[] args : tests) {
-            Main.main(args);
             Main.main(args);
             Robot robot = null;
             try {
@@ -135,13 +136,7 @@ public class MainTest {
     @Test
     public void imageIcon() {
         LOGGER.info("main");
-        boolean thrown = false;
-        try {
-            Main.getIcon("no.such.icon");
-        } catch (java.util.NoSuchElementException ex) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        assertNull(Main.getIcon("no.such.icon"));
     }
 
     void pressKey(Robot robot, int[] keys, int delay) {
@@ -150,7 +145,7 @@ public class MainTest {
             robot.delay(delay);
         }
         robot.delay(delay);
-        for (int key : keys) {
+        for (int key : keys) { 
             robot.keyRelease(key);
             robot.delay(delay);
         }

@@ -16,6 +16,9 @@
 package org.tros.utils;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -33,7 +36,7 @@ import org.tros.utils.logging.Logging;
 public class MailboxTest {
 
     private final static Logger LOGGER;
-    
+
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(MailboxTest.class.getName());
@@ -64,7 +67,7 @@ public class MailboxTest {
     @Test
     public void testSize() {
         LOGGER.info("size");
-        Mailbox<Integer> ints = new Mailbox<Integer>();
+        Mailbox<Integer> ints = new Mailbox<>();
         int size = 10;
         for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
@@ -79,7 +82,7 @@ public class MailboxTest {
     @Test
     public void testHalt() {
         LOGGER.info("halt");
-        Mailbox<Integer> ints = new Mailbox<Integer>();
+        Mailbox<Integer> ints = new Mailbox<>();
         int size = 10;
         for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
@@ -93,7 +96,7 @@ public class MailboxTest {
     @Test
     public void testAddMessage() {
         LOGGER.info("addMessage");
-        Mailbox<Integer> ints = new Mailbox<Integer>();
+        Mailbox<Integer> ints = new Mailbox<>();
         int size = 10;
         for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
@@ -108,7 +111,7 @@ public class MailboxTest {
     @Test
     public void testGetMessage() {
         LOGGER.info("getMessage");
-        Mailbox<Integer> ints = new Mailbox<Integer>();
+        Mailbox<Integer> ints = new Mailbox<>();
         int size = 10;
         for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
@@ -128,7 +131,7 @@ public class MailboxTest {
     @Test
     public void testGetMessages() {
         LOGGER.info("getMessages");
-        Mailbox<Integer> ints = new Mailbox<Integer>();
+        Mailbox<Integer> ints = new Mailbox<>();
         int size = 10;
         for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
@@ -147,7 +150,7 @@ public class MailboxTest {
     @Test
     public void testIsHalted() {
         LOGGER.info("isHalted");
-        Mailbox<Integer> ints = new Mailbox<Integer>();
+        Mailbox<Integer> ints = new Mailbox<>();
         int size = 10;
         for (int ii = 0; ii < size; ii++) {
             ints.addMessage(ii);
@@ -158,7 +161,177 @@ public class MailboxTest {
         assertEquals(size, messages.size());
 
         ints.halt();
+        ints.halt();
         assertTrue(ints.isHalted());
+
+        ints.addMessage(4);
+
+        messages = ints.getMessages();
+        assertNull(messages);
+        Integer message = ints.getMessage();
+        assertNull(message);
     }
 
+    @Test
+    public void testThreadedGetMessages() {
+        LOGGER.info("threaded getMessages()");
+        Mailbox<Integer> ints = new Mailbox<>();
+        AtomicInteger counter = new AtomicInteger(0);
+        AtomicBoolean go = new AtomicBoolean(true);
+        Thread write = new Thread(() -> {
+            while (go.get()) {
+                ints.addMessage(counter.incrementAndGet());
+            }
+        });
+        Thread read = new Thread(() -> {
+            while (go.get()) {
+                ints.getMessages();
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+        read.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        write.start();
+        try {
+            Thread.sleep(1000);
+
+            go.set(false);
+
+            read.join();
+            write.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Test
+    public void testThreadedGetMessage() {
+        LOGGER.info("threaded getMessage()");
+        Mailbox<Integer> ints = new Mailbox<>();
+        AtomicInteger counter = new AtomicInteger(0);
+        AtomicBoolean go = new AtomicBoolean(true);
+        Thread write = new Thread(() -> {
+            while (go.get()) {
+                ints.addMessage(counter.incrementAndGet());
+            }
+        });
+        Thread read = new Thread(() -> {
+            while (go.get()) {
+                ints.getMessage();
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+        read.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        write.start();
+        try {
+            Thread.sleep(1000);
+
+            go.set(false);
+
+            read.join();
+            write.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Test
+    public void haltTest() {
+        LOGGER.info("threaded haltTest");
+        final Mailbox<Integer> ints = new Mailbox<>();
+        Thread read = new Thread(() -> {
+            Integer message = ints.getMessage();
+            assertNull(message);
+        });
+        read.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ints.halt();
+
+        try {
+            read.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        final Mailbox<Integer> ints2 = new Mailbox<>();
+        read = new Thread(() -> {
+            ArrayList<Integer> messages = ints2.getMessages();
+            assertNull(messages);
+        });
+        read.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ints2.halt();
+
+        try {
+            read.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Test
+    public void haltTest2() {
+        LOGGER.info("threaded haltTest2");
+        final Mailbox<Integer> ints = new Mailbox<>();
+        AtomicBoolean wa = new AtomicBoolean(false);
+        Thread read = new Thread(() -> {
+            Integer message = ints.getMessage();
+            assertNull(message);
+            wa.set(true);
+        });
+        read.start();
+        read.interrupt();
+        while (!wa.get()) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        AtomicBoolean wa2 = new AtomicBoolean(false);
+        Mailbox<Integer> ints2 = new Mailbox<>();
+        Thread read2 = new Thread(() -> {
+            ArrayList<Integer> messages = ints2.getMessages();
+            assertNull(messages);
+            wa2.set(true);
+        });
+        read2.start();
+        read2.interrupt();
+        while (!wa2.get()) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MailboxTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }
