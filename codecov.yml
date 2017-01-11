@@ -14,7 +14,15 @@ coverage:
     patch: true
     project: true
   ignore:
+#auto-generated files
     - .*/antlr/.*
+    - .*/rsyntax/.*
+#contrib files
+    - .*/org/tros/torgo/swing/JConsole.*
+    - .*/org/tros/torgo/viz/SpringUtilities.*
+    - .*/org/tros/utils/swing/JLinkButton.*
+#literally untestable in junit
+    - .*/org/tros/torgo/MainSplash.*
 parsers:
   gcov:
     branch_detection:

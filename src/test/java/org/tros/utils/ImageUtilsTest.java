@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.utils.converters;
+package org.tros.utils;
 
-import java.util.Calendar;
-import java.util.Date;
-import org.apache.commons.beanutils.Converter;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.utils.TypeHandler;
+import org.tros.torgo.Main;
 
 /**
  *
  * @author matta
  */
-public class UtilsBeanFactoryTest {
+public class ImageUtilsTest {
     
-    public UtilsBeanFactoryTest() {
+    public ImageUtilsTest() {
     }
     
     @BeforeClass
@@ -50,29 +49,39 @@ public class UtilsBeanFactoryTest {
     @After
     public void tearDown() {
     }
-    
-    public static class Date2 extends Date{
-        
+
+    /**
+     * Test of createImageIcon method, of class ImageUtils.
+     */
+    @Test
+    public void testCreateImageIcon() {
+        ImageIcon createImageIcon = ImageUtils.createImageIcon(Main.IMAGE_ICON_CLASS_PATH, Main.IMAGE_ICON_CLASS_PATH);
+        assertNotNull(createImageIcon);
+        createImageIcon = ImageUtils.createImageIcon("no-such-img", "no-such-img");
+        assertNull(createImageIcon);
     }
 
     /**
-     * Test of getConverter method, of class UtilsBeanFactory.
+     * Test of createImage method, of class ImageUtils.
      */
     @Test
-    public void testGetConverter() {
-        System.out.println("getConverter");
-        Class from = TypeHandler.class;
-        Class to = Integer.class;
-        Converter expResult = null;
-        Converter result = UtilsBeanFactory.getConverter(from, to);
-        assertNotNull(result);
+    public void testCreateImage() {
+        Image createImage = ImageUtils.createImage(Main.IMAGE_ICON_CLASS_PATH);
+        assertNotNull(createImage);
+    }
 
-        result = UtilsBeanFactory.getConverter(Date2.class, String.class);
-        String res = result.convert(String.class, Calendar.getInstance().getTime());
-        assertNotNull(result);
+    /**
+     * Test of imageToBufferedImage method, of class ImageUtils.
+     */
+    @Test
+    public void testImageToBufferedImage() {
+    }
 
-        result = UtilsBeanFactory.getConverter(Date2.class, UtilsBeanFactoryTest.class);
-        assertNull(result);
+    /**
+     * Test of makeColorTransparent method, of class ImageUtils.
+     */
+    @Test
+    public void testMakeColorTransparent() {
     }
     
 }

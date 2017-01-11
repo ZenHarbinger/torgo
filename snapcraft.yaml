@@ -16,7 +16,7 @@ parts:
     plugin: maven
     source: .
     maven-options:
-      - -DskipTests
+      - -DskipTests=true
     stage-packages:
       - fontconfig-config
       - default-jdk

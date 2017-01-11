@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -87,7 +85,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
             ImageIcon imageIcon = new ImageIcon(resources.nextElement());
             gutter.setBookmarkIcon(imageIcon);
         } catch (IOException ex) {
-            Logger.getLogger(TorgoUserInputPanel.class.getName()).log(Level.SEVERE, null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).warn(null, ex);
         }
         gutter.setBookmarkingEnabled(true);
 
@@ -97,7 +95,6 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         //TABS
         tabs = new JTabbedPane();
         tabs.add(name, inputTab);
-
 
         outputTextArea = new JConsole();
         outputTextArea.setEditable(editable);
