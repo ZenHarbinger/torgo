@@ -49,7 +49,7 @@ public class BasicController extends ControllerBase {
     @Override
     protected TorgoTextConsole createConsole(Controller app) {
         if (panel == null) {
-            panel = new TorgoUserInputPanel(app, "Basic", true, "text/vb");
+            panel = new TorgoUserInputPanel(app, "Basic", true, "text/basic");
         }
 
         return panel;
