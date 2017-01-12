@@ -19,13 +19,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -54,6 +61,11 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
 
     private final LayeredHighlighter.LayerPainter defaultHighlighter;
     private final LayeredHighlighter.LayerPainter breakpointHighlighter;
+
+    private final float DEFAULT_FONT_SIZE = 12;
+    private final int FONT_INCREMENT_SIZE = 1;
+    private final int FONT_MAX_SIZE = 50;
+    private final int FONT_MIN_SIZE = 5;
 
     /**
      * Constructor.
@@ -89,15 +101,99 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         }
         gutter.setBookmarkingEnabled(true);
 
-        inputTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoUserInputPanel.class);
+
+        outputTextArea = new JConsole();
+        outputTextArea.setEditable(editable);
+        //get default pref
+        //update prefs
+
+        Font font = new Font(Font.MONOSPACED, Font.PLAIN, (int) prefs.getFloat("font-size", DEFAULT_FONT_SIZE));
+        inputTextArea.setFont(font);
+        outputTextArea.setFont(font);
+
+        JPopupMenu popupMenu = inputTextArea.getPopupMenu();
+
+        inputTextArea.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent ke) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent ke) {
+                if ((ke.getKeyCode() == KeyEvent.VK_EQUALS)
+                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK))
+                        || (ke.getKeyCode() == KeyEvent.VK_ADD)
+                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK))) {
+                    Font font1 = inputTextArea.getFont();
+                    float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
+                    if (size <= FONT_MAX_SIZE) {
+                        font1 = font1.deriveFont(size);
+                        inputTextArea.setFont(font1);
+                        outputTextArea.setFont(font1);
+                        prefs.putFloat("font-size", size);
+                    }
+                }
+                if ((ke.getKeyCode() == KeyEvent.VK_MINUS || ke.getKeyCode() == KeyEvent.VK_SUBTRACT)
+                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
+                    Font font1 = inputTextArea.getFont();
+                    float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
+                    if (size >= FONT_MIN_SIZE) {
+                        font1 = font1.deriveFont(size);
+                        inputTextArea.setFont(font1);
+                        outputTextArea.setFont(font1);
+                        prefs.putFloat("font-size", size);
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+            }
+        });
+
+        JMenuItem jmi1 = new JMenuItem("Zoom In");
+        jmi1.addActionListener((ActionEvent ae) -> {
+            Font font1 = inputTextArea.getFont();
+            float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
+            if (size <= FONT_MAX_SIZE) {
+                font1 = font1.deriveFont(size);
+                inputTextArea.setFont(font1);
+                outputTextArea.setFont(font1);
+                prefs.putFloat("font-size", size);
+            }
+        });
+        JMenuItem jmi2 = new JMenuItem("Zoom Out");
+        jmi2.addActionListener((ActionEvent ae) -> {
+            Font font1 = inputTextArea.getFont();
+            float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
+            if (size >= FONT_MIN_SIZE) {
+                font1 = font1.deriveFont(size);
+                inputTextArea.setFont(font1);
+                outputTextArea.setFont(font1);
+                prefs.putFloat("font-size", size);
+            }
+        });
+        JMenuItem jmi3 = new JMenuItem("Zoom Reset");
+        jmi3.addActionListener((ActionEvent ae) -> {
+            Font font1 = inputTextArea.getFont();
+            font1 = font1.deriveFont((float) DEFAULT_FONT_SIZE);
+            inputTextArea.setFont(font1);
+            outputTextArea.setFont(font1);
+            prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
+        });
+        jmi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, InputEvent.CTRL_MASK));
+        jmi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, InputEvent.CTRL_MASK));
+//        jmi3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, InputEvent.CTRL_MASK));
+        popupMenu.add(jmi1);
+        popupMenu.add(jmi2);
+        popupMenu.add(jmi3);
+
         inputTab.add(scrollPane, BorderLayout.CENTER);
 
         //TABS
         tabs = new JTabbedPane();
         tabs.add(name, inputTab);
-
-        outputTextArea = new JConsole();
-        outputTextArea.setEditable(editable);
 
         controller.addInterpreterListener(new InterpreterListener() {
 

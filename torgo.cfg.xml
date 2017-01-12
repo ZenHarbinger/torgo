@@ -1,7 +1,7 @@
-<launch4jConfig>
+    <launch4jConfig>
     <dontWrapJar>true</dontWrapJar>
     <headerType>gui</headerType>
-    <jar>torgo-1.5.0.jar</jar>
+    <jar>torgo-1.6.0.jar</jar>
     <outfile>torgo.exe</outfile>
     <errTitle>Torgo</errTitle>
     <priority>normal</priority>
@@ -18,12 +18,12 @@
         <opt>-Dsun.java2d.opengl=true</opt>
     </jre>
     <versionInfo>
-        <fileVersion>1.5.0.0</fileVersion>
-        <txtFileVersion>1.5.0</txtFileVersion>
-        <fileDescription>Torgo 1.5.0</fileDescription>
+        <fileVersion>1.6.0.0</fileVersion>
+        <txtFileVersion>1.6.0</txtFileVersion>
+        <fileDescription>Torgo 1.6.0</fileDescription>
         <copyright>Matthew Aguire</copyright>
-        <productVersion>1.5.0.0</productVersion>
-        <txtProductVersion>1.5.0</txtProductVersion>
+        <productVersion>1.6.0.0</productVersion>
+        <txtProductVersion>1.6.0</txtProductVersion>
         <productName>Torgo</productName>
         <companyName>tros</companyName>
         <internalName>torgo</internalName>
