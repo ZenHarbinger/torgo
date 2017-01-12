@@ -212,15 +212,15 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
             }
 
         };
-//        inputTextArea.addMouseWheelListener((MouseWheelEvent mwe) -> {
-//            if (ctrlDown.get()) {
-//                if (mwe.getPreciseWheelRotation() < 0) {
-//                    increase.run();
-//                } else {
-//                    decrease.run();
-//                }
-//            }
-//        });
+        scrollPane.addMouseWheelListener((MouseWheelEvent mwe) -> {
+            if (ctrlDown.get()) {
+                if (mwe.getPreciseWheelRotation() < 0) {
+                    increase.run();
+                } else {
+                    decrease.run();
+                }
+            }
+        });
         inputTextArea.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent me) {
