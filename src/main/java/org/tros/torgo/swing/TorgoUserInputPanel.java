@@ -23,10 +23,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -66,6 +69,10 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
     private final int FONT_INCREMENT_SIZE = 1;
     private final int FONT_MAX_SIZE = 50;
     private final int FONT_MIN_SIZE = 5;
+
+    private JMenuItem jmi1;
+    private JMenuItem jmi2;
+    private JMenuItem jmi3;
 
     /**
      * Constructor.
@@ -112,8 +119,6 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         inputTextArea.setFont(font);
         outputTextArea.setFont(font);
 
-        JPopupMenu popupMenu = inputTextArea.getPopupMenu();
-
         inputTextArea.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent ke) {
@@ -145,6 +150,14 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
                         prefs.putFloat("font-size", size);
                     }
                 }
+                if ((ke.getKeyCode() == KeyEvent.VK_0 || ke.getKeyCode() == KeyEvent.VK_NUMPAD0)
+                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
+                    Font font1 = inputTextArea.getFont();
+                    font1 = font1.deriveFont(DEFAULT_FONT_SIZE);
+                    inputTextArea.setFont(font1);
+                    outputTextArea.setFont(font1);
+                    prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
+                }
             }
 
             @Override
@@ -152,7 +165,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
             }
         });
 
-        JMenuItem jmi1 = new JMenuItem("Zoom In");
+        jmi1 = new JMenuItem("Zoom In");
         jmi1.addActionListener((ActionEvent ae) -> {
             Font font1 = inputTextArea.getFont();
             float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
@@ -163,7 +176,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
                 prefs.putFloat("font-size", size);
             }
         });
-        JMenuItem jmi2 = new JMenuItem("Zoom Out");
+        jmi2 = new JMenuItem("Zoom Out");
         jmi2.addActionListener((ActionEvent ae) -> {
             Font font1 = inputTextArea.getFont();
             float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
@@ -174,7 +187,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
                 prefs.putFloat("font-size", size);
             }
         });
-        JMenuItem jmi3 = new JMenuItem("Zoom Reset");
+        jmi3 = new JMenuItem("Zoom Reset");
         jmi3.addActionListener((ActionEvent ae) -> {
             Font font1 = inputTextArea.getFont();
             font1 = font1.deriveFont((float) DEFAULT_FONT_SIZE);
@@ -184,10 +197,50 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         });
         jmi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, InputEvent.CTRL_MASK));
         jmi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, InputEvent.CTRL_MASK));
-//        jmi3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, InputEvent.CTRL_MASK));
-        popupMenu.add(jmi1);
-        popupMenu.add(jmi2);
-        popupMenu.add(jmi3);
+        jmi3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, InputEvent.CTRL_MASK));
+        final AtomicBoolean added = new AtomicBoolean(false);
+        final Runnable r = () -> {
+
+            if (!added.get()) {
+                added.set(true);
+                JPopupMenu popupMenu = inputTextArea.getPopupMenu();
+                popupMenu.add(jmi1);
+                popupMenu.add(jmi2);
+                popupMenu.add(jmi3);
+            }
+
+        };
+        inputTextArea.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                r.run();
+                inputTextArea.removeMouseListener(this);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+                r.run();
+                inputTextArea.removeMouseListener(this);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                r.run();
+                inputTextArea.removeMouseListener(this);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+                r.run();
+                inputTextArea.removeMouseListener(this);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+                r.run();
+                inputTextArea.removeMouseListener(this);
+            }
+        });
 
         inputTab.add(scrollPane, BorderLayout.CENTER);
 
