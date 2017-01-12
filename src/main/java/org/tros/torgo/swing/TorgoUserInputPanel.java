@@ -119,6 +119,36 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         inputTextArea.setFont(font);
         outputTextArea.setFont(font);
 
+        Runnable increase = () -> {
+            Font font1 = inputTextArea.getFont();
+            float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
+            if (size <= FONT_MAX_SIZE) {
+                font1 = font1.deriveFont(size);
+                inputTextArea.setFont(font1);
+                outputTextArea.setFont(font1);
+                prefs.putFloat("font-size", size);
+            }
+        };
+
+        Runnable decrease = () -> {
+            Font font1 = inputTextArea.getFont();
+            float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
+            if (size >= FONT_MIN_SIZE) {
+                font1 = font1.deriveFont(size);
+                inputTextArea.setFont(font1);
+                outputTextArea.setFont(font1);
+                prefs.putFloat("font-size", size);
+            }
+        };
+
+        Runnable reset = () -> {
+            Font font1 = inputTextArea.getFont();
+            font1 = font1.deriveFont(DEFAULT_FONT_SIZE);
+            inputTextArea.setFont(font1);
+            outputTextArea.setFont(font1);
+            prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
+        };
+
         inputTextArea.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent ke) {
@@ -130,33 +160,15 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
                         && (ke.getModifiers() == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK))
                         || (ke.getKeyCode() == KeyEvent.VK_ADD)
                         && (ke.getModifiers() == (KeyEvent.CTRL_MASK))) {
-                    Font font1 = inputTextArea.getFont();
-                    float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
-                    if (size <= FONT_MAX_SIZE) {
-                        font1 = font1.deriveFont(size);
-                        inputTextArea.setFont(font1);
-                        outputTextArea.setFont(font1);
-                        prefs.putFloat("font-size", size);
-                    }
+                    increase.run();
                 }
                 if ((ke.getKeyCode() == KeyEvent.VK_MINUS || ke.getKeyCode() == KeyEvent.VK_SUBTRACT)
                         && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
-                    Font font1 = inputTextArea.getFont();
-                    float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
-                    if (size >= FONT_MIN_SIZE) {
-                        font1 = font1.deriveFont(size);
-                        inputTextArea.setFont(font1);
-                        outputTextArea.setFont(font1);
-                        prefs.putFloat("font-size", size);
-                    }
+                    decrease.run();
                 }
                 if ((ke.getKeyCode() == KeyEvent.VK_0 || ke.getKeyCode() == KeyEvent.VK_NUMPAD0)
                         && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
-                    Font font1 = inputTextArea.getFont();
-                    font1 = font1.deriveFont(DEFAULT_FONT_SIZE);
-                    inputTextArea.setFont(font1);
-                    outputTextArea.setFont(font1);
-                    prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
+                    reset.run();
                 }
             }
 
@@ -167,33 +179,15 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
 
         jmi1 = new JMenuItem("Zoom In");
         jmi1.addActionListener((ActionEvent ae) -> {
-            Font font1 = inputTextArea.getFont();
-            float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
-            if (size <= FONT_MAX_SIZE) {
-                font1 = font1.deriveFont(size);
-                inputTextArea.setFont(font1);
-                outputTextArea.setFont(font1);
-                prefs.putFloat("font-size", size);
-            }
+            increase.run();
         });
         jmi2 = new JMenuItem("Zoom Out");
         jmi2.addActionListener((ActionEvent ae) -> {
-            Font font1 = inputTextArea.getFont();
-            float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
-            if (size >= FONT_MIN_SIZE) {
-                font1 = font1.deriveFont(size);
-                inputTextArea.setFont(font1);
-                outputTextArea.setFont(font1);
-                prefs.putFloat("font-size", size);
-            }
+            decrease.run();
         });
         jmi3 = new JMenuItem("Zoom Reset");
         jmi3.addActionListener((ActionEvent ae) -> {
-            Font font1 = inputTextArea.getFont();
-            font1 = font1.deriveFont((float) DEFAULT_FONT_SIZE);
-            inputTextArea.setFont(font1);
-            outputTextArea.setFont(font1);
-            prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
+            reset.run();
         });
         jmi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, InputEvent.CTRL_MASK));
         jmi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, InputEvent.CTRL_MASK));
