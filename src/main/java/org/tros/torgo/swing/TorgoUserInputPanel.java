@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -149,6 +150,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
             prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
         };
 
+        final AtomicBoolean ctrlDown = new AtomicBoolean(false);
         inputTextArea.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent ke) {
@@ -156,6 +158,9 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
 
             @Override
             public void keyPressed(KeyEvent ke) {
+                if((ke.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
+                    ctrlDown.set(true);
+                }
                 if ((ke.getKeyCode() == KeyEvent.VK_EQUALS)
                         && (ke.getModifiers() == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK))
                         || (ke.getKeyCode() == KeyEvent.VK_ADD)
@@ -174,6 +179,9 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
 
             @Override
             public void keyReleased(KeyEvent ke) {
+                if(ke.getModifiers() == 0) {
+                    ctrlDown.set(false);
+                }
             }
         });
 
@@ -204,6 +212,15 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
             }
 
         };
+        inputTextArea.addMouseWheelListener((MouseWheelEvent mwe) -> {
+            if (ctrlDown.get()) {
+                if (mwe.getPreciseWheelRotation() < 0) {
+                    increase.run();
+                } else {
+                    decrease.run();
+                }
+            }
+        });
         inputTextArea.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent me) {
