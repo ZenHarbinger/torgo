@@ -72,9 +72,9 @@ public class LogoControllerTest {
         @Override
         public void drawn(Drawable sender) {
         }
-        
+
     }
-    
+
     @Test
     public void testLexicalScoping() {
         LOGGER.info("lexicalScopingTest");
@@ -88,27 +88,27 @@ public class LogoControllerTest {
         DrawListenerImpl dl = new DrawListenerImpl();
         createCanvas.addListener(dl);
         createCanvas.removeListener(dl);
-        
+
         assertEquals("lexical-logo", controller.getLang());
         String[] files = new String[]{
             "logo/examples/antlr/dynamic_scope.txt",
-            "logo/examples/antlr/example1.txt",
-            "logo/examples/antlr/example2.txt",
-            "logo/examples/antlr/example3.txt",
-            "logo/examples/antlr/example4.txt",
-            "logo/examples/antlr/expression.txt",
+            //            "logo/examples/antlr/example1.txt",
+            //            "logo/examples/antlr/example2.txt",
+            //            "logo/examples/antlr/example3.txt",
+            //            "logo/examples/antlr/example4.txt",
+            //            "logo/examples/antlr/expression.txt",
             //            "logo/examples/antlr/flower.txt",
-            "logo/examples/antlr/fractal.txt",
-            "logo/examples/antlr/make.txt",
-            "logo/examples/antlr/octagon.txt",
+            //            "logo/examples/antlr/fractal.txt",
+            //            "logo/examples/antlr/make.txt",
+            //            "logo/examples/antlr/octagon.txt",
             "logo/examples/antlr/procedure1.txt",
             "logo/examples/antlr/procedure2.txt",
             "logo/examples/antlr/random.txt",
             "logo/examples/antlr/recursive1.txt",
             "logo/examples/antlr/recursive2.txt",
-            "logo/examples/antlr/repeat.txt",
-            "logo/examples/antlr/spiral2.txt",
-            "logo/examples/antlr/spiral.txt",
+            //            "logo/examples/antlr/repeat.txt",
+            //            "logo/examples/antlr/spiral2.txt",
+            //            "logo/examples/antlr/spiral.txt",
             //            "logo/examples/antlr/tree2.txt",
             //            "logo/examples/antlr/tree.txt",
             //            "logo/examples/tortue/box.logo",
@@ -208,24 +208,24 @@ public class LogoControllerTest {
         createCanvas.removeListener(dl);
         assertEquals("dynamic-logo", controller.getLang());
         String[] files = new String[]{
-            "logo/examples/antlr/dynamic_scope.txt",
-            "logo/examples/antlr/example1.txt",
-            "logo/examples/antlr/example2.txt",
-            "logo/examples/antlr/example3.txt",
-            "logo/examples/antlr/example4.txt",
-            "logo/examples/antlr/expression.txt",
+            //            "logo/examples/antlr/dynamic_scope.txt",
+            //            "logo/examples/antlr/example1.txt",
+            //            "logo/examples/antlr/example2.txt",
+            //            "logo/examples/antlr/example3.txt",
+            //            "logo/examples/antlr/example4.txt",
+            //            "logo/examples/antlr/expression.txt",
             //            "logo/examples/antlr/flower.txt",
-            "logo/examples/antlr/fractal.txt",
-            "logo/examples/antlr/make.txt",
-            "logo/examples/antlr/octagon.txt",
+            //            "logo/examples/antlr/fractal.txt",
+            //            "logo/examples/antlr/make.txt",
+            //            "logo/examples/antlr/octagon.txt",
             "logo/examples/antlr/procedure1.txt",
             "logo/examples/antlr/procedure2.txt",
             "logo/examples/antlr/random.txt",
             "logo/examples/antlr/recursive1.txt",
             "logo/examples/antlr/recursive2.txt",
-            "logo/examples/antlr/repeat.txt",
-            "logo/examples/antlr/spiral2.txt",
-            "logo/examples/antlr/spiral.txt",
+            //            "logo/examples/antlr/repeat.txt",
+            //            "logo/examples/antlr/spiral2.txt",
+            //            "logo/examples/antlr/spiral.txt",
             //            "logo/examples/antlr/tree2.txt",
             //            "logo/examples/antlr/tree.txt",
             //            "logo/examples/tortue/box.logo",
