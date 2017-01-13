@@ -13,52 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tros.utils;
+package org.tros.logo.swing;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.tros.torgo.TorgoInfo;
 
 /**
  *
  * @author matta
  */
-public class PropertiesInitializerTest {
-    
-    public PropertiesInitializerTest() {
+public class LogoPanelTest {
+
+    public LogoPanelTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
 
+    private static class DrawListenerImpl implements DrawListener {
+
+        @Override
+        public void drawn(Drawable sender) {
+        }
+    }
+
     /**
-     * Test of canCopy method, of class PropertiesInitializer.
+     * Test of addListener method, of class LogoPanel.
      */
     @Test
-    public void testCopy() {
-        TorgoInfo info = new TorgoInfo();
-        TorgoInfo info2 = (TorgoInfo)info.copy();
-        assertNotNull(info2);
-        Assert.assertNotEquals(info, info2);
-        info2.copy(info);
+    public void testAddRemoveListener() {
+        LogoPanel panel = new LogoPanel(null);
+        DrawListener listener = new DrawListenerImpl();
+        panel.addListener(listener);
+        panel.removeListener(listener);
     }
-    
 }
