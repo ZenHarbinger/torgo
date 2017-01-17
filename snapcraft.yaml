@@ -24,7 +24,7 @@ parts:
       - fonts-ipafont-gothic
     stage:
       - -lib/x86_64-linux-gnu/libdbus-1**
-    snap:
+    prime:
       - -lib/x86_64-linux-gnu/libdbus-1**
 #    after: [desktop-glib-only]
     organize:
