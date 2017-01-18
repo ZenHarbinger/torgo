@@ -3,7 +3,7 @@ Version=1.0
 Name=Torgo
 GenericName=Torgo
 Comment=Logo Interpreter
-Exec=java -Dsun.java2d.opengl=true -jar /opt/extras.ubuntu.com/torgo/torgo-1.6.0.jar %f
+Exec=java -Dsun.java2d.opengl=true -jar /opt/extras.ubuntu.com/torgo/torgo-1.7.0.jar %f
 TryExec=
 Icon=/opt/extras.ubuntu.com/torgo/torgo-64x64.ico
 Terminal=false
