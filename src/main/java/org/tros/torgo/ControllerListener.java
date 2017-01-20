@@ -20,45 +20,6 @@ package org.tros.torgo;
  * @author matta
  */
 public interface ControllerListener {
-//
-//    /**
-//     * Initialize the GUI back to reset state.
-//     */
-//    void onNewFile();
-//
-//    /**
-//     * Open a file.
-//     */
-//    void onOpenFile();
-//
-//    /**
-//     * Open a specified file.
-//     *
-//     * @param file
-//     */
-//    void onOpenFile(File file);
-//
-//    /**
-//     * Open a specified location based on URL.
-//     *
-//     * @param file
-//     */
-//    void onOpenFile(URL file);
-//
-//    /**
-//     * Print canvas.
-//     */
-//    void onPrintCanvas();
-//
-//    /**
-//     * Save file.
-//     */
-//    void onSaveFile();
-//
-//    /**
-//     * Save file as.
-//     */
-//    void onSaveFileAs();
 
     /**
      * Start Interpreter.
@@ -90,8 +51,4 @@ public interface ControllerListener {
      */
     void onResumeInterpreter();
 
-//    /**
-//     * Close the application/controller.
-//     */
-//    void onClose();
 }

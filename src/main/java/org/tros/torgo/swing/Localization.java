@@ -15,21 +15,35 @@
  */
 package org.tros.torgo.swing;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Localization {
 
     private static ResourceBundle resources;
+    private static String lang;
 
     static {
+        Locale currentLocale = Locale.getDefault();
+        lang = currentLocale.getLanguage();
+        setLang(lang);
+    }
+
+    public static void setLang(String lang) {
+        lang = lang.toLowerCase();
         try {
-            resources = ResourceBundle.getBundle("LocalizedStrings");
-        } catch (Exception e) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Localization.class).fatal(null, e);
+            resources = ResourceBundle.getBundle(lang + "_LocalizedStrings");
+            Localization.lang = lang;
+        } catch (java.util.MissingResourceException e) {
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(Localization.class).warn("Language not supported: {0}", lang);
         }
     }
 
     public static String getLocalizedString(String key) {
-        return resources != null ? resources.getString(key) : null;
+        return resources != null && resources.containsKey(key) ? resources.getString(key) : key;
+    }
+
+    public static String getLang() {
+        return lang.toLowerCase();
     }
 }

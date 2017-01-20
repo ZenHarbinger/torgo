@@ -27,6 +27,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.tros.utils.ImageUtils;
 import org.tros.utils.logging.Logging;
 
 /**
@@ -136,7 +137,7 @@ public class MainTest {
     @Test
     public void imageIcon() {
         LOGGER.info("main");
-        assertNull(Main.getIcon("no.such.icon"));
+        assertNull(ImageUtils.getIcon("no.such.icon"));
     }
 
     void pressKey(Robot robot, int[] keys, int delay) {

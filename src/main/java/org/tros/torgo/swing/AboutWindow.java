@@ -59,6 +59,22 @@ public class AboutWindow extends JDialog {
      */
     public static final String APACHE_LICENSE_ADDRESS = "http://www.apache.org/licenses/LICENSE-2.0";
 
+    public static final void goToURI(String address) {
+        try {
+            URI uri = new URI(address);
+            Desktop.getDesktop().browse(uri);
+        } catch (URISyntaxException | IOException ex) {
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+        } catch (UnsupportedOperationException ex) {
+            ProcessBuilder pb = new ProcessBuilder("xdg-open", address);
+            try {
+                pb.start();
+            } catch (IOException ex1) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
+            }
+        }
+    }
+
     /**
      * Constructor.
      */
@@ -74,36 +90,12 @@ public class AboutWindow extends JDialog {
         //create copyright/apache link button
         JLinkButton apacheButton = new JLinkButton();
         apacheButton.addActionListener((ActionEvent ae) -> {
-            try {
-                URI uri = new URI(APACHE_LICENSE_ADDRESS);
-                Desktop.getDesktop().browse(uri);
-            } catch (URISyntaxException | IOException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-            } catch (UnsupportedOperationException ex) {
-                ProcessBuilder pb = new ProcessBuilder("xdg-open", APACHE_LICENSE_ADDRESS);
-                try {
-                    pb.start();
-                } catch (IOException ex1) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-                }
-            }
+            goToURI(APACHE_LICENSE_ADDRESS);
         });
         //create torgo/source link button
         JLinkButton torgoButton = new JLinkButton();
         torgoButton.addActionListener((ActionEvent ae) -> {
-            try {
-                URI uri = new URI(TORGO_ADDRESS);
-                Desktop.getDesktop().browse(uri);
-            } catch (URISyntaxException | IOException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-            } catch (UnsupportedOperationException ex) {
-                ProcessBuilder pb = new ProcessBuilder("xdg-open", TORGO_ADDRESS);
-                try {
-                    pb.start();
-                } catch (IOException ex1) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-                }
-            }
+            goToURI(TORGO_ADDRESS);
         });
 
         //Set window properties.
@@ -177,12 +169,13 @@ public class AboutWindow extends JDialog {
                     button.setText("Update Available");
                 }
             } /**
-             * Once the value has been received from on-line, update the
-             * UI.
-             */ );
+             * Once the value has been received from on-line, update the UI.
+             */
+            );
         } /**
          * Put the check in a new thread to avoid blocking UI.
-         */ );
+         */
+        );
         t.setDaemon(true);
 
         /**
@@ -226,19 +219,7 @@ public class AboutWindow extends JDialog {
 
         updateArea.add(button);
         button.addActionListener((ActionEvent e) -> {
-            try {
-                URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
-                Desktop.getDesktop().browse(uri);
-            } catch (URISyntaxException | IOException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-            } catch (UnsupportedOperationException ex) {
-                ProcessBuilder pb = new ProcessBuilder("xdg-open", UpdateChecker.UPDATE_ADDRESS);
-                try {
-                    pb.start();
-                } catch (IOException ex1) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-                }
-            }
+            goToURI(UpdateChecker.UPDATE_ADDRESS);
         });
 
         text_panel.add(updateArea);

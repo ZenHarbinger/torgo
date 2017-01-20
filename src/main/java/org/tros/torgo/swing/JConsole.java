@@ -52,7 +52,6 @@ import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.text.MessageFormat;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -69,7 +68,6 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import org.tros.torgo.Main;
-import static org.tros.torgo.Main.IMAGE_ICON_CLASS_PATH;
 import org.tros.torgo.TorgoInfo;
 
 // Things that are not in the core packages
@@ -230,19 +228,14 @@ public class JConsole extends JScrollPane
     }
 
     private void printHeader() {
-        try {
-            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(IMAGE_ICON_CLASS_PATH);
-            ImageIcon ico = new ImageIcon(resources.nextElement());
-            Font font = new Font(DEFAULT_HEADER_FONT, Font.PLAIN, HEADER_SIZE);
-            if (!font.getName().equals(DEFAULT_HEADER_FONT)) {
-                font = new Font(FALLBACK_HEADER_FONT, Font.PLAIN, HEADER_SIZE);
-            }
-            print(ico);
-            print(MessageFormat.format(" {0} v{1}", TorgoInfo.INSTANCE.getApplicationName(), TorgoInfo.INSTANCE.getVersion()), font, Color.GRAY);
-            println();
-        } catch (IOException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).warn(null, ex);
+        ImageIcon ico = Main.getIcon();
+        Font font = new Font(DEFAULT_HEADER_FONT, Font.PLAIN, HEADER_SIZE);
+        if (!font.getName().equals(DEFAULT_HEADER_FONT)) {
+            font = new Font(FALLBACK_HEADER_FONT, Font.PLAIN, HEADER_SIZE);
         }
+        print(ico);
+        print(MessageFormat.format(" {0} v{1}", TorgoInfo.INSTANCE.getApplicationName(), TorgoInfo.INSTANCE.getVersion()), font, Color.GRAY);
+        println();
     }
 
     private synchronized void type(KeyEvent e) {

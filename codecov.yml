@@ -23,6 +23,8 @@ coverage:
     - .*/org/tros/utils/swing/JLinkButton.*
 #literally untestable in junit
     - .*/org/tros/torgo/MainSplash.*
+#others
+    - .*/org/tros/torgo/DockingFrameFactory.*
 parsers:
   gcov:
     branch_detection:

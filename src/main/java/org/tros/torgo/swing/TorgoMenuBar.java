@@ -21,19 +21,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import org.tros.torgo.ControllerListener;
+import org.tros.torgo.Main;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
+import org.tros.utils.ImageUtils;
 import org.tros.utils.logging.LogConsole;
 
 /**
@@ -129,9 +129,7 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
     }
 
     private JMenu setupInterpreterMenu() throws IOException {
-        java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("projectui/runProject.png");
-        ImageIcon ico = new ImageIcon(resources.nextElement());
-        fileStart.setIcon(ico);
+        fileStart.setIcon(ImageUtils.getIcon("projectui/runProject.png"));
 
         fileStart.addActionListener((ActionEvent e) -> {
             if (paused.get()) {
@@ -141,30 +139,22 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
             }
         });
 
-        resources = ClassLoader.getSystemClassLoader().getResources("projectui/stop.png");
-        ico = new ImageIcon(resources.nextElement());
-        fileStop.setIcon(ico);
+        fileStop.setIcon(ImageUtils.getIcon("projectui/stop.png"));
         fileStop.addActionListener((ActionEvent event) -> {
             controller.stopInterpreter();
         });
 
-        resources = ClassLoader.getSystemClassLoader().getResources("debugging/debugProject.png");
-        ico = new ImageIcon(resources.nextElement());
-        fileDebug.setIcon(ico);
+        fileDebug.setIcon(ImageUtils.getIcon("projectui/debugProject.png"));
         fileDebug.addActionListener((ActionEvent e) -> {
             controller.debugInterpreter();
         });
 
-        resources = ClassLoader.getSystemClassLoader().getResources("debugging/actions/Pause.png");
-        ico = new ImageIcon(resources.nextElement());
-        filePause.setIcon(ico);
+        filePause.setIcon(ImageUtils.getIcon("projectui/actions/Pause.png"));
         filePause.addActionListener((ActionEvent e) -> {
             controller.pauseInterpreter();
         });
 
-        resources = ClassLoader.getSystemClassLoader().getResources("debugging/actions/StepOver.png");
-        ico = new ImageIcon(resources.nextElement());
-        fileStep.setIcon(ico);
+        fileStep.setIcon(ImageUtils.getIcon("projectui/actions/StepOver.png"));
         fileStep.addActionListener((ActionEvent e) -> {
             controller.stepOver();
         });
@@ -242,21 +232,10 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
     private JMenu setupFileMenu() throws IOException {
         LogConsole.CONSOLE.setVisible(false);
 
-        java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("projectui/newFile.png");
-        ImageIcon ico = new ImageIcon(resources.nextElement());
-        fileNew.setIcon(ico);
-
-        resources = ClassLoader.getSystemClassLoader().getResources("projectui/open.png");
-        ico = new ImageIcon(resources.nextElement());
-        fileOpen.setIcon(ico);
-
-        resources = ClassLoader.getSystemClassLoader().getResources("actions/save.png");
-        ico = new ImageIcon(resources.nextElement());
-        fileSave.setIcon(ico);
-
-        resources = ClassLoader.getSystemClassLoader().getResources("profiler/actions/icons/saveAs.png");
-        ico = new ImageIcon(resources.nextElement());
-        fileSaveAs.setIcon(ico);
+        fileNew.setIcon(ImageUtils.getIcon("projectui/newFile.png"));
+        fileOpen.setIcon(ImageUtils.getIcon("projectui/open.png"));
+        fileSave.setIcon(ImageUtils.getIcon("projectui/save.png"));
+        fileSaveAs.setIcon(ImageUtils.getIcon("projectui/actions/icons/saveAs.png"));
 
         fileNew.addActionListener((ActionEvent ae) -> {
             controller.newFile();

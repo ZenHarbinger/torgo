@@ -26,12 +26,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -51,6 +48,7 @@ import org.tros.torgo.Controller;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.TorgoTextConsole;
+import org.tros.utils.ImageUtils;
 
 public class TorgoUserInputPanel implements TorgoTextConsole {
 
@@ -100,13 +98,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         RTextScrollPane scrollPane = new org.fife.ui.rtextarea.RTextScrollPane(inputTextArea);
         scrollPane.setIconRowHeaderEnabled(true);
         gutter = scrollPane.getGutter();
-        try {
-            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(DEBUG_ICON);
-            ImageIcon imageIcon = new ImageIcon(resources.nextElement());
-            gutter.setBookmarkIcon(imageIcon);
-        } catch (IOException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).warn(null, ex);
-        }
+        gutter.setBookmarkIcon(ImageUtils.getIcon(DEBUG_ICON));
         gutter.setBookmarkingEnabled(true);
 
         final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoUserInputPanel.class);

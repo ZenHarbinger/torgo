@@ -17,9 +17,6 @@ package org.tros.torgo;
 
 import java.awt.Window;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
@@ -131,10 +128,6 @@ public class Main {
     }
 
     public static ImageIcon getIcon() {
-        return getIcon(IMAGE_ICON_CLASS_PATH);
-    }
-
-    public static ImageIcon getIcon(String path) {
-        return ImageUtils.createImageIcon(path, path);
+        return ImageUtils.getIcon(IMAGE_ICON_CLASS_PATH);
     }
 }

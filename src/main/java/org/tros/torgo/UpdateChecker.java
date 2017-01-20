@@ -15,9 +15,10 @@
  */
 package org.tros.torgo;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Document;
 
@@ -33,9 +34,9 @@ public class UpdateChecker {
     private String updateVersion;
 
     private boolean checkForUpdate;
-    
+
     private static final org.tros.utils.logging.Logger LOGGER;
-    
+
     static {
         LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(UpdateChecker.class);
     }
@@ -59,22 +60,20 @@ public class UpdateChecker {
             }
         } catch (MalformedURLException ex) {
             LOGGER.error(ex.getMessage(), ex);
-        } catch (FileNotFoundException ex) {
-            LOGGER.error(ex.getMessage(), ex);
         } catch (IOException ex) {
-            LOGGER.error(ex.getMessage(), ex);
+            Logger.getLogger(UpdateChecker.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ret;
     }
-    
+
     public boolean getCheckForUpdate() {
         return checkForUpdate;
     }
-    
+
     public String getUpdateVersion() {
         return updateVersion;
     }
-    
+
     public void setCheckForUpdate(boolean value) {
         java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(UpdateChecker.class);
         prefs.putBoolean("check-for-update", value);

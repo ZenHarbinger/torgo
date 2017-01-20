@@ -31,6 +31,10 @@ public final class ImageUtils {
 
     }
 
+    public static ImageIcon getIcon(String path) {
+        return ImageUtils.createImageIcon(path, path);
+    }
+
     public static final ImageIcon createImageIcon(String path, String description) {
         java.net.URL imgURL = ImageUtils.class.getClassLoader().getResource(path);
         if (imgURL != null) {
