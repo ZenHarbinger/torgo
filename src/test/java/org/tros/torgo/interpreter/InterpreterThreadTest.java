@@ -27,26 +27,26 @@ import static org.junit.Assert.*;
  * @author matta
  */
 public class InterpreterThreadTest {
-    
+
     public InterpreterThreadTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
-    
+
     private static class ScopeListenerImpl implements ScopeListener {
 
         @Override
@@ -60,9 +60,9 @@ public class InterpreterThreadTest {
         @Override
         public void variableSet(Scope scope, String name, InterpreterValue value) {
         }
-        
+
     }
-    
+
     private static class InterpreterListenerImpl implements InterpreterListener {
 
         @Override
@@ -84,7 +84,22 @@ public class InterpreterThreadTest {
         @Override
         public void currStatement(CodeBlock block, Scope scope) {
         }
-        
+
+    }
+
+    /**
+     * Test of isHalted method, of class InterpreterThread.
+     */
+    @Test
+    public void testProcessException() {
+        System.out.println("processException");
+        InterpreterThread instance = new InterpreterThreadImpl(new DynamicScope());
+        try {
+            Object f = null;
+            f.toString();
+        } catch (Exception ex) {
+            instance.processException(ex);
+        }
     }
 
     /**
@@ -93,7 +108,11 @@ public class InterpreterThreadTest {
     @Test
     public void testIsHalted() {
         System.out.println("isHalted");
-   }
+        InterpreterThread instance = new InterpreterThreadImpl(new DynamicScope());
+        assertFalse(instance.isHalted());
+        instance.halt();
+        assertTrue(instance.isHalted());
+    }
 
     /**
      * Test of addInterpreterListener method, of class InterpreterThread.
@@ -108,21 +127,6 @@ public class InterpreterThreadTest {
         instance = new InterpreterThreadImpl(new LexicalScope());
         instance.addInterpreterListener(listener);
         instance.removeInterpreterListener(listener);
-    }
-
-    /**
-     * Test of removeInterpreterListener method, of class InterpreterThread.
-     */
-    @Test
-    public void testRemoveInterpreterListener() {
-    }
-
-    /**
-     * Test of waitForTermination method, of class InterpreterThread.
-     */
-    @Test
-    public void testWaitForTermination() {
-        System.out.println("waitForTermination");
     }
 
     /**
@@ -155,5 +159,5 @@ public class InterpreterThreadTest {
         public void process(CodeBlock entryPoint) {
         }
     }
-    
+
 }

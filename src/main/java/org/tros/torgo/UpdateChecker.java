@@ -17,8 +17,6 @@ package org.tros.torgo;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Document;
 
@@ -61,7 +59,7 @@ public class UpdateChecker {
         } catch (MalformedURLException ex) {
             LOGGER.error(ex.getMessage(), ex);
         } catch (IOException ex) {
-            Logger.getLogger(UpdateChecker.class.getName()).log(Level.SEVERE, null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(UpdateChecker.class).warn(null, ex);
         }
         return ret;
     }

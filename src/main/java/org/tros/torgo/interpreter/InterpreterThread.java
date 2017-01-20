@@ -138,18 +138,36 @@ public abstract class InterpreterThread extends Thread {
             //interpret the script
             process(script);
         } catch (Exception ex) {
-            listeners.fire().error(ex);
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(InterpreterThread.class).fatal(null, ex);
-            try {
-                Class<?> lc = Class.forName("org.tros.utils.logging.LogConsole");
-                Field field = lc.getField("CONSOLE");
-                java.lang.reflect.Method m = field.getType().getMethod("setVisible", boolean.class);
-                Object fieldInstance = field.get(null);
-                m.invoke(fieldInstance, true);
-            } catch (ClassNotFoundException | NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex1) {
-            }
+            processException(ex);
         }
         listeners.fire().finished();
+    }
+
+    /**
+     * Process an exception during execution.
+     *
+     * @param ex
+     */
+    protected final void processException(Exception ex) {
+        listeners.fire().error(ex);
+        org.tros.utils.logging.Logging.getLogFactory().getLogger(InterpreterThread.class).fatal(null, ex);
+        processExceptionHelper(ex);
+    }
+
+    /**
+     * Allow derived classes to change/enhance this.
+     *
+     * @param ex
+     */
+    protected void processExceptionHelper(Exception ex) {
+        try {
+            Class<?> lc = Class.forName("org.tros.utils.logging.LogConsole");
+            Field field = lc.getField("CONSOLE");
+            java.lang.reflect.Method m = field.getType().getMethod("setVisible", boolean.class);
+            Object fieldInstance = field.get(null);
+            m.invoke(fieldInstance, true);
+        } catch (ClassNotFoundException | NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex1) {
+        }
     }
 
     /**
@@ -158,17 +176,6 @@ public abstract class InterpreterThread extends Thread {
      * @param entryPoint
      */
     protected abstract void process(CodeBlock entryPoint);
-
-    /**
-     * Wait for the interpreter thread to terminate.
-     */
-    public final void waitForTermination() {
-        try {
-            join();
-        } catch (InterruptedException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(InterpreterThread.class).fatal(null, ex);
-        }
-    }
 
     public final void addScopeListener(ScopeListener listener) {
         scope.addScopeListener(listener);
