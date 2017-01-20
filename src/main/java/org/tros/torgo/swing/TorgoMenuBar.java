@@ -144,17 +144,17 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
             controller.stopInterpreter();
         });
 
-        fileDebug.setIcon(ImageUtils.getIcon("projectui/debugProject.png"));
+        fileDebug.setIcon(ImageUtils.getIcon("debugging/debugProject.png"));
         fileDebug.addActionListener((ActionEvent e) -> {
             controller.debugInterpreter();
         });
 
-        filePause.setIcon(ImageUtils.getIcon("projectui/actions/Pause.png"));
+        filePause.setIcon(ImageUtils.getIcon("debugging/actions/Pause.png"));
         filePause.addActionListener((ActionEvent e) -> {
             controller.pauseInterpreter();
         });
 
-        fileStep.setIcon(ImageUtils.getIcon("projectui/actions/StepOver.png"));
+        fileStep.setIcon(ImageUtils.getIcon("debugging/actions/StepOver.png"));
         fileStep.addActionListener((ActionEvent e) -> {
             controller.stepOver();
         });
@@ -234,8 +234,8 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
 
         fileNew.setIcon(ImageUtils.getIcon("projectui/newFile.png"));
         fileOpen.setIcon(ImageUtils.getIcon("projectui/open.png"));
-        fileSave.setIcon(ImageUtils.getIcon("projectui/save.png"));
-        fileSaveAs.setIcon(ImageUtils.getIcon("projectui/actions/icons/saveAs.png"));
+        fileSave.setIcon(ImageUtils.getIcon("actions/save.png"));
+        fileSaveAs.setIcon(ImageUtils.getIcon("profiler/actions/icons/saveAs.png"));
 
         fileNew.addActionListener((ActionEvent ae) -> {
             controller.newFile();
