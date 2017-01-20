@@ -16,14 +16,15 @@
 package org.tros.torgo;
 
 import java.util.Calendar;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.utils.PropertiesInitializer;
 import org.tros.utils.TypeHandler;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -32,6 +33,13 @@ import org.tros.utils.TypeHandler;
 public class TorgoInfoTest {
 
     private static TorgoInfo INFO;
+
+    private final static Logger LOGGER;
+
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(TorgoInfoTest.class.getName());
+    }
 
     public TorgoInfoTest() {
     }

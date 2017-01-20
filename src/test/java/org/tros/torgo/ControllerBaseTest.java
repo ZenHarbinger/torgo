@@ -15,6 +15,7 @@
  */
 package org.tros.torgo;
 
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,7 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.logo.DynamicLogoController;
-import org.tros.torgo.interpreter.InterpreterListener;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -30,6 +31,13 @@ import org.tros.torgo.interpreter.InterpreterListener;
  */
 public class ControllerBaseTest {
     
+    private final static Logger LOGGER;
+
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(ControllerBaseTest.class.getName());
+    }
+
     public ControllerBaseTest() {
     }
     

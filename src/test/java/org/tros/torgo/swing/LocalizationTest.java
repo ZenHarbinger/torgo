@@ -15,12 +15,15 @@
  */
 package org.tros.torgo.swing;
 
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -28,6 +31,13 @@ import static org.junit.Assert.*;
  */
 public class LocalizationTest {
     
+    private final static Logger LOGGER;
+
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(LocalizationTest.class.getName());
+    }
+
     public LocalizationTest() {
     }
     
