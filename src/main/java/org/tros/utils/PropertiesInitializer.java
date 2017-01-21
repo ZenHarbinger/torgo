@@ -61,40 +61,41 @@ public abstract class PropertiesInitializer {
             try (FileInputStream fis = new FileInputStream(f)) {
                 PropertyDescriptor[] props = Introspector.getBeanInfo(this.getClass()).getPropertyDescriptors();
                 prop.load(fis);
-
-                ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
-                for (PropertyDescriptor p : props) {
-                    if (p.getWriteMethod() != null
-                            && p.getReadMethod() != null
-                            && p.getReadMethod().getDeclaringClass() != Object.class) {
-                        boolean success = false;
-                        String val = prop.getProperty(p.getName());
-                        if (val != null) {
-                            Object o = TypeHandler.fromString(p.getPropertyType(), val);
-                            if (o != null) {
-                                p.getWriteMethod().invoke(this, o);
-                                success = true;
-                            }
-                        }
-                        if (!success && val != null) {
-//                            if (TypeHandler.isEnumeratedType(p)) {
-////                                setEnumerated(p, val);
-//                            } else {
-                            setValueHelper(p, val);
-//                            }
-                        }
-                    }
-                }
-                propKeys.forEach((key) -> {
-                    String value = prop.getProperty(key);
-                    setNameValuePair(key, value);
-                });
-            } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException ex) {
-            } catch (IllegalAccessException ex) {
-                LOGGER.debug(null, ex);
+                loadFromProperties(props, prop);
+            } catch (IOException ex) {
             } catch (IntrospectionException ex) {
                 LOGGER.warn(null, ex);
             }
+        }
+    }
+
+    private void loadFromProperties(PropertyDescriptor[] props, Properties prop) {
+        try {
+            ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
+            for (PropertyDescriptor p : props) {
+                if (p.getWriteMethod() != null
+                        && p.getReadMethod() != null
+                        && p.getReadMethod().getDeclaringClass() != Object.class) {
+                    boolean success = false;
+                    String val = prop.getProperty(p.getName());
+                    if (val != null) {
+                        Object o = TypeHandler.fromString(p.getPropertyType(), val);
+                        if (o != null) {
+                            p.getWriteMethod().invoke(this, o);
+                            success = true;
+                        }
+                    }
+                    if (!success && val != null) {
+                        setValueHelper(p, val);
+                    }
+                }
+            }
+            propKeys.forEach((key) -> {
+                String value = prop.getProperty(key);
+                setNameValuePair(key, value);
+            });
+        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
+            LOGGER.warn(null, ex);
         }
     }
 
@@ -139,40 +140,8 @@ public abstract class PropertiesInitializer {
             urls.forEach((url) -> {
                 try {
                     prop.load(url.openStream());
-                    ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
-
-                    for (PropertyDescriptor p : props) {
-                        if (p.getWriteMethod() != null
-                                && p.getReadMethod() != null
-                                && p.getReadMethod().getDeclaringClass() != Object.class) {
-                            boolean success = false;
-                            String val = prop.getProperty(p.getName());
-                            if (val != null) {
-                                Object o = TypeHandler.fromString(p.getPropertyType(), val);
-                                if (o != null) {
-                                    p.getWriteMethod().invoke(this, o);
-                                    success = true;
-                                }
-                            }
-                            if (!success && val != null) {
-//                                if (TypeHandler.isEnumeratedType(p)) {
-////                                    success = setEnumerated(p, val);
-//                                } else {
-success = setValueHelper(p, val);
-//                                }
-                            }
-                            if (success) {
-                                propKeys.remove(p.getName());
-                            }
-                        }
-                    }
-                    for (String key : propKeys) {
-                        String value = prop.getProperty(key);
-                        setNameValuePair(key, value);
-                    }
-                } catch (NullPointerException | IOException | IllegalArgumentException | InvocationTargetException ex) {
-                } catch (IllegalAccessException ex) {
-                    LOGGER.warn(null, ex);
+                    loadFromProperties(props, prop);
+                } catch (IOException | IllegalArgumentException ex) {
                 }
             });
         } catch (IOException ex) {
