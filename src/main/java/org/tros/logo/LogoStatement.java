@@ -138,8 +138,8 @@ class LogoStatement extends LogoBlock {
                     } else {
                         String name = pc.name().STRING().getText();
                         canvas.pencolor(name);
+                    }
                     break;
-                }
                 case "cc":
                     LogoParser.CcContext cc = (LogoParser.CcContext) ctx;
                     if (cc.expression().size() == 3) {
