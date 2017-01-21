@@ -260,10 +260,9 @@ public class StackView implements InterpreterVisualization {
 
     public static final int DEFAULT_WIDTH = 640;
     public static final int DEFAULT_HEIGHT = 480;
-
-    private InterpreterThread interpreter;
     private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(StackView.class);
 
+    private InterpreterThread interpreter;
     private NamedWindow window;
 
     /**

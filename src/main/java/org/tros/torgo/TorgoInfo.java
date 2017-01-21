@@ -26,16 +26,16 @@ import java.io.Serializable;
  */
 public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Serializable {
 
+    /**
+     * Singleton Instance.
+     */
+    public static final TorgoInfo INSTANCE = new TorgoInfo();
+
     private String _version;
     private String _build_date;
     private String _builder;
     private String _company;
     private String _applicationName;
-
-    /**
-     * Singleton Instance.
-     */
-    public static final TorgoInfo INSTANCE = new TorgoInfo();
 
     /**
      * Version Accessor.

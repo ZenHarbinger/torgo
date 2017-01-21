@@ -68,23 +68,31 @@ import org.tros.utils.PathUtils;
  */
 public abstract class ControllerBase implements Controller {
 
-    private JFrame window;
-    protected TorgoScreen torgoCanvas;
-    protected TorgoTextConsole torgoPanel;
-    private InterpreterThread interp;
-    private String filename;
-    protected final AutoResetEvent step;
-    protected final AtomicBoolean isStepping;
-    private CControl dockControl;
-
-    private final ArrayList<JCheckBoxMenuItem> viz = new ArrayList<>();
+    public static final String ABOUT_MENU_TORGO_ICON = "torgo-16x16.png";
 
     protected final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
     protected final EventListenerSupport<ControllerListener> controllerListeners
             = EventListenerSupport.create(ControllerListener.class);
+    protected final AutoResetEvent step;
+    protected final AtomicBoolean isStepping;
 
-    public static final String ABOUT_MENU_TORGO_ICON = "torgo-16x16.png";
+    protected TorgoScreen torgoCanvas;
+    protected TorgoTextConsole torgoPanel;
+
+    private final ArrayList<JCheckBoxMenuItem> viz = new ArrayList<>();
+    private InterpreterThread interp;
+    private String filename;
+    private CControl dockControl;
+    private JFrame window;
+
+    /**
+     * Hidden Constructor.
+     */
+    protected ControllerBase() {
+        step = new AutoResetEvent(false);
+        isStepping = new AtomicBoolean(false);
+    }
 
     /**
      * Add a listener.
@@ -124,14 +132,6 @@ public abstract class ControllerBase implements Controller {
     @Override
     public void removeControllerListener(ControllerListener listener) {
         controllerListeners.removeListener(listener);
-    }
-
-    /**
-     * Hidden Constructor.
-     */
-    protected ControllerBase() {
-        step = new AutoResetEvent(false);
-        isStepping = new AtomicBoolean(false);
     }
 
     /**

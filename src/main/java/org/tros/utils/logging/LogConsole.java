@@ -27,10 +27,10 @@ import org.tros.torgo.Main;
  */
 public final class LogConsole extends JFrame {
 
+    public static final LogConsole CONSOLE = new LogConsole();
     private final JCheckBoxMenuItem scrollLock_menu;
     private final JCheckBoxMenuItem pause_menu;
     private final SwingComponentHandler sch;
-    public static final LogConsole CONSOLE = new LogConsole();
 
     /**
      * Constructor.

@@ -21,9 +21,10 @@ import java.util.logging.LogRecord;
  */
 public class ShortenedNameFormatter extends Formatter {
 
+    private static final String DEFAULT_FORMAT = "[%1$tc] %4$s: %2$s - %5$s %6$s%n";
+
     protected String FORMAT;
     protected Date DATE;
-    private static final String DEFAULT_FORMAT = "[%1$tc] %4$s: %2$s - %5$s %6$s%n";
 
     public ShortenedNameFormatter() {
         this(DEFAULT_FORMAT);

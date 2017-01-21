@@ -57,14 +57,14 @@ import org.tros.utils.ImageUtils;
  */
 public class TorgoUserInputPanel implements TorgoTextConsole {
 
+    public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
+    protected final Controller controller;
+
     private final RSyntaxTextArea inputTextArea;
     private final Gutter gutter;
 
     private final JConsole outputTextArea;
     private final JTabbedPane tabs;
-
-    public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
-    protected final Controller controller;
 
     private final LayeredHighlighter.LayerPainter defaultHighlighter;
     private final LayeredHighlighter.LayerPainter breakpointHighlighter;
@@ -158,18 +158,18 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
                 if ((ke.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
                     ctrlDown.set(true);
                 }
-                if ((ke.getKeyCode() == KeyEvent.VK_EQUALS) &&
-                        (ke.getModifiers() == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK)) ||
-                        (ke.getKeyCode() == KeyEvent.VK_ADD) &&
-                        (ke.getModifiers() == (KeyEvent.CTRL_MASK))) {
+                if ((ke.getKeyCode() == KeyEvent.VK_EQUALS)
+                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK))
+                        || (ke.getKeyCode() == KeyEvent.VK_ADD)
+                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK))) {
                     increase.run();
                 }
-                if ((ke.getKeyCode() == KeyEvent.VK_MINUS || ke.getKeyCode() == KeyEvent.VK_SUBTRACT) &&
-                        ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
+                if ((ke.getKeyCode() == KeyEvent.VK_MINUS || ke.getKeyCode() == KeyEvent.VK_SUBTRACT)
+                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
                     decrease.run();
                 }
-                if ((ke.getKeyCode() == KeyEvent.VK_0 || ke.getKeyCode() == KeyEvent.VK_NUMPAD0) &&
-                        ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
+                if ((ke.getKeyCode() == KeyEvent.VK_0 || ke.getKeyCode() == KeyEvent.VK_NUMPAD0)
+                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
                     reset.run();
                 }
             }

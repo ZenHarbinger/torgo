@@ -27,13 +27,12 @@ import org.jsoup.nodes.Document;
 public class UpdateChecker {
 
     public static final String UPDATE_ADDRESS = "https://github.com/ZenHarbinger/torgo/releases/latest";
+    private static final org.tros.utils.logging.Logger LOGGER;
     private static final String TAG = "title";
     private static final String SNAPSHOT = "SNAPSHOT";
+
     private String updateVersion;
-
     private boolean checkForUpdate;
-
-    private static final org.tros.utils.logging.Logger LOGGER;
 
     static {
         LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(UpdateChecker.class);

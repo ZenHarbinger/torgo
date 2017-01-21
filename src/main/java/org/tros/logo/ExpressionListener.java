@@ -39,6 +39,16 @@ final class ExpressionListener extends LogoBaseListener {
     private final Stack<ArrayList<InterpreterValue>> value = new Stack<>();
 
     /**
+     * Hidden constructor, forces use of "evaluateDouble" method.
+     *
+     * @param scope
+     */
+    private ExpressionListener(Scope scope) {
+        this.scope = scope;
+        value.push(new ArrayList<>());
+    }
+
+    /**
      * Evaluate an expression as defined in the logo.g4 grammar.
      *
      * @param scope
@@ -49,16 +59,6 @@ final class ExpressionListener extends LogoBaseListener {
         ExpressionListener el = new ExpressionListener(scope);
         ParseTreeWalker.DEFAULT.walk(el, ctx);
         return el.getValue();
-    }
-
-    /**
-     * Hidden constructor, forces use of "evaluateDouble" method.
-     *
-     * @param scope
-     */
-    private ExpressionListener(Scope scope) {
-        this.scope = scope;
-        value.push(new ArrayList<>());
     }
 
     private InterpreterValue mathExpression(InterpreterValue val1, InterpreterValue val2, String op) {

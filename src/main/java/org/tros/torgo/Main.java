@@ -35,8 +35,12 @@ import org.tros.utils.ImageUtils;
  */
 public final class Main {
 
+    public static final String IMAGE_ICON_CLASS_PATH = "torgo-48x48.png";
     private static final String DEFAULT_LANGUAGE = "dynamic-logo";
 
+    /**
+     * Hidden utility constructor.
+     */
     private Main() {
     }
 
@@ -123,8 +127,6 @@ public final class Main {
             });
         }
     }
-
-    public static final String IMAGE_ICON_CLASS_PATH = "torgo-48x48.png";
 
     public static void loadIcon(Window frame) {
         frame.setIconImage(getIcon().getImage());

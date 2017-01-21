@@ -39,17 +39,17 @@
         <property name="basedir" value="${basedir}"/>
     -->
 
-	<property name="fileExtensions" value="java"/>
+    <property name="fileExtensions" value="java"/>
 
-	<!-- Part of turning off indivial checks: -->
-	<!-- http://stackoverflow.com/questions/4023185/how-to-disable-a-particular-checkstyle-rule-for-a-particular-line-of-code -->
-	<module name="SuppressWarningsFilter" />
+    <!-- Part of turning off indivial checks: -->
+    <!-- http://stackoverflow.com/questions/4023185/how-to-disable-a-particular-checkstyle-rule-for-a-particular-line-of-code -->
+    <module name="SuppressWarningsFilter" />
 
     <!-- Checks that a package-info.java file exists for each package.     -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
     <!-- <module name="JavadocPackage"> -->
-		<!-- <property name="allowLegacy" value="true"/>  --><!-- Allow package.html in addition to package-info.java -->
-	<!-- </module> -->
+        <!-- <property name="allowLegacy" value="true"/>  --><!-- Allow package.html in addition to package-info.java -->
+    <!-- </module> -->
 
     <!-- Checks whether files end with a new line.                        -->
     <!-- See http://checkstyle.sf.net/config_misc.html#NewlineAtEndOfFile -->
@@ -62,8 +62,8 @@
     <!-- Checks for Size Violations.                    -->
     <!-- See http://checkstyle.sf.net/config_sizes.html -->
     <module name="FileLength">
-		<property name="max" value="3500"/>
-	</module>
+        <property name="max" value="3500"/>
+    </module>
 
     <!-- Checks for whitespace                               -->
     <!-- See http://checkstyle.sf.net/config_whitespace.html -->
@@ -87,28 +87,26 @@
 
     <module name="TreeWalker">
 
-		<!-- Part of turning off indivial checks: -->
-		<!-- http://stackoverflow.com/questions/5761188/checkstyle-suppressioncommentfilter-not-ignoring-specified-rule/5764666#5764666 -->
-		<module name="FileContentsHolder"/>
-		<module name="SuppressWarningsHolder" />
+        <!-- Part of turning off indivial checks: -->
+        <!-- http://stackoverflow.com/questions/5761188/checkstyle-suppressioncommentfilter-not-ignoring-specified-rule/5764666#5764666 -->
+        <module name="FileContentsHolder"/>
+        <module name="SuppressWarningsHolder" />
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <!--<module name="JavadocMethod"/> This is just too whiny for now. -->
         <!-- <module name="JavadocType"/> -->
-		<!--
+        <!--
         <module name="JavadocVariable">
-			<property name="scope" value="package"/>
-		</module>
-		-->
+            <property name="scope" value="package"/>
+        </module>
+        -->
         <module name="JavadocStyle"/>
 
 
         <!-- Checks for Naming Conventions.                  -->
         <!-- See http://checkstyle.sf.net/config_naming.html -->
-        <module name="ConstantName">
-            <property name="format" value="^[A-Z0-9_]+$"/>
-        </module>
+        <module name="ConstantName" />
         <module name="LocalFinalVariableName">
             <property name="format" value="^[a-zA-Z0-9_]+$"/>
         </module>
@@ -131,7 +129,7 @@
 
         <!-- Checks for imports                              -->
         <!-- See http://checkstyle.sf.net/config_import.html -->
-        <!--<module name="AvoidStarImport"/>-->
+        <module name="AvoidStarImport"/>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
@@ -139,16 +137,17 @@
 
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
+        <!-- TODO: lower this value -->
         <module name="LineLength">
-			<property name="max" value="500"/>
-		</module>
+            <property name="max" value="300"/>
+        </module>
         <!-- <module name="MethodLength">
-			<property name="max" value="300"/>
-		</module> -->
-        <module name="ParameterNumber">
-			<property name="max" value="9"/>
-			<!--<property name="ignoreOverriddenMethods" value="true"/>-->
-		</module>
+            <property name="max" value="300"/>
+        </module> -->
+        <!-- <module name="ParameterNumber">
+            <property name="max" value="9"/>
+            <property name="ignoreOverriddenMethods" value="true"/>
+        </module> -->
 
 
         <!-- Checks for whitespace                               -->
@@ -156,14 +155,14 @@
         <module name="EmptyForIteratorPad"/>
         <module name="GenericWhitespace"/>
         <module name="MethodParamPad"/>
-        <!--<module name="NoWhitespaceAfter"/>-->
-        <!--<module name="NoWhitespaceBefore"/>-->
+        <module name="NoWhitespaceAfter"/>
+        <module name="NoWhitespaceBefore"/>
         <module name="OperatorWrap">
-			<property name="option" value="eol"/>
-		</module>
+            <property name="option" value="nl"/>
+        </module>
         <module name="ParenPad"/>
         <module name="TypecastParenPad"/>
-        <!--<module name="WhitespaceAround"/>-->
+        <module name="WhitespaceAround"/>
 
 
         <!-- Modifier Checks                                    -->
@@ -178,54 +177,74 @@
         <module name="EmptyBlock"/>
         <module name="LeftCurly"/>
         <module name="NeedBraces"> <!-- Allow stuff like "while (doSomething(minus-minus-count));" -->
-			<!-- <property name="allowEmptyLoopBody" value="true"/> -->
-		</module>
-		<module name="RightCurly"> <!-- Right curlies should be alone in if/else -->
-			<property name="option" value="alone"/>
-			<property name="tokens" value="LITERAL_ELSE, METHOD_DEF"/>
-		</module>
+            <!-- <property name="allowEmptyLoopBody" value="true"/> -->
+        </module>
+        <module name="RightCurly"> <!-- Right curlies should be alone in if/else -->
+            <property name="option" value="alone"/>
+            <property name="tokens" value="LITERAL_ELSE, METHOD_DEF"/>
+        </module>
 
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sf.net/config_coding.html -->
         <!--<module name="AvoidInlineConditionals"/>-->
-        <!--<module name="EmptyStatement"/> Removed to allow "while (doSomething());" -->
+        <module name="DefaultComesLast"/>
+        <module name="DeclarationOrder"/>
+        <module name="CovariantEquals"/>
+        <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-		<!-- Completely overridden since it's common in Java to do e.g. this.foo = foo;
+        <module name="EqualsAvoidNull"/>
+        <!-- Completely overridden since it's common in Java to do e.g. this.foo = foo;
         <module name="HiddenField">
-			<property name="ignoreSetter" value="true" />
-			<property name="ignoreConstructorParameter" value="true" />
-		</module>
-		-->
+            <property name="ignoreSetter" value="true" />
+            <property name="ignoreConstructorParameter" value="true" />
+        </module>
+        -->
         <module name="IllegalInstantiation"/>
         <!--<module name="InnerAssignment"/> -->
         <!--<module name="MagicNumber"/> Unfortunately, too much noise -->
         <!--<module name="MissingSwitchDefault"/>-->
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
+        <module name="OneStatementPerLine"/>
+        <!-- <module name="OverloadMethodsDeclarationOrder"/> -->
+        <module name="PackageDeclaration"/>
+        <!-- TODO: lower this value -->
+        <module name="ReturnCount">
+            <property name="max" value="6"/>
+        </module>
+        <module name="StringLiteralEquality"/>
+        <module name="VariableDeclarationUsageDistance">
+            <!-- <property name="allowedDistance" value="7"/> -->
+            <!-- TODO: lower this value -->
+            <property name="allowedDistance" value="20"/>
+        </module>
+        <!-- <module name="UnnecessaryParentheses"/> -->
 
         <!-- Checks for class design                         -->
         <!-- See http://checkstyle.sf.net/config_design.html -->
         <!--<module name="DesignForExtension"/>-->
         <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
-        <!--<module name="InterfaceIsType"/> Allow constant interfaces -->
+        <!--Allow constant interfaces -->
+        <!-- <module name="InterfaceIsType"/> -->
         <module name="VisibilityModifier">
-			<property name="protectedAllowed" value="true"/>
-			<property name="packageAllowed" value="true"/>
-		</module>
+            <property name="protectedAllowed" value="true"/>
+            <property name="packageAllowed" value="true"/>
+        </module>
 
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
+        <module name="OuterTypeFilename"/>
         <!--<module name="FinalParameters"/>-->
         <!-- <module name="TodoComment"/> -->
         <module name="UpperEll"/>
 
     </module>
 
-	<module name="SuppressionFilter">
-		<property name="file" value="config/checkstyle/torgoSuppressions.xml"/>
-	</module>
+    <module name="SuppressionFilter">
+        <property name="file" value="config/checkstyle/torgoSuppressions.xml"/>
+    </module>
 
 </module>

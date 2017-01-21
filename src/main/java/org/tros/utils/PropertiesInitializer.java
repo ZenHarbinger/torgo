@@ -73,9 +73,9 @@ public abstract class PropertiesInitializer {
         try {
             ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
             for (PropertyDescriptor p : props) {
-                if (p.getWriteMethod() != null &&
-                        p.getReadMethod() != null &&
-                        p.getReadMethod().getDeclaringClass() != Object.class) {
+                if (p.getWriteMethod() != null
+                        && p.getReadMethod() != null
+                        && p.getReadMethod().getDeclaringClass() != Object.class) {
                     boolean success = false;
                     String val = prop.getProperty(p.getName());
                     if (val != null) {

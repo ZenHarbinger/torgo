@@ -264,17 +264,17 @@ public final class JLinkButton extends JButton {
         String colorStr = linkColor == null ? "" : linkColor.toString();
         String colorPressStr = colorPressed == null ? "" : colorPressed
                 .toString();
-        String disabledLinkColorStr = disabledLinkColor == null ? "" :
-                disabledLinkColor.toString();
-        String visitedLinkColorStr = visitedLinkColor == null ? "" :
-                visitedLinkColor.toString();
+        String disabledLinkColorStr = disabledLinkColor == null ? ""
+                : disabledLinkColor.toString();
+        String visitedLinkColorStr = visitedLinkColor == null ? ""
+                : visitedLinkColor.toString();
         String buttonURLStr = buttonURL == null ? "" : buttonURL.toString();
         String isLinkVisitedStr = isLinkVisited ? "true" : "false";
-        return super.paramString() + ",linkBehavior=" + str + ",linkURL=" +
-                buttonURLStr + ",linkColor=" + colorStr + ",activeLinkColor=" +
-                colorPressStr + ",disabledLinkColor=" + disabledLinkColorStr +
-                ",visitedLinkColor=" + visitedLinkColorStr +
-                ",linkvisitedString=" + isLinkVisitedStr;
+        return super.paramString() + ",linkBehavior=" + str + ",linkURL="
+                + buttonURLStr + ",linkColor=" + colorStr + ",activeLinkColor="
+                + colorPressStr + ",disabledLinkColor=" + disabledLinkColorStr
+                + ",visitedLinkColor=" + visitedLinkColorStr
+                + ",linkvisitedString=" + isLinkVisitedStr;
     }
 }
 

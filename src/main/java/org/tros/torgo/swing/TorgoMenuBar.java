@@ -42,6 +42,9 @@ import org.tros.utils.logging.LogConsole;
  */
 public class TorgoMenuBar extends JMenuBar implements ControllerListener {
 
+    protected final Controller controller;
+    protected final Component parent;
+
     private final JMenu interpreterMenu;
     private final JMenuItem fileStart;
     private final JMenuItem fileStop;
@@ -59,9 +62,6 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
     private final JMenuItem fileSaveAs;
     private final JMenuItem fileQuit;
     private final JMenuItem logConsole;
-
-    protected final Controller controller;
-    protected final Component parent;
 
     private final AtomicBoolean paused;
     private final AtomicBoolean debugging;

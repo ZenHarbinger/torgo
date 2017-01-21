@@ -52,28 +52,15 @@ public class AboutWindow extends JDialog {
      */
     public static final String TORGO_ADDRESS = "http://tros.org/torgo/";
 
+    /**
+     * Release address.
+     */
     public static final String RELEASE_ADDRESS = UpdateChecker.UPDATE_ADDRESS;
 
     /**
      * License Address.
      */
     public static final String APACHE_LICENSE_ADDRESS = "http://www.apache.org/licenses/LICENSE-2.0";
-
-    public static final void goToURI(String address) {
-        try {
-            URI uri = new URI(address);
-            Desktop.getDesktop().browse(uri);
-        } catch (URISyntaxException | IOException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-        } catch (UnsupportedOperationException ex) {
-            ProcessBuilder pb = new ProcessBuilder("xdg-open", address);
-            try {
-                pb.start();
-            } catch (IOException ex1) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-            }
-        }
-    }
 
     /**
      * Constructor.
@@ -227,5 +214,21 @@ public class AboutWindow extends JDialog {
         container.add(text_panel, BorderLayout.CENTER);
         setLocationRelativeTo(null);
         setModal(true);
+    }
+
+    public static final void goToURI(String address) {
+        try {
+            URI uri = new URI(address);
+            Desktop.getDesktop().browse(uri);
+        } catch (URISyntaxException | IOException ex) {
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+        } catch (UnsupportedOperationException ex) {
+            ProcessBuilder pb = new ProcessBuilder("xdg-open", address);
+            try {
+                pb.start();
+            } catch (IOException ex1) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
+            }
+        }
     }
 }

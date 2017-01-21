@@ -61,7 +61,7 @@ public class ManualResetEvent {
     /**
      * Signal.
      */
-    public void set() {//open start
+    public void set() {
         synchronized (monitor) {
             open = true;
             monitor.notifyAll();
@@ -71,7 +71,7 @@ public class ManualResetEvent {
     /**
      * Reset.
      */
-    public void reset() {//close stop
+    public void reset() {
         open = false;
     }
 

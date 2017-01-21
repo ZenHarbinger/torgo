@@ -78,7 +78,7 @@ public class DynamicScope extends ScopeImpl implements Scope {
             }
         }
 
-        if(ret == InterpreterValue.NULL) {
+        if (ret == InterpreterValue.NULL) {
             return super.get(name);
         }
         return ret;
@@ -158,7 +158,7 @@ public class DynamicScope extends ScopeImpl implements Scope {
     @Override
     public Map<String, InterpreterValue> variablesPeek(int value) {
         HashMap<String, InterpreterValue> keys = new HashMap<>();
-        for(int ii = scope.size() - 1; ii >= 0 && value >= 0; ii--, value--) {
+        for (int ii = scope.size() - 1; ii >= 0 && value >= 0; ii--, value--) {
             HashMap<String, InterpreterValue> slice = scope.get(ii);
             slice.keySet().forEach((key) -> {
                 keys.put(key, slice.get(key));

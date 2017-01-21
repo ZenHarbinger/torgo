@@ -34,9 +34,8 @@ import org.tros.utils.TypeHandler;
  */
 public class TraceLogger implements InterpreterVisualization {
 
-    private InterpreterThread interpreter;
     private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(TraceLogger.class);
-
+    private InterpreterThread interpreter;
 
     /**
      * Constructor.

@@ -54,8 +54,12 @@ import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.swing.TorgoMenuBar;
 import org.w3c.dom.DOMImplementation;
-import org.apache.batik.svggen.*;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
+import org.apache.batik.svggen.CachedImageHandlerPNGEncoder;
+import org.apache.batik.svggen.GenericImageHandler;
+import org.apache.batik.svggen.SVGGeneratorContext;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.w3c.dom.Document;
 import org.tros.utils.GifSequenceWriter;
 
@@ -66,11 +70,12 @@ import org.tros.utils.GifSequenceWriter;
  */
 public final class LogoMenuBar extends TorgoMenuBar {
 
-    private JMenuItem toolsPenColorChooser;
-    private JMenuItem toolsCanvasColorChooser;
+    protected static final String WAIT_FOR_REPAINT = "wait-for-repaint";
 
     private final LogoCanvas canvas;
-    protected static final String WAIT_FOR_REPAINT = "wait-for-repaint";
+
+    private JMenuItem toolsPenColorChooser;
+    private JMenuItem toolsCanvasColorChooser;
 
     /**
      * Constructor.
@@ -265,8 +270,8 @@ public final class LogoMenuBar extends TorgoMenuBar {
                 final String filename = filename2;
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
                 Thread t = new Thread(() -> {
-                    if (Drawable.class.isAssignableFrom(canvas.getClass()) &&
-                            BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
+                    if (Drawable.class.isAssignableFrom(canvas.getClass())
+                            && BufferedImageProvider.class.isAssignableFrom((canvas.getClass()))) {
                         try {
                             generateGIF(((Drawable) canvas).cloneDrawable(), (BufferedImageProvider) canvas, filename);
                         } catch (SVGGraphics2DIOException ex) {

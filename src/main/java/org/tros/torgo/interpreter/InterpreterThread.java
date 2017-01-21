@@ -27,12 +27,13 @@ import org.tros.utils.HaltMonitor;
  */
 public abstract class InterpreterThread extends Thread {
 
+    protected final Scope scope;
+
     private final HaltMonitor monitor;
-    private CodeBlock script;
     private final String source;
     private final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
-    protected final Scope scope;
+    private CodeBlock script;
 
     /**
      * Constructor.

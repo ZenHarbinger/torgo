@@ -31,8 +31,8 @@ import javax.imageio.ImageIO;
  */
 public final class MainSplash {
 
-    private MainSplash() {
-    }
+    static double numSteps = 1;
+    static double currStep = 0;
 
     private static SplashScreen mySplash;
     private static Graphics2D splashGraphics;
@@ -40,6 +40,12 @@ public final class MainSplash {
     private static Font font;
     private static Dimension splashDimension;
     private static double currPercent = 0;
+
+    /**
+     * Hidden constructor.
+     */
+    private MainSplash() {
+    }
 
     /**
      * Initialize the splash graphic.
@@ -82,9 +88,6 @@ public final class MainSplash {
             mySplash.update();
         }
     }
-
-    static double numSteps = 1;
-    static double currStep = 0;
 
     /**
      * Set the number of steps to be completed.

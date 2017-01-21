@@ -38,16 +38,16 @@ import org.tros.utils.TypeHandler;
 public final class SwingComponentHandler extends Handler {
 
     private static final JTextPane TEXT_AREA;
-    private int _maxSize;
-    private final ArrayList<LogRecord> records;
-    private final java.util.Timer timer;
-    private static boolean paused;
     private static final DefaultStyledDocument DOC;
     private static final HashMap<java.util.logging.Level, Style> STYLE_MAP;
     private static final Style DEFAULT_STYLE;// = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
-    private int time_field;
-
     private static final String FORMAT;
+    private static boolean paused;
+
+    private final ArrayList<LogRecord> records;
+    private final java.util.Timer timer;
+    private int _maxSize;
+    private int time_field;
 
     static {
         STYLE_MAP = new HashMap<>();

@@ -32,8 +32,8 @@ import org.tros.torgo.interpreter.Scope;
  */
 class LogoFunction extends LogoBlock implements CodeFunction {
 
-    private final String funcitonName;
     private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoFunction.class);
+    private final String funcitonName;
 
     /**
      * Constructor.

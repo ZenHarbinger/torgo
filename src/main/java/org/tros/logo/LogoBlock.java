@@ -40,14 +40,23 @@ import org.tros.utils.ImmutableHaltMonitor;
 abstract class LogoBlock implements CodeBlock {
 
     protected final ParserRuleContext ctx;
-    private final ArrayList<CodeBlock> commands = new ArrayList<>();
-    private final HashMap<String, CodeFunction> functions = new HashMap<>();
     protected final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
-    private final AtomicBoolean halted = new AtomicBoolean(false);
-
     protected final ArrayList<HashMap<String, InterpreterValue>> variables = new ArrayList<>();
+
+    private final ArrayList<CodeBlock> commands = new ArrayList<>();
+    private final HashMap<String, CodeFunction> functions = new HashMap<>();
+    private final AtomicBoolean halted = new AtomicBoolean(false);
     private CodeBlock parent;
+
+    /**
+     * Constructor.
+     *
+     * @param ctx
+     */
+    protected LogoBlock(ParserRuleContext ctx) {
+        this.ctx = ctx;
+    }
 
     @Override
     public void addInterpreterListener(InterpreterListener listener) {
@@ -57,15 +66,6 @@ abstract class LogoBlock implements CodeBlock {
     @Override
     public void removeInterpreterListener(InterpreterListener listener) {
         listeners.removeListener(listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param ctx
-     */
-    protected LogoBlock(ParserRuleContext ctx) {
-        this.ctx = ctx;
     }
 
     /**

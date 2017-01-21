@@ -48,13 +48,14 @@ import org.tros.torgo.TorgoTextConsole;
  */
 public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, BufferedImageProvider, Drawable {
 
+    protected final EventListenerSupport<DrawListener> listeners
+            = EventListenerSupport.create(DrawListener.class);
+
     private final TorgoTextConsole console;
     private BufferedImage turtle;
 
     private final ArrayList<Drawable> queuedCommands = new ArrayList<>();
     private final ArrayList<Drawable> commands = new ArrayList<>();
-    protected final EventListenerSupport<DrawListener> listeners
-            = EventListenerSupport.create(DrawListener.class);
 
     private TurtleState turtleState;
 
@@ -131,9 +132,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     public Drawable cloneDrawable() {
         Drawable d = new Drawable() {
 
-            private final ArrayList<Drawable> queuedCommandsCopy = new ArrayList<>();
             protected final EventListenerSupport<DrawListener> listenersCopy
                     = EventListenerSupport.create(DrawListener.class);
+            private final ArrayList<Drawable> queuedCommandsCopy = new ArrayList<>();
 
             /**
              * Anonymous class initializer.

@@ -85,38 +85,23 @@ public class JConsole extends JScrollPane
         implements GUIConsoleInterface, Runnable, KeyListener,
         MouseListener, ActionListener, PropertyChangeListener {
 
-    private static final  String CUT = "Cut";
-    private static final  String COPY = "Copy";
-    private static final  String PASTE = "Paste";
-
-    private OutputStream outPipe;
-    private InputStream inPipe;
-    private InputStream in;
-    private PrintStream out;
-
     public static final String DEFAULT_HEADER_FONT = "Ubuntu Mono";
     public static final String FALLBACK_HEADER_FONT = "Monospaced";
     public static final int HEADER_SIZE = 20;
     public static final String PROMPT = "torgo % ";
 
-    public InputStream getInputStream() {
-        return in;
-    }
+    private static final String CUT = "Cut";
+    private static final String COPY = "Copy";
+    private static final String PASTE = "Paste";
 
-    @Override
-    public Reader getIn() {
-        return new InputStreamReader(in);
-    }
+//	NameCompletion nameCompletion;
+    final int SHOW_AMBIG_MAX = 10;
+    String ZEROS = "000";
 
-    @Override
-    public PrintStream getOut() {
-        return out;
-    }
-
-    @Override
-    public PrintStream getErr() {
-        return out;
-    }
+    private OutputStream outPipe;
+    private InputStream inPipe;
+    private InputStream in;
+    private PrintStream out;
 
     private int cmdStart = 0;
     private ArrayList<String> history = new ArrayList<>();
@@ -126,9 +111,6 @@ public class JConsole extends JScrollPane
     private JPopupMenu menu;
     private JTextPane text;
     private DefaultStyledDocument doc;
-
-//	NameCompletion nameCompletion;
-    final int SHOW_AMBIG_MAX = 10;
 
     // hack to prevent key repeat for some reason?
     private boolean gotUp = true;
@@ -202,6 +184,25 @@ public class JConsole extends JScrollPane
         new Thread(this).start();
 
         requestFocus();
+    }
+
+    public InputStream getInputStream() {
+        return in;
+    }
+
+    @Override
+    public Reader getIn() {
+        return new InputStreamReader(in);
+    }
+
+    @Override
+    public PrintStream getOut() {
+        return out;
+    }
+
+    @Override
+    public PrintStream getErr() {
+        return out;
     }
 
     @Override
@@ -332,8 +333,8 @@ public class JConsole extends JScrollPane
             // Control-C
             case (KeyEvent.VK_C):
                 if (text.getSelectedText() == null) {
-                    if (((e.getModifiers() & InputEvent.CTRL_MASK) > 0) &&
-                            (e.getID() == KeyEvent.KEY_PRESSED)) {
+                    if (((e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+                            && (e.getID() == KeyEvent.KEY_PRESSED)) {
                         append("^C");
                     }
                     e.consume();
@@ -349,10 +350,10 @@ public class JConsole extends JScrollPane
                 break;
 
             default:
-                if ((e.getModifiers() &
-                        (InputEvent.CTRL_MASK |
-                        InputEvent.ALT_MASK |
-                        InputEvent.META_MASK)) == 0) {
+                if ((e.getModifiers()
+                        & (InputEvent.CTRL_MASK
+                        | InputEvent.ALT_MASK
+                        | InputEvent.META_MASK)) == 0) {
                     // plain character
                     forceCaretMoveToEnd();
                 }
@@ -527,8 +528,6 @@ public class JConsole extends JScrollPane
         text.setCaretPosition(textLength());
         text.repaint();
     }
-
-    String ZEROS = "000";
 
     private void acceptLine(String line) {
         // Patch to handle Unicode characters
