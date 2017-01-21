@@ -180,13 +180,4 @@ public abstract class PropertiesInitializer {
     protected void initializeHelper() {
     }
 
-    /**
-     * Get a display name.
-     *
-     * @return
-     */
-    public String displayName() {
-        return this.getClass().getCanonicalName();
-    }
-
 }
