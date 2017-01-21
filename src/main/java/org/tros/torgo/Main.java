@@ -29,16 +29,19 @@ import org.apache.commons.cli.ParseException;
 import org.tros.utils.ImageUtils;
 
 /**
- * Main entry point for torgo
+ * Main entry point for torgo.
  *
  * @author matta
  */
-public class Main {
+public final class Main {
 
     private static final String DEFAULT_LANGUAGE = "dynamic-logo";
 
+    private Main() {
+    }
+
     /**
-     * Entry Point
+     * Entry Point.
      *
      * @param args
      */

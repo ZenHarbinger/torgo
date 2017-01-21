@@ -264,25 +264,30 @@ public final class JLinkButton extends JButton {
         String colorStr = linkColor == null ? "" : linkColor.toString();
         String colorPressStr = colorPressed == null ? "" : colorPressed
                 .toString();
-        String disabledLinkColorStr = disabledLinkColor == null ? ""
-                : disabledLinkColor.toString();
-        String visitedLinkColorStr = visitedLinkColor == null ? ""
-                : visitedLinkColor.toString();
+        String disabledLinkColorStr = disabledLinkColor == null ? "" :
+                disabledLinkColor.toString();
+        String visitedLinkColorStr = visitedLinkColor == null ? "" :
+                visitedLinkColor.toString();
         String buttonURLStr = buttonURL == null ? "" : buttonURL.toString();
         String isLinkVisitedStr = isLinkVisited ? "true" : "false";
-        return super.paramString() + ",linkBehavior=" + str + ",linkURL="
-                + buttonURLStr + ",linkColor=" + colorStr + ",activeLinkColor="
-                + colorPressStr + ",disabledLinkColor=" + disabledLinkColorStr
-                + ",visitedLinkColor=" + visitedLinkColorStr
-                + ",linkvisitedString=" + isLinkVisitedStr;
+        return super.paramString() + ",linkBehavior=" + str + ",linkURL=" +
+                buttonURLStr + ",linkColor=" + colorStr + ",activeLinkColor=" +
+                colorPressStr + ",disabledLinkColor=" + disabledLinkColorStr +
+                ",visitedLinkColor=" + visitedLinkColorStr +
+                ",linkvisitedString=" + isLinkVisitedStr;
     }
 }
 
+/**
+ * Basic Button UI.
+ *
+ * @author matta
+ */
 class BasicLinkButtonUI extends MetalButtonUI {
 
     private static final BasicLinkButtonUI UI = new BasicLinkButtonUI();
 
-    public BasicLinkButtonUI() {
+    BasicLinkButtonUI() {
     }
 
     public static ComponentUI createUI(JComponent jcomponent) {

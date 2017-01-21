@@ -13,7 +13,7 @@ import java.text.MessageFormat;
  * @author matta
  */
 public final class CommonsLogger implements Logger {
-    
+
     private final org.apache.commons.logging.Log log;
 
     protected CommonsLogger(org.apache.commons.logging.Log log) {
@@ -109,5 +109,5 @@ public final class CommonsLogger implements Logger {
     public void fatal(String message, Throwable thrw) {
         log.fatal(message, thrw);
     }
-    
+
 }

@@ -39,7 +39,7 @@ import java.awt.Color;
  */
 public interface GUIConsoleInterface extends ConsoleInterface {
 
-    public void print(Object o, Color color);
+    void print(Object o, Color color);
 //	public void setNameCompletion( NameCompletion nc );
 
     /**
@@ -47,5 +47,5 @@ public interface GUIConsoleInterface extends ConsoleInterface {
      *
      * @param on
      */
-    public void setWaitFeedback(boolean on);
+    void setWaitFeedback(boolean on);
 }

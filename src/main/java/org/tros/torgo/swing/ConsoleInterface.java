@@ -38,15 +38,15 @@ import java.io.*;
  */
 public interface ConsoleInterface {
 
-    public Reader getIn();
+    Reader getIn();
 
-    public PrintStream getOut();
+    PrintStream getOut();
 
-    public PrintStream getErr();
+    PrintStream getErr();
 
-    public void println(Object o);
+    void println(Object o);
 
-    public void print(Object o);
+    void print(Object o);
 
-    public void error(Object o);
+    void error(Object o);
 }

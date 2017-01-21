@@ -29,6 +29,9 @@ public final class UtilsBeanFactory {
 
     private static final Map<Class<?>, ArrayList<ImmutablePair<Class<?>, BeanUtilsBean>>> MAP;
 
+    private UtilsBeanFactory() {
+    }
+
     /**
      * Static Constructor.
      */

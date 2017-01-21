@@ -14,6 +14,11 @@ import java.util.logging.Formatter;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
+/**
+ * Formatter.
+ *
+ * @author matta
+ */
 public class ShortenedNameFormatter extends Formatter {
 
     protected String FORMAT;

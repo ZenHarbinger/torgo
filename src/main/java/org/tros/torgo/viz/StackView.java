@@ -1,12 +1,12 @@
 /*
  * Copyright 2015 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,6 +52,9 @@ import org.tros.torgo.interpreter.ScopeListener;
  */
 public class StackView implements InterpreterVisualization {
 
+    /**
+     * Wrapper interface.
+     */
     public interface StackViewFrame {
 
         void refresh(Scope scope);
@@ -64,9 +67,9 @@ public class StackView implements InterpreterVisualization {
      */
     public class ScopeItem {
 
-        final private CodeBlock cb;
-        final private int depth;
-        final private Scope scope;
+        private final CodeBlock cb;
+        private final int depth;
+        private final Scope scope;
         private SliceWatchFrame swf;
 
         /**
@@ -141,7 +144,7 @@ public class StackView implements InterpreterVisualization {
      */
     public class SliceWatchFrame extends JFrame implements StackViewFrame {
 
-        final protected ScopeItem item;
+        protected final ScopeItem item;
 
         /**
          * Constructor.
@@ -161,7 +164,7 @@ public class StackView implements InterpreterVisualization {
          * @param scope
          */
         @Override
-        final public void refresh(Scope scope) {
+        public final void refresh(Scope scope) {
             TreeMap<String, InterpreterValue> variables = new TreeMap<>(scope.variablesPeek(item.depth));
 
             int size = variables.size();
@@ -289,13 +292,16 @@ public class StackView implements InterpreterVisualization {
     public String getName() {
         return StackView.class.getSimpleName();
     }
-    
+
+    /**
+     * Wrapper Window for the stack view.
+     */
     public static class StackViewWindow extends NamedWindow {
-        
+
         public StackViewWindow(String name, int width, int height) {
             super(name, width, height);
         }
-        
+
     }
 
     /**
@@ -386,7 +392,7 @@ public class StackView implements InterpreterVisualization {
         list.addMouseListener(new MouseAdapter() {
             /**
              * Pop up a frame with the variables at the specified stack point.
-             * 
+             *
              * @param evt
              */
             @Override

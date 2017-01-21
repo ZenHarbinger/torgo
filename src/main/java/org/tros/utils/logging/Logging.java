@@ -72,13 +72,13 @@ public final class Logging {
             boolean lookForFile = false;
             while (scanner.hasNextLine()) {
                 String lineFromFile = scanner.nextLine();
-                if (lineFromFile.startsWith("handlers")
-                        && lineFromFile.contains("java.util.logging.FileHandler")) {
+                if (lineFromFile.startsWith("handlers") &&
+                        lineFromFile.contains("java.util.logging.FileHandler")) {
                     lookForFile = true;
                 }
-                if (lookForFile
-                        && definedLogFile != null
-                        && lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
+                if (lookForFile &&
+                        definedLogFile != null &&
+                        lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
                     lineFromFile = "java.util.logging.FileHandler.pattern = " + definedLogFile;
                 }
                 sb.append(lineFromFile).append(System.getProperty("line.separator"));

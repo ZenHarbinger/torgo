@@ -18,7 +18,7 @@ import java.util.Enumeration;
  *
  * @author matta
  */
-public class NetUtils {
+public final class NetUtils {
 
     private static InetAddress _ip;
     private static InetAddress[] _ips;

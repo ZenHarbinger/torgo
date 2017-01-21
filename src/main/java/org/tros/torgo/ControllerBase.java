@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2017 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,6 @@ package org.tros.torgo;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
 import bibliothek.util.xml.XElement;
-import bibliothek.util.xml.XIO;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.InterpreterThread;
@@ -31,7 +30,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -86,10 +84,10 @@ public abstract class ControllerBase implements Controller {
     protected final EventListenerSupport<ControllerListener> controllerListeners
             = EventListenerSupport.create(ControllerListener.class);
 
-    public final static String ABOUT_MENU_TORGO_ICON = "torgo-16x16.png";
+    public static final String ABOUT_MENU_TORGO_ICON = "torgo-16x16.png";
 
     /**
-     * Add a listener
+     * Add a listener.
      *
      * @param listener
      */
@@ -99,7 +97,7 @@ public abstract class ControllerBase implements Controller {
     }
 
     /**
-     * Remove a listener
+     * Remove a listener.
      *
      * @param listener
      */
@@ -109,7 +107,7 @@ public abstract class ControllerBase implements Controller {
     }
 
     /**
-     * Add a listener
+     * Add a listener.
      *
      * @param listener
      */
@@ -119,7 +117,7 @@ public abstract class ControllerBase implements Controller {
     }
 
     /**
-     * Remove a listener
+     * Remove a listener.
      *
      * @param listener
      */
@@ -161,8 +159,17 @@ public abstract class ControllerBase implements Controller {
      */
     protected abstract InterpreterThread createInterpreterThread(String source);
 
+    /**
+     * Wrapper class.
+     */
     public static class TorgoSingleDockable extends DefaultSingleCDockable {
 
+        /**
+         * Constructor.
+         *
+         * @param title
+         * @param panel
+         */
         public TorgoSingleDockable(String title, final Component panel) {
             super(title);
             super.setTitleText(title);
@@ -511,7 +518,7 @@ public abstract class ControllerBase implements Controller {
     }
 
     /**
-     * Print (unused)
+     * Print (unused).
      */
     @Override
     public void printCanvas() {

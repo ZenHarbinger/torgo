@@ -47,7 +47,7 @@ public final class SwingComponentHandler extends Handler {
     private static final Style DEFAULT_STYLE;// = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
     private int time_field;
 
-    private final static String FORMAT;
+    private static final String FORMAT;
 
     static {
         STYLE_MAP = new HashMap<>();
@@ -70,7 +70,7 @@ public final class SwingComponentHandler extends Handler {
         String finer = manager.getProperty(cname + ".finer");
         String finest = manager.getProperty(cname + ".finest");
         String off = manager.getProperty(cname + ".off");
-        
+
         String def = manager.getProperty(cname + ".default");
 
         FORMAT = format == null ? "" : format;
@@ -87,7 +87,7 @@ public final class SwingComponentHandler extends Handler {
         Color finerColor = finer != null ? (Color) TypeHandler.fromString(Color.class, finer) : defColor;
         Color finestColor = finest != null ? (Color) TypeHandler.fromString(Color.class, finest) : defColor;
         Color offColor = off != null ? (Color) TypeHandler.fromString(Color.class, off) : defColor;
-       
+
         Style warning2 = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
         StyleConstants.setForeground(warning2, warnColor == null ? defColor : warnColor);
         STYLE_MAP.put(Level.WARNING, warning2);
@@ -252,7 +252,7 @@ public final class SwingComponentHandler extends Handler {
             rec.forEach((record) -> {
                 try {
                     Style s = STYLE_MAP.containsKey(record.getLevel()) ? STYLE_MAP.get(record.getLevel()) : DEFAULT_STYLE;
-                    
+
                     dat.setTime(record.getMillis());
                     String source;
                     if (record.getSourceClassName() != null) {
@@ -264,13 +264,13 @@ public final class SwingComponentHandler extends Handler {
                         source = record.getLoggerName();
                     }
                     StringBuilder nameBuilder = new StringBuilder();
-                    
+
                     String[] names = record.getLoggerName().split("\\.");
                     for (int ii = 0; ii < names.length - 1; ii++) {
                         nameBuilder.append(names[ii].charAt(0));
                     }
                     nameBuilder.append(".").append(names[names.length - 1]);
-                    
+
                     String throwable = "";
                     if (record.getThrown() != null) {
                         StringWriter sw = new StringWriter();
@@ -287,7 +287,7 @@ public final class SwingComponentHandler extends Handler {
                             record.getLevel().getLocalizedName(),
                             record.getMessage(),
                             throwable);
-                    
+
                     StyleConstants.setBold(s, true);
                     DOC.insertString(DOC.getLength(), toInsert + " ", s);
                     StyleConstants.setBold(s, false);

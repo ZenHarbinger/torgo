@@ -1,12 +1,12 @@
 /*
  * Copyright 2016 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,6 +50,11 @@ import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.TorgoTextConsole;
 import org.tros.utils.ImageUtils;
 
+/**
+ * Main display of text io.
+ *
+ * @author matta
+ */
 public class TorgoUserInputPanel implements TorgoTextConsole {
 
     private final RSyntaxTextArea inputTextArea;
@@ -150,28 +155,28 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
 
             @Override
             public void keyPressed(KeyEvent ke) {
-                if((ke.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
+                if ((ke.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
                     ctrlDown.set(true);
                 }
-                if ((ke.getKeyCode() == KeyEvent.VK_EQUALS)
-                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK))
-                        || (ke.getKeyCode() == KeyEvent.VK_ADD)
-                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK))) {
+                if ((ke.getKeyCode() == KeyEvent.VK_EQUALS) &&
+                        (ke.getModifiers() == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK)) ||
+                        (ke.getKeyCode() == KeyEvent.VK_ADD) &&
+                        (ke.getModifiers() == (KeyEvent.CTRL_MASK))) {
                     increase.run();
                 }
-                if ((ke.getKeyCode() == KeyEvent.VK_MINUS || ke.getKeyCode() == KeyEvent.VK_SUBTRACT)
-                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
+                if ((ke.getKeyCode() == KeyEvent.VK_MINUS || ke.getKeyCode() == KeyEvent.VK_SUBTRACT) &&
+                        ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
                     decrease.run();
                 }
-                if ((ke.getKeyCode() == KeyEvent.VK_0 || ke.getKeyCode() == KeyEvent.VK_NUMPAD0)
-                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
+                if ((ke.getKeyCode() == KeyEvent.VK_0 || ke.getKeyCode() == KeyEvent.VK_NUMPAD0) &&
+                        ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
                     reset.run();
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent ke) {
-                if(ke.getModifiers() == 0) {
+                if (ke.getModifiers() == 0) {
                     ctrlDown.set(false);
                 }
             }

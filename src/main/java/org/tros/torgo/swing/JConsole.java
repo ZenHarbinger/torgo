@@ -85,9 +85,9 @@ public class JConsole extends JScrollPane
         implements GUIConsoleInterface, Runnable, KeyListener,
         MouseListener, ActionListener, PropertyChangeListener {
 
-    private final static String CUT = "Cut";
-    private final static String COPY = "Copy";
-    private final static String PASTE = "Paste";
+    private static final  String CUT = "Cut";
+    private static final  String COPY = "Copy";
+    private static final  String PASTE = "Paste";
 
     private OutputStream outPipe;
     private InputStream inPipe;
@@ -332,8 +332,8 @@ public class JConsole extends JScrollPane
             // Control-C
             case (KeyEvent.VK_C):
                 if (text.getSelectedText() == null) {
-                    if (((e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                            && (e.getID() == KeyEvent.KEY_PRESSED)) {
+                    if (((e.getModifiers() & InputEvent.CTRL_MASK) > 0) &&
+                            (e.getID() == KeyEvent.KEY_PRESSED)) {
                         append("^C");
                     }
                     e.consume();
@@ -349,9 +349,10 @@ public class JConsole extends JScrollPane
                 break;
 
             default:
-                if ((e.getModifiers()
-                        & (InputEvent.CTRL_MASK
-                        | InputEvent.ALT_MASK | InputEvent.META_MASK)) == 0) {
+                if ((e.getModifiers() &
+                        (InputEvent.CTRL_MASK |
+                        InputEvent.ALT_MASK |
+                        InputEvent.META_MASK)) == 0) {
                     // plain character
                     forceCaretMoveToEnd();
                 }
@@ -377,12 +378,12 @@ public class JConsole extends JScrollPane
 //
 //		int i=part.length()-1;
 //
-//		// Character.isJavaIdentifierPart()  How convenient for us!! 
-//		while ( 
-//			i >= 0 && 
-//				( Character.isJavaIdentifierPart(part.charAt(i)) 
+//		// Character.isJavaIdentifierPart()  How convenient for us!!
+//		while (
+//			i >= 0 &&
+//				( Character.isJavaIdentifierPart(part.charAt(i))
 //				|| part.charAt(i) == '.' )
-//		) 
+//		)
 //			i--;
 //
 //		part = part.substring(i+1);
@@ -456,17 +457,17 @@ public class JConsole extends JScrollPane
     }
 
     private void forceCaretMoveToStart() {
-        if (text.getCaretPosition() < cmdStart) {
-            // move caret first!
-        }
+//        if (text.getCaretPosition() < cmdStart) {
+//            // move caret first!
+//        }
         text.repaint();
     }
 
     private void enter() {
         String s = getCmd();
 
-        if (s.length() == 0) // special hack	for empty return!
-        {
+        // special hack	for empty return!
+        if (s.length() == 0) {
             s = ";\n";
         } else {
             history.add(s);
@@ -494,8 +495,9 @@ public class JConsole extends JScrollPane
         if (history.isEmpty()) {
             return;
         }
-        if (histLine == 0) // save current line
-        {
+
+        // save current line
+        if (histLine == 0) {
             startedLine = getCmd();
         }
         if (histLine < history.size()) {
@@ -822,7 +824,7 @@ public class JConsole extends JScrollPane
     }
 
     /**
-     * If not in the event thread run via SwingUtilities.invokeAndWait()
+     * If not in the event thread run via SwingUtilities.invokeAndWait().
      */
     private void invokeAndWait(Runnable run) {
         if (!SwingUtilities.isEventDispatchThread()) {

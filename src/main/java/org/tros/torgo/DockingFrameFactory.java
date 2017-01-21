@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2017 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +36,10 @@ import org.tros.utils.PathUtils;
  *
  * @author matta
  */
-public class DockingFrameFactory {
+public final class DockingFrameFactory {
+
+    private DockingFrameFactory() {
+    }
 
     /**
      * This method simulates the creation of a layout.
@@ -45,7 +48,7 @@ public class DockingFrameFactory {
      * @param input
      * @return
      */
-    public static final XElement createLayout(Component display, ArrayList<ImmutablePair<String, Component>> input) {
+    public static XElement createLayout(Component display, ArrayList<ImmutablePair<String, Component>> input) {
         /* This method simulates the creation of a layout */
         CControl control = new CControl();
         control.getContentArea();
@@ -81,7 +84,7 @@ public class DockingFrameFactory {
      * @param lang
      * @return
      */
-    public static final XElement read(String lang) {
+    public static XElement read(String lang) {
         //read from saved file:
         String layoutFileName = PathUtils.getApplicationConfigDirectory(TorgoInfo.INSTANCE) + java.io.File.separatorChar + lang + "-layout.xml";
         File layoutFile = new File(layoutFileName);
@@ -95,7 +98,7 @@ public class DockingFrameFactory {
                 org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).warn(null, ex);
             }
         }
-        
+
         //read from class resource:
         try {
             java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources("layouts/" + lang + "-layout.xml");

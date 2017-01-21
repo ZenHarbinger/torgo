@@ -33,7 +33,7 @@ public class ManualResetEvent {
      */
     public void waitOne() throws InterruptedException {
         synchronized (monitor) {
-            while (open == false) {
+            while (!open) {
                 monitor.wait();
             }
         }

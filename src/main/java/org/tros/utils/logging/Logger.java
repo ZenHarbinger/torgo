@@ -21,7 +21,7 @@ public interface Logger {
     void info(String message);
 
     void verbose(String message);
-    
+
     void fatal(String message);
 
     void warn(String format, Object... objs);

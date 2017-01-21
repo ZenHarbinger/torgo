@@ -28,7 +28,7 @@ import org.tros.torgo.TorgoToolkit;
 public final class Random {
 
     /**
-     * Enumeration for a 3 state system
+     * Enumeration for a 3 state system.
      */
     public enum TriState {
 
@@ -38,7 +38,7 @@ public final class Random {
     }
 
     /**
-     * Enumeration for how the UUID values should be incremented
+     * Enumeration for how the UUID values should be incremented.
      */
     public enum UuidIncrementType {
 
@@ -47,12 +47,12 @@ public final class Random {
         usePackage
     }
 
-    private final static HashMap<Thread, java.util.Random> RANDOMS;
-    private final static HashMap<Object, java.util.Random> SPECIFIC_RANDOMS;
+    private static final HashMap<Thread, java.util.Random> RANDOMS;
+    private static final HashMap<Object, java.util.Random> SPECIFIC_RANDOMS;
     private static UuidIncrementType _incrementType = UuidIncrementType.useClass;
     private static boolean _doSeed;
     private static int _seedValue;
-    private final static HashMap<String, AtomicLong> COUNTERS;
+    private static final HashMap<String, AtomicLong> COUNTERS;
     private static final String DEFAULT_KEY = "puid";
 
     /**
@@ -118,7 +118,7 @@ public final class Random {
      * Reset the random object to initial state (only useful if the random
      * object is seeded). This will clear the PUID counters.
      */
-    public synchronized static void reset() {
+    public static synchronized void reset() {
         reset(true);
     }
 
@@ -128,7 +128,7 @@ public final class Random {
      * @param c
      * @param value
      */
-    public synchronized static void reset(Class<?> c, long value) {
+    public static synchronized void reset(Class<?> c, long value) {
         String key = DEFAULT_KEY;
         switch (_incrementType) {
             case useClass:
@@ -152,7 +152,7 @@ public final class Random {
      *
      * @param clear_count specify if we want to clear the UUID values.
      */
-    public synchronized static void reset(final boolean clear_count) {
+    public static synchronized void reset(final boolean clear_count) {
         RANDOMS.clear();
         SPECIFIC_RANDOMS.clear();
         if (clear_count) {
@@ -177,7 +177,7 @@ public final class Random {
      * @param type
      * @return
      */
-    public synchronized static String getPUID(final Class<?> c, UuidIncrementType type) {
+    public static synchronized String getPUID(final Class<?> c, UuidIncrementType type) {
         String key = DEFAULT_KEY;
         switch (type) {
             case useClass:
@@ -202,7 +202,7 @@ public final class Random {
      * @param c the class type
      * @return a new PUID value
      */
-    public synchronized static String getPUID(final Class<?> c) {
+    public static synchronized String getPUID(final Class<?> c) {
         return getPUID(c, _incrementType);
     }
 
@@ -214,36 +214,36 @@ public final class Random {
      * @param strength the strength of the PUID (unused for now)
      * @return a new PUID value
      */
-    public synchronized static String getPUID(final Class<?> c, final int strength) {
+    public static synchronized String getPUID(final Class<?> c, final int strength) {
         return getPUID(c);
     }
 
     /**
-     * Return a random boolean value
+     * Return a random boolean value.
      *
      * @param random
      * @return a random true/false value
      */
-    public synchronized static boolean nextBoolean(java.util.Random random) {
+    public static synchronized boolean nextBoolean(java.util.Random random) {
         return random.nextBoolean();
     }
 
     /**
-     * Return a random boolean value
+     * Return a random boolean value.
      *
      * @return a random true/false value
      */
-    public synchronized static boolean nextBoolean() {
+    public static synchronized boolean nextBoolean() {
         return nextBoolean(getInstance());
     }
 
     /**
-     * return a random tri-state value
+     * return a random tri-state value.
      *
      * @param random
      * @return a random tri-state value TRUE/FALSE/MAYBE
      */
-    public synchronized static TriState nextTriState(java.util.Random random) {
+    public static synchronized TriState nextTriState(java.util.Random random) {
         double d = random.nextDouble();
         if (d < (1.0 / 3.0)) {
             return TriState.FALSE;
@@ -255,11 +255,11 @@ public final class Random {
     }
 
     /**
-     * return a random tri-state value
+     * return a random tri-state value.
      *
      * @return a random tri-state value TRUE/FALSE/MAYBE
      */
-    public synchronized static TriState nextTriState() {
+    public static synchronized TriState nextTriState() {
         return nextTriState(getInstance());
     }
 
@@ -269,7 +269,7 @@ public final class Random {
      * @param random
      * @return a new double value from 0.0 inclusive to 1.0 exclusive.
      */
-    public synchronized static double nextDouble(java.util.Random random) {
+    public static synchronized double nextDouble(java.util.Random random) {
         return random.nextDouble();
     }
 
@@ -278,7 +278,7 @@ public final class Random {
      *
      * @return a new double value from 0.0 inclusive to 1.0 exclusive.
      */
-    public synchronized static double nextDouble() {
+    public static synchronized double nextDouble() {
         return nextDouble(getInstance());
     }
 
@@ -288,7 +288,7 @@ public final class Random {
      * @param random
      * @return a new float value from 0.0 inclusive to 1.0 exclusive.
      */
-    public synchronized static float nextFloat(java.util.Random random) {
+    public static synchronized float nextFloat(java.util.Random random) {
         return random.nextFloat();
     }
 
@@ -297,47 +297,47 @@ public final class Random {
      *
      * @return a new float value from 0.0 inclusive to 1.0 exclusive.
      */
-    public synchronized static float nextFloat() {
+    public static synchronized float nextFloat() {
         return nextFloat(getInstance());
     }
 
     /**
-     * Returns a random integer
+     * Returns a random integer.
      *
      * @param random
      * @return a random integer
      */
-    public synchronized static int nextInt(java.util.Random random) {
+    public static synchronized int nextInt(java.util.Random random) {
         return random.nextInt();
     }
 
     /**
-     * Returns a random integer
+     * Returns a random integer.
      *
      * @return a random integer
      */
-    public synchronized static int nextInt() {
+    public static synchronized int nextInt() {
         return nextInt(getInstance());
     }
 
     /**
-     * Returns a random integer less than the specified value
+     * Returns a random integer less than the specified value.
      *
      * @param random
      * @param n the specified value
      * @return a random integer >= 0 and < n
      */
-    public synchronized static int nextInt(java.util.Random random, final int n) {
+    public static synchronized int nextInt(java.util.Random random, final int n) {
         return random.nextInt(Math.max(1, n));
     }
 
     /**
-     * Returns a random integer less than the specified value
+     * Returns a random integer less than the specified value.
      *
      * @param n the specified value
      * @return a random integer >= 0 and < n
      */
-    public synchronized static int nextInt(final int n) {
+    public static synchronized int nextInt(final int n) {
         return nextInt(getInstance(), Math.max(1, n));
     }
 
@@ -349,7 +349,7 @@ public final class Random {
      * @param max the max value (exclusive)
      * @return a random integer within the specified range.
      */
-    public synchronized static int nextInt(java.util.Random random, final int min, final int max) {
+    public static synchronized int nextInt(java.util.Random random, final int min, final int max) {
         return (random.nextInt(Math.max(1, max - min)) + min);
     }
 
@@ -360,7 +360,7 @@ public final class Random {
      * @param max the max value (exclusive)
      * @return a random integer within the specified range.
      */
-    public synchronized static int nextInt(final int min, final int max) {
+    public static synchronized int nextInt(final int min, final int max) {
         return nextInt(getInstance(), min, max);
     }
 
@@ -370,7 +370,7 @@ public final class Random {
      * @param random
      * @return a random long value.
      */
-    public synchronized static long nextLong(java.util.Random random) {
+    public static synchronized long nextLong(java.util.Random random) {
         return random.nextLong();
     }
 
@@ -379,7 +379,7 @@ public final class Random {
      *
      * @return a random long value.
      */
-    public synchronized static long nextLong() {
+    public static synchronized long nextLong() {
         return nextLong(getInstance());
     }
 
@@ -390,7 +390,7 @@ public final class Random {
      * @param max
      * @return
      */
-    public synchronized static long nextLong(java.util.Random random, final long max) {
+    public static synchronized long nextLong(java.util.Random random, final long max) {
         // error checking and 2^x checking removed for simplicity.
         return nextLong(random, 0, Math.max(max, 1));
     }
@@ -401,7 +401,7 @@ public final class Random {
      * @param max
      * @return
      */
-    public synchronized static long nextLong(final long max) {
+    public static synchronized long nextLong(final long max) {
         // error checking and 2^x checking removed for simplicity.
         return nextLong(getInstance(), max);
     }
@@ -414,7 +414,7 @@ public final class Random {
      * @param max
      * @return
      */
-    public synchronized static long nextLong(java.util.Random random, final long min, final long max) {
+    public static synchronized long nextLong(java.util.Random random, final long min, final long max) {
         // error checking and 2^x checking removed for simplicity.
         long bits, val;
         java.util.Random rng = random;
@@ -433,7 +433,7 @@ public final class Random {
      * @param max
      * @return
      */
-    public synchronized static long nextLong(final long min, final long max) {
+    public static synchronized long nextLong(final long min, final long max) {
         // error checking and 2^x checking removed for simplicity.
         long bits, val;
         java.util.Random rng = getInstance();
@@ -451,7 +451,7 @@ public final class Random {
      * @param key the key for the Guassian series.
      * @return a random value with a Guassian distribution.
      */
-    public synchronized static double nextGaussian(final Object key) {
+    public static synchronized double nextGaussian(final Object key) {
         return getInstance(key).nextGaussian();
     }
 
@@ -548,7 +548,7 @@ public final class Random {
 
     /**
      * Gets a random item from a collection that is NOT equal to the specified
-     * object
+     * object.
      *
      * @param <T> the type
      * @param list the collection to select from
@@ -572,7 +572,7 @@ public final class Random {
 
     /**
      * Gets a random item from a collection that is NOT equal to the specified
-     * object
+     * object.
      *
      * @param <T> the type
      * @param random
@@ -597,7 +597,7 @@ public final class Random {
 
     /**
      * Gets a random item from a collection that is NOT equal to the specified
-     * collection
+     * collection.
      *
      * @param <T> the type
      * @param list the collection to select from
@@ -612,7 +612,7 @@ public final class Random {
 
     /**
      * Gets a random item from a collection that is NOT equal to the specified
-     * collection
+     * collection.
      *
      * @param <T> the type
      * @param random
@@ -627,7 +627,7 @@ public final class Random {
     }
 
     /**
-     * Gets a random item from the specified collection
+     * Gets a random item from the specified collection.
      *
      * @param <T> the type
      * @param list the specified collection
@@ -744,7 +744,7 @@ public final class Random {
      * @return a random real number from a standard Gaussian distribution (mean
      * 0 and standard deviation 1).
      */
-    public synchronized static double gaussian() {
+    public static synchronized double gaussian() {
         // use the polar form of the Box-Muller transform
         double r, x, y;
         do {
@@ -863,7 +863,7 @@ public final class Random {
      * @throws IllegalArgumentException unless <tt>probabilities[i] >= 0.0</tt>
      * for each index <tt>i</tt>
      */
-    public synchronized static int discrete(double[] probabilities) {
+    public static synchronized int discrete(double[] probabilities) {
         if (probabilities == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -961,7 +961,7 @@ public final class Random {
      * @param a the array to shuffle
      * @throws NullPointerException if <tt>a</tt> is <tt>null</tt>
      */
-    public synchronized static void shuffle(Object[] a) {
+    public static synchronized void shuffle(Object[] a) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -980,7 +980,7 @@ public final class Random {
      * @param a the array to shuffle
      * @throws NullPointerException if <tt>a</tt> is <tt>null</tt>
      */
-    public synchronized static void shuffle(double[] a) {
+    public static synchronized void shuffle(double[] a) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -999,7 +999,7 @@ public final class Random {
      * @param a the array to shuffle
      * @throws NullPointerException if <tt>a</tt> is <tt>null</tt>
      */
-    public synchronized static void shuffle(int[] a) {
+    public static synchronized void shuffle(int[] a) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -1024,7 +1024,7 @@ public final class Random {
      * (hi < a.length)</tt>
      *
      */
-    public synchronized static void shuffle(Object[] a, int lo, int hi) {
+    public static synchronized void shuffle(Object[] a, int lo, int hi) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -1050,7 +1050,7 @@ public final class Random {
      * @throws IndexOutOfBoundsException unless <tt>(0 <= lo) && (lo <= hi) &&
      * (hi < a.length)</tt>
      */
-    public synchronized static void shuffle(double[] a, int lo, int hi) {
+    public static synchronized void shuffle(double[] a, int lo, int hi) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -1076,7 +1076,7 @@ public final class Random {
      * @throws IndexOutOfBoundsException unless <tt>(0 <= lo) && (lo <= hi) &&
      * (hi < a.length)</tt>
      */
-    public synchronized static void shuffle(int[] a, int lo, int hi) {
+    public static synchronized void shuffle(int[] a, int lo, int hi) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }

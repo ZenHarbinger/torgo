@@ -7,44 +7,44 @@
 package org.tros.utils;
 
 /**
- * Useful constants
+ * Useful constants.
  *
  * @author matta
  */
 public interface TimeUtils {
 
-    public static final int SECONDS_IN_MINUTE = 60;
-    public static final long SECONDS_IN_MINUTE_L = 60;
-    public static final double SECONDS_IN_MINUTE_D = 60.0;
+    int SECONDS_IN_MINUTE = 60;
+    long SECONDS_IN_MINUTE_L = 60;
+    double SECONDS_IN_MINUTE_D = 60.0;
 
-    public static final int MINUTES_IN_HOUR = 60;
-    public static final long MINUTES_IN_HOUR_L = 60;
-    public static final double MINUTES_IN_HOUR_D = 60.0;
+    int MINUTES_IN_HOUR = 60;
+    long MINUTES_IN_HOUR_L = 60;
+    double MINUTES_IN_HOUR_D = 60.0;
 
-    public static final int HOURS_IN_DAY = 24;
-    public static final long HOURS_IN_DAY_L = 24;
-    public static final double HOURS_IN_DAY_D = 24.0;
+    int HOURS_IN_DAY = 24;
+    long HOURS_IN_DAY_L = 24;
+    double HOURS_IN_DAY_D = 24.0;
 
-    public static final int DAYS_IN_WEEK = 7;
-    public static final long DAYS_IN_WEEK_L = 7;
-    public static final double DAYS_IN_WEEK_D = 7.0;
+    int DAYS_IN_WEEK = 7;
+    long DAYS_IN_WEEK_L = 7;
+    double DAYS_IN_WEEK_D = 7.0;
 
-    public static final int MILLI = 1000;
-    public static final long MILLI_L = 1000;
-    public static final double MILLI_D = 1000.0;
+    int MILLI = 1000;
+    long MILLI_L = 1000;
+    double MILLI_D = 1000.0;
 
-    public static final int MILLISECONDS_IN_MINUTE = MILLI * SECONDS_IN_MINUTE;
-    public static final long MILLISECONDS_IN_MINUTE_L = MILLI_L * SECONDS_IN_MINUTE_L;
-    public static final double MILLISECONDS_IN_MINUTE_D = MILLI_D * SECONDS_IN_MINUTE_D;
+    int MILLISECONDS_IN_MINUTE = MILLI * SECONDS_IN_MINUTE;
+    long MILLISECONDS_IN_MINUTE_L = MILLI_L * SECONDS_IN_MINUTE_L;
+    double MILLISECONDS_IN_MINUTE_D = MILLI_D * SECONDS_IN_MINUTE_D;
 
-    public static final int MILLISECONDS_IN_HOUR = MILLISECONDS_IN_MINUTE * MINUTES_IN_HOUR;
-    public static final long MILLISECONDS_IN_HOUR_L = MILLISECONDS_IN_MINUTE_L * MINUTES_IN_HOUR_L;
-    public static final double MILLISECONDS_IN_HOUR_D = MILLISECONDS_IN_MINUTE_D * MINUTES_IN_HOUR_D;
+    int MILLISECONDS_IN_HOUR = MILLISECONDS_IN_MINUTE * MINUTES_IN_HOUR;
+    long MILLISECONDS_IN_HOUR_L = MILLISECONDS_IN_MINUTE_L * MINUTES_IN_HOUR_L;
+    double MILLISECONDS_IN_HOUR_D = MILLISECONDS_IN_MINUTE_D * MINUTES_IN_HOUR_D;
 
-    public static final int MILLISECONDS_IN_DAY = MILLISECONDS_IN_HOUR * HOURS_IN_DAY;
-    public static final long MILLISECONDS_IN_DAY_L = MILLISECONDS_IN_HOUR_L * HOURS_IN_DAY_L;
-    public static final double MILLISECONDS_IN_DAY_D = MILLISECONDS_IN_HOUR_D * HOURS_IN_DAY_D;
+    int MILLISECONDS_IN_DAY = MILLISECONDS_IN_HOUR * HOURS_IN_DAY;
+    long MILLISECONDS_IN_DAY_L = MILLISECONDS_IN_HOUR_L * HOURS_IN_DAY_L;
+    double MILLISECONDS_IN_DAY_D = MILLISECONDS_IN_HOUR_D * HOURS_IN_DAY_D;
 
-    public static final long NANO = 1000000000L;
-    public static final double NANO_D = 1000000000.0;
+    long NANO = 1000000000L;
+    double NANO_D = 1000000000.0;
 }
