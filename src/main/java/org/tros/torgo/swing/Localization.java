@@ -27,33 +27,31 @@ import org.tros.utils.logging.Logger;
 public final class Localization {
 
     private static final Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(Localization.class);
-    private static final String DEFAULT_LANG = "en";
+    private static final Locale DEFAULT_LOCALE = new Locale("en", "US");
 
     private static ResourceBundle resources;
-    private static String lang;
+    private static Locale locale;
 
     private Localization() {
     }
 
     static {
-        Locale currentLocale = Locale.getDefault();
-        lang = currentLocale.getLanguage();
+        locale = Locale.getDefault();
         resources = null;
-        setLang("fr");
+        setLang(locale);
         if (resources == null) {
-            LOGGER.warn("{0} is not a supported language.", lang);
-            LOGGER.warn("Setting language to {0}.", DEFAULT_LANG);
-            setLang(DEFAULT_LANG);
+            LOGGER.warn("{0} is not a supported language.", locale.getLanguage());
+            LOGGER.warn("Setting language to {0}.", DEFAULT_LOCALE.getLanguage());
+            setLang(DEFAULT_LOCALE);
         }
     }
 
-    public static void setLang(String lang) {
-        lang = lang.toLowerCase();
+    public static void setLang(Locale locale) {
         try {
-            resources = ResourceBundle.getBundle("LocalizedStrings_" + lang);
-            Localization.lang = lang;
+            resources = ResourceBundle.getBundle("messages", locale);
+            Localization.locale = locale;
         } catch (java.util.MissingResourceException e) {
-            LOGGER.warn("Language not supported: {0}", lang);
+            LOGGER.warn("Language not supported: {0}", locale.getLanguage());
         }
     }
 
@@ -61,7 +59,7 @@ public final class Localization {
         return resources != null && resources.containsKey(key) ? resources.getString(key) : key;
     }
 
-    public static String getLang() {
-        return lang.toLowerCase();
+    public static Locale getLang() {
+        return locale;
     }
 }

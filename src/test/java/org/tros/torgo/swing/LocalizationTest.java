@@ -15,6 +15,7 @@
  */
 package org.tros.torgo.swing;
 
+import java.util.Locale;
 import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -62,13 +63,13 @@ public class LocalizationTest {
      */
     @Test
     public void testSetLang() {
-        String lang = Localization.getLang();
-        Localization.setLang("no-such-lang");
+        Locale lang = Localization.getLang();
+        Localization.setLang(new Locale("no-such-lang"));
         assertEquals(lang, Localization.getLang());
-        Localization.setLang("fr");
-        String lang2 = Localization.getLang();
-        assertEquals("fr", lang2);
-        Localization.setLang("en");
+        Localization.setLang(new Locale("fr"));
+        Locale lang2 = Localization.getLang();
+        assertEquals("fr", lang2.getLanguage());
+        Localization.setLang(new Locale("en", "US"));
     }
 
     /**
