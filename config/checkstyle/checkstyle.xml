@@ -234,5 +234,6 @@
     <module name="SuppressionFilter">
         <property name="file" value="config/checkstyle/torgoSuppressions.xml"/>
     </module>
-
+    <module name="SuppressionCommentFilter" />
+    <module name="SuppressWithNearbyCommentFilter" />
 </module>

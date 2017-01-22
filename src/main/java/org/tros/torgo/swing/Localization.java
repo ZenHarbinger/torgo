@@ -39,7 +39,7 @@ public final class Localization {
     public static void setLang(String lang) {
         lang = lang.toLowerCase();
         try {
-            resources = ResourceBundle.getBundle(lang + "_LocalizedStrings");
+            resources = ResourceBundle.getBundle("LocalizedStrings_" + lang);
             Localization.lang = lang;
         } catch (java.util.MissingResourceException e) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Localization.class).warn("Language not supported: {0}", lang);
