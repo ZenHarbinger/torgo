@@ -172,7 +172,7 @@ public abstract class ControllerBase implements Controller {
          */
         public TorgoSingleDockable(String title, final Component panel) {
             super(title);
-            super.setTitleText(title);
+            super.setTitleText(Localization.getLocalizedString("Docking" + title));
             super.add(panel);
         }
     }
@@ -215,7 +215,7 @@ public abstract class ControllerBase implements Controller {
                 }
             }
             if (ret != null) {
-                ImageIcon icon = ImageUtils.getIcon("layouts/" + ret.getTitleText().toLowerCase() + "-24x24.png");
+                ImageIcon icon = ImageUtils.getIcon("layouts/" + ret.getUniqueId().toLowerCase() + "-24x24.png");
                 ret.setTitleIcon(icon);
             }
             return ret;
@@ -235,22 +235,31 @@ public abstract class ControllerBase implements Controller {
             mb = new TorgoMenuBar(window, this);
         }
         window.setJMenuBar(mb);
-        JMenu helpMenu = new JMenu("Help");
-        JMenuItem aboutMenu = new JMenuItem("About Torgo");
+        JMenu helpMenu = new JMenu(Localization.getLocalizedString("HelpMenu"));
+        JMenuItem aboutMenu = new JMenuItem(Localization.getLocalizedString("HelpAbout"));
         aboutMenu.setIcon(ImageUtils.getIcon(ABOUT_MENU_TORGO_ICON));
 
         aboutMenu.addActionListener((ActionEvent ae) -> {
             AboutWindow aw = new AboutWindow();
             aw.setVisible(true);
         });
-        JMenuItem updateMenu = new JMenuItem("Check for Update");
+        JMenuItem updateMenu = new JMenuItem(Localization.getLocalizedString("HelpCheckForUpdate"));
         updateMenu.addActionListener((ActionEvent e) -> {
             Thread t = new Thread(() -> {
                 final UpdateChecker uc = new UpdateChecker();
                 if (uc.hasUpdate()) {
                     SwingUtilities.invokeLater(() -> {
                         ImageIcon ico = Main.getIcon();
-                        int showConfirmDialog = JOptionPane.showConfirmDialog(window, MessageFormat.format("Update is Available:\n{0}\nView Update?", uc.getUpdateVersion()), "Update is Available", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ico);
+                        int showConfirmDialog = JOptionPane.showConfirmDialog(
+                                window,
+                                MessageFormat.format("{1}:\n{0}\n{2}",
+                                        uc.getUpdateVersion(),
+                                        Localization.getLocalizedString("AboutUpdateAvailable"),
+                                        Localization.getLocalizedString("AboutViewUpdate")),
+                                Localization.getLocalizedString("AboutUpdateAvailable"),
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.INFORMATION_MESSAGE,
+                                ico);
                         if (showConfirmDialog == JOptionPane.YES_OPTION) {
                             AboutWindow.goToURI(UpdateChecker.UPDATE_ADDRESS);
                         }
@@ -264,7 +273,7 @@ public abstract class ControllerBase implements Controller {
         helpMenu.add(aboutMenu);
         helpMenu.add(updateMenu);
 
-        JMenu vizMenu = new JMenu("Visualization");
+        JMenu vizMenu = new JMenu(Localization.getLocalizedString("VisualizationMenu"));
         TorgoToolkit.getVisualizers().stream().map((name) -> new JCheckBoxMenuItem(name)).map((item) -> {
             viz.add(item);
             return item;

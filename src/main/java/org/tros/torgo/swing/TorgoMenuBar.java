@@ -77,14 +77,14 @@ public class TorgoMenuBar extends JMenuBar implements ControllerListener {
         this.parent = parent;
         this.controller.addControllerListener((ControllerListener) this);
 
-        interpreterMenu = new JMenu("Interpreter");
-        fileStart = new JMenuItem("Start");
-        fileStop = new JMenuItem("Stop");
-        fileDebug = new JMenuItem("Debug");
-        filePause = new JMenuItem("Pause");
-        fileStep = new JMenuItem("Step");
+        interpreterMenu = new JMenu(Localization.getLocalizedString("InterpreterMenu"));
+        fileStart = new JMenuItem(Localization.getLocalizedString("InterpreterStart"));
+        fileStop = new JMenuItem(Localization.getLocalizedString("InterpreterStop"));
+        fileDebug = new JMenuItem(Localization.getLocalizedString("InterpreterDebug"));
+        filePause = new JMenuItem(Localization.getLocalizedString("InterpreterPause"));
+        fileStep = new JMenuItem(Localization.getLocalizedString("InterpreterStep"));
 
-        languagesMenu = new JMenu("Switch Language");
+        languagesMenu = new JMenu(Localization.getLocalizedString("InterpreterSwitchLanguage"));
         TorgoToolkit.getToolkits().stream().filter((lang) -> (!lang.equals(controller.getLang()))).forEachOrdered((lang) -> {
             JMenuItem langItem = new JMenuItem(lang);
             languagesMenu.add(langItem);

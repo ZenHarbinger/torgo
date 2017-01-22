@@ -86,7 +86,7 @@ public class AboutWindow extends JDialog {
         });
 
         //Set window properties.
-        this.setTitle("About Torgo");
+        this.setTitle(Localization.getLocalizedString("HelpAbout"));
         this.setSize(670, 225);//Size of JFrame
 
         //load the window icon
@@ -111,7 +111,7 @@ public class AboutWindow extends JDialog {
         textPanel.add(torgoButton);
 
         JLabel l = new JLabel();
-        l.setText(String.format("Platform: Java (%s) %s", System.getProperty("java.runtime.name"), System.getProperty("java.version")));//, System.getProperty("os.name"), System.getProperty("os.version"), System.getProperty("os.arch")));
+        l.setText(String.format("%s: Java (%s) %s", Localization.getLocalizedString("AboutPlatform"), System.getProperty("java.runtime.name"), System.getProperty("java.version")));//, System.getProperty("os.name"), System.getProperty("os.version"), System.getProperty("os.arch")));
         l.setToolTipText(l.getText());
         textPanel.add(l);
 
@@ -120,14 +120,14 @@ public class AboutWindow extends JDialog {
         l.setToolTipText(l.getText());
         textPanel.add(l);
 
-        apacheButton.setText("© 2015-2017 Matthew Aguirre, Apache License 2.0.");
+        apacheButton.setText(TorgoInfo.INSTANCE.getCopy());
         apacheButton.setBorderPainted(false);
         apacheButton.setOpaque(false);
         apacheButton.setToolTipText(APACHE_LICENSE_ADDRESS);
         textPanel.add(apacheButton);
 
         JTextArea ta = new JTextArea();
-        ta.setText("Torgo is a flexible interpreter written in Java.");
+        ta.setText(TorgoInfo.INSTANCE.getAbout());
         ta.setEditable(false);
         textPanel.add(ta);
 
@@ -135,7 +135,7 @@ public class AboutWindow extends JDialog {
         JPanel updateArea = new JPanel();
         updateArea.setLayout(new GridLayout(1, 2));
         final UpdateChecker uc = new UpdateChecker();
-        final JCheckBox checkForUpdate = new JCheckBox("Check For Update");
+        final JCheckBox checkForUpdate = new JCheckBox(Localization.getLocalizedString("HelpCheckForUpdate"));
         final JLinkButton button = new JLinkButton("");
         checkForUpdate.setSelected(uc.getCheckForUpdate());
         checkForUpdate.addActionListener((ActionEvent e) -> {
@@ -143,7 +143,7 @@ public class AboutWindow extends JDialog {
             boolean enabled1 = uc.getCheckForUpdate() && uc.hasUpdate();
             button.setEnabled(enabled1);
             if (button.isEnabled()) {
-                button.setText("Update Available");
+                button.setText(Localization.getLocalizedString("AboutUpdateAvailable"));
             }
         });
         updateArea.add(checkForUpdate);
@@ -153,7 +153,7 @@ public class AboutWindow extends JDialog {
             SwingUtilities.invokeLater(() -> {
                 button.setEnabled(enabled1);
                 if (button.isEnabled()) {
-                    button.setText("Update Available");
+                    button.setText(Localization.getLocalizedString("AboutUpdateAvailable"));
                 }
             } /**
              * Once the value has been received from on-line, update the UI.

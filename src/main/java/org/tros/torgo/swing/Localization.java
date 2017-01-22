@@ -17,12 +17,17 @@ package org.tros.torgo.swing;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import org.tros.utils.logging.Logger;
 
 /**
  * Localization Strings.
+ *
  * @author matta
  */
 public final class Localization {
+
+    private static final Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(Localization.class);
+    private static final String DEFAULT_LANG = "en";
 
     private static ResourceBundle resources;
     private static String lang;
@@ -33,7 +38,13 @@ public final class Localization {
     static {
         Locale currentLocale = Locale.getDefault();
         lang = currentLocale.getLanguage();
-        setLang(lang);
+        resources = null;
+        setLang("fr");
+        if (resources == null) {
+            LOGGER.warn("{0} is not a supported language.", lang);
+            LOGGER.warn("Setting language to {0}.", DEFAULT_LANG);
+            setLang(DEFAULT_LANG);
+        }
     }
 
     public static void setLang(String lang) {
@@ -42,7 +53,7 @@ public final class Localization {
             resources = ResourceBundle.getBundle("LocalizedStrings_" + lang);
             Localization.lang = lang;
         } catch (java.util.MissingResourceException e) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Localization.class).warn("Language not supported: {0}", lang);
+            LOGGER.warn("Language not supported: {0}", lang);
         }
     }
 

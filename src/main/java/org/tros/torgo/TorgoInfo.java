@@ -146,4 +146,12 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
     public String toString() {
         return version;
     }
+    
+    public String getCopy() {
+        return "© 2015-2017 Matthew Aguirre, Apache License 2.0";
+    }
+    
+    public String getAbout() {
+        return "Torgo is a flexible interpreter written in Java.";
+    }
 }

@@ -19,6 +19,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import org.tros.torgo.Main;
+import org.tros.torgo.swing.Localization;
 
 /**
  * Singleton GUI log console for viewing log output.
@@ -56,10 +57,10 @@ public final class LogConsole extends JFrame {
         sch.setLevel(level);
         Logger.getLogger("").addHandler(sch);
 
-        pauseMenu = new JCheckBoxMenuItem("Pause Console");
-        scrollLockMenu = new JCheckBoxMenuItem("Scroll Lock");
+        pauseMenu = new JCheckBoxMenuItem(Localization.getLocalizedString("LogConsolePause"));
+        scrollLockMenu = new JCheckBoxMenuItem(Localization.getLocalizedString("LogConsoleScrollLock"));
         scrollLockMenu.setEnabled(false);
-        JMenuItem closeMenu = new JMenuItem("Close");
+        JMenuItem closeMenu = new JMenuItem(Localization.getLocalizedString("LogConsoleClose"));
 
         pauseMenu.addActionListener((ActionEvent ae) -> {
             SwingComponentHandler.pause();
@@ -69,14 +70,14 @@ public final class LogConsole extends JFrame {
             setVisible(false);
         });
 
-        JMenu fileMenu = new JMenu("File");
+        JMenu fileMenu = new JMenu(Localization.getLocalizedString("LogConsoleFile"));
         fileMenu.add(pauseMenu);
         fileMenu.add(scrollLockMenu);
         fileMenu.add(closeMenu);
 
         mainMenu.add(fileMenu);
 
-        this.setTitle("Log Console");
+        this.setTitle(Localization.getLocalizedString("LogConsoleTitle"));
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         int height = 400;
         int width = (int) (height * 1.61803398875);
