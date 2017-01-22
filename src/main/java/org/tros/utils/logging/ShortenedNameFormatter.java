@@ -23,17 +23,17 @@ public class ShortenedNameFormatter extends Formatter {
 
     private static final String DEFAULT_FORMAT = "[%1$tc] %4$s: %2$s - %5$s %6$s%n";
 
-    protected String FORMAT;
-    protected Date DATE;
+    protected String format;
+    protected Date date;
 
     public ShortenedNameFormatter() {
         this(DEFAULT_FORMAT);
     }
 
     public ShortenedNameFormatter(String defaultFormat) {
-        DATE = new Date();
+        date = new Date();
         String property = LogManager.getLogManager().getProperty(this.getClass().getName() + ".format");
-        FORMAT = property == null ? defaultFormat : property;
+        format = property == null ? defaultFormat : property;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ShortenedNameFormatter extends Formatter {
         }
         nameBuilder.append(".").append(names[names.length - 1]);
 
-        DATE.setTime(record.getMillis());
+        date.setTime(record.getMillis());
         String source;
         if (record.getSourceClassName() != null) {
             source = record.getSourceClassName();
@@ -66,8 +66,8 @@ public class ShortenedNameFormatter extends Formatter {
             }
             throwable = sw.toString();
         }
-        return String.format(FORMAT,
-                DATE,
+        return String.format(format,
+                date,
                 source,
                 nameBuilder.toString(),
                 record.getLevel().getLocalizedName(),

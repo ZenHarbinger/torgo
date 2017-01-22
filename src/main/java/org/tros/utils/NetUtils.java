@@ -20,15 +20,15 @@ import java.util.Enumeration;
  */
 public final class NetUtils {
 
-    private static InetAddress _ip;
-    private static InetAddress[] _ips;
+    private static InetAddress ip;
+    private static InetAddress[] ips;
 
     /**
      * Static Constructor.
      */
     static {
         try {
-            _ip = getIP();
+            ip = getIP();
         } catch (SocketException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(NetUtils.class).warn(null, ex);
         }
@@ -47,8 +47,8 @@ public final class NetUtils {
      * @throws SocketException
      */
     public static InetAddress getIP() throws SocketException {
-        if (_ip != null) {
-            return _ip;
+        if (ip != null) {
+            return ip;
         }
 
         Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
@@ -60,8 +60,8 @@ public final class NetUtils {
                     //filter for ipv4/ipv6
                     if (ia.getAddress().getAddress().length == 4) {
                         //4 for ipv4, 16 for ipv6
-                        _ip = ia.getAddress();
-                        return _ip;
+                        ip = ia.getAddress();
+                        return ip;
                     }
                 }
             }
@@ -76,8 +76,8 @@ public final class NetUtils {
      * @throws SocketException
      */
     public static InetAddress[] getIPs() throws SocketException {
-        if (_ips != null) {
-            return _ips;
+        if (ips != null) {
+            return ips;
         }
 
         Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
@@ -90,14 +90,14 @@ public final class NetUtils {
                     //filter for ipv4/ipv6
                     if (ia.getAddress().getAddress().length == 4) {
                         //4 for ipv4, 16 for ipv6
-                        _ip = ia.getAddress();
-                        ret.add(_ip);
+                        ip = ia.getAddress();
+                        ret.add(ip);
 //                        return _ip;
                     }
                 }
             }
         }
-        _ips = ret.toArray(new InetAddress[]{});
-        return _ips;
+        ips = ret.toArray(new InetAddress[]{});
+        return ips;
     }
 }

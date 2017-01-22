@@ -390,6 +390,20 @@ public abstract class ControllerBase implements Controller {
         }
     }
 
+    /**
+     * Get the current open file.
+     *
+     * @return
+     */
+    @Override
+    public File getFile() {
+        return filename == null ? null : new File(filename);
+    }
+
+    protected FileFilter getFilter() {
+        return new FileNameExtensionFilter(getLang(), getLang());
+    }
+
     @Override
     public void openFile(File file) {
         try {
@@ -413,16 +427,6 @@ public abstract class ControllerBase implements Controller {
     }
 
     /**
-     * Get the current open file.
-     *
-     * @return
-     */
-    @Override
-    public File getFile() {
-        return filename == null ? null : new File(filename);
-    }
-
-    /**
      * Open a file based on URL.
      *
      * @param file
@@ -443,10 +447,6 @@ public abstract class ControllerBase implements Controller {
             init();
             org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);
         }
-    }
-
-    protected FileFilter getFilter() {
-        return new FileNameExtensionFilter(getLang(), getLang());
     }
 
     /**
@@ -633,7 +633,6 @@ public abstract class ControllerBase implements Controller {
                     if (isStepping.get()) {
                         step.waitOne();
                     }
-                    //TODO: this needs to be configurable
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     org.tros.utils.logging.Logging.getLogFactory().getLogger(ControllerBase.class).fatal(null, ex);

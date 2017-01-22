@@ -36,7 +36,6 @@ import org.tros.utils.ImageUtils;
 import org.tros.utils.logging.LogConsole;
 
 /**
- * TODO: detect "pause" and "debug" across controllers...
  *
  * @author matta
  */

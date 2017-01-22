@@ -47,11 +47,12 @@ public final class Random {
         usePackage
     }
 
+    private static final double EPSILON = 1E-14;
     private static final HashMap<Thread, java.util.Random> RANDOMS;
     private static final HashMap<Object, java.util.Random> SPECIFIC_RANDOMS;
-    private static UuidIncrementType _incrementType = UuidIncrementType.useClass;
-    private static boolean _doSeed;
-    private static int _seedValue;
+    private static UuidIncrementType incrementType = UuidIncrementType.useClass;
+    private static boolean doSeed;
+    private static int seedValue;
     private static final HashMap<String, AtomicLong> COUNTERS;
     private static final String DEFAULT_KEY = "puid";
 
@@ -67,12 +68,12 @@ public final class Random {
     static {
         COUNTERS = new HashMap<>();
         Properties prop = new Properties();
-        String prop_file = Random.class.getCanonicalName().replace('.', '/') + ".properties";
+        String propFile = Random.class.getCanonicalName().replace('.', '/') + ".properties";
         try {
-            prop.load(TorgoToolkit.getDefaultResourceAccessor().open(prop_file));
-            _incrementType = UuidIncrementType.valueOf(prop.getProperty("uuidIncrementType"));
-            _doSeed = Boolean.parseBoolean(prop.getProperty("doSeed"));
-            _seedValue = Integer.parseInt(prop.getProperty("seedValue"));
+            prop.load(TorgoToolkit.getDefaultResourceAccessor().open(propFile));
+            incrementType = UuidIncrementType.valueOf(prop.getProperty("uuidIncrementType"));
+            doSeed = Boolean.parseBoolean(prop.getProperty("doSeed"));
+            seedValue = Integer.parseInt(prop.getProperty("seedValue"));
         } catch (NullPointerException | IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).fatal(null, ex);
         }
@@ -88,8 +89,8 @@ public final class Random {
     private static java.util.Random getInstance() {
         Thread curr = Thread.currentThread();
         if (!RANDOMS.containsKey(curr)) {
-            if (_doSeed) {
-                RANDOMS.put(curr, new java.util.Random(_seedValue));
+            if (doSeed) {
+                RANDOMS.put(curr, new java.util.Random(seedValue));
             } else {
                 RANDOMS.put(curr, new java.util.Random());
             }
@@ -105,8 +106,8 @@ public final class Random {
      */
     public static java.util.Random getInstance(final Object key) {
         if (!SPECIFIC_RANDOMS.containsKey(key)) {
-            if (_doSeed) {
-                SPECIFIC_RANDOMS.put(key, new java.util.Random(_seedValue));
+            if (doSeed) {
+                SPECIFIC_RANDOMS.put(key, new java.util.Random(seedValue));
             } else {
                 SPECIFIC_RANDOMS.put(key, new java.util.Random());
             }
@@ -130,7 +131,7 @@ public final class Random {
      */
     public static synchronized void reset(Class<?> c, long value) {
         String key = DEFAULT_KEY;
-        switch (_incrementType) {
+        switch (incrementType) {
             case useClass:
                 key = c.getName();
                 break;
@@ -150,12 +151,12 @@ public final class Random {
      * object is seeded). However can be specified to leave the PUID counters
      * alone.
      *
-     * @param clear_count specify if we want to clear the UUID values.
+     * @param clearCount specify if we want to clear the UUID values.
      */
-    public static synchronized void reset(final boolean clear_count) {
+    public static synchronized void reset(final boolean clearCount) {
         RANDOMS.clear();
         SPECIFIC_RANDOMS.clear();
-        if (clear_count) {
+        if (clearCount) {
             COUNTERS.clear();
         }
     }
@@ -203,7 +204,7 @@ public final class Random {
      * @return a new PUID value
      */
     public static synchronized String getPUID(final Class<?> c) {
-        return getPUID(c, _incrementType);
+        return getPUID(c, incrementType);
     }
 
     /**
@@ -271,6 +272,21 @@ public final class Random {
      */
     public static synchronized double nextDouble(java.util.Random random) {
         return random.nextDouble();
+    }
+
+    /**
+     * Returns a random real number uniformly in [a, b).
+     *
+     * @param a the left endpoint
+     * @param b the right endpoint
+     * @return a random real number uniformly in [a, b)
+     * @throws IllegalArgumentException unless <tt>a < b</tt>
+     */
+    public static double nextDouble(double a, double b) {
+        if (!(a < b)) {
+            throw new IllegalArgumentException("Invalid range");
+        }
+        return a + nextDouble() * (b - a);
     }
 
     /**
@@ -470,18 +486,18 @@ public final class Random {
         }
 
         if (list.size() > count && count > 0) {
-            final int list_count = list.size();
-            final int max_stride = list_count / count;
+            final int listCount = list.size();
+            final int masStride = listCount / count;
             java.util.Random instance = getInstance();
-            final int start = Random.nextInt(instance, list_count % count);
+            final int start = Random.nextInt(instance, listCount % count);
             final ArrayList<T> retVal = new ArrayList<>();
             final ArrayList<Integer> ints = new ArrayList<>();
 
-            for (int ii = start; ints.size() < count; ii += max_stride) {
+            for (int ii = start; ints.size() < count; ii += masStride) {
                 if (count - 1 == retVal.size()) {
-                    ints.add(Random.nextInt(instance, ii, list_count));
+                    ints.add(Random.nextInt(instance, ii, listCount));
                 } else {
-                    ints.add(Random.nextInt(instance, ii, ii + max_stride));
+                    ints.add(Random.nextInt(instance, ii, ii + masStride));
                 }
             }
 
@@ -516,18 +532,18 @@ public final class Random {
         }
 
         if (list.size() > count && count > 0) {
-            final int list_count = list.size();
-            final int max_stride = list_count / count;
+            final int listCount = list.size();
+            final int maxStride = listCount / count;
             java.util.Random instance = random;
-            final int start = Random.nextInt(instance, list_count % count);
+            final int start = Random.nextInt(instance, listCount % count);
             final ArrayList<T> retVal = new ArrayList<>();
             final ArrayList<Integer> ints = new ArrayList<>();
 
-            for (int ii = start; ints.size() < count; ii += max_stride) {
+            for (int ii = start; ints.size() < count; ii += maxStride) {
                 if (count - 1 == retVal.size()) {
-                    ints.add(Random.nextInt(instance, ii, list_count));
+                    ints.add(Random.nextInt(instance, ii, listCount));
                 } else {
-                    ints.add(Random.nextInt(instance, ii, ii + max_stride));
+                    ints.add(Random.nextInt(instance, ii, ii + maxStride));
                 }
             }
 
@@ -596,37 +612,6 @@ public final class Random {
     }
 
     /**
-     * Gets a random item from a collection that is NOT equal to the specified
-     * collection.
-     *
-     * @param <T> the type
-     * @param list the collection to select from
-     * @param not the collection from which we do not want a duplicate selection
-     * of
-     * @return a new randomly selected object which is not equal to the
-     * specified value
-     */
-    public static <T> T getRandomNotInList(final Collection<T> list, final Collection<T> not) {
-        return getRandom(org.apache.commons.collections4.CollectionUtils.subtract(list, not));
-    }
-
-    /**
-     * Gets a random item from a collection that is NOT equal to the specified
-     * collection.
-     *
-     * @param <T> the type
-     * @param random
-     * @param list the collection to select from
-     * @param not the collection from which we do not want a duplicate selection
-     * of
-     * @return a new randomly selected object which is not equal to the
-     * specified value
-     */
-    public static <T> T getRandomNotInList(java.util.Random random, final Collection<T> list, final Collection<T> not) {
-        return getRandom(random, org.apache.commons.collections4.CollectionUtils.subtract(list, not));
-    }
-
-    /**
      * Gets a random item from the specified collection.
      *
      * @param <T> the type
@@ -660,12 +645,43 @@ public final class Random {
     }
 
     /**
+     * Gets a random item from a collection that is NOT equal to the specified
+     * collection.
+     *
+     * @param <T> the type
+     * @param list the collection to select from
+     * @param not the collection from which we do not want a duplicate selection
+     * of
+     * @return a new randomly selected object which is not equal to the
+     * specified value
+     */
+    public static <T> T getRandomNotInList(final Collection<T> list, final Collection<T> not) {
+        return getRandom(org.apache.commons.collections4.CollectionUtils.subtract(list, not));
+    }
+
+    /**
+     * Gets a random item from a collection that is NOT equal to the specified
+     * collection.
+     *
+     * @param <T> the type
+     * @param random
+     * @param list the collection to select from
+     * @param not the collection from which we do not want a duplicate selection
+     * of
+     * @return a new randomly selected object which is not equal to the
+     * specified value
+     */
+    public static <T> T getRandomNotInList(java.util.Random random, final Collection<T> list, final Collection<T> not) {
+        return getRandom(random, org.apache.commons.collections4.CollectionUtils.subtract(list, not));
+    }
+
+    /**
      * Is the random object specified to be seeded for repeatability.
      *
      * @return Is the random object specified to be seeded for repeatability.
      */
     public static boolean isSeeded() {
-        return _doSeed;
+        return doSeed;
     }
 
     /**
@@ -674,7 +690,7 @@ public final class Random {
      * @param value
      */
     public static void setSeeded(boolean value) {
-        _doSeed = value;
+        doSeed = value;
     }
 
     /**
@@ -683,7 +699,7 @@ public final class Random {
      * @return
      */
     public static int getSeed() {
-        return _seedValue;
+        return seedValue;
     }
 
     /**
@@ -692,22 +708,7 @@ public final class Random {
      * @param value
      */
     public static void setSeed(int value) {
-        _seedValue = value;
-    }
-
-    /**
-     * Returns a random real number uniformly in [a, b).
-     *
-     * @param a the left endpoint
-     * @param b the right endpoint
-     * @return a random real number uniformly in [a, b)
-     * @throws IllegalArgumentException unless <tt>a < b</tt>
-     */
-    public static double nextDouble(double a, double b) {
-        if (!(a < b)) {
-            throw new IllegalArgumentException("Invalid range");
-        }
-        return a + nextDouble() * (b - a);
+        seedValue = value;
     }
 
     /**
@@ -809,11 +810,11 @@ public final class Random {
         // see http://en.wikipedia.org/wiki/Poisson_distribution
         int k = 0;
         double p = 1.0;
-        double L = Math.exp(-lambda);
+        double l = Math.exp(-lambda);
         do {
             k++;
             p *= nextDouble();
-        } while (p >= L);
+        } while (p >= l);
         return k - 1;
     }
 
@@ -867,7 +868,6 @@ public final class Random {
         if (probabilities == null) {
             throw new NullPointerException("argument array is null");
         }
-        double EPSILON = 1E-14;
         double sum = 0.0;
         for (int i = 0; i < probabilities.length; i++) {
             if (!(probabilities[i] >= 0.0)) {

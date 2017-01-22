@@ -28,8 +28,8 @@ import org.tros.torgo.Main;
 public final class LogConsole extends JFrame {
 
     public static final LogConsole CONSOLE = new LogConsole();
-    private final JCheckBoxMenuItem scrollLock_menu;
-    private final JCheckBoxMenuItem pause_menu;
+    private final JCheckBoxMenuItem scrollLockMenu;
+    private final JCheckBoxMenuItem pauseMenu;
     private final SwingComponentHandler sch;
 
     /**
@@ -49,32 +49,32 @@ public final class LogConsole extends JFrame {
     @SuppressWarnings("OverridableMethodCallInConstructor")
     private LogConsole(Level level) {
         Main.loadIcon((JFrame) this);
-        JMenuBar main_menu = new JMenuBar();
-        this.setJMenuBar(main_menu);
+        JMenuBar mainMenu = new JMenuBar();
+        this.setJMenuBar(mainMenu);
 
         sch = new SwingComponentHandler();
         sch.setLevel(level);
         Logger.getLogger("").addHandler(sch);
 
-        JMenu file_menu = new JMenu("File");
-        pause_menu = new JCheckBoxMenuItem("Pause Console");
-        scrollLock_menu = new JCheckBoxMenuItem("Scroll Lock");
-        scrollLock_menu.setEnabled(false);
-        JMenuItem close_menu = new JMenuItem("Close");
+        pauseMenu = new JCheckBoxMenuItem("Pause Console");
+        scrollLockMenu = new JCheckBoxMenuItem("Scroll Lock");
+        scrollLockMenu.setEnabled(false);
+        JMenuItem closeMenu = new JMenuItem("Close");
 
-        pause_menu.addActionListener((ActionEvent ae) -> {
+        pauseMenu.addActionListener((ActionEvent ae) -> {
             SwingComponentHandler.pause();
         });
 
-        close_menu.addActionListener((ActionEvent ae) -> {
+        closeMenu.addActionListener((ActionEvent ae) -> {
             setVisible(false);
         });
 
-        file_menu.add(pause_menu);
-        file_menu.add(scrollLock_menu);
-        file_menu.add(close_menu);
+        JMenu fileMenu = new JMenu("File");
+        fileMenu.add(pauseMenu);
+        fileMenu.add(scrollLockMenu);
+        fileMenu.add(closeMenu);
 
-        main_menu.add(file_menu);
+        mainMenu.add(fileMenu);
 
         this.setTitle("Log Console");
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);

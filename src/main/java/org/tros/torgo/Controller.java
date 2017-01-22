@@ -44,18 +44,18 @@ public interface Controller {
     void openFile(File file);
 
     /**
-     * Return the file that is open.  Null if no file open.
-     *
-     * @return
-     */
-    File getFile();
-
-    /**
      * Open a specified location based on URL.
      *
      * @param file
      */
     void openFile(URL file);
+
+    /**
+     * Return the file that is open.  Null if no file open.
+     *
+     * @return
+     */
+    File getFile();
 
     /**
      * Print canvas.

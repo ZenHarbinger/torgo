@@ -152,8 +152,8 @@ abstract class LogoBlock implements CodeBlock {
      * @return
      */
     @Override
-    public boolean hasFunction(String name) {
-        return functions.containsKey(name);
+    public CodeFunction getFunction(String name) {
+        return functions.get(name);
     }
 
     /**
@@ -163,9 +163,10 @@ abstract class LogoBlock implements CodeBlock {
      * @return
      */
     @Override
-    public CodeFunction getFunction(String name) {
-        return functions.get(name);
+    public boolean hasFunction(String name) {
+        return functions.containsKey(name);
     }
+
 
     /**
      * Add a function to the current object. This allows for local declaration

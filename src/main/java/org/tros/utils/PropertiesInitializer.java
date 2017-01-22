@@ -69,36 +69,6 @@ public abstract class PropertiesInitializer {
         }
     }
 
-    private void loadFromProperties(PropertyDescriptor[] props, Properties prop) {
-        try {
-            ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
-            for (PropertyDescriptor p : props) {
-                if (p.getWriteMethod() != null
-                        && p.getReadMethod() != null
-                        && p.getReadMethod().getDeclaringClass() != Object.class) {
-                    boolean success = false;
-                    String val = prop.getProperty(p.getName());
-                    if (val != null) {
-                        Object o = TypeHandler.fromString(p.getPropertyType(), val);
-                        if (o != null) {
-                            p.getWriteMethod().invoke(this, o);
-                            success = true;
-                        }
-                    }
-                    if (!success && val != null) {
-                        setValueHelper(p, val);
-                    }
-                }
-            }
-            propKeys.forEach((key) -> {
-                String value = prop.getProperty(key);
-                setNameValuePair(key, value);
-            });
-        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
-            LOGGER.warn(null, ex);
-        }
-    }
-
     /**
      * Initialize from properties file if possible.
      */
@@ -146,6 +116,36 @@ public abstract class PropertiesInitializer {
             });
         } catch (IOException ex) {
         } catch (IntrospectionException ex) {
+            LOGGER.warn(null, ex);
+        }
+    }
+
+    private void loadFromProperties(PropertyDescriptor[] props, Properties prop) {
+        try {
+            ArrayList<String> propKeys = new ArrayList<>(prop.stringPropertyNames());
+            for (PropertyDescriptor p : props) {
+                if (p.getWriteMethod() != null
+                        && p.getReadMethod() != null
+                        && p.getReadMethod().getDeclaringClass() != Object.class) {
+                    boolean success = false;
+                    String val = prop.getProperty(p.getName());
+                    if (val != null) {
+                        Object o = TypeHandler.fromString(p.getPropertyType(), val);
+                        if (o != null) {
+                            p.getWriteMethod().invoke(this, o);
+                            success = true;
+                        }
+                    }
+                    if (!success && val != null) {
+                        setValueHelper(p, val);
+                    }
+                }
+            }
+            propKeys.forEach((key) -> {
+                String value = prop.getProperty(key);
+                setNameValuePair(key, value);
+            });
+        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
             LOGGER.warn(null, ex);
         }
     }

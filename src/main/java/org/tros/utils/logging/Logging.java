@@ -44,57 +44,6 @@ public final class Logging {
         initLogging(binfo, Logging.class);
     }
 
-    private static void copyFile(BuildInfo binfo, Class init, File logProp) {
-        try {
-            String prop_file = init.getCanonicalName().replace('.', '/') + ".properties";
-            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader()
-                    .getResources(prop_file);
-            if (resources.hasMoreElements()) {
-                URL to_use = resources.nextElement();
-                try (FileOutputStream fis = new FileOutputStream(logProp)) {
-                    IOUtils.copy(to_use.openStream(), fis);
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private static void loadFile(File logProp) {
-        String definedLogFile = System.getProperty("torgo.logfile");
-        StringBuilder sb = new StringBuilder();
-        try {
-            final Scanner scanner = new Scanner(logProp);
-            boolean lookForFile = false;
-            while (scanner.hasNextLine()) {
-                String lineFromFile = scanner.nextLine();
-                if (lineFromFile.startsWith("handlers")
-                        && lineFromFile.contains("java.util.logging.FileHandler")) {
-                    lookForFile = true;
-                }
-                if (lookForFile
-                        && definedLogFile != null
-                        && lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
-                    lineFromFile = "java.util.logging.FileHandler.pattern = " + definedLogFile;
-                }
-                sb.append(lineFromFile).append(System.getProperty("line.separator"));
-            }
-
-            try (BufferedInputStream fis = new BufferedInputStream(IOUtils.toInputStream(sb.toString(), "UTF-8"))) {
-                LogManager.getLogManager().readConfiguration(fis);
-            } catch (FileNotFoundException | SecurityException ex) {
-                Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public static void initLogging(BuildInfo binfo, Class init) {
         try {
             //hack to get this logger to shut up
@@ -144,6 +93,57 @@ public final class Logging {
                 }
             }
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void copyFile(BuildInfo binfo, Class init, File logProp) {
+        try {
+            String propFile = init.getCanonicalName().replace('.', '/') + ".properties";
+            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader()
+                    .getResources(propFile);
+            if (resources.hasMoreElements()) {
+                URL toUse = resources.nextElement();
+                try (FileOutputStream fis = new FileOutputStream(logProp)) {
+                    IOUtils.copy(toUse.openStream(), fis);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void loadFile(File logProp) {
+        String definedLogFile = System.getProperty("torgo.logfile");
+        StringBuilder sb = new StringBuilder();
+        try {
+            final Scanner scanner = new Scanner(logProp);
+            boolean lookForFile = false;
+            while (scanner.hasNextLine()) {
+                String lineFromFile = scanner.nextLine();
+                if (lineFromFile.startsWith("handlers")
+                        && lineFromFile.contains("java.util.logging.FileHandler")) {
+                    lookForFile = true;
+                }
+                if (lookForFile
+                        && definedLogFile != null
+                        && lineFromFile.contains("java.util.logging.FileHandler.pattern")) {
+                    lineFromFile = "java.util.logging.FileHandler.pattern = " + definedLogFile;
+                }
+                sb.append(lineFromFile).append(System.getProperty("line.separator"));
+            }
+
+            try (BufferedInputStream fis = new BufferedInputStream(IOUtils.toInputStream(sb.toString(), "UTF-8"))) {
+                LogManager.getLogManager().readConfiguration(fis);
+            } catch (FileNotFoundException | SecurityException ex) {
+                Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+            }
+        } catch (FileNotFoundException ex) {
             Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

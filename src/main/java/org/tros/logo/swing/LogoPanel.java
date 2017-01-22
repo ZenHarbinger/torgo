@@ -453,6 +453,16 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     }
 
     @Override
+    public void canvascolor(int red, int green, int blue) {
+        red = Math.min(255, Math.max(0, red));
+        green = Math.min(255, Math.max(0, green));
+        blue = Math.min(255, Math.max(0, blue));
+
+        Color canvasColor = new Color(red, green, blue);
+        canvascolor(canvasColor);
+    }
+
+    @Override
     public void canvascolor(final String color) {
         Drawable command = new Drawable() {
 
@@ -511,6 +521,16 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         submitCommand(command);
     }
 
+    @Override
+    public void pencolor(int red, int green, int blue, int alpha) {
+        red = Math.min(255, Math.max(0, red));
+        green = Math.min(255, Math.max(0, green));
+        blue = Math.min(255, Math.max(0, blue));
+
+        Color canvasColor = new Color(red, green, blue, alpha);
+        pencolor(canvasColor);
+    }
+
     private void pencolor(final Color color) {
         Drawable command = new Drawable() {
 
@@ -564,29 +584,31 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     private Color getColorByName(String color) {
         color = color.toLowerCase();
+        Color ret = Color.black;
 
         try {
-            Field field = Color.class
-                    .getField(color);
-            return (Color) field.get(
-                    null);
+            Field field = Color.class.getField(color);
+            return (Color) field.get(null);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
         }
         if (null != color) {
             switch (color) {
                 case "darkgray":
-                    return (Color.darkGray);
+                    ret = Color.darkGray;
+                    break;
                 case "lightgray":
-                    return (Color.lightGray);
+                    ret = Color.lightGray;
+                    break;
                 default:
                     if (!color.startsWith("#") || !color.startsWith(color)) {
                         color = "#" + color;
                     }
                     Color c = java.awt.Color.decode(color);
-                    return c == null ? Color.black : c;
+                    ret = c == null ? Color.black : c;
+                    break;
             }
         }
-        return Color.black;
+        return ret;
     }
 
     @Override
@@ -824,26 +846,6 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 SwingUtilities.invokeLater(LogoPanel.super::repaint);
             }
         }
-    }
-
-    @Override
-    public void pencolor(int red, int green, int blue, int alpha) {
-        red = Math.min(255, Math.max(0, red));
-        green = Math.min(255, Math.max(0, green));
-        blue = Math.min(255, Math.max(0, blue));
-
-        Color canvasColor = new Color(red, green, blue, alpha);
-        pencolor(canvasColor);
-    }
-
-    @Override
-    public void canvascolor(int red, int green, int blue) {
-        red = Math.min(255, Math.max(0, red));
-        green = Math.min(255, Math.max(0, green));
-        blue = Math.min(255, Math.max(0, blue));
-
-        Color canvasColor = new Color(red, green, blue);
-        canvascolor(canvasColor);
     }
 
     @Override

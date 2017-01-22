@@ -95,8 +95,8 @@ public class JConsole extends JScrollPane
     private static final String PASTE = "Paste";
 
 //	NameCompletion nameCompletion;
-    final int SHOW_AMBIG_MAX = 10;
-    String ZEROS = "000";
+    private static final int SHOW_AMBIG_MAX = 10;
+    private static final String ZEROS = "000";
 
     private OutputStream outPipe;
     private InputStream inPipe;
@@ -562,18 +562,14 @@ public class JConsole extends JScrollPane
     }
 
     @Override
-    public void println(Object o) {
-        print(String.valueOf(o) + System.getProperty("line.separator"));
-        text.repaint();
+    public void error(Object o) {
+        print(o, Color.red);
     }
 
     @Override
-    public void print(final Object o) {
-        invokeAndWait(() -> {
-            append(String.valueOf(o));
-            resetCommandStart();
-            text.setCaretPosition(cmdStart);
-        });
+    public void println(Object o) {
+        print(String.valueOf(o) + System.getProperty("line.separator"));
+        text.repaint();
     }
 
     /**
@@ -584,15 +580,19 @@ public class JConsole extends JScrollPane
         text.repaint();
     }
 
-    @Override
-    public void error(Object o) {
-        print(o, Color.red);
-    }
-
     public void println(Icon icon) {
         print(icon);
         println();
         text.repaint();
+    }
+
+    @Override
+    public void print(final Object o) {
+        invokeAndWait(() -> {
+            append(String.valueOf(o));
+            resetCommandStart();
+            text.setCaretPosition(cmdStart);
+        });
     }
 
     public void print(final Icon icon) {

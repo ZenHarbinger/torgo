@@ -58,6 +58,11 @@ import org.tros.utils.ImageUtils;
 public class TorgoUserInputPanel implements TorgoTextConsole {
 
     public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
+    private static final float DEFAULT_FONT_SIZE = 12;
+    private static final int FONT_INCREMENT_SIZE = 1;
+    private static final int FONT_MAX_SIZE = 50;
+    private static final int FONT_MIN_SIZE = 5;
+
     protected final Controller controller;
 
     private final RSyntaxTextArea inputTextArea;
@@ -68,11 +73,6 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
 
     private final LayeredHighlighter.LayerPainter defaultHighlighter;
     private final LayeredHighlighter.LayerPainter breakpointHighlighter;
-
-    private final float DEFAULT_FONT_SIZE = 12;
-    private final int FONT_INCREMENT_SIZE = 1;
-    private final int FONT_MAX_SIZE = 50;
-    private final int FONT_MIN_SIZE = 5;
 
     private JMenuItem jmi1;
     private JMenuItem jmi2;

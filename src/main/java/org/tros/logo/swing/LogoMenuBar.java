@@ -326,8 +326,6 @@ public final class LogoMenuBar extends TorgoMenuBar {
      * @return
      */
     private JMenu setupToolsMenu() {
-        JMenu toolsMenu = new JMenu(Localization.getLocalizedString("ToolsMenu"));
-
         toolsPenColorChooser = new JMenuItem(Localization.getLocalizedString("ToolsPenColorChooser"));
         toolsCanvasColorChooser = new JMenuItem(Localization.getLocalizedString("ToolsCanvasColorChooser"));
 
@@ -355,6 +353,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             }
         });
 
+        JMenu toolsMenu = new JMenu(Localization.getLocalizedString("ToolsMenu"));
         toolsMenu.add(toolsPenColorChooser);
         toolsMenu.add(toolsCanvasColorChooser);
 
