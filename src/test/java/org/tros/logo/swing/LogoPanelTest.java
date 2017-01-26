@@ -15,17 +15,28 @@
  */
 package org.tros.logo.swing;
 
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.tros.logo.DebugInterpreterTest;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
  * @author matta
  */
 public class LogoPanelTest {
+    
+    private final static Logger LOGGER;
+
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(DebugInterpreterTest.class.getName());
+    }
 
     public LogoPanelTest() {
     }

@@ -15,6 +15,9 @@
  */
 package org.tros.logo;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,10 +27,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.logo.swing.DrawListener;
-import org.tros.logo.swing.Drawable;
 import org.tros.logo.swing.LogoMenuBar;
-import org.tros.logo.swing.LogoPanel;
+import org.tros.torgo.ControllerListener;
 import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.CodeBlock;
@@ -67,14 +68,6 @@ public class LogoControllerTest {
     public void tearDown() {
     }
 
-    public static class DrawListenerImpl implements DrawListener {
-
-        @Override
-        public void drawn(Drawable sender) {
-        }
-        
-    }
-    
     @Test
     public void testLexicalScoping() {
         LOGGER.info("lexicalScopingTest");
@@ -82,15 +75,40 @@ public class LogoControllerTest {
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", false);
         LexicalLogoController controller = (LexicalLogoController) TorgoToolkit.getController("lexical-logo");
+
+        ControllerListener clistener = new ControllerListener() {
+            @Override
+            public void onStartInterpreter() {
+            }
+
+            @Override
+            public void onStopInterpreter() {
+            }
+
+            @Override
+            public void onDebugInterpreter() {
+            }
+
+            @Override
+            public void onStepOver() {
+            }
+
+            @Override
+            public void onPauseInterpreter() {
+            }
+
+            @Override
+            public void onResumeInterpreter() {
+            }
+        };
+        controller.addControllerListener(clistener);
+        controller.removeControllerListener(clistener);
+
         controller.run();
         controller.newFile();
-        LogoPanel createCanvas = (LogoPanel) controller.createCanvas(null);
-        DrawListenerImpl dl = new DrawListenerImpl();
-        createCanvas.addListener(dl);
-        createCanvas.removeListener(dl);
-        
         assertEquals("lexical-logo", controller.getLang());
         String[] files = new String[]{
+            "no-such-file",
             "logo/examples/antlr/dynamic_scope.txt",
             "logo/examples/antlr/example1.txt",
             "logo/examples/antlr/example2.txt",
@@ -131,7 +149,21 @@ public class LogoControllerTest {
 
         for (String file : files) {
             LOGGER.info(file);
-            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            try {
+                controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            } catch (Exception ex) {
+                try {
+                    controller.openFile(new URL("http://" + file));
+                } catch (MalformedURLException ex2) {
+                    controller.openFile(new File(file));
+                }
+            }
+            controller.pauseInterpreter();
+            controller.stepOver();
+            controller.resumeInterpreter();
+            controller.getFile();
+            controller.insertCommand(("home\n"));
+            assertNotNull(controller.getSource());
             controller.disable("TraceLogger");
 
             try {
@@ -200,14 +232,40 @@ public class LogoControllerTest {
         boolean checked = prefs.getBoolean("wait-for-repaint", true);
         prefs.putBoolean("wait-for-repaint", false);
         DynamicLogoController controller = (DynamicLogoController) TorgoToolkit.getController("dynamic-logo");
+
+        ControllerListener clistener = new ControllerListener() {
+            @Override
+            public void onStartInterpreter() {
+            }
+
+            @Override
+            public void onStopInterpreter() {
+            }
+
+            @Override
+            public void onDebugInterpreter() {
+            }
+
+            @Override
+            public void onStepOver() {
+            }
+
+            @Override
+            public void onPauseInterpreter() {
+            }
+
+            @Override
+            public void onResumeInterpreter() {
+            }
+        };
+        controller.addControllerListener(clistener);
+        controller.removeControllerListener(clistener);
+
         controller.run();
         controller.newFile();
-        LogoPanel createCanvas = (LogoPanel) controller.createCanvas(null);
-        DrawListenerImpl dl = new DrawListenerImpl();
-        createCanvas.addListener(dl);
-        createCanvas.removeListener(dl);
         assertEquals("dynamic-logo", controller.getLang());
         String[] files = new String[]{
+            "no-such-file",
             "logo/examples/antlr/dynamic_scope.txt",
             "logo/examples/antlr/example1.txt",
             "logo/examples/antlr/example2.txt",
@@ -249,7 +307,21 @@ public class LogoControllerTest {
 
         for (String file : files) {
             Logger.getLogger(LogoControllerTest.class.getName()).log(Level.INFO, file);
-            controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            try {
+                controller.openFile(ClassLoader.getSystemClassLoader().getResource(file));
+            } catch (Exception ex) {
+                try {
+                    controller.openFile(new URL("http://" + file));
+                } catch (MalformedURLException ex2) {
+                    controller.openFile(new File(file));
+                }
+            }
+            controller.pauseInterpreter();
+            controller.stepOver();
+            controller.resumeInterpreter();
+            controller.getFile();
+            controller.insertCommand(("home\n"));
+            assertNotNull(controller.getSource());
             controller.disable("TraceLogger");
 
             try {

@@ -1,12 +1,12 @@
 /*
  * Copyright 2016 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,11 +19,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.text.BadLocationException;
@@ -40,8 +38,22 @@ import org.tros.torgo.Controller;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.TorgoTextConsole;
+import org.tros.utils.ImageUtils;
 
+/**
+ * Main display of text io.
+ *
+ * @author matta
+ */
 public class TorgoUserInputPanel implements TorgoTextConsole {
+
+    public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
+    private static final float DEFAULT_FONT_SIZE = 12;
+    private static final int FONT_INCREMENT_SIZE = 1;
+    private static final int FONT_MAX_SIZE = 50;
+    private static final int FONT_MIN_SIZE = 5;
+
+    protected final Controller controller;
 
     private final RSyntaxTextArea inputTextArea;
     private final Gutter gutter;
@@ -49,11 +61,50 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
     private final JConsole outputTextArea;
     private final JTabbedPane tabs;
 
-    public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
-    protected final Controller controller;
-
     private final LayeredHighlighter.LayerPainter defaultHighlighter;
     private final LayeredHighlighter.LayerPainter breakpointHighlighter;
+    private final java.util.prefs.Preferences prefs;
+    private final ZoomableMixin zoom;
+
+    private class ZoomableMixin extends ZoomableComponent {
+
+        ZoomableMixin(JComponent component) {
+            super(component);
+        }
+
+        @Override
+        protected void zoomIn() {
+            Font font1 = inputTextArea.getFont();
+            float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
+            if (size <= FONT_MAX_SIZE) {
+                font1 = font1.deriveFont(size);
+                inputTextArea.setFont(font1);
+                outputTextArea.setFont(font1);
+                prefs.putFloat("font-size", size);
+            }
+        }
+
+        @Override
+        protected void zoomOut() {
+            Font font1 = inputTextArea.getFont();
+            float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
+            if (size >= FONT_MIN_SIZE) {
+                font1 = font1.deriveFont(size);
+                inputTextArea.setFont(font1);
+                outputTextArea.setFont(font1);
+                prefs.putFloat("font-size", size);
+            }
+        }
+
+        @Override
+        protected void zoomReset() {
+            Font font1 = inputTextArea.getFont();
+            font1 = font1.deriveFont(DEFAULT_FONT_SIZE);
+            inputTextArea.setFont(font1);
+            outputTextArea.setFont(font1);
+            prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
+        }
+    }
 
     /**
      * Constructor.
@@ -80,24 +131,26 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         RTextScrollPane scrollPane = new org.fife.ui.rtextarea.RTextScrollPane(inputTextArea);
         scrollPane.setIconRowHeaderEnabled(true);
         gutter = scrollPane.getGutter();
-        try {
-            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(DEBUG_ICON);
-            ImageIcon imageIcon = new ImageIcon(resources.nextElement());
-            gutter.setBookmarkIcon(imageIcon);
-        } catch (IOException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).warn(null, ex);
-        }
+        gutter.setBookmarkIcon(ImageUtils.getIcon(DEBUG_ICON));
         gutter.setBookmarkingEnabled(true);
 
-        inputTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoUserInputPanel.class);
+
+        outputTextArea = new JConsole();
+        outputTextArea.setEditable(editable);
+        //get default pref
+        //update prefs
+
+        Font font = new Font(Font.MONOSPACED, Font.PLAIN, (int) prefs.getFloat("font-size", DEFAULT_FONT_SIZE));
+        inputTextArea.setFont(font);
+        outputTextArea.setFont(font);
+        zoom = new ZoomableMixin(inputTextArea);
+
         inputTab.add(scrollPane, BorderLayout.CENTER);
 
         //TABS
         tabs = new JTabbedPane();
         tabs.add(name, inputTab);
-
-        outputTextArea = new JConsole();
-        outputTextArea.setEditable(editable);
 
         controller.addInterpreterListener(new InterpreterListener() {
 

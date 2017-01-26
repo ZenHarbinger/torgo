@@ -14,37 +14,37 @@ public interface Logger {
 
     void warn(String message);
 
-    void debug(String message);
-
-    void error(String message);
-
-    void info(String message);
-
-    void verbose(String message);
-    
-    void fatal(String message);
-
     void warn(String format, Object... objs);
-
-    void debug(String format, Object... objs);
-
-    void error(String format, Object... objs);
-
-    void info(String format, Object... objs);
-
-    void verbose(String format, Object... objs);
-
-    void fatal(String format, Object... objs);
 
     void warn(String message, Throwable thrw);
 
+    void debug(String message);
+
+    void debug(String format, Object... objs);
+
     void debug(String message, Throwable thrw);
+
+    void error(String message);
+
+    void error(String format, Object... objs);
 
     void error(String message, Throwable thrw);
 
+    void info(String message);
+
+    void info(String format, Object... objs);
+
     void info(String message, Throwable thrw);
 
+    void verbose(String message);
+
+    void verbose(String format, Object... objs);
+
     void verbose(String message, Throwable thrw);
+
+    void fatal(String format, Object... objs);
+
+    void fatal(String message);
 
     void fatal(String message, Throwable thrw);
 }

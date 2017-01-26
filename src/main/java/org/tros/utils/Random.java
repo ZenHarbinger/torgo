@@ -28,7 +28,7 @@ import org.tros.torgo.TorgoToolkit;
 public final class Random {
 
     /**
-     * Enumeration for a 3 state system
+     * Enumeration for a 3 state system.
      */
     public enum TriState {
 
@@ -38,7 +38,7 @@ public final class Random {
     }
 
     /**
-     * Enumeration for how the UUID values should be incremented
+     * Enumeration for how the UUID values should be incremented.
      */
     public enum UuidIncrementType {
 
@@ -47,12 +47,13 @@ public final class Random {
         usePackage
     }
 
-    private final static HashMap<Thread, java.util.Random> RANDOMS;
-    private final static HashMap<Object, java.util.Random> SPECIFIC_RANDOMS;
-    private static UuidIncrementType _incrementType = UuidIncrementType.useClass;
-    private static boolean _doSeed;
-    private static int _seedValue;
-    private final static HashMap<String, AtomicLong> COUNTERS;
+    private static final double EPSILON = 1E-14;
+    private static final HashMap<Thread, java.util.Random> RANDOMS;
+    private static final HashMap<Object, java.util.Random> SPECIFIC_RANDOMS;
+    private static UuidIncrementType incrementType = UuidIncrementType.useClass;
+    private static boolean doSeed;
+    private static int seedValue;
+    private static final HashMap<String, AtomicLong> COUNTERS;
     private static final String DEFAULT_KEY = "puid";
 
     /**
@@ -67,12 +68,12 @@ public final class Random {
     static {
         COUNTERS = new HashMap<>();
         Properties prop = new Properties();
-        String prop_file = Random.class.getCanonicalName().replace('.', '/') + ".properties";
+        String propFile = Random.class.getCanonicalName().replace('.', '/') + ".properties";
         try {
-            prop.load(TorgoToolkit.getDefaultResourceAccessor().open(prop_file));
-            _incrementType = UuidIncrementType.valueOf(prop.getProperty("uuidIncrementType"));
-            _doSeed = Boolean.parseBoolean(prop.getProperty("doSeed"));
-            _seedValue = Integer.parseInt(prop.getProperty("seedValue"));
+            prop.load(TorgoToolkit.getDefaultResourceAccessor().open(propFile));
+            incrementType = UuidIncrementType.valueOf(prop.getProperty("uuidIncrementType"));
+            doSeed = Boolean.parseBoolean(prop.getProperty("doSeed"));
+            seedValue = Integer.parseInt(prop.getProperty("seedValue"));
         } catch (NullPointerException | IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(Random.class).fatal(null, ex);
         }
@@ -88,8 +89,8 @@ public final class Random {
     private static java.util.Random getInstance() {
         Thread curr = Thread.currentThread();
         if (!RANDOMS.containsKey(curr)) {
-            if (_doSeed) {
-                RANDOMS.put(curr, new java.util.Random(_seedValue));
+            if (doSeed) {
+                RANDOMS.put(curr, new java.util.Random(seedValue));
             } else {
                 RANDOMS.put(curr, new java.util.Random());
             }
@@ -105,8 +106,8 @@ public final class Random {
      */
     public static java.util.Random getInstance(final Object key) {
         if (!SPECIFIC_RANDOMS.containsKey(key)) {
-            if (_doSeed) {
-                SPECIFIC_RANDOMS.put(key, new java.util.Random(_seedValue));
+            if (doSeed) {
+                SPECIFIC_RANDOMS.put(key, new java.util.Random(seedValue));
             } else {
                 SPECIFIC_RANDOMS.put(key, new java.util.Random());
             }
@@ -118,7 +119,7 @@ public final class Random {
      * Reset the random object to initial state (only useful if the random
      * object is seeded). This will clear the PUID counters.
      */
-    public synchronized static void reset() {
+    public static synchronized void reset() {
         reset(true);
     }
 
@@ -128,9 +129,9 @@ public final class Random {
      * @param c
      * @param value
      */
-    public synchronized static void reset(Class<?> c, long value) {
+    public static synchronized void reset(Class<?> c, long value) {
         String key = DEFAULT_KEY;
-        switch (_incrementType) {
+        switch (incrementType) {
             case useClass:
                 key = c.getName();
                 break;
@@ -150,12 +151,12 @@ public final class Random {
      * object is seeded). However can be specified to leave the PUID counters
      * alone.
      *
-     * @param clear_count specify if we want to clear the UUID values.
+     * @param clearCount specify if we want to clear the UUID values.
      */
-    public synchronized static void reset(final boolean clear_count) {
+    public static synchronized void reset(final boolean clearCount) {
         RANDOMS.clear();
         SPECIFIC_RANDOMS.clear();
-        if (clear_count) {
+        if (clearCount) {
             COUNTERS.clear();
         }
     }
@@ -177,7 +178,7 @@ public final class Random {
      * @param type
      * @return
      */
-    public synchronized static String getPUID(final Class<?> c, UuidIncrementType type) {
+    public static synchronized String getPUID(final Class<?> c, UuidIncrementType type) {
         String key = DEFAULT_KEY;
         switch (type) {
             case useClass:
@@ -202,8 +203,8 @@ public final class Random {
      * @param c the class type
      * @return a new PUID value
      */
-    public synchronized static String getPUID(final Class<?> c) {
-        return getPUID(c, _incrementType);
+    public static synchronized String getPUID(final Class<?> c) {
+        return getPUID(c, incrementType);
     }
 
     /**
@@ -214,36 +215,36 @@ public final class Random {
      * @param strength the strength of the PUID (unused for now)
      * @return a new PUID value
      */
-    public synchronized static String getPUID(final Class<?> c, final int strength) {
+    public static synchronized String getPUID(final Class<?> c, final int strength) {
         return getPUID(c);
     }
 
     /**
-     * Return a random boolean value
+     * Return a random boolean value.
      *
      * @param random
      * @return a random true/false value
      */
-    public synchronized static boolean nextBoolean(java.util.Random random) {
+    public static synchronized boolean nextBoolean(java.util.Random random) {
         return random.nextBoolean();
     }
 
     /**
-     * Return a random boolean value
+     * Return a random boolean value.
      *
      * @return a random true/false value
      */
-    public synchronized static boolean nextBoolean() {
+    public static synchronized boolean nextBoolean() {
         return nextBoolean(getInstance());
     }
 
     /**
-     * return a random tri-state value
+     * return a random tri-state value.
      *
      * @param random
      * @return a random tri-state value TRUE/FALSE/MAYBE
      */
-    public synchronized static TriState nextTriState(java.util.Random random) {
+    public static synchronized TriState nextTriState(java.util.Random random) {
         double d = random.nextDouble();
         if (d < (1.0 / 3.0)) {
             return TriState.FALSE;
@@ -255,11 +256,11 @@ public final class Random {
     }
 
     /**
-     * return a random tri-state value
+     * return a random tri-state value.
      *
      * @return a random tri-state value TRUE/FALSE/MAYBE
      */
-    public synchronized static TriState nextTriState() {
+    public static synchronized TriState nextTriState() {
         return nextTriState(getInstance());
     }
 
@@ -269,8 +270,23 @@ public final class Random {
      * @param random
      * @return a new double value from 0.0 inclusive to 1.0 exclusive.
      */
-    public synchronized static double nextDouble(java.util.Random random) {
+    public static synchronized double nextDouble(java.util.Random random) {
         return random.nextDouble();
+    }
+
+    /**
+     * Returns a random real number uniformly in [a, b).
+     *
+     * @param a the left endpoint
+     * @param b the right endpoint
+     * @return a random real number uniformly in [a, b)
+     * @throws IllegalArgumentException unless <tt>a < b</tt>
+     */
+    public static double nextDouble(double a, double b) {
+        if (!(a < b)) {
+            throw new IllegalArgumentException("Invalid range");
+        }
+        return a + nextDouble() * (b - a);
     }
 
     /**
@@ -278,7 +294,7 @@ public final class Random {
      *
      * @return a new double value from 0.0 inclusive to 1.0 exclusive.
      */
-    public synchronized static double nextDouble() {
+    public static synchronized double nextDouble() {
         return nextDouble(getInstance());
     }
 
@@ -288,7 +304,7 @@ public final class Random {
      * @param random
      * @return a new float value from 0.0 inclusive to 1.0 exclusive.
      */
-    public synchronized static float nextFloat(java.util.Random random) {
+    public static synchronized float nextFloat(java.util.Random random) {
         return random.nextFloat();
     }
 
@@ -297,47 +313,47 @@ public final class Random {
      *
      * @return a new float value from 0.0 inclusive to 1.0 exclusive.
      */
-    public synchronized static float nextFloat() {
+    public static synchronized float nextFloat() {
         return nextFloat(getInstance());
     }
 
     /**
-     * Returns a random integer
+     * Returns a random integer.
      *
      * @param random
      * @return a random integer
      */
-    public synchronized static int nextInt(java.util.Random random) {
+    public static synchronized int nextInt(java.util.Random random) {
         return random.nextInt();
     }
 
     /**
-     * Returns a random integer
+     * Returns a random integer.
      *
      * @return a random integer
      */
-    public synchronized static int nextInt() {
+    public static synchronized int nextInt() {
         return nextInt(getInstance());
     }
 
     /**
-     * Returns a random integer less than the specified value
+     * Returns a random integer less than the specified value.
      *
      * @param random
      * @param n the specified value
      * @return a random integer >= 0 and < n
      */
-    public synchronized static int nextInt(java.util.Random random, final int n) {
+    public static synchronized int nextInt(java.util.Random random, final int n) {
         return random.nextInt(Math.max(1, n));
     }
 
     /**
-     * Returns a random integer less than the specified value
+     * Returns a random integer less than the specified value.
      *
      * @param n the specified value
      * @return a random integer >= 0 and < n
      */
-    public synchronized static int nextInt(final int n) {
+    public static synchronized int nextInt(final int n) {
         return nextInt(getInstance(), Math.max(1, n));
     }
 
@@ -349,7 +365,7 @@ public final class Random {
      * @param max the max value (exclusive)
      * @return a random integer within the specified range.
      */
-    public synchronized static int nextInt(java.util.Random random, final int min, final int max) {
+    public static synchronized int nextInt(java.util.Random random, final int min, final int max) {
         return (random.nextInt(Math.max(1, max - min)) + min);
     }
 
@@ -360,7 +376,7 @@ public final class Random {
      * @param max the max value (exclusive)
      * @return a random integer within the specified range.
      */
-    public synchronized static int nextInt(final int min, final int max) {
+    public static synchronized int nextInt(final int min, final int max) {
         return nextInt(getInstance(), min, max);
     }
 
@@ -370,7 +386,7 @@ public final class Random {
      * @param random
      * @return a random long value.
      */
-    public synchronized static long nextLong(java.util.Random random) {
+    public static synchronized long nextLong(java.util.Random random) {
         return random.nextLong();
     }
 
@@ -379,7 +395,7 @@ public final class Random {
      *
      * @return a random long value.
      */
-    public synchronized static long nextLong() {
+    public static synchronized long nextLong() {
         return nextLong(getInstance());
     }
 
@@ -390,7 +406,7 @@ public final class Random {
      * @param max
      * @return
      */
-    public synchronized static long nextLong(java.util.Random random, final long max) {
+    public static synchronized long nextLong(java.util.Random random, final long max) {
         // error checking and 2^x checking removed for simplicity.
         return nextLong(random, 0, Math.max(max, 1));
     }
@@ -401,7 +417,7 @@ public final class Random {
      * @param max
      * @return
      */
-    public synchronized static long nextLong(final long max) {
+    public static synchronized long nextLong(final long max) {
         // error checking and 2^x checking removed for simplicity.
         return nextLong(getInstance(), max);
     }
@@ -414,7 +430,7 @@ public final class Random {
      * @param max
      * @return
      */
-    public synchronized static long nextLong(java.util.Random random, final long min, final long max) {
+    public static synchronized long nextLong(java.util.Random random, final long min, final long max) {
         // error checking and 2^x checking removed for simplicity.
         long bits, val;
         java.util.Random rng = random;
@@ -433,7 +449,7 @@ public final class Random {
      * @param max
      * @return
      */
-    public synchronized static long nextLong(final long min, final long max) {
+    public static synchronized long nextLong(final long min, final long max) {
         // error checking and 2^x checking removed for simplicity.
         long bits, val;
         java.util.Random rng = getInstance();
@@ -451,7 +467,7 @@ public final class Random {
      * @param key the key for the Guassian series.
      * @return a random value with a Guassian distribution.
      */
-    public synchronized static double nextGaussian(final Object key) {
+    public static synchronized double nextGaussian(final Object key) {
         return getInstance(key).nextGaussian();
     }
 
@@ -470,18 +486,18 @@ public final class Random {
         }
 
         if (list.size() > count && count > 0) {
-            final int list_count = list.size();
-            final int max_stride = list_count / count;
+            final int listCount = list.size();
+            final int masStride = listCount / count;
             java.util.Random instance = getInstance();
-            final int start = Random.nextInt(instance, list_count % count);
+            final int start = Random.nextInt(instance, listCount % count);
             final ArrayList<T> retVal = new ArrayList<>();
             final ArrayList<Integer> ints = new ArrayList<>();
 
-            for (int ii = start; ints.size() < count; ii += max_stride) {
+            for (int ii = start; ints.size() < count; ii += masStride) {
                 if (count - 1 == retVal.size()) {
-                    ints.add(Random.nextInt(instance, ii, list_count));
+                    ints.add(Random.nextInt(instance, ii, listCount));
                 } else {
-                    ints.add(Random.nextInt(instance, ii, ii + max_stride));
+                    ints.add(Random.nextInt(instance, ii, ii + masStride));
                 }
             }
 
@@ -516,18 +532,18 @@ public final class Random {
         }
 
         if (list.size() > count && count > 0) {
-            final int list_count = list.size();
-            final int max_stride = list_count / count;
+            final int listCount = list.size();
+            final int maxStride = listCount / count;
             java.util.Random instance = random;
-            final int start = Random.nextInt(instance, list_count % count);
+            final int start = Random.nextInt(instance, listCount % count);
             final ArrayList<T> retVal = new ArrayList<>();
             final ArrayList<Integer> ints = new ArrayList<>();
 
-            for (int ii = start; ints.size() < count; ii += max_stride) {
+            for (int ii = start; ints.size() < count; ii += maxStride) {
                 if (count - 1 == retVal.size()) {
-                    ints.add(Random.nextInt(instance, ii, list_count));
+                    ints.add(Random.nextInt(instance, ii, listCount));
                 } else {
-                    ints.add(Random.nextInt(instance, ii, ii + max_stride));
+                    ints.add(Random.nextInt(instance, ii, ii + maxStride));
                 }
             }
 
@@ -548,7 +564,7 @@ public final class Random {
 
     /**
      * Gets a random item from a collection that is NOT equal to the specified
-     * object
+     * object.
      *
      * @param <T> the type
      * @param list the collection to select from
@@ -572,7 +588,7 @@ public final class Random {
 
     /**
      * Gets a random item from a collection that is NOT equal to the specified
-     * object
+     * object.
      *
      * @param <T> the type
      * @param random
@@ -596,38 +612,7 @@ public final class Random {
     }
 
     /**
-     * Gets a random item from a collection that is NOT equal to the specified
-     * collection
-     *
-     * @param <T> the type
-     * @param list the collection to select from
-     * @param not the collection from which we do not want a duplicate selection
-     * of
-     * @return a new randomly selected object which is not equal to the
-     * specified value
-     */
-    public static <T> T getRandomNotInList(final Collection<T> list, final Collection<T> not) {
-        return getRandom(org.apache.commons.collections4.CollectionUtils.subtract(list, not));
-    }
-
-    /**
-     * Gets a random item from a collection that is NOT equal to the specified
-     * collection
-     *
-     * @param <T> the type
-     * @param random
-     * @param list the collection to select from
-     * @param not the collection from which we do not want a duplicate selection
-     * of
-     * @return a new randomly selected object which is not equal to the
-     * specified value
-     */
-    public static <T> T getRandomNotInList(java.util.Random random, final Collection<T> list, final Collection<T> not) {
-        return getRandom(random, org.apache.commons.collections4.CollectionUtils.subtract(list, not));
-    }
-
-    /**
-     * Gets a random item from the specified collection
+     * Gets a random item from the specified collection.
      *
      * @param <T> the type
      * @param list the specified collection
@@ -660,12 +645,43 @@ public final class Random {
     }
 
     /**
+     * Gets a random item from a collection that is NOT equal to the specified
+     * collection.
+     *
+     * @param <T> the type
+     * @param list the collection to select from
+     * @param not the collection from which we do not want a duplicate selection
+     * of
+     * @return a new randomly selected object which is not equal to the
+     * specified value
+     */
+    public static <T> T getRandomNotInList(final Collection<T> list, final Collection<T> not) {
+        return getRandom(org.apache.commons.collections4.CollectionUtils.subtract(list, not));
+    }
+
+    /**
+     * Gets a random item from a collection that is NOT equal to the specified
+     * collection.
+     *
+     * @param <T> the type
+     * @param random
+     * @param list the collection to select from
+     * @param not the collection from which we do not want a duplicate selection
+     * of
+     * @return a new randomly selected object which is not equal to the
+     * specified value
+     */
+    public static <T> T getRandomNotInList(java.util.Random random, final Collection<T> list, final Collection<T> not) {
+        return getRandom(random, org.apache.commons.collections4.CollectionUtils.subtract(list, not));
+    }
+
+    /**
      * Is the random object specified to be seeded for repeatability.
      *
      * @return Is the random object specified to be seeded for repeatability.
      */
     public static boolean isSeeded() {
-        return _doSeed;
+        return doSeed;
     }
 
     /**
@@ -674,7 +690,7 @@ public final class Random {
      * @param value
      */
     public static void setSeeded(boolean value) {
-        _doSeed = value;
+        doSeed = value;
     }
 
     /**
@@ -683,7 +699,7 @@ public final class Random {
      * @return
      */
     public static int getSeed() {
-        return _seedValue;
+        return seedValue;
     }
 
     /**
@@ -692,22 +708,7 @@ public final class Random {
      * @param value
      */
     public static void setSeed(int value) {
-        _seedValue = value;
-    }
-
-    /**
-     * Returns a random real number uniformly in [a, b).
-     *
-     * @param a the left endpoint
-     * @param b the right endpoint
-     * @return a random real number uniformly in [a, b)
-     * @throws IllegalArgumentException unless <tt>a < b</tt>
-     */
-    public static double nextDouble(double a, double b) {
-        if (!(a < b)) {
-            throw new IllegalArgumentException("Invalid range");
-        }
-        return a + nextDouble() * (b - a);
+        seedValue = value;
     }
 
     /**
@@ -744,7 +745,7 @@ public final class Random {
      * @return a random real number from a standard Gaussian distribution (mean
      * 0 and standard deviation 1).
      */
-    public synchronized static double gaussian() {
+    public static synchronized double gaussian() {
         // use the polar form of the Box-Muller transform
         double r, x, y;
         do {
@@ -809,11 +810,11 @@ public final class Random {
         // see http://en.wikipedia.org/wiki/Poisson_distribution
         int k = 0;
         double p = 1.0;
-        double L = Math.exp(-lambda);
+        double l = Math.exp(-lambda);
         do {
             k++;
             p *= nextDouble();
-        } while (p >= L);
+        } while (p >= l);
         return k - 1;
     }
 
@@ -863,11 +864,10 @@ public final class Random {
      * @throws IllegalArgumentException unless <tt>probabilities[i] >= 0.0</tt>
      * for each index <tt>i</tt>
      */
-    public synchronized static int discrete(double[] probabilities) {
+    public static synchronized int discrete(double[] probabilities) {
         if (probabilities == null) {
             throw new NullPointerException("argument array is null");
         }
-        double EPSILON = 1E-14;
         double sum = 0.0;
         for (int i = 0; i < probabilities.length; i++) {
             if (!(probabilities[i] >= 0.0)) {
@@ -961,7 +961,7 @@ public final class Random {
      * @param a the array to shuffle
      * @throws NullPointerException if <tt>a</tt> is <tt>null</tt>
      */
-    public synchronized static void shuffle(Object[] a) {
+    public static synchronized void shuffle(Object[] a) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -980,7 +980,7 @@ public final class Random {
      * @param a the array to shuffle
      * @throws NullPointerException if <tt>a</tt> is <tt>null</tt>
      */
-    public synchronized static void shuffle(double[] a) {
+    public static synchronized void shuffle(double[] a) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -999,7 +999,7 @@ public final class Random {
      * @param a the array to shuffle
      * @throws NullPointerException if <tt>a</tt> is <tt>null</tt>
      */
-    public synchronized static void shuffle(int[] a) {
+    public static synchronized void shuffle(int[] a) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -1024,7 +1024,7 @@ public final class Random {
      * (hi < a.length)</tt>
      *
      */
-    public synchronized static void shuffle(Object[] a, int lo, int hi) {
+    public static synchronized void shuffle(Object[] a, int lo, int hi) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -1050,7 +1050,7 @@ public final class Random {
      * @throws IndexOutOfBoundsException unless <tt>(0 <= lo) && (lo <= hi) &&
      * (hi < a.length)</tt>
      */
-    public synchronized static void shuffle(double[] a, int lo, int hi) {
+    public static synchronized void shuffle(double[] a, int lo, int hi) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }
@@ -1076,7 +1076,7 @@ public final class Random {
      * @throws IndexOutOfBoundsException unless <tt>(0 <= lo) && (lo <= hi) &&
      * (hi < a.length)</tt>
      */
-    public synchronized static void shuffle(int[] a, int lo, int hi) {
+    public static synchronized void shuffle(int[] a, int lo, int hi) {
         if (a == null) {
             throw new NullPointerException("argument array is null");
         }

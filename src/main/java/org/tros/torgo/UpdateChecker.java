@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2017 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +15,6 @@
  */
 package org.tros.torgo;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import org.jsoup.select.Elements;
@@ -28,14 +27,13 @@ import org.jsoup.nodes.Document;
 public class UpdateChecker {
 
     public static final String UPDATE_ADDRESS = "https://github.com/ZenHarbinger/torgo/releases/latest";
+    private static final org.tros.utils.logging.Logger LOGGER;
     private static final String TAG = "title";
     private static final String SNAPSHOT = "SNAPSHOT";
-    private String updateVersion;
 
+    private String updateVersion;
     private boolean checkForUpdate;
-    
-    private static final org.tros.utils.logging.Logger LOGGER;
-    
+
     static {
         LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(UpdateChecker.class);
     }
@@ -59,22 +57,20 @@ public class UpdateChecker {
             }
         } catch (MalformedURLException ex) {
             LOGGER.error(ex.getMessage(), ex);
-        } catch (FileNotFoundException ex) {
-            LOGGER.error(ex.getMessage(), ex);
         } catch (IOException ex) {
-            LOGGER.error(ex.getMessage(), ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(UpdateChecker.class).warn(null, ex);
         }
         return ret;
     }
-    
+
     public boolean getCheckForUpdate() {
         return checkForUpdate;
     }
-    
+
     public String getUpdateVersion() {
         return updateVersion;
     }
-    
+
     public void setCheckForUpdate(boolean value) {
         java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(UpdateChecker.class);
         prefs.putBoolean("check-for-update", value);

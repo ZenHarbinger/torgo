@@ -31,7 +31,11 @@ public final class ImageUtils {
 
     }
 
-    public static final ImageIcon createImageIcon(String path, String description) {
+    public static ImageIcon getIcon(String path) {
+        return ImageUtils.createImageIcon(path, path);
+    }
+
+    public static ImageIcon createImageIcon(String path, String description) {
         java.net.URL imgURL = ImageUtils.class.getClassLoader().getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL, description);
@@ -41,7 +45,7 @@ public final class ImageUtils {
         }
     }
 
-    public static final Image createImage(String path) {
+    public static Image createImage(String path) {
         return Toolkit.getDefaultToolkit().getImage(path);
     }
 
@@ -60,10 +64,10 @@ public final class ImageUtils {
         ImageFilter filter = new RGBImageFilter() {
 
             // the color we are looking for... Alpha bits are set to opaque
-            public int markerRGB = color.getRGB() | 0xFF000000;
-
             @Override
-            public final int filterRGB(int x, int y, int rgb) {
+            public int filterRGB(int x, int y, int rgb) {
+                int markerRGB = color.getRGB() | 0xFF000000;
+
                 if ((rgb | 0xFF000000) == markerRGB) {
                     // Mark the alpha bits as zero - transparent
                     return 0x00FFFFFF & rgb;

@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2017 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,8 +54,12 @@ import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.swing.TorgoMenuBar;
 import org.w3c.dom.DOMImplementation;
-import org.apache.batik.svggen.*;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
+import org.apache.batik.svggen.CachedImageHandlerPNGEncoder;
+import org.apache.batik.svggen.GenericImageHandler;
+import org.apache.batik.svggen.SVGGeneratorContext;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.w3c.dom.Document;
 import org.tros.utils.GifSequenceWriter;
 
@@ -66,11 +70,12 @@ import org.tros.utils.GifSequenceWriter;
  */
 public final class LogoMenuBar extends TorgoMenuBar {
 
-    private JMenuItem toolsPenColorChooser;
-    private JMenuItem toolsCanvasColorChooser;
+    protected static final String WAIT_FOR_REPAINT = "wait-for-repaint";
 
     private final LogoCanvas canvas;
-    protected static final String WAIT_FOR_REPAINT = "wait-for-repaint";
+
+    private JMenuItem toolsPenColorChooser;
+    private JMenuItem toolsCanvasColorChooser;
 
     /**
      * Constructor.
@@ -321,8 +326,6 @@ public final class LogoMenuBar extends TorgoMenuBar {
      * @return
      */
     private JMenu setupToolsMenu() {
-        JMenu toolsMenu = new JMenu(Localization.getLocalizedString("ToolsMenu"));
-
         toolsPenColorChooser = new JMenuItem(Localization.getLocalizedString("ToolsPenColorChooser"));
         toolsCanvasColorChooser = new JMenuItem(Localization.getLocalizedString("ToolsCanvasColorChooser"));
 
@@ -350,6 +353,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             }
         });
 
+        JMenu toolsMenu = new JMenu(Localization.getLocalizedString("ToolsMenu"));
         toolsMenu.add(toolsPenColorChooser);
         toolsMenu.add(toolsCanvasColorChooser);
 
