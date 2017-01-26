@@ -111,7 +111,7 @@ public final class PathUtils {
     /**
      * Get the lib dir.
      * @param bi
-     * @return 
+     * @return
      */
     public static String getApplicationLibDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.lib");

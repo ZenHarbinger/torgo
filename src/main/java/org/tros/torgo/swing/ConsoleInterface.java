@@ -27,7 +27,8 @@
  */
 package org.tros.torgo.swing;
 
-import java.io.*;
+import java.io.PrintStream;
+import java.io.Reader;
 
 /**
  * The capabilities of a minimal console for BeanShell. Stream I/O and optimized
@@ -38,15 +39,15 @@ import java.io.*;
  */
 public interface ConsoleInterface {
 
-    public Reader getIn();
+    Reader getIn();
 
-    public PrintStream getOut();
+    PrintStream getOut();
 
-    public PrintStream getErr();
+    PrintStream getErr();
 
-    public void println(Object o);
+    void println(Object o);
 
-    public void print(Object o);
+    void print(Object o);
 
-    public void error(Object o);
+    void error(Object o);
 }

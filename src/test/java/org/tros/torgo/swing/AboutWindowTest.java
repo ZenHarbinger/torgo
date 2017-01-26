@@ -35,7 +35,7 @@ import org.tros.utils.logging.Logging;
 public class AboutWindowTest {
 
     private final static Logger LOGGER;
-    
+
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(AboutWindowTest.class.getName());
@@ -73,8 +73,15 @@ public class AboutWindowTest {
                 aw.dispatchEvent(new WindowEvent(aw, WindowEvent.WINDOW_CLOSING));
             }
         }, 500);
-        
+
         aw.setVisible(true);
+    }
+
+    @Test
+    public void test() {
+        LOGGER.info("goToURI");
+//        AboutWindow.goToURI(AboutWindow.APACHE_LICENSE_ADDRESS);
+//        AboutWindow.goToURI("not a valid uri");
     }
 
 }

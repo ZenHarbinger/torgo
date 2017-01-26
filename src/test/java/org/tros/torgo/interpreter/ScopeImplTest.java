@@ -15,14 +15,14 @@
  */
 package org.tros.torgo.interpreter;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -30,6 +30,13 @@ import static org.junit.Assert.*;
  */
 public class ScopeImplTest {
     
+    private final static Logger LOGGER;
+
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(ScopeImplTest.class.getName());
+    }
+
     public ScopeImplTest() {
     }
     

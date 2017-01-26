@@ -32,7 +32,7 @@ import org.tros.torgo.interpreter.LexicalAnalyzer;
  *
  * @author matta
  */
-class LexicalListener extends LogoBaseListener implements LexicalAnalyzer {
+final class LexicalListener extends LogoBaseListener implements LexicalAnalyzer {
 
     private final Stack<CodeBlock> stack = new Stack<>();
     private final ArrayList<CodeBlock> blocks = new ArrayList<>();

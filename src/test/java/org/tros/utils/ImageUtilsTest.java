@@ -16,6 +16,7 @@
 package org.tros.utils;
 
 import java.awt.Image;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -24,6 +25,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.torgo.Main;
+import org.tros.torgo.TorgoInfo;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -31,6 +34,13 @@ import org.tros.torgo.Main;
  */
 public class ImageUtilsTest {
     
+    private final static Logger LOGGER;
+
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(ImageUtilsTest.class.getName());
+    }
+
     public ImageUtilsTest() {
     }
     

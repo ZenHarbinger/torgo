@@ -19,4 +19,4 @@ export PATH=$PATH:/usr/local/bin
 #   update-mime-database $XDG_DATA_HOME/mime
 # fi
 
-java -Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel -Duser.home=$HOME -Dsun.java2d.opengl=true -jar $SNAP/jar/torgo-1.5.0.jar "$@"
+desktop-launch java -Duser.home=$HOME -Dsun.java2d.opengl=true -jar $SNAP/jar/torgo-1.7.0.jar "$@"

@@ -52,6 +52,9 @@ public class AboutWindow extends JDialog {
      */
     public static final String TORGO_ADDRESS = "http://tros.org/torgo/";
 
+    /**
+     * Release address.
+     */
     public static final String RELEASE_ADDRESS = UpdateChecker.UPDATE_ADDRESS;
 
     /**
@@ -74,89 +77,65 @@ public class AboutWindow extends JDialog {
         //create copyright/apache link button
         JLinkButton apacheButton = new JLinkButton();
         apacheButton.addActionListener((ActionEvent ae) -> {
-            try {
-                URI uri = new URI(APACHE_LICENSE_ADDRESS);
-                Desktop.getDesktop().browse(uri);
-            } catch (URISyntaxException | IOException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-            } catch (UnsupportedOperationException ex) {
-                ProcessBuilder pb = new ProcessBuilder("xdg-open", APACHE_LICENSE_ADDRESS);
-                try {
-                    pb.start();
-                } catch (IOException ex1) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-                }
-            }
+            goToURI(APACHE_LICENSE_ADDRESS);
         });
         //create torgo/source link button
         JLinkButton torgoButton = new JLinkButton();
         torgoButton.addActionListener((ActionEvent ae) -> {
-            try {
-                URI uri = new URI(TORGO_ADDRESS);
-                Desktop.getDesktop().browse(uri);
-            } catch (URISyntaxException | IOException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-            } catch (UnsupportedOperationException ex) {
-                ProcessBuilder pb = new ProcessBuilder("xdg-open", TORGO_ADDRESS);
-                try {
-                    pb.start();
-                } catch (IOException ex1) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-                }
-            }
+            goToURI(TORGO_ADDRESS);
         });
 
         //Set window properties.
-        this.setTitle("About Torgo");
+        this.setTitle(Localization.getLocalizedString("HelpAbout"));
         this.setSize(670, 225);//Size of JFrame
 
         //load the window icon
         Main.loadIcon((Window) this);
 
         //load the icon for display
-        JPanel image_panel = new JPanel();
+        JPanel imagePanel = new JPanel();
         ImageIcon icon = ImageUtils.createImageIcon("torgo-192x192.png", "Torgo Icon");
         icon.setImage(ImageUtils.makeColorTransparent(ImageUtils.imageToBufferedImage(icon.getImage()), java.awt.Color.WHITE));
-        image_panel.add(new JLabel(icon));
-        container.add(image_panel, BorderLayout.LINE_START);
+        imagePanel.add(new JLabel(icon));
+        container.add(imagePanel, BorderLayout.LINE_START);
 
         //init the text portion of the window.
-        JPanel text_panel = new JPanel();
-        text_panel.setLayout(new GridLayout(7, 1));
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new GridLayout(7, 1));
 
         BuildInfo toroInfo = TorgoInfo.INSTANCE;
         torgoButton.setText(String.format("Torgo %s", toroInfo.getVersion()));
         torgoButton.setBorderPainted(false);
         torgoButton.setOpaque(false);
         torgoButton.setToolTipText(TORGO_ADDRESS);
-        text_panel.add(torgoButton);
+        textPanel.add(torgoButton);
 
         JLabel l = new JLabel();
-        l.setText(String.format("Platform: Java (%s) %s", System.getProperty("java.runtime.name"), System.getProperty("java.version")));//, System.getProperty("os.name"), System.getProperty("os.version"), System.getProperty("os.arch")));
+        l.setText(String.format("%s: Java (%s) %s", Localization.getLocalizedString("AboutPlatform"), System.getProperty("java.runtime.name"), System.getProperty("java.version")));//, System.getProperty("os.name"), System.getProperty("os.version"), System.getProperty("os.arch")));
         l.setToolTipText(l.getText());
-        text_panel.add(l);
+        textPanel.add(l);
 
         l = new JLabel();
         l.setText(String.format("OS: %s %s %s", System.getProperty("os.name"), System.getProperty("os.version"), System.getProperty("os.arch")));
         l.setToolTipText(l.getText());
-        text_panel.add(l);
+        textPanel.add(l);
 
-        apacheButton.setText("© 2015-2017 Matthew Aguirre, Apache License 2.0.");
+        apacheButton.setText(TorgoInfo.INSTANCE.getCopy());
         apacheButton.setBorderPainted(false);
         apacheButton.setOpaque(false);
         apacheButton.setToolTipText(APACHE_LICENSE_ADDRESS);
-        text_panel.add(apacheButton);
+        textPanel.add(apacheButton);
 
         JTextArea ta = new JTextArea();
-        ta.setText("Torgo is a flexible interpreter written in Java.");
+        ta.setText(TorgoInfo.INSTANCE.getAbout());
         ta.setEditable(false);
-        text_panel.add(ta);
+        textPanel.add(ta);
 
         //add update alert area
         JPanel updateArea = new JPanel();
         updateArea.setLayout(new GridLayout(1, 2));
         final UpdateChecker uc = new UpdateChecker();
-        final JCheckBox checkForUpdate = new JCheckBox("Check For Update");
+        final JCheckBox checkForUpdate = new JCheckBox(Localization.getLocalizedString("HelpCheckForUpdate"));
         final JLinkButton button = new JLinkButton("");
         checkForUpdate.setSelected(uc.getCheckForUpdate());
         checkForUpdate.addActionListener((ActionEvent e) -> {
@@ -164,7 +143,7 @@ public class AboutWindow extends JDialog {
             boolean enabled1 = uc.getCheckForUpdate() && uc.hasUpdate();
             button.setEnabled(enabled1);
             if (button.isEnabled()) {
-                button.setText("Update Available");
+                button.setText(Localization.getLocalizedString("AboutUpdateAvailable"));
             }
         });
         updateArea.add(checkForUpdate);
@@ -174,15 +153,16 @@ public class AboutWindow extends JDialog {
             SwingUtilities.invokeLater(() -> {
                 button.setEnabled(enabled1);
                 if (button.isEnabled()) {
-                    button.setText("Update Available");
+                    button.setText(Localization.getLocalizedString("AboutUpdateAvailable"));
                 }
             } /**
-             * Once the value has been received from on-line, update the
-             * UI.
-             */ );
+             * Once the value has been received from on-line, update the UI.
+             */
+            );
         } /**
          * Put the check in a new thread to avoid blocking UI.
-         */ );
+         */
+        );
         t.setDaemon(true);
 
         /**
@@ -226,25 +206,29 @@ public class AboutWindow extends JDialog {
 
         updateArea.add(button);
         button.addActionListener((ActionEvent e) -> {
-            try {
-                URI uri = new URI(UpdateChecker.UPDATE_ADDRESS);
-                Desktop.getDesktop().browse(uri);
-            } catch (URISyntaxException | IOException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
-            } catch (UnsupportedOperationException ex) {
-                ProcessBuilder pb = new ProcessBuilder("xdg-open", UpdateChecker.UPDATE_ADDRESS);
-                try {
-                    pb.start();
-                } catch (IOException ex1) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
-                }
-            }
+            goToURI(UpdateChecker.UPDATE_ADDRESS);
         });
 
-        text_panel.add(updateArea);
+        textPanel.add(updateArea);
 
-        container.add(text_panel, BorderLayout.CENTER);
+        container.add(textPanel, BorderLayout.CENTER);
         setLocationRelativeTo(null);
         setModal(true);
+    }
+
+    public static final void goToURI(String address) {
+        try {
+            URI uri = new URI(address);
+            Desktop.getDesktop().browse(uri);
+        } catch (URISyntaxException | IOException ex) {
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex);
+        } catch (UnsupportedOperationException ex) {
+            ProcessBuilder pb = new ProcessBuilder("xdg-open", address);
+            try {
+                pb.start();
+            } catch (IOException ex1) {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(AboutWindow.class).warn(null, ex1);
+            }
+        }
     }
 }

@@ -52,7 +52,6 @@ import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.text.MessageFormat;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -69,7 +68,6 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import org.tros.torgo.Main;
-import static org.tros.torgo.Main.IMAGE_ICON_CLASS_PATH;
 import org.tros.torgo.TorgoInfo;
 
 // Things that are not in the core packages
@@ -87,38 +85,23 @@ public class JConsole extends JScrollPane
         implements GUIConsoleInterface, Runnable, KeyListener,
         MouseListener, ActionListener, PropertyChangeListener {
 
-    private final static String CUT = "Cut";
-    private final static String COPY = "Copy";
-    private final static String PASTE = "Paste";
-
-    private OutputStream outPipe;
-    private InputStream inPipe;
-    private InputStream in;
-    private PrintStream out;
-
     public static final String DEFAULT_HEADER_FONT = "Ubuntu Mono";
     public static final String FALLBACK_HEADER_FONT = "Monospaced";
     public static final int HEADER_SIZE = 20;
     public static final String PROMPT = "torgo % ";
 
-    public InputStream getInputStream() {
-        return in;
-    }
+    private static final String CUT = "Cut";
+    private static final String COPY = "Copy";
+    private static final String PASTE = "Paste";
 
-    @Override
-    public Reader getIn() {
-        return new InputStreamReader(in);
-    }
+//	NameCompletion nameCompletion;
+    private static final int SHOW_AMBIG_MAX = 10;
+    private static final String ZEROS = "000";
 
-    @Override
-    public PrintStream getOut() {
-        return out;
-    }
-
-    @Override
-    public PrintStream getErr() {
-        return out;
-    }
+    private OutputStream outPipe;
+    private InputStream inPipe;
+    private InputStream in;
+    private PrintStream out;
 
     private int cmdStart = 0;
     private ArrayList<String> history = new ArrayList<>();
@@ -128,9 +111,6 @@ public class JConsole extends JScrollPane
     private JPopupMenu menu;
     private JTextPane text;
     private DefaultStyledDocument doc;
-
-//	NameCompletion nameCompletion;
-    final int SHOW_AMBIG_MAX = 10;
 
     // hack to prevent key repeat for some reason?
     private boolean gotUp = true;
@@ -206,6 +186,25 @@ public class JConsole extends JScrollPane
         requestFocus();
     }
 
+    public InputStream getInputStream() {
+        return in;
+    }
+
+    @Override
+    public Reader getIn() {
+        return new InputStreamReader(in);
+    }
+
+    @Override
+    public PrintStream getOut() {
+        return out;
+    }
+
+    @Override
+    public PrintStream getErr() {
+        return out;
+    }
+
     @Override
     public void requestFocus() {
         super.requestFocus();
@@ -230,19 +229,14 @@ public class JConsole extends JScrollPane
     }
 
     private void printHeader() {
-        try {
-            java.util.Enumeration<URL> resources = ClassLoader.getSystemClassLoader().getResources(IMAGE_ICON_CLASS_PATH);
-            ImageIcon ico = new ImageIcon(resources.nextElement());
-            Font font = new Font(DEFAULT_HEADER_FONT, Font.PLAIN, HEADER_SIZE);
-            if (!font.getName().equals(DEFAULT_HEADER_FONT)) {
-                font = new Font(FALLBACK_HEADER_FONT, Font.PLAIN, HEADER_SIZE);
-            }
-            print(ico);
-            print(MessageFormat.format(" {0} v{1}", TorgoInfo.INSTANCE.getApplicationName(), TorgoInfo.INSTANCE.getVersion()), font, Color.GRAY);
-            println();
-        } catch (IOException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class).warn(null, ex);
+        ImageIcon ico = Main.getIcon();
+        Font font = new Font(DEFAULT_HEADER_FONT, Font.PLAIN, HEADER_SIZE);
+        if (!font.getName().equals(DEFAULT_HEADER_FONT)) {
+            font = new Font(FALLBACK_HEADER_FONT, Font.PLAIN, HEADER_SIZE);
         }
+        print(ico);
+        print(MessageFormat.format(" {0} v{1}", TorgoInfo.INSTANCE.getApplicationName(), TorgoInfo.INSTANCE.getVersion()), font, Color.GRAY);
+        println();
     }
 
     private synchronized void type(KeyEvent e) {
@@ -358,7 +352,8 @@ public class JConsole extends JScrollPane
             default:
                 if ((e.getModifiers()
                         & (InputEvent.CTRL_MASK
-                        | InputEvent.ALT_MASK | InputEvent.META_MASK)) == 0) {
+                        | InputEvent.ALT_MASK
+                        | InputEvent.META_MASK)) == 0) {
                     // plain character
                     forceCaretMoveToEnd();
                 }
@@ -384,12 +379,12 @@ public class JConsole extends JScrollPane
 //
 //		int i=part.length()-1;
 //
-//		// Character.isJavaIdentifierPart()  How convenient for us!! 
-//		while ( 
-//			i >= 0 && 
-//				( Character.isJavaIdentifierPart(part.charAt(i)) 
+//		// Character.isJavaIdentifierPart()  How convenient for us!!
+//		while (
+//			i >= 0 &&
+//				( Character.isJavaIdentifierPart(part.charAt(i))
 //				|| part.charAt(i) == '.' )
-//		) 
+//		)
 //			i--;
 //
 //		part = part.substring(i+1);
@@ -463,17 +458,17 @@ public class JConsole extends JScrollPane
     }
 
     private void forceCaretMoveToStart() {
-        if (text.getCaretPosition() < cmdStart) {
-            // move caret first!
-        }
+//        if (text.getCaretPosition() < cmdStart) {
+//            // move caret first!
+//        }
         text.repaint();
     }
 
     private void enter() {
         String s = getCmd();
 
-        if (s.length() == 0) // special hack	for empty return!
-        {
+        // special hack	for empty return!
+        if (s.length() == 0) {
             s = ";\n";
         } else {
             history.add(s);
@@ -501,8 +496,9 @@ public class JConsole extends JScrollPane
         if (history.isEmpty()) {
             return;
         }
-        if (histLine == 0) // save current line
-        {
+
+        // save current line
+        if (histLine == 0) {
             startedLine = getCmd();
         }
         if (histLine < history.size()) {
@@ -532,8 +528,6 @@ public class JConsole extends JScrollPane
         text.setCaretPosition(textLength());
         text.repaint();
     }
-
-    String ZEROS = "000";
 
     private void acceptLine(String line) {
         // Patch to handle Unicode characters
@@ -568,18 +562,14 @@ public class JConsole extends JScrollPane
     }
 
     @Override
-    public void println(Object o) {
-        print(String.valueOf(o) + System.getProperty("line.separator"));
-        text.repaint();
+    public void error(Object o) {
+        print(o, Color.red);
     }
 
     @Override
-    public void print(final Object o) {
-        invokeAndWait(() -> {
-            append(String.valueOf(o));
-            resetCommandStart();
-            text.setCaretPosition(cmdStart);
-        });
+    public void println(Object o) {
+        print(String.valueOf(o) + System.getProperty("line.separator"));
+        text.repaint();
     }
 
     /**
@@ -590,15 +580,19 @@ public class JConsole extends JScrollPane
         text.repaint();
     }
 
-    @Override
-    public void error(Object o) {
-        print(o, Color.red);
-    }
-
     public void println(Icon icon) {
         print(icon);
         println();
         text.repaint();
+    }
+
+    @Override
+    public void print(final Object o) {
+        invokeAndWait(() -> {
+            append(String.valueOf(o));
+            resetCommandStart();
+            text.setCaretPosition(cmdStart);
+        });
     }
 
     public void print(final Icon icon) {
@@ -829,7 +823,7 @@ public class JConsole extends JScrollPane
     }
 
     /**
-     * If not in the event thread run via SwingUtilities.invokeAndWait()
+     * If not in the event thread run via SwingUtilities.invokeAndWait().
      */
     private void invokeAndWait(Runnable run) {
         if (!SwingUtilities.isEventDispatchThread()) {

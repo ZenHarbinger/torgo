@@ -38,16 +38,16 @@ import org.tros.utils.TypeHandler;
 public final class SwingComponentHandler extends Handler {
 
     private static final JTextPane TEXT_AREA;
-    private int _maxSize;
-    private final ArrayList<LogRecord> records;
-    private final java.util.Timer timer;
-    private static boolean paused;
     private static final DefaultStyledDocument DOC;
     private static final HashMap<java.util.logging.Level, Style> STYLE_MAP;
     private static final Style DEFAULT_STYLE;// = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
-    private int time_field;
+    private static final String FORMAT;
+    private static boolean paused;
 
-    private final static String FORMAT;
+    private final ArrayList<LogRecord> records;
+    private final java.util.Timer timer;
+    private int maxSize;
+    private int timeField;
 
     static {
         STYLE_MAP = new HashMap<>();
@@ -60,58 +60,64 @@ public final class SwingComponentHandler extends Handler {
         LogManager manager = LogManager.getLogManager();
         String cname = SwingComponentHandler.class.getName();
 
-        String format = manager.getProperty(cname + ".format");
-        String warning = manager.getProperty(cname + ".warning");
-        String severe = manager.getProperty(cname + ".severe");
-        String info = manager.getProperty(cname + ".info");
-        String all = manager.getProperty(cname + ".all");
-        String config = manager.getProperty(cname + ".config");
-        String fine = manager.getProperty(cname + ".fine");
-        String finer = manager.getProperty(cname + ".finer");
-        String finest = manager.getProperty(cname + ".finest");
-        String off = manager.getProperty(cname + ".off");
-        
         String def = manager.getProperty(cname + ".default");
 
+        String format = manager.getProperty(cname + ".format");
         FORMAT = format == null ? "" : format;
 
         Color defColor = def != null ? (Color) TypeHandler.fromString(Color.class, def) : Color.BLACK;
         defColor = defColor == null ? Color.BLACK : defColor;
 
+        String warning = manager.getProperty(cname + ".warning");
         Color warnColor = warning != null ? (Color) TypeHandler.fromString(Color.class, warning) : defColor;
-        Color severeColor = severe != null ? (Color) TypeHandler.fromString(Color.class, severe) : defColor;
-        Color infoColor = info != null ? (Color) TypeHandler.fromString(Color.class, info) : defColor;
-        Color allColor = all != null ? (Color) TypeHandler.fromString(Color.class, all) : defColor;
-        Color configColor = config != null ? (Color) TypeHandler.fromString(Color.class, config) : defColor;
-        Color fineColor = fine != null ? (Color) TypeHandler.fromString(Color.class, fine) : defColor;
-        Color finerColor = finer != null ? (Color) TypeHandler.fromString(Color.class, finer) : defColor;
-        Color finestColor = finest != null ? (Color) TypeHandler.fromString(Color.class, finest) : defColor;
-        Color offColor = off != null ? (Color) TypeHandler.fromString(Color.class, off) : defColor;
-       
         Style warning2 = TEXT_AREA.addStyle(java.util.logging.Level.WARNING.toString(), null);
         StyleConstants.setForeground(warning2, warnColor == null ? defColor : warnColor);
         STYLE_MAP.put(Level.WARNING, warning2);
+
+        String severe = manager.getProperty(cname + ".severe");
+        Color severeColor = severe != null ? (Color) TypeHandler.fromString(Color.class, severe) : defColor;
         Style severe2 = TEXT_AREA.addStyle(java.util.logging.Level.SEVERE.toString(), null);
         StyleConstants.setForeground(severe2, severeColor == null ? defColor : severeColor);
         STYLE_MAP.put(Level.SEVERE, severe2);
+
+        String info = manager.getProperty(cname + ".info");
+        Color infoColor = info != null ? (Color) TypeHandler.fromString(Color.class, info) : defColor;
         Style info2 = TEXT_AREA.addStyle(java.util.logging.Level.INFO.toString(), null);
         StyleConstants.setForeground(info2, infoColor == null ? defColor : infoColor);
         STYLE_MAP.put(Level.INFO, info2);
+
+        String all = manager.getProperty(cname + ".all");
+        Color allColor = all != null ? (Color) TypeHandler.fromString(Color.class, all) : defColor;
         Style all2 = TEXT_AREA.addStyle(java.util.logging.Level.ALL.toString(), null);
         StyleConstants.setForeground(all2, allColor == null ? defColor : allColor);
         STYLE_MAP.put(Level.ALL, all2);
+
+        String config = manager.getProperty(cname + ".config");
+        Color configColor = config != null ? (Color) TypeHandler.fromString(Color.class, config) : defColor;
         Style config2 = TEXT_AREA.addStyle(java.util.logging.Level.CONFIG.toString(), null);
         StyleConstants.setForeground(config2, configColor == null ? defColor : configColor);
         STYLE_MAP.put(Level.CONFIG, config2);
+
+        String fine = manager.getProperty(cname + ".fine");
+        Color fineColor = fine != null ? (Color) TypeHandler.fromString(Color.class, fine) : defColor;
         Style fine2 = TEXT_AREA.addStyle(java.util.logging.Level.FINE.toString(), null);
         StyleConstants.setForeground(fine2, fineColor == null ? defColor : fineColor);
         STYLE_MAP.put(Level.FINE, fine2);
+
+        String finer = manager.getProperty(cname + ".finer");
+        Color finerColor = finer != null ? (Color) TypeHandler.fromString(Color.class, finer) : defColor;
         Style finer2 = TEXT_AREA.addStyle(java.util.logging.Level.FINER.toString(), null);
         StyleConstants.setForeground(finer2, finerColor == null ? defColor : finerColor);
         STYLE_MAP.put(Level.FINER, finer2);
+
+        String finest = manager.getProperty(cname + ".finest");
+        Color finestColor = finest != null ? (Color) TypeHandler.fromString(Color.class, finest) : defColor;
         Style finest2 = TEXT_AREA.addStyle(java.util.logging.Level.FINEST.toString(), null);
         StyleConstants.setForeground(finest2, finestColor == null ? defColor : finestColor);
         STYLE_MAP.put(Level.FINEST, finest2);
+
+        String off = manager.getProperty(cname + ".off");
+        Color offColor = off != null ? (Color) TypeHandler.fromString(Color.class, off) : defColor;
         Style off2 = TEXT_AREA.addStyle(java.util.logging.Level.OFF.toString(), null);
         StyleConstants.setForeground(off2, offColor == null ? defColor : offColor);
         STYLE_MAP.put(Level.OFF, off2);
@@ -130,7 +136,7 @@ public final class SwingComponentHandler extends Handler {
             public void run() {
                 timer();
             }
-        }, time_field, time_field);
+        }, timeField, timeField);
         records = new ArrayList<>();
         Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.FINE, "Started...");
     }
@@ -139,12 +145,7 @@ public final class SwingComponentHandler extends Handler {
         LogManager manager = LogManager.getLogManager();
         String cname = getClass().getName();
 
-        String level = manager.getProperty(cname + ".level");
-        String filter = manager.getProperty(cname + ".filter");
-        String formatter = manager.getProperty(cname + ".formatter");
         String size = manager.getProperty(cname + ".limit");
-        String timer_prop = manager.getProperty(cname + ".timer");
-
         int s = 50000;
         if (size != null) {
             try {
@@ -155,16 +156,18 @@ public final class SwingComponentHandler extends Handler {
         }
         this.setLimit(s);
 
+        String timerProp = manager.getProperty(cname + ".timer");
         int time = 500;
         if (timer != null) {
             try {
-                time = Integer.parseInt(timer_prop);
+                time = Integer.parseInt(timerProp);
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        this.time_field = time;
+        this.timeField = time;
 
+        String level = manager.getProperty(cname + ".level");
         Level def = Level.INFO;
         if (level != null) {
             try {
@@ -175,6 +178,7 @@ public final class SwingComponentHandler extends Handler {
         }
         this.setLevel(def);
 
+        String formatter = manager.getProperty(cname + ".formatter");
         Formatter fmmt = null;
         if (formatter != null) {
             try {
@@ -188,6 +192,7 @@ public final class SwingComponentHandler extends Handler {
         }
         this.setFormatter(fmmt);
 
+        String filter = manager.getProperty(cname + ".filter");
         Filter filt = null;
         if (filter != null) {
             try {
@@ -200,11 +205,11 @@ public final class SwingComponentHandler extends Handler {
     }
 
     public void setLimit(int value) {
-        _maxSize = value;
+        maxSize = value;
     }
 
     public int getLimit() {
-        return _maxSize;
+        return maxSize;
     }
 
     @Override
@@ -251,8 +256,6 @@ public final class SwingComponentHandler extends Handler {
         SwingUtilities.invokeLater(() -> {
             rec.forEach((record) -> {
                 try {
-                    Style s = STYLE_MAP.containsKey(record.getLevel()) ? STYLE_MAP.get(record.getLevel()) : DEFAULT_STYLE;
-                    
                     dat.setTime(record.getMillis());
                     String source;
                     if (record.getSourceClassName() != null) {
@@ -264,13 +267,13 @@ public final class SwingComponentHandler extends Handler {
                         source = record.getLoggerName();
                     }
                     StringBuilder nameBuilder = new StringBuilder();
-                    
+
                     String[] names = record.getLoggerName().split("\\.");
                     for (int ii = 0; ii < names.length - 1; ii++) {
                         nameBuilder.append(names[ii].charAt(0));
                     }
                     nameBuilder.append(".").append(names[names.length - 1]);
-                    
+
                     String throwable = "";
                     if (record.getThrown() != null) {
                         StringWriter sw = new StringWriter();
@@ -287,7 +290,8 @@ public final class SwingComponentHandler extends Handler {
                             record.getLevel().getLocalizedName(),
                             record.getMessage(),
                             throwable);
-                    
+
+                    Style s = STYLE_MAP.containsKey(record.getLevel()) ? STYLE_MAP.get(record.getLevel()) : DEFAULT_STYLE;
                     StyleConstants.setBold(s, true);
                     DOC.insertString(DOC.getLength(), toInsert + " ", s);
                     StyleConstants.setBold(s, false);
