@@ -122,6 +122,7 @@ public abstract class ZoomableComponent {
                 added.set(true);
                 JPopupMenu popupMenu;
                 try {
+                    //HACK: for RSyntaxTextArea
                     Method method = component.getClass().getMethod("getPopupMenu");
                     popupMenu = (JPopupMenu)method.invoke(component);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
@@ -163,6 +164,7 @@ public abstract class ZoomableComponent {
             public void mouseExited(MouseEvent me) {
                 r.run();
                 component.removeMouseListener(this);
+                ctrlDown.set(false);
             }
         });
     }

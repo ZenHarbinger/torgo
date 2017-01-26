@@ -25,6 +25,7 @@ coverage:
     - .*/org/tros/torgo/MainSplash.*
 #others
     - .*/org/tros/torgo/DockingFrameFactory.*
+    - .*/org/tros/torgo/swing/ZoomableComponent.*
 parsers:
   gcov:
     branch_detection:

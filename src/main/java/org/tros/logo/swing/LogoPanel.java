@@ -135,8 +135,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         turtleState.height = getHeight();
         double x2 = (getWidth() / 2.0 - (getWidth() * scale / 2.0));
         double y2 = (getHeight() / 2.0 - (getHeight() * scale / 2.0));
-        g2d.translate(x2, y2);
-        g2d.scale(scale, scale);
+        AffineTransform saveXform2 = g2d.getTransform();
+
+        AffineTransform translateInstance2 = AffineTransform.getTranslateInstance(x2, y2);
+        translateInstance2.scale(scale, scale);
+        g2d.setTransform(translateInstance2);
+
+//        g2d.translate(x2, y2);
+//        g2d.scale(scale, scale);
         draw(g2d, turtleState);
 
         if (turtleState.showTurtle) {
@@ -148,6 +154,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             g2d.drawImage(turtle, (int) x, (int) y, null);
             g2d.setTransform(saveXform);
         }
+        g2d.setTransform(saveXform2);
     }
 
     /**
@@ -429,6 +436,15 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
                 try {
+                    //Check style is off because we need to save the current transform.
+                    //and it's first use is not close to it's declaration.
+                    // -- Matt
+                    //CHECKSTYLE:OFF
+                    AffineTransform saveXform = g2.getTransform();
+                    AffineTransform translateInstance = AffineTransform.getTranslateInstance(0, 0);
+                    g2.setTransform(translateInstance);
+
+                    LogoPanel.this.setBackground(Color.white);
                     g2.setColor(Color.white);
                     g2.fillRect(0, 0,
                             turtleState.width > 0 ? (int) turtleState.width : getWidth(),
@@ -439,8 +455,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                     turtleState.font = new Font(null, 0, 12);
 
                     g2.setFont(turtleState.font);
+                    g2.setTransform(saveXform);
+                    //CHECKSTYLE:ON
                 } catch (Exception ex) {
-
                 }
             }
 
@@ -504,12 +521,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
                 Color canvasColor = getColorByName(color);
-
-                g2.setColor(canvasColor);
-                g2.fillRect(0, 0,
-                        turtleState.width > 0 ? (int) turtleState.width : getWidth(),
-                        turtleState.height > 0 ? (int) turtleState.height : getHeight());
-                g2.setColor(turtleState.penColor);
+                LogoPanel.this.setBackground(canvasColor);
             }
 
             @Override
@@ -533,11 +545,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
-                g2.setColor(color);
-                g2.fillRect(0, 0,
-                        turtleState.width > 0 ? (int) turtleState.width : getWidth(),
-                        turtleState.height > 0 ? (int) turtleState.height : getHeight());
-                g2.setColor(turtleState.penColor);
+                LogoPanel.this.setBackground(color);
             }
 
             @Override
@@ -562,8 +570,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         green = Math.min(255, Math.max(0, green));
         blue = Math.min(255, Math.max(0, blue));
 
-        Color canvasColor = new Color(red, green, blue, alpha);
-        pencolor(canvasColor);
+        Color pencolor = new Color(red, green, blue, alpha);
+        pencolor(pencolor);
     }
 
     private void pencolor(final Color color) {
