@@ -278,11 +278,16 @@ public final class JLinkButton extends JButton {
     }
 }
 
+/**
+ * Basic Button UI.
+ *
+ * @author matta
+ */
 class BasicLinkButtonUI extends MetalButtonUI {
 
     private static final BasicLinkButtonUI UI = new BasicLinkButtonUI();
 
-    public BasicLinkButtonUI() {
+    BasicLinkButtonUI() {
     }
 
     public static ComponentUI createUI(JComponent jcomponent) {

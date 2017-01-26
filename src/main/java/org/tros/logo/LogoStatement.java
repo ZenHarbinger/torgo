@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2017 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,7 +44,7 @@ class LogoStatement extends LogoBlock {
     private final LogoCanvas canvas;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param command
      * @param ctx
@@ -105,13 +105,12 @@ class LogoStatement extends LogoBlock {
                 case "rt":
                     canvas.right(((Number) ExpressionListener.evaluate(scope, ((LogoParser.RtContext) ctx).expression()).getValue()).doubleValue());
                     break;
-                case "setxy": {
-                    LogoParser.SetxyContext fd = (LogoParser.SetxyContext) ctx;
-                    double x = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).doubleValue();
-                    double y = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).doubleValue();
+                case "setxy":
+                    LogoParser.SetxyContext setxy = (LogoParser.SetxyContext) ctx;
+                    double x = ((Number) ExpressionListener.evaluate(scope, setxy.expression(0)).getValue()).doubleValue();
+                    double y = ((Number) ExpressionListener.evaluate(scope, setxy.expression(1)).getValue()).doubleValue();
                     canvas.setXY(x, y);
                     break;
-                }
                 case "pd":
                     canvas.penDown();
                     break;
@@ -123,64 +122,62 @@ class LogoStatement extends LogoBlock {
                     //this is used to break out of functions.
                     success = ReturnValue.RETURN;
                     break;
-                case "pc": {
-                    LogoParser.PcContext fd = (LogoParser.PcContext) ctx;
-                    if (fd.expression().size() >= 3) {
+                case "pc":
+                    LogoParser.PcContext pc = (LogoParser.PcContext) ctx;
+                    if (pc.expression().size() >= 3) {
                         int a = 255;
-                        int r = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).intValue();
-                        int g = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).intValue();
-                        int b = ((Number) ExpressionListener.evaluate(scope, fd.expression(2)).getValue()).intValue();
-                        if (fd.expression().size() > 3) {
-                            a = ((Number) ExpressionListener.evaluate(scope, fd.expression(3)).getValue()).intValue();
+                        int r = ((Number) ExpressionListener.evaluate(scope, pc.expression(0)).getValue()).intValue();
+                        int g = ((Number) ExpressionListener.evaluate(scope, pc.expression(1)).getValue()).intValue();
+                        int b = ((Number) ExpressionListener.evaluate(scope, pc.expression(2)).getValue()).intValue();
+                        if (pc.expression().size() > 3) {
+                            a = ((Number) ExpressionListener.evaluate(scope, pc.expression(3)).getValue()).intValue();
                         }
                         canvas.pencolor(r, g, b, a);
-                    } else if (fd.hexcolor() != null) {
-                        canvas.pencolor(fd.hexcolor().HEX().toString());
+                    } else if (pc.hexcolor() != null) {
+                        canvas.pencolor(pc.hexcolor().HEX().toString());
                     } else {
-                        String name = fd.name().STRING().getText();
+                        String name = pc.name().STRING().getText();
                         canvas.pencolor(name);
                     }
                     break;
-                }
-                case "cc": {
-                    LogoParser.CcContext fd = (LogoParser.CcContext) ctx;
-                    if (fd.expression().size() == 3) {
-                        int r = ((Number) ExpressionListener.evaluate(scope, fd.expression(0)).getValue()).intValue();
-                        int g = ((Number) ExpressionListener.evaluate(scope, fd.expression(1)).getValue()).intValue();
-                        int b = ((Number) ExpressionListener.evaluate(scope, fd.expression(2)).getValue()).intValue();
+                case "cc":
+                    LogoParser.CcContext cc = (LogoParser.CcContext) ctx;
+                    if (cc.expression().size() == 3) {
+                        int r = ((Number) ExpressionListener.evaluate(scope, cc.expression(0)).getValue()).intValue();
+                        int g = ((Number) ExpressionListener.evaluate(scope, cc.expression(1)).getValue()).intValue();
+                        int b = ((Number) ExpressionListener.evaluate(scope, cc.expression(2)).getValue()).intValue();
                         canvas.canvascolor(r, g, b);
-                    } else if (fd.hexcolor() != null) {
-                        canvas.canvascolor(fd.hexcolor().HEX().toString());
+                    } else if (cc.hexcolor() != null) {
+                        canvas.canvascolor(cc.hexcolor().HEX().toString());
                     } else {
-                        String name = fd.name().STRING().getText();
+                        String name = cc.name().STRING().getText();
                         canvas.canvascolor(name);
                     }
                     break;
-                }
-                case "ds": {
-                    LogoParser.DsContext fd = (LogoParser.DsContext) ctx;
+                case "ds":
+                    LogoParser.DsContext ds = (LogoParser.DsContext) ctx;
                     String str = null;
-                    if (fd.value().STRINGLITERAL() != null) {
-                        str = fd.value().STRINGLITERAL().getText().substring(1);
-                    } else if (fd.value().deref() != null) {
+                    if (ds.value().STRINGLITERAL() != null) {
+                        str = ds.value().STRINGLITERAL().getText().substring(1);
+                    } else if (ds.value().deref() != null) {
+                        LOGGER.info("ds()");
                         //this doesn't seem to be called during dref, instead it is
                         //evaluated as an expression...
 //                    String n = fd.value().deref().name().STRING().toString();
 //                    str = Double.toString(scope.get(n));
-                    } else if (fd.value().expression() != null) {
-                        str = ExpressionListener.evaluate(scope, fd).toString();
+                    } else if (ds.value().expression() != null) {
+                        str = ExpressionListener.evaluate(scope, ds).toString();
                     }
                     if (str != null) {
                         canvas.drawString(str);
                     }
                     break;
-                }
                 case "fontsize":
                     canvas.fontSize(((Number) ExpressionListener.evaluate(scope, ((LogoParser.FontsizeContext) ctx).expression()).getValue()).intValue());
                     break;
-                case "fontstyle": {
-                    LogoParser.FontstyleContext fd = (LogoParser.FontstyleContext) ctx;
-                    String styleString = fd.style().getText();
+                case "fontstyle":
+                    LogoParser.FontstyleContext fontstyle = (LogoParser.FontstyleContext) ctx;
+                    String styleString = fontstyle.style().getText();
                     if (null != styleString) {
                         switch (styleString) {
                             case "bold":
@@ -199,13 +196,11 @@ class LogoStatement extends LogoBlock {
                         }
                     }
                     break;
-                }
-                case "fontname": {
-                    LogoParser.FontnameContext fd = (LogoParser.FontnameContext) ctx;
-                    String name = fd.name().STRING().getText();
+                case "fontname":
+                    LogoParser.FontnameContext fontname = (LogoParser.FontnameContext) ctx;
+                    String name = fontname.name().STRING().getText();
                     canvas.fontName(name);
                     break;
-                }
                 case "pause":
                     canvas.pause(((Number) ExpressionListener.evaluate(scope, ((LogoParser.PauseContext) ctx).expression()).getValue()).intValue());
                     break;
@@ -221,18 +216,16 @@ class LogoStatement extends LogoBlock {
                 case "st":
                     canvas.showTurtle();
                     break;
-                case "make": {
-                    String var = ctx.getChild(1).getText().substring(1);
-                    scope.set(var, ExpressionListener.evaluate(scope, ctx.getChild(2)));
+                case "make":
+                    String make = ctx.getChild(1).getText().substring(1);
+                    scope.set(make, ExpressionListener.evaluate(scope, ctx.getChild(2)));
                     break;
-                }
-                case "localmake": {
+                case "localmake":
                     //this is the statement that is why we don't do a scope.push() at the
                     //beginning of this method.
-                    String var = ctx.getChild(1).getText().substring(1);
-                    scope.setNew(var, ExpressionListener.evaluate(scope, ctx.getChild(2)));
+                    String localmake = ctx.getChild(1).getText().substring(1);
+                    scope.setNew(localmake, ExpressionListener.evaluate(scope, ctx.getChild(2)));
                     break;
-                }
                 case "print":
                     //will need to support strings...
                     InterpreterValue evaluate = ExpressionListener.evaluate(scope, ctx.getChild(1));

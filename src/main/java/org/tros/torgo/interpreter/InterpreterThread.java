@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2017 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,21 +21,22 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.utils.HaltMonitor;
 
 /**
- * Interpreter Thread Interface
+ * Interpreter Thread Interface.
  *
  * @author matta
  */
 public abstract class InterpreterThread extends Thread {
 
+    protected final Scope scope;
+
     private final HaltMonitor monitor;
-    private CodeBlock script;
     private final String source;
     private final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
-    protected final Scope scope;
+    private CodeBlock script;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param source
      * @param scope
@@ -138,18 +139,36 @@ public abstract class InterpreterThread extends Thread {
             //interpret the script
             process(script);
         } catch (Exception ex) {
-            listeners.fire().error(ex);
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(InterpreterThread.class).fatal(null, ex);
-            try {
-                Class<?> lc = Class.forName("org.tros.utils.logging.LogConsole");
-                Field field = lc.getField("CONSOLE");
-                java.lang.reflect.Method m = field.getType().getMethod("setVisible", boolean.class);
-                Object fieldInstance = field.get(null);
-                m.invoke(fieldInstance, true);
-            } catch (ClassNotFoundException | NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex1) {
-            }
+            processException(ex);
         }
         listeners.fire().finished();
+    }
+
+    /**
+     * Process an exception during execution.
+     *
+     * @param ex
+     */
+    protected final void processException(Exception ex) {
+        listeners.fire().error(ex);
+        org.tros.utils.logging.Logging.getLogFactory().getLogger(InterpreterThread.class).fatal(null, ex);
+        processExceptionHelper(ex);
+    }
+
+    /**
+     * Allow derived classes to change/enhance this.
+     *
+     * @param ex
+     */
+    protected void processExceptionHelper(Exception ex) {
+        try {
+            Class<?> lc = Class.forName("org.tros.utils.logging.LogConsole");
+            Field field = lc.getField("CONSOLE");
+            java.lang.reflect.Method m = field.getType().getMethod("setVisible", boolean.class);
+            Object fieldInstance = field.get(null);
+            m.invoke(fieldInstance, true);
+        } catch (ClassNotFoundException | NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex1) {
+        }
     }
 
     /**
@@ -158,17 +177,6 @@ public abstract class InterpreterThread extends Thread {
      * @param entryPoint
      */
     protected abstract void process(CodeBlock entryPoint);
-
-    /**
-     * Wait for the interpreter thread to terminate.
-     */
-    public final void waitForTermination() {
-        try {
-            join();
-        } catch (InterruptedException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(InterpreterThread.class).fatal(null, ex);
-        }
-    }
 
     public final void addScopeListener(ScopeListener listener) {
         scope.addScopeListener(listener);

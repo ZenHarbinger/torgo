@@ -1,5 +1,5 @@
 name: torgo
-version: 1.6.0
+version: 1.7.0
 summary: A Logo interpreter written in Java.
 description: A Logo interpreter written in Java.
 grade: stable
@@ -24,8 +24,10 @@ parts:
       - fonts-ipafont-gothic
     stage:
       - -lib/x86_64-linux-gnu/libdbus-1**
-    snap:
+    prime:
       - -lib/x86_64-linux-gnu/libdbus-1**
+    after:
+      - desktop-gtk2
 #    after: [desktop-glib-only]
     organize:
       ../build/target/lib: jar/lib

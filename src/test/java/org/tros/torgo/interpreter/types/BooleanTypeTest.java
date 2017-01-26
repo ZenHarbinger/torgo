@@ -15,13 +15,16 @@
  */
 package org.tros.torgo.interpreter.types;
 
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.tros.torgo.TorgoInfo;
 import org.tros.torgo.interpreter.InterpreterType;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -29,6 +32,13 @@ import org.tros.torgo.interpreter.InterpreterType;
  */
 public class BooleanTypeTest {
     
+    private final static Logger LOGGER;
+
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(BooleanTypeTest.class.getName());
+    }
+
     public BooleanTypeTest() {
     }
     

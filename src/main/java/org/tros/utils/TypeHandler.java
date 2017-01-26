@@ -24,6 +24,8 @@ public final class TypeHandler {
 
     public static final FastDateFormat DEFAULT_DATE_FORMAT = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_FORMAT;
 
+    private TypeHandler() {
+    }
     /**
      * Calendar to string.
      *

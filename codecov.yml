@@ -7,7 +7,7 @@ comment:
   require_changes: false
 coverage:
   precision: 2
-  range: "60...80"
+  range: "60...85"
   round: down
   status:
     changes: false
@@ -23,6 +23,9 @@ coverage:
     - .*/org/tros/utils/swing/JLinkButton.*
 #literally untestable in junit
     - .*/org/tros/torgo/MainSplash.*
+#others
+    - .*/org/tros/torgo/DockingFrameFactory.*
+    - .*/org/tros/torgo/swing/ZoomableComponent.*
 parsers:
   gcov:
     branch_detection:

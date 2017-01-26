@@ -1,7 +1,7 @@
 package org.tros.utils;
-// 
+//
 //  GifSequenceWriter.java
-//  
+//
 //  Created by Elliot Kroo on 2009-04-25.
 //
 // This work is licensed under the Creative Commons Attribution 3.0 Unported
@@ -22,6 +22,11 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 
+/**
+ * Output an animated GIF.
+ *
+ * @author matta
+ */
 public class GifSequenceWriter {
 
     protected ImageWriter gifWriter;
@@ -29,7 +34,7 @@ public class GifSequenceWriter {
     protected IIOMetadata imageMetaData;
 
     /**
-     * Creates a new GifSequenceWriter
+     * Creates a new GifSequenceWriter.
      *
      * @param outputStream the ImageOutputStream to be written to
      * @param imageType one of the imageTypes specified in BufferedImage
@@ -149,8 +154,7 @@ public class GifSequenceWriter {
             String nodeName) {
         int nNodes = rootNode.getLength();
         for (int i = 0; i < nNodes; i++) {
-            if (rootNode.item(i).getNodeName().compareToIgnoreCase(nodeName)
-                    == 0) {
+            if (rootNode.item(i).getNodeName().compareToIgnoreCase(nodeName) == 0) {
                 return ((IIOMetadataNode) rootNode.item(i));
             }
         }

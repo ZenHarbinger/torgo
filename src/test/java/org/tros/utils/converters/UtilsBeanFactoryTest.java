@@ -17,6 +17,7 @@ package org.tros.utils.converters;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Logger;
 import org.apache.commons.beanutils.Converter;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -24,7 +25,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.tros.torgo.TorgoInfo;
 import org.tros.utils.TypeHandler;
+import org.tros.utils.logging.Logging;
 
 /**
  *
@@ -32,6 +35,13 @@ import org.tros.utils.TypeHandler;
  */
 public class UtilsBeanFactoryTest {
     
+    private final static Logger LOGGER;
+
+    static {
+        Logging.initLogging(TorgoInfo.INSTANCE);
+        LOGGER = Logger.getLogger(UtilsBeanFactoryTest.class.getName());
+    }
+
     public UtilsBeanFactoryTest() {
     }
     

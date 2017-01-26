@@ -17,9 +17,6 @@ package org.tros.torgo;
 
 import java.awt.Window;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
@@ -32,16 +29,23 @@ import org.apache.commons.cli.ParseException;
 import org.tros.utils.ImageUtils;
 
 /**
- * Main entry point for torgo
+ * Main entry point for torgo.
  *
  * @author matta
  */
-public class Main {
+public final class Main {
 
+    public static final String IMAGE_ICON_CLASS_PATH = "torgo-48x48.png";
     private static final String DEFAULT_LANGUAGE = "dynamic-logo";
 
     /**
-     * Entry Point
+     * Hidden utility constructor.
+     */
+    private Main() {
+    }
+
+    /**
+     * Entry Point.
      *
      * @param args
      */
@@ -124,17 +128,11 @@ public class Main {
         }
     }
 
-    public static final String IMAGE_ICON_CLASS_PATH = "torgo-48x48.png";
-
     public static void loadIcon(Window frame) {
         frame.setIconImage(getIcon().getImage());
     }
 
     public static ImageIcon getIcon() {
-        return getIcon(IMAGE_ICON_CLASS_PATH);
-    }
-
-    public static ImageIcon getIcon(String path) {
-        return ImageUtils.createImageIcon(path, path);
+        return ImageUtils.getIcon(IMAGE_ICON_CLASS_PATH);
     }
 }
