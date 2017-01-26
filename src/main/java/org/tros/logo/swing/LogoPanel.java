@@ -59,7 +59,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     private final ArrayList<Drawable> queuedCommands = new ArrayList<>();
     private final ArrayList<Drawable> commands = new ArrayList<>();
     private final ZoomableMixin zoom;
-
+    private final double scaleIncrement = 0.1;
+    
+    private double scale = 1.0;
     private TurtleState turtleState;
 
     private class ZoomableMixin extends ZoomableComponent {
@@ -70,17 +72,22 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
         @Override
         protected void zoomIn() {
-            //do zoom in
+            scale += scaleIncrement;
+            repaint();
         }
 
         @Override
         protected void zoomOut() {
-            //do zoom out
+            if (scale - scaleIncrement > 0) {
+                scale -= scaleIncrement;
+                repaint();
+            }
         }
 
         @Override
         protected void zoomReset() {
-            //do zoom reset
+            scale = 1.0;
+            repaint();
         }
     }
 
@@ -126,7 +133,10 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
         turtleState.width = getWidth();
         turtleState.height = getHeight();
-
+        double x2 = (getWidth() / 2.0 - (getWidth() * scale / 2.0));
+        double y2 = (getHeight() / 2.0 - (getHeight() * scale / 2.0));
+        g2d.translate(x2, y2);
+        g2d.scale(scale, scale);
         draw(g2d, turtleState);
 
         if (turtleState.showTurtle) {
@@ -643,10 +653,16 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
                 if (!turtleState.penup) {
+                    double x2 = (getWidth() / 2.0 - (getWidth() * scale / 2.0));
+                    double y2 = (getHeight() / 2.0 - (getHeight() * scale / 2.0));
+
                     AffineTransform saveXform = g2.getTransform();
                     //double offsetAngle = (Math.PI / 2.0);
                     double offsetAngle = 0;
-                    g2.setTransform(AffineTransform.getRotateInstance(turtleState.angle + offsetAngle, turtleState.penX, turtleState.penY));
+                    AffineTransform translateInstance = AffineTransform.getTranslateInstance(x2, y2);
+                    translateInstance.scale(scale, scale);
+                    translateInstance.rotate(turtleState.angle + offsetAngle, turtleState.penX, turtleState.penY);
+                    g2.setTransform(translateInstance);
                     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
                     g2.drawString(message, (int) turtleState.penX, (int) turtleState.penY);
                     g2.setTransform(saveXform);
