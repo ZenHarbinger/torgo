@@ -1,12 +1,12 @@
 /*
  * Copyright 2015 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,14 +40,24 @@ import org.tros.utils.ImmutableHaltMonitor;
 abstract class LispBlock implements CodeBlock {
 
     protected final ParserRuleContext ctx;
-    private final ArrayList<CodeBlock> commands = new ArrayList<>();
-    private final HashMap<String, CodeFunction> functions = new HashMap<>();
     protected final EventListenerSupport<InterpreterListener> listeners
             = EventListenerSupport.create(InterpreterListener.class);
+
+    private final ArrayList<CodeBlock> commands = new ArrayList<>();
+    private final HashMap<String, CodeFunction> functions = new HashMap<>();
     private final AtomicBoolean halted = new AtomicBoolean(false);
 
     private final HashMap<String, InterpreterValue> variables = new HashMap<>();
     private CodeBlock parent;
+
+    /**
+     * Constructor.
+     *
+     * @param ctx
+     */
+    protected LispBlock(ParserRuleContext ctx) {
+        this.ctx = ctx;
+    }
 
     @Override
     public void addInterpreterListener(InterpreterListener listener) {
@@ -57,15 +67,6 @@ abstract class LispBlock implements CodeBlock {
     @Override
     public void removeInterpreterListener(InterpreterListener listener) {
         listeners.removeListener(listener);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param ctx
-     */
-    protected LispBlock(ParserRuleContext ctx) {
-        this.ctx = ctx;
     }
 
     /**
@@ -112,7 +113,7 @@ abstract class LispBlock implements CodeBlock {
     }
 
     /**
-     * Process the statement(s)
+     * Process the statement(s).
      *
      * @param scope
      * @return true if we should continue, false otherwise
@@ -155,8 +156,8 @@ abstract class LispBlock implements CodeBlock {
      * @return
      */
     @Override
-    public boolean hasFunction(String name) {
-        return functions.containsKey(name);
+    public CodeFunction getFunction(String name) {
+        return functions.get(name);
     }
 
     /**
@@ -166,8 +167,8 @@ abstract class LispBlock implements CodeBlock {
      * @return
      */
     @Override
-    public CodeFunction getFunction(String name) {
-        return functions.get(name);
+    public boolean hasFunction(String name) {
+        return functions.containsKey(name);
     }
 
     /**
