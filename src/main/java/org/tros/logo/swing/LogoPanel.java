@@ -60,7 +60,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     private final ArrayList<Drawable> commands = new ArrayList<>();
     private final ZoomableMixin zoom;
     private final double scaleIncrement = 0.1;
-    
+
     private double scale = 1.0;
     private TurtleState turtleState;
 
@@ -656,12 +656,13 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                     double x2 = (getWidth() / 2.0 - (getWidth() * scale / 2.0));
                     double y2 = (getHeight() / 2.0 - (getHeight() * scale / 2.0));
 
-                    AffineTransform saveXform = g2.getTransform();
                     //double offsetAngle = (Math.PI / 2.0);
                     double offsetAngle = 0;
                     AffineTransform translateInstance = AffineTransform.getTranslateInstance(x2, y2);
                     translateInstance.scale(scale, scale);
                     translateInstance.rotate(turtleState.angle + offsetAngle, turtleState.penX, turtleState.penY);
+
+                    AffineTransform saveXform = g2.getTransform();
                     g2.setTransform(translateInstance);
                     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
                     g2.drawString(message, (int) turtleState.penX, (int) turtleState.penY);

@@ -42,17 +42,17 @@ public abstract class ZoomableComponent {
 
     public ZoomableComponent(JComponent component) {
         Runnable increase = () -> {
-            LOGGER.info("increase");
+            LOGGER.verbose("increase");
             zoomIn();
         };
 
         Runnable decrease = () -> {
-            LOGGER.info("decrease");
+            LOGGER.verbose("decrease");
             zoomOut();
         };
 
         Runnable reset = () -> {
-            LOGGER.info("reset");
+            LOGGER.verbose("reset");
             zoomReset();
         };
 
