@@ -19,6 +19,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import org.tros.torgo.Main;
+import org.tros.torgo.swing.Localization;
 
 /**
  * Singleton GUI log console for viewing log output.
@@ -27,10 +28,10 @@ import org.tros.torgo.Main;
  */
 public final class LogConsole extends JFrame {
 
-    private final JCheckBoxMenuItem scrollLock_menu;
-    private final JCheckBoxMenuItem pause_menu;
-    private final SwingComponentHandler sch;
     public static final LogConsole CONSOLE = new LogConsole();
+    private final JCheckBoxMenuItem scrollLockMenu;
+    private final JCheckBoxMenuItem pauseMenu;
+    private final SwingComponentHandler sch;
 
     /**
      * Constructor.
@@ -49,34 +50,34 @@ public final class LogConsole extends JFrame {
     @SuppressWarnings("OverridableMethodCallInConstructor")
     private LogConsole(Level level) {
         Main.loadIcon((JFrame) this);
-        JMenuBar main_menu = new JMenuBar();
-        this.setJMenuBar(main_menu);
+        JMenuBar mainMenu = new JMenuBar();
+        this.setJMenuBar(mainMenu);
 
         sch = new SwingComponentHandler();
         sch.setLevel(level);
         Logger.getLogger("").addHandler(sch);
 
-        JMenu file_menu = new JMenu("File");
-        pause_menu = new JCheckBoxMenuItem("Pause Console");
-        scrollLock_menu = new JCheckBoxMenuItem("Scroll Lock");
-        scrollLock_menu.setEnabled(false);
-        JMenuItem close_menu = new JMenuItem("Close");
+        pauseMenu = new JCheckBoxMenuItem(Localization.getLocalizedString("LogConsolePause"));
+        scrollLockMenu = new JCheckBoxMenuItem(Localization.getLocalizedString("LogConsoleScrollLock"));
+        scrollLockMenu.setEnabled(false);
+        JMenuItem closeMenu = new JMenuItem(Localization.getLocalizedString("LogConsoleClose"));
 
-        pause_menu.addActionListener((ActionEvent ae) -> {
+        pauseMenu.addActionListener((ActionEvent ae) -> {
             SwingComponentHandler.pause();
         });
 
-        close_menu.addActionListener((ActionEvent ae) -> {
+        closeMenu.addActionListener((ActionEvent ae) -> {
             setVisible(false);
         });
 
-        file_menu.add(pause_menu);
-        file_menu.add(scrollLock_menu);
-        file_menu.add(close_menu);
+        JMenu fileMenu = new JMenu(Localization.getLocalizedString("LogConsoleFile"));
+        fileMenu.add(pauseMenu);
+        fileMenu.add(scrollLockMenu);
+        fileMenu.add(closeMenu);
 
-        main_menu.add(file_menu);
+        mainMenu.add(fileMenu);
 
-        this.setTitle("Log Console");
+        this.setTitle(Localization.getLocalizedString("LogConsoleTitle"));
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         int height = 400;
         int width = (int) (height * 1.61803398875);

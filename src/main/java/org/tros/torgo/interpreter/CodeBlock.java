@@ -1,12 +1,12 @@
 /*
- * Copyright 2015-2016 Matthew Aguirre
- * 
+ * Copyright 2015-2017 Matthew Aguirre
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,7 +63,7 @@ public interface CodeBlock extends InterpreterType, HaltListener {
     boolean isHalted();
 
     /**
-     * Process the statement(s)
+     * Process the statement(s).
      *
      * @param scope
      * @return true if we should continue, false otherwise
@@ -71,7 +71,7 @@ public interface CodeBlock extends InterpreterType, HaltListener {
     ReturnValue process(Scope scope);
 
     /**
-     * Add listener to this object
+     * Add listener to this object.
      *
      * @param listener
      */

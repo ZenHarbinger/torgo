@@ -1,12 +1,12 @@
 /*
- * Copyright 2015-2016 Matthew Aguirre
- * 
+ * Copyright 2015-2017 Matthew Aguirre
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,12 +32,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.torgo.TorgoScreen;
 
 import org.tros.torgo.TorgoTextConsole;
+import org.tros.torgo.swing.ZoomableComponent;
 
 /**
  * I'd like to see if there is a way to clean up the multiple anonymous nested
@@ -48,15 +50,46 @@ import org.tros.torgo.TorgoTextConsole;
  */
 public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, BufferedImageProvider, Drawable {
 
+    protected final EventListenerSupport<DrawListener> listeners
+            = EventListenerSupport.create(DrawListener.class);
+
     private final TorgoTextConsole console;
     private BufferedImage turtle;
 
     private final ArrayList<Drawable> queuedCommands = new ArrayList<>();
     private final ArrayList<Drawable> commands = new ArrayList<>();
-    protected final EventListenerSupport<DrawListener> listeners
-            = EventListenerSupport.create(DrawListener.class);
+    private final ZoomableMixin zoom;
+    private final double scaleIncrement = 0.1;
 
+    private double scale = 1.0;
     private TurtleState turtleState;
+
+    private class ZoomableMixin extends ZoomableComponent {
+
+        ZoomableMixin(JComponent component) {
+            super(component);
+        }
+
+        @Override
+        protected void zoomIn() {
+            scale += scaleIncrement;
+            repaint();
+        }
+
+        @Override
+        protected void zoomOut() {
+            if (scale - scaleIncrement > 0) {
+                scale -= scaleIncrement;
+                repaint();
+            }
+        }
+
+        @Override
+        protected void zoomReset() {
+            scale = 1.0;
+            repaint();
+        }
+    }
 
     /**
      * Constructor.
@@ -74,6 +107,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         } catch (IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
         }
+        zoom = new ZoomableMixin((JComponent) this);
     }
 
     @Override
@@ -99,7 +133,16 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
         turtleState.width = getWidth();
         turtleState.height = getHeight();
+        double x2 = (getWidth() / 2.0 - (getWidth() * scale / 2.0));
+        double y2 = (getHeight() / 2.0 - (getHeight() * scale / 2.0));
+        AffineTransform saveXform2 = g2d.getTransform();
 
+        AffineTransform translateInstance2 = AffineTransform.getTranslateInstance(x2, y2);
+        translateInstance2.scale(scale, scale);
+        g2d.setTransform(translateInstance2);
+
+//        g2d.translate(x2, y2);
+//        g2d.scale(scale, scale);
         draw(g2d, turtleState);
 
         if (turtleState.showTurtle) {
@@ -111,6 +154,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             g2d.drawImage(turtle, (int) x, (int) y, null);
             g2d.setTransform(saveXform);
         }
+        g2d.setTransform(saveXform2);
     }
 
     /**
@@ -131,13 +175,12 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     public Drawable cloneDrawable() {
         Drawable d = new Drawable() {
 
-            private final ArrayList<Drawable> queuedCommandsCopy = new ArrayList<>();
             protected final EventListenerSupport<DrawListener> listenersCopy
                     = EventListenerSupport.create(DrawListener.class);
+            private final ArrayList<Drawable> queuedCommandsCopy = new ArrayList<>();
 
             /**
-             * Anonymous class initializer.
-             * Clone all internal drawable objects.
+             * Anonymous class initializer. Clone all internal drawable objects.
              */
             {
                 queuedCommands.forEach((d) -> {
@@ -393,18 +436,28 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
                 try {
+                    //Check style is off because we need to save the current transform.
+                    //and it's first use is not close to it's declaration.
+                    // -- Matt
+                    //CHECKSTYLE:OFF
+                    AffineTransform saveXform = g2.getTransform();
+                    AffineTransform translateInstance = AffineTransform.getTranslateInstance(0, 0);
+                    g2.setTransform(translateInstance);
+
+                    LogoPanel.this.setBackground(Color.white);
                     g2.setColor(Color.white);
                     g2.fillRect(0, 0,
-                        turtleState.width > 0 ? (int) turtleState.width : getWidth(),
-                        turtleState.height > 0 ? (int) turtleState.height : getHeight());
+                            turtleState.width > 0 ? (int) turtleState.width : getWidth(),
+                            turtleState.height > 0 ? (int) turtleState.height : getHeight());
                     turtleState.penColor = Color.black;
                     g2.setColor(turtleState.penColor);
 
                     turtleState.font = new Font(null, 0, 12);
 
                     g2.setFont(turtleState.font);
+                    g2.setTransform(saveXform);
+                    //CHECKSTYLE:ON
                 } catch (Exception ex) {
-
                 }
             }
 
@@ -452,18 +505,23 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     }
 
     @Override
+    public void canvascolor(int red, int green, int blue) {
+        red = Math.min(255, Math.max(0, red));
+        green = Math.min(255, Math.max(0, green));
+        blue = Math.min(255, Math.max(0, blue));
+
+        Color canvasColor = new Color(red, green, blue);
+        canvascolor(canvasColor);
+    }
+
+    @Override
     public void canvascolor(final String color) {
         Drawable command = new Drawable() {
 
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
                 Color canvasColor = getColorByName(color);
-
-                g2.setColor(canvasColor);
-                g2.fillRect(0, 0,
-                        turtleState.width > 0 ? (int) turtleState.width : getWidth(),
-                        turtleState.height > 0 ? (int) turtleState.height : getHeight());
-                g2.setColor(turtleState.penColor);
+                LogoPanel.this.setBackground(canvasColor);
             }
 
             @Override
@@ -487,11 +545,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
-                g2.setColor(color);
-                g2.fillRect(0, 0,
-                        turtleState.width > 0 ? (int) turtleState.width : getWidth(),
-                        turtleState.height > 0 ? (int) turtleState.height : getHeight());
-                g2.setColor(turtleState.penColor);
+                LogoPanel.this.setBackground(color);
             }
 
             @Override
@@ -508,6 +562,16 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             }
         };
         submitCommand(command);
+    }
+
+    @Override
+    public void pencolor(int red, int green, int blue, int alpha) {
+        red = Math.min(255, Math.max(0, red));
+        green = Math.min(255, Math.max(0, green));
+        blue = Math.min(255, Math.max(0, blue));
+
+        Color pencolor = new Color(red, green, blue, alpha);
+        pencolor(pencolor);
     }
 
     private void pencolor(final Color color) {
@@ -563,29 +627,31 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     private Color getColorByName(String color) {
         color = color.toLowerCase();
+        Color ret = Color.black;
 
         try {
-            Field field = Color.class
-                    .getField(color);
-            return (Color) field.get(
-                    null);
+            Field field = Color.class.getField(color);
+            return (Color) field.get(null);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
         }
         if (null != color) {
             switch (color) {
                 case "darkgray":
-                    return (Color.darkGray);
+                    ret = Color.darkGray;
+                    break;
                 case "lightgray":
-                    return (Color.lightGray);
+                    ret = Color.lightGray;
+                    break;
                 default:
                     if (!color.startsWith("#") || !color.startsWith(color)) {
                         color = "#" + color;
                     }
                     Color c = java.awt.Color.decode(color);
-                    return c == null ? Color.black : c;
+                    ret = c == null ? Color.black : c;
+                    break;
             }
         }
-        return Color.black;
+        return ret;
     }
 
     @Override
@@ -595,10 +661,17 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
                 if (!turtleState.penup) {
-                    AffineTransform saveXform = g2.getTransform();
+                    double x2 = (getWidth() / 2.0 - (getWidth() * scale / 2.0));
+                    double y2 = (getHeight() / 2.0 - (getHeight() * scale / 2.0));
+
                     //double offsetAngle = (Math.PI / 2.0);
                     double offsetAngle = 0;
-                    g2.setTransform(AffineTransform.getRotateInstance(turtleState.angle + offsetAngle, turtleState.penX, turtleState.penY));
+                    AffineTransform translateInstance = AffineTransform.getTranslateInstance(x2, y2);
+                    translateInstance.scale(scale, scale);
+                    translateInstance.rotate(turtleState.angle + offsetAngle, turtleState.penX, turtleState.penY);
+
+                    AffineTransform saveXform = g2.getTransform();
+                    g2.setTransform(translateInstance);
                     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
                     g2.drawString(message, (int) turtleState.penX, (int) turtleState.penY);
                     g2.setTransform(saveXform);
@@ -797,7 +870,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     }
 
     @Override
-    final public void reset() {
+    public final void reset() {
         turtleState.penup = false;
         turtleState.showTurtle = true;
         queuedCommands.clear();
@@ -823,26 +896,6 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 SwingUtilities.invokeLater(LogoPanel.super::repaint);
             }
         }
-    }
-
-    @Override
-    public void pencolor(int red, int green, int blue, int alpha) {
-        red = Math.min(255, Math.max(0, red));
-        green = Math.min(255, Math.max(0, green));
-        blue = Math.min(255, Math.max(0, blue));
-
-        Color canvasColor = new Color(red, green, blue, alpha);
-        pencolor(canvasColor);
-    }
-
-    @Override
-    public void canvascolor(int red, int green, int blue) {
-        red = Math.min(255, Math.max(0, red));
-        green = Math.min(255, Math.max(0, green));
-        blue = Math.min(255, Math.max(0, blue));
-
-        Color canvasColor = new Color(red, green, blue);
-        canvascolor(canvasColor);
     }
 
     @Override

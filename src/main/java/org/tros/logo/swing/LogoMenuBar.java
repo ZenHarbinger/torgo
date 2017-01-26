@@ -1,12 +1,12 @@
 /*
- * Copyright 2015-2016 Matthew Aguirre
- * 
+ * Copyright 2015-2017 Matthew Aguirre
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,8 +41,6 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
@@ -56,8 +54,12 @@ import org.apache.commons.io.IOUtils;
 import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.swing.TorgoMenuBar;
 import org.w3c.dom.DOMImplementation;
-import org.apache.batik.svggen.*;
 import org.apache.batik.anim.dom.SVGDOMImplementation;
+import org.apache.batik.svggen.CachedImageHandlerPNGEncoder;
+import org.apache.batik.svggen.GenericImageHandler;
+import org.apache.batik.svggen.SVGGeneratorContext;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.w3c.dom.Document;
 import org.tros.utils.GifSequenceWriter;
 
@@ -68,11 +70,12 @@ import org.tros.utils.GifSequenceWriter;
  */
 public final class LogoMenuBar extends TorgoMenuBar {
 
-    private JMenuItem toolsPenColorChooser;
-    private JMenuItem toolsCanvasColorChooser;
+    protected static final String WAIT_FOR_REPAINT = "wait-for-repaint";
 
     private final LogoCanvas canvas;
-    protected static final String WAIT_FOR_REPAINT = "wait-for-repaint";
+
+    private JMenuItem toolsPenColorChooser;
+    private JMenuItem toolsCanvasColorChooser;
 
     /**
      * Constructor.
@@ -204,7 +207,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
         try {
             ImageIO.write(bi, "png", outputfile);
         } catch (IOException ex) {
-            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
         }
     }
 
@@ -233,7 +236,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename = chooser.getSelectedFile().getPath();
                 String extension = ".svg";
-                if(!filename.endsWith(extension)) {
+                if (!filename.endsWith(extension)) {
                     filename = filename + extension;
                 }
                 prefs.put("export-directory", chooser.getSelectedFile().getParent());
@@ -261,7 +264,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename2 = chooser.getSelectedFile().getPath();
                 String extension = ".gif";
-                if(!filename2.endsWith(extension)) {
+                if (!filename2.endsWith(extension)) {
                     filename2 = filename2 + extension;
                 }
                 final String filename = filename2;
@@ -272,9 +275,9 @@ public final class LogoMenuBar extends TorgoMenuBar {
                         try {
                             generateGIF(((Drawable) canvas).cloneDrawable(), (BufferedImageProvider) canvas, filename);
                         } catch (SVGGraphics2DIOException ex) {
-                            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+                            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
                         } catch (IOException ex) {
-                            Logger.getLogger(LogoMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+                            org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoMenuBar.class).warn(null, ex);
                         }
                     }
                 });
@@ -295,7 +298,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             if (result == JFileChooser.APPROVE_OPTION) {
                 String filename2 = chooser.getSelectedFile().getPath();
                 String extension = ".png";
-                if(!filename2.endsWith(extension)) {
+                if (!filename2.endsWith(extension)) {
                     filename2 = filename2 + extension;
                 }
                 final String filename = filename2;
@@ -323,8 +326,6 @@ public final class LogoMenuBar extends TorgoMenuBar {
      * @return
      */
     private JMenu setupToolsMenu() {
-        JMenu toolsMenu = new JMenu(Localization.getLocalizedString("ToolsMenu"));
-
         toolsPenColorChooser = new JMenuItem(Localization.getLocalizedString("ToolsPenColorChooser"));
         toolsCanvasColorChooser = new JMenuItem(Localization.getLocalizedString("ToolsCanvasColorChooser"));
 
@@ -352,6 +353,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
             }
         });
 
+        JMenu toolsMenu = new JMenu(Localization.getLocalizedString("ToolsMenu"));
         toolsMenu.add(toolsPenColorChooser);
         toolsMenu.add(toolsCanvasColorChooser);
 

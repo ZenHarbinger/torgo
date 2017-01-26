@@ -13,7 +13,7 @@ import java.text.MessageFormat;
  * @author matta
  */
 public final class CommonsLogger implements Logger {
-    
+
     private final org.apache.commons.logging.Log log;
 
     protected CommonsLogger(org.apache.commons.logging.Log log) {
@@ -26,48 +26,8 @@ public final class CommonsLogger implements Logger {
     }
 
     @Override
-    public void debug(String message) {
-        log.debug(message);
-    }
-
-    @Override
-    public void error(String message) {
-        log.error(message);
-    }
-
-    @Override
-    public void info(String message) {
-        log.info(message);
-    }
-
-    @Override
-    public void verbose(String message) {
-        log.trace(message);
-    }
-
-    @Override
     public void warn(String format, Object... objs) {
         log.warn(MessageFormat.format(format, objs));
-    }
-
-    @Override
-    public void debug(String format, Object... objs) {
-        log.debug(MessageFormat.format(format, objs));
-    }
-
-    @Override
-    public void error(String format, Object... objs) {
-        log.error(MessageFormat.format(format, objs));
-    }
-
-    @Override
-    public void info(String format, Object... objs) {
-        log.info(MessageFormat.format(format, objs));
-    }
-
-    @Override
-    public void verbose(String format, Object... objs) {
-        log.trace(MessageFormat.format(format, objs));
     }
 
     @Override
@@ -76,8 +36,28 @@ public final class CommonsLogger implements Logger {
     }
 
     @Override
+    public void debug(String message) {
+        log.debug(message);
+    }
+
+    @Override
+    public void debug(String format, Object... objs) {
+        log.debug(MessageFormat.format(format, objs));
+    }
+
+    @Override
     public void debug(String message, Throwable thrw) {
         log.debug(message, thrw);
+    }
+
+    @Override
+    public void error(String message) {
+        log.error(message);
+    }
+
+    @Override
+    public void error(String format, Object... objs) {
+        log.error(MessageFormat.format(format, objs));
     }
 
     @Override
@@ -86,9 +66,30 @@ public final class CommonsLogger implements Logger {
     }
 
     @Override
+    public void info(String message) {
+        log.info(message);
+    }
+
+    @Override
+    public void info(String format, Object... objs) {
+        log.info(MessageFormat.format(format, objs));
+    }
+
+    @Override
     public void info(String message, Throwable thrw) {
         log.info(message, thrw);
     }
+
+    @Override
+    public void verbose(String message) {
+        log.trace(message);
+    }
+
+    @Override
+    public void verbose(String format, Object... objs) {
+        log.trace(MessageFormat.format(format, objs));
+    }
+
 
     @Override
     public void verbose(String message, Throwable thrw) {
@@ -109,5 +110,5 @@ public final class CommonsLogger implements Logger {
     public void fatal(String message, Throwable thrw) {
         log.fatal(message, thrw);
     }
-    
+
 }

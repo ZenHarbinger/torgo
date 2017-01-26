@@ -27,6 +27,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.tros.utils.ImageUtils;
 import org.tros.utils.logging.Logging;
 
 /**
@@ -81,6 +82,7 @@ public class MainTest {
         ArrayList<String[]> tests = new ArrayList<>();
         tests.add(new String[]{"-l", "dynamic-logo"});
         tests.add(new String[]{"-lang", "lexical-logo"});
+        tests.add(new String[]{"-lang", "no-such-language"});
         for (String[] args : tests) {
             Main.main(args);
             Robot robot = null;
@@ -101,7 +103,6 @@ public class MainTest {
             pressKey(robot, new int[]{KeyEvent.VK_DOWN}, 100);
             pressKey(robot, new int[]{KeyEvent.VK_ENTER}, 100);
         }
-        Main.main(new String[]{"-l", "no-such-language"});
     }
 
     @Test
@@ -136,7 +137,7 @@ public class MainTest {
     @Test
     public void imageIcon() {
         LOGGER.info("main");
-        assertNull(Main.getIcon("no.such.icon"));
+        assertNull(ImageUtils.getIcon("no.such.icon"));
     }
 
     void pressKey(Robot robot, int[] keys, int delay) {

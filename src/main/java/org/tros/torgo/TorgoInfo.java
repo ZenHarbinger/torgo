@@ -1,12 +1,12 @@
 /*
- * Copyright 2015-2016 Matthew Aguirre
- * 
+ * Copyright 2015-2017 Matthew Aguirre
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,16 +26,16 @@ import java.io.Serializable;
  */
 public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Serializable {
 
-    private String _version;
-    private String _build_date;
-    private String _builder;
-    private String _company;
-    private String _applicationName;
-
     /**
      * Singleton Instance.
      */
-    public final static TorgoInfo INSTANCE = new TorgoInfo();
+    public static final TorgoInfo INSTANCE = new TorgoInfo();
+
+    private String version;
+    private String buildDate;
+    private String builder;
+    private String company;
+    private String applicationName;
 
     /**
      * Version Accessor.
@@ -44,7 +44,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public String getVersion() {
-        return _version;
+        return version;
     }
 
     /**
@@ -54,7 +54,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public void setVersion(String value) {
-        _version = value;
+        version = value;
     }
 
     /**
@@ -64,7 +64,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public String getBuildtime() {
-        return _build_date;
+        return buildDate;
     }
 
     /**
@@ -74,7 +74,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public void setBuildtime(String value) {
-        _build_date = value;
+        buildDate = value;
     }
 
     /**
@@ -84,7 +84,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public String getBuilder() {
-        return _builder;
+        return builder;
     }
 
     /**
@@ -94,7 +94,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public void setBuilder(String value) {
-        _builder = value;
+        builder = value;
     }
 
     /**
@@ -104,7 +104,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public String getApplicationName() {
-        return _applicationName;
+        return applicationName;
     }
 
     /**
@@ -114,7 +114,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public void setApplicationName(String value) {
-        _applicationName = value;
+        applicationName = value;
     }
 
     /**
@@ -124,7 +124,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public String getCompany() {
-        return _company;
+        return company;
     }
 
     /**
@@ -134,7 +134,7 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public void setCompany(String value) {
-        _company = value;
+        company = value;
     }
 
     /**
@@ -144,6 +144,14 @@ public class TorgoInfo extends PropertiesInitializer implements BuildInfo, Seria
      */
     @Override
     public String toString() {
-        return _version;
+        return version;
+    }
+
+    public String getCopy() {
+        return "© 2015-2017 Matthew Aguirre, Apache License 2.0";
+    }
+
+    public String getAbout() {
+        return "Torgo is a flexible interpreter written in Java.";
     }
 }

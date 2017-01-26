@@ -14,8 +14,8 @@ package org.tros.utils;
  */
 public class AutoResetEvent {
 
-    private final Object _monitor = new Object();
-    private volatile boolean _isOpen = false;
+    private final Object monitor = new Object();
+    private volatile boolean isOpen = false;
 
     /**
      * Constructor.
@@ -23,7 +23,7 @@ public class AutoResetEvent {
      * @param open
      */
     public AutoResetEvent(boolean open) {
-        _isOpen = open;
+        isOpen = open;
     }
 
     /**
@@ -32,11 +32,11 @@ public class AutoResetEvent {
      * @throws InterruptedException
      */
     public void waitOne() throws InterruptedException {
-        synchronized (_monitor) {
-            while (!_isOpen) {
-                _monitor.wait();
+        synchronized (monitor) {
+            while (!isOpen) {
+                monitor.wait();
             }
-            _isOpen = false;
+            isOpen = false;
         }
     }
 
@@ -49,17 +49,17 @@ public class AutoResetEvent {
      */
     public boolean waitOne(long timeout) throws InterruptedException {
         boolean ret = true;
-        synchronized (_monitor) {
+        synchronized (monitor) {
             long t = System.currentTimeMillis();
-            while (!_isOpen) {
-                _monitor.wait(timeout);
+            while (!isOpen) {
+                monitor.wait(timeout);
                 // Check for timeout
                 if (System.currentTimeMillis() - t >= timeout) {
                     ret = false;
                     break;
                 }
             }
-            _isOpen = false;
+            isOpen = false;
         }
         return ret;
     }
@@ -68,9 +68,9 @@ public class AutoResetEvent {
      * Signal.
      */
     public void set() {
-        synchronized (_monitor) {
-            _isOpen = true;
-            _monitor.notify();
+        synchronized (monitor) {
+            isOpen = true;
+            monitor.notify();
         }
     }
 
@@ -78,6 +78,6 @@ public class AutoResetEvent {
      * Reset.
      */
     public void reset() {
-        _isOpen = false;
+        isOpen = false;
     }
 }

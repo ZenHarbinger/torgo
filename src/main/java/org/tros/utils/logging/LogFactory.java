@@ -13,7 +13,7 @@ package org.tros.utils.logging;
 public interface LogFactory {
 
     Logger getLogger(Class<?> c);
-    
+
     Logger getLogger(String name);
 
 }

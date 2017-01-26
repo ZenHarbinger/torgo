@@ -15,17 +15,17 @@ import org.apache.commons.lang3.event.EventListenerSupport;
  */
 public final class HaltMonitor implements ImmutableHaltMonitor {
 
-    private boolean _halted;
-    private final EventListenerSupport<HaltListener> _listeners
+    private boolean halted;
+    private final EventListenerSupport<HaltListener> listeners
             = EventListenerSupport.create(HaltListener.class);
-    private String _name;
+    private String name;
 
     /**
      * Initialize a new monitor.
      */
     public HaltMonitor() {
-        _halted = false;
-        _name = "";
+        halted = false;
+        name = "";
     }
 
     /**
@@ -35,7 +35,7 @@ public final class HaltMonitor implements ImmutableHaltMonitor {
      */
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     /**
@@ -44,7 +44,7 @@ public final class HaltMonitor implements ImmutableHaltMonitor {
      * @param value the name of the monitor.
      */
     public void setName(final String value) {
-        _name = value;
+        name = value;
     }
 
     /**
@@ -53,7 +53,7 @@ public final class HaltMonitor implements ImmutableHaltMonitor {
      * @param listener The listener to add.
      */
     public synchronized void addHaltListener(final HaltListener listener) {
-        _listeners.addListener(listener);
+        listeners.addListener(listener);
     }
 
     /**
@@ -62,7 +62,7 @@ public final class HaltMonitor implements ImmutableHaltMonitor {
      * @param listener The listener to remove.
      */
     public synchronized void removeHaltListener(final HaltListener listener) {
-        _listeners.removeListener(listener);
+        listeners.removeListener(listener);
     }
 
     /**
@@ -72,17 +72,17 @@ public final class HaltMonitor implements ImmutableHaltMonitor {
      */
     @Override
     public boolean isHalted() {
-        return _halted;
+        return halted;
     }
 
     /**
      * Halt the thread.
      */
     public synchronized void halt() {
-        _halted = true;
-        _listeners.fire().halted(this);
-        for (HaltListener l : _listeners.getListeners()) {
-            _listeners.removeListener(l);
+        halted = true;
+        listeners.fire().halted(this);
+        for (HaltListener l : listeners.getListeners()) {
+            listeners.removeListener(l);
         }
     }
 }

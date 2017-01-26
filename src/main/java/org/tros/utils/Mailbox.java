@@ -18,16 +18,15 @@ import java.util.ArrayList;
  */
 public class Mailbox<T> {
 
-    private final java.util.ArrayList<T> m_msgs;
-    private boolean m_halt;
-    private final static org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(Mailbox.class);
+    private final java.util.ArrayList<T> messages;
+    private boolean halt;
 
     /**
      * Constructor.
      */
     public Mailbox() {
-        m_msgs = new ArrayList<>();
-        m_halt = false;
+        messages = new ArrayList<>();
+        halt = false;
     }
 
     /**
@@ -36,15 +35,15 @@ public class Mailbox<T> {
      * @return
      */
     public synchronized int size() {
-        return m_msgs.size();
+        return messages.size();
     }
 
     /**
      * Halt the mailbox.
      */
     public synchronized void halt() {
-        if (!m_halt) {
-            m_halt = true;
+        if (!halt) {
+            halt = true;
             notifyAll();
         }
     }
@@ -56,8 +55,8 @@ public class Mailbox<T> {
      * @param inMsg
      */
     public synchronized void addMessage(T inMsg) {
-        if (!m_halt) {
-            m_msgs.add(inMsg);
+        if (!halt) {
+            messages.add(inMsg);
             notifyAll();
         }
     }
@@ -68,21 +67,21 @@ public class Mailbox<T> {
      * @return
      */
     public synchronized T getMessage() {
-        if (m_halt) {
+        if (halt) {
             return null;
         }
-        while (m_msgs.size() <= 0) {
+        while (messages.size() <= 0) {
             try {
                 wait();
             } catch (InterruptedException e) {
-                LOGGER.warn(null, e);
-                continue;
+                halt = true;
+                return null;
             }
-            if (m_halt) {
+            if (halt) {
                 return null;
             }
         }
-        T ret = m_msgs.remove(0);
+        T ret = messages.remove(0);
         return ret;
     }
 
@@ -92,22 +91,22 @@ public class Mailbox<T> {
      * @return
      */
     public synchronized ArrayList<T> getMessages() {
-        if (m_halt) {
+        if (halt) {
             return null;
         }
-        while (m_msgs.size() <= 0) {
+        while (messages.size() <= 0) {
             try {
                 wait();
             } catch (InterruptedException e) {
-                LOGGER.warn(null, e);
-                continue;
+                halt = true;
+                return null;
             }
-            if (m_halt) {
+            if (halt) {
                 return null;
             }
         }
-        ArrayList<T> ret = new ArrayList<>(m_msgs);
-        m_msgs.clear();
+        ArrayList<T> ret = new ArrayList<>(messages);
+        messages.clear();
         return ret;
     }
 
@@ -117,6 +116,6 @@ public class Mailbox<T> {
      * @return
      */
     public boolean isHalted() {
-        return m_halt;
+        return halt;
     }
 }

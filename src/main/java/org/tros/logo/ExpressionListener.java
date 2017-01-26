@@ -1,12 +1,12 @@
 /*
- * Copyright 2015-2016 Matthew Aguirre
- * 
+ * Copyright 2015-2017 Matthew Aguirre
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,10 +33,20 @@ import org.tros.torgo.interpreter.types.StringType;
  *
  * @author matta
  */
-class ExpressionListener extends LogoBaseListener {
+final class ExpressionListener extends LogoBaseListener {
 
     private final Scope scope;
     private final Stack<ArrayList<InterpreterValue>> value = new Stack<>();
+
+    /**
+     * Hidden constructor, forces use of "evaluateDouble" method.
+     *
+     * @param scope
+     */
+    private ExpressionListener(Scope scope) {
+        this.scope = scope;
+        value.push(new ArrayList<>());
+    }
 
     /**
      * Evaluate an expression as defined in the logo.g4 grammar.
@@ -49,16 +59,6 @@ class ExpressionListener extends LogoBaseListener {
         ExpressionListener el = new ExpressionListener(scope);
         ParseTreeWalker.DEFAULT.walk(el, ctx);
         return el.getValue();
-    }
-
-    /**
-     * Hidden constructor, forces use of "evaluateDouble" method.
-     *
-     * @param scope
-     */
-    private ExpressionListener(Scope scope) {
-        this.scope = scope;
-        value.push(new ArrayList<>());
     }
 
     private InterpreterValue mathExpression(InterpreterValue val1, InterpreterValue val2, String op) {
