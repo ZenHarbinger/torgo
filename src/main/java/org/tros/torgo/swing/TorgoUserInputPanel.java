@@ -19,21 +19,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseWheelEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
-import javax.swing.JMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -73,10 +63,48 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
 
     private final LayeredHighlighter.LayerPainter defaultHighlighter;
     private final LayeredHighlighter.LayerPainter breakpointHighlighter;
+    private final java.util.prefs.Preferences prefs;
+    private final ZoomableMixin zoom;
 
-    private JMenuItem jmi1;
-    private JMenuItem jmi2;
-    private JMenuItem jmi3;
+    private class ZoomableMixin extends ZoomableComponent {
+
+        ZoomableMixin(JComponent component) {
+            super(component);
+        }
+
+        @Override
+        protected void zoomIn() {
+            Font font1 = inputTextArea.getFont();
+            float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
+            if (size <= FONT_MAX_SIZE) {
+                font1 = font1.deriveFont(size);
+                inputTextArea.setFont(font1);
+                outputTextArea.setFont(font1);
+                prefs.putFloat("font-size", size);
+            }
+        }
+
+        @Override
+        protected void zoomOut() {
+            Font font1 = inputTextArea.getFont();
+            float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
+            if (size >= FONT_MIN_SIZE) {
+                font1 = font1.deriveFont(size);
+                inputTextArea.setFont(font1);
+                outputTextArea.setFont(font1);
+                prefs.putFloat("font-size", size);
+            }
+        }
+
+        @Override
+        protected void zoomReset() {
+            Font font1 = inputTextArea.getFont();
+            font1 = font1.deriveFont(DEFAULT_FONT_SIZE);
+            inputTextArea.setFont(font1);
+            outputTextArea.setFont(font1);
+            prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
+        }
+    }
 
     /**
      * Constructor.
@@ -106,7 +134,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         gutter.setBookmarkIcon(ImageUtils.getIcon(DEBUG_ICON));
         gutter.setBookmarkingEnabled(true);
 
-        final java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoUserInputPanel.class);
+        prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoUserInputPanel.class);
 
         outputTextArea = new JConsole();
         outputTextArea.setEditable(editable);
@@ -116,139 +144,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         Font font = new Font(Font.MONOSPACED, Font.PLAIN, (int) prefs.getFloat("font-size", DEFAULT_FONT_SIZE));
         inputTextArea.setFont(font);
         outputTextArea.setFont(font);
-
-        Runnable increase = () -> {
-            Font font1 = inputTextArea.getFont();
-            float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
-            if (size <= FONT_MAX_SIZE) {
-                font1 = font1.deriveFont(size);
-                inputTextArea.setFont(font1);
-                outputTextArea.setFont(font1);
-                prefs.putFloat("font-size", size);
-            }
-        };
-
-        Runnable decrease = () -> {
-            Font font1 = inputTextArea.getFont();
-            float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
-            if (size >= FONT_MIN_SIZE) {
-                font1 = font1.deriveFont(size);
-                inputTextArea.setFont(font1);
-                outputTextArea.setFont(font1);
-                prefs.putFloat("font-size", size);
-            }
-        };
-
-        Runnable reset = () -> {
-            Font font1 = inputTextArea.getFont();
-            font1 = font1.deriveFont(DEFAULT_FONT_SIZE);
-            inputTextArea.setFont(font1);
-            outputTextArea.setFont(font1);
-            prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
-        };
-
-        final AtomicBoolean ctrlDown = new AtomicBoolean(false);
-        inputTextArea.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent ke) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent ke) {
-                if ((ke.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
-                    ctrlDown.set(true);
-                }
-                if ((ke.getKeyCode() == KeyEvent.VK_EQUALS)
-                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK))
-                        || (ke.getKeyCode() == KeyEvent.VK_ADD)
-                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK))) {
-                    increase.run();
-                }
-                if ((ke.getKeyCode() == KeyEvent.VK_MINUS || ke.getKeyCode() == KeyEvent.VK_SUBTRACT)
-                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
-                    decrease.run();
-                }
-                if ((ke.getKeyCode() == KeyEvent.VK_0 || ke.getKeyCode() == KeyEvent.VK_NUMPAD0)
-                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
-                    reset.run();
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent ke) {
-                if (ke.getModifiers() == 0) {
-                    ctrlDown.set(false);
-                }
-            }
-        });
-
-        jmi1 = new JMenuItem("Zoom In");
-        jmi1.addActionListener((ActionEvent ae) -> {
-            increase.run();
-        });
-        jmi2 = new JMenuItem("Zoom Out");
-        jmi2.addActionListener((ActionEvent ae) -> {
-            decrease.run();
-        });
-        jmi3 = new JMenuItem("Zoom Reset");
-        jmi3.addActionListener((ActionEvent ae) -> {
-            reset.run();
-        });
-        jmi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, InputEvent.CTRL_MASK));
-        jmi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, InputEvent.CTRL_MASK));
-        jmi3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, InputEvent.CTRL_MASK));
-        final AtomicBoolean added = new AtomicBoolean(false);
-        final Runnable r = () -> {
-
-            if (!added.get()) {
-                added.set(true);
-                JPopupMenu popupMenu = inputTextArea.getPopupMenu();
-                popupMenu.add(jmi1);
-                popupMenu.add(jmi2);
-                popupMenu.add(jmi3);
-            }
-
-        };
-        scrollPane.addMouseWheelListener((MouseWheelEvent mwe) -> {
-            if (ctrlDown.get()) {
-                if (mwe.getPreciseWheelRotation() < 0) {
-                    increase.run();
-                } else {
-                    decrease.run();
-                }
-            }
-        });
-        inputTextArea.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                r.run();
-                inputTextArea.removeMouseListener(this);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent me) {
-                r.run();
-                inputTextArea.removeMouseListener(this);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent me) {
-                r.run();
-                inputTextArea.removeMouseListener(this);
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent me) {
-                r.run();
-                inputTextArea.removeMouseListener(this);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent me) {
-                r.run();
-                inputTextArea.removeMouseListener(this);
-            }
-        });
+        zoom = new ZoomableMixin(inputTextArea);
 
         inputTab.add(scrollPane, BorderLayout.CENTER);
 

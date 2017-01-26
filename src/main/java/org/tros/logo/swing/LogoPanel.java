@@ -32,12 +32,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.tros.torgo.TorgoScreen;
 
 import org.tros.torgo.TorgoTextConsole;
+import org.tros.torgo.swing.ZoomableComponent;
 
 /**
  * I'd like to see if there is a way to clean up the multiple anonymous nested
@@ -56,8 +58,31 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     private final ArrayList<Drawable> queuedCommands = new ArrayList<>();
     private final ArrayList<Drawable> commands = new ArrayList<>();
+    private final ZoomableMixin zoom;
 
     private TurtleState turtleState;
+
+    private class ZoomableMixin extends ZoomableComponent {
+
+        ZoomableMixin(JComponent component) {
+            super(component);
+        }
+
+        @Override
+        protected void zoomIn() {
+            //do zoom in
+        }
+
+        @Override
+        protected void zoomOut() {
+            //do zoom out
+        }
+
+        @Override
+        protected void zoomReset() {
+            //do zoom reset
+        }
+    }
 
     /**
      * Constructor.
@@ -75,6 +100,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         } catch (IOException ex) {
             org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
         }
+        zoom = new ZoomableMixin((JComponent) this);
     }
 
     @Override
@@ -137,8 +163,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             private final ArrayList<Drawable> queuedCommandsCopy = new ArrayList<>();
 
             /**
-             * Anonymous class initializer.
-             * Clone all internal drawable objects.
+             * Anonymous class initializer. Clone all internal drawable objects.
              */
             {
                 queuedCommands.forEach((d) -> {
@@ -396,8 +421,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 try {
                     g2.setColor(Color.white);
                     g2.fillRect(0, 0,
-                        turtleState.width > 0 ? (int) turtleState.width : getWidth(),
-                        turtleState.height > 0 ? (int) turtleState.height : getHeight());
+                            turtleState.width > 0 ? (int) turtleState.width : getWidth(),
+                            turtleState.height > 0 ? (int) turtleState.height : getHeight());
                     turtleState.penColor = Color.black;
                     g2.setColor(turtleState.penColor);
 
