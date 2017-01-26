@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2016 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,10 +36,21 @@ import org.tros.torgo.interpreter.types.StringType;
  *
  * @author matta
  */
-class ExpressionListener extends jvmBasicBaseListener {
+final class ExpressionListener extends jvmBasicBaseListener {
 
+    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(ExpressionListener.class);
     private final Scope scope;
     private final Stack<ArrayList<InterpreterValue>> value = new Stack<>();
+
+    /**
+     * Hidden constructor, forces use of "evaluateDouble" method.
+     *
+     * @param scope
+     */
+    private ExpressionListener(Scope scope) {
+        this.scope = scope;
+        value.push(new ArrayList<>());
+    }
 
     /**
      * Evaluate an expression as defined in the jvmBasic.g4 grammar.
@@ -52,16 +63,6 @@ class ExpressionListener extends jvmBasicBaseListener {
         org.tros.jvmbasic.ExpressionListener el = new org.tros.jvmbasic.ExpressionListener(scope);
         ParseTreeWalker.DEFAULT.walk(el, ctx);
         return el.getValue();
-    }
-
-    /**
-     * Hidden constructor, forces use of "evaluateDouble" method.
-     *
-     * @param scope
-     */
-    private ExpressionListener(Scope scope) {
-        this.scope = scope;
-        value.push(new ArrayList<>());
     }
 
     private InterpreterValue mathExpression(InterpreterValue val1, InterpreterValue val2, String op) {
@@ -136,8 +137,6 @@ class ExpressionListener extends jvmBasicBaseListener {
     }
 
     /**
-     * TODO: add in a conversion scheme, (widening/narrowing)
-     *
      * @param val1
      * @param val2
      * @param op
@@ -268,8 +267,8 @@ class ExpressionListener extends jvmBasicBaseListener {
     @Override
     public void exitSignExpression(jvmBasicParser.SignExpressionContext ctx) {
         boolean inverse = ctx.NOT() != null;
-        int neg_count = ctx.MINUS().size();
-        int pos_count = ctx.PLUS().size();
+        int negCount = ctx.MINUS().size();
+        int posCount = ctx.PLUS().size();
 
         /**
          * I don't know what the grammar is thinking, but you can't have
@@ -277,10 +276,10 @@ class ExpressionListener extends jvmBasicBaseListener {
          * that won't actually do anything. Multiple negatives '-----' will keep
          * flipping to the negative/positive value.
          */
-        if (neg_count > 0 && pos_count > 0) {
-            //error
-        } else if (neg_count == 0 && pos_count > 1) {
-            //error
+        if (negCount > 0 && posCount > 0) {
+            LOGGER.error("negCount and posCount > 0");
+        } else if (negCount == 0 && posCount > 1) {
+            LOGGER.error("posCount > 1");
         }
 
         ArrayList<InterpreterValue> peek = this.value.peek();
@@ -288,11 +287,11 @@ class ExpressionListener extends jvmBasicBaseListener {
         if (peek.get(index).getType().equals(NumberType.INSTANCE)) {
             InterpreterValue val = peek.remove(index);
             double n = ((Number) val.getValue()).doubleValue();
-            neg_count = (int) Math.pow(-1, neg_count);
+            negCount = (int) Math.pow(-1, negCount);
             if (inverse) {
                 peek.add(index, new InterpreterValue(BooleanType.INSTANCE, n != 0));
             } else {
-                peek.add(index, new InterpreterValue(NumberType.INSTANCE, n *= neg_count));
+                peek.add(index, new InterpreterValue(NumberType.INSTANCE, n *= negCount));
             }
         } else if (inverse && peek.get(index).getType().equals(BooleanType.INSTANCE)) {
             InterpreterValue val = peek.remove(index);
@@ -306,7 +305,6 @@ class ExpressionListener extends jvmBasicBaseListener {
         if (ctx.STRINGLITERAL() != null) {
             InterpreterValue v = new InterpreterValue(StringType.INSTANCE, ctx.getText());
             value.peek().add(v);
-        } else {
         }
     }
 
@@ -332,7 +330,7 @@ class ExpressionListener extends jvmBasicBaseListener {
     }
 
     /**
-     * Not sure if this should be degrees or radians
+     * Not sure if this should be degrees or radians.
      *
      * @param ctx
      */
@@ -353,7 +351,7 @@ class ExpressionListener extends jvmBasicBaseListener {
     }
 
     /**
-     * Not sure if this should be degrees or radians
+     * Not sure if this should be degrees or radians.
      *
      * @param ctx
      */
@@ -374,7 +372,7 @@ class ExpressionListener extends jvmBasicBaseListener {
     }
 
     /**
-     * Not sure if this should be degrees or radians
+     * Not sure if this should be degrees or radians.
      *
      * @param ctx
      */
@@ -395,7 +393,7 @@ class ExpressionListener extends jvmBasicBaseListener {
     }
 
     /**
-     * Not sure if this should be degrees or radians
+     * Not sure if this should be degrees or radians.
      *
      * @param ctx
      */
@@ -481,7 +479,6 @@ class ExpressionListener extends jvmBasicBaseListener {
     }
 
     /**
-     * TODO: this one needs some work.
      * https://msdn.microsoft.com/en-us/library/f7s023d2(v=vs.90).aspx Not sure
      * of what to do w/ the passed in value.
      *
@@ -498,16 +495,14 @@ class ExpressionListener extends jvmBasicBaseListener {
     }
 
     /**
-     * TODO: Ensure PERCENT is handled.
-     *
      * @param ctx
      */
     @Override
     public void enterVar(jvmBasicParser.VarContext ctx) {
         ctx.varname().getText();
-        TerminalNode DOLLAR = ctx.varsuffix() != null ? ctx.varsuffix().DOLLAR() : null;
-        TerminalNode PERCENT = ctx.varsuffix() != null ? ctx.varsuffix().PERCENT() : null;
-        if (DOLLAR != null) {
+        TerminalNode dollar = ctx.varsuffix() != null ? ctx.varsuffix().DOLLAR() : null;
+        TerminalNode percent = ctx.varsuffix() != null ? ctx.varsuffix().PERCENT() : null;
+        if (dollar != null) {
             InterpreterValue val = new InterpreterValue(StringType.INSTANCE, ctx.getText());
             value.peek().add(0, val);
         } else {

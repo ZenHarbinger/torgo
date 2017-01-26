@@ -1,12 +1,12 @@
 /*
  * Copyright 2016 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -66,25 +66,23 @@ public class BasicStatement extends BasicBlock {
 
         if (null != command) {
             switch (command) {
-                case "print": {
+                case "print":
                     InterpreterValue evaluate = org.tros.jvmbasic.ExpressionListener.evaluate(scope, ctx.getChild(1));
                     super.listeners.fire().message(evaluate.getValue().toString());
-                }
                 break;
-                case "variableassignment": {
+                case "variableassignment":
                     jvmBasicParser.VariableassignmentContext var = (jvmBasicParser.VariableassignmentContext) ctx;
-                    InterpreterValue evaluate = org.tros.jvmbasic.ExpressionListener.evaluate(scope, var.exprlist());
+                    InterpreterValue evaluate2 = org.tros.jvmbasic.ExpressionListener.evaluate(scope, var.exprlist());
                     String varname = var.vardecl().var().getText();
-                    TerminalNode DOLLAR = var.vardecl().var().varsuffix() != null ? var.vardecl().var().varsuffix().DOLLAR() : null;
-                    TerminalNode PERCENT = var.vardecl().var().varsuffix() != null ? var.vardecl().var().varsuffix().PERCENT() : null;
-                    if (DOLLAR != null && evaluate.getType().equals(StringType.INSTANCE)) {
+                    TerminalNode dollar = var.vardecl().var().varsuffix() != null ? var.vardecl().var().varsuffix().DOLLAR() : null;
+                    TerminalNode percent = var.vardecl().var().varsuffix() != null ? var.vardecl().var().varsuffix().PERCENT() : null;
+                    if (dollar != null && evaluate2.getType().equals(StringType.INSTANCE)) {
                         //a string
-                        scope.set(varname, evaluate);
-                    } else if (DOLLAR == null && !evaluate.getType().equals(StringType.INSTANCE)){
+                        scope.set(varname, evaluate2);
+                    } else if (dollar == null && !evaluate2.getType().equals(StringType.INSTANCE)) {
                         //not a string
-                        scope.set(varname, evaluate);
+                        scope.set(varname, evaluate2);
                     }
-                }
                 break;
                 default:
                     break;
