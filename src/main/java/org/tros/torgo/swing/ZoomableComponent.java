@@ -164,6 +164,27 @@ public abstract class ZoomableComponent {
             public void mouseExited(MouseEvent me) {
                 r.run();
                 component.removeMouseListener(this);
+            }
+        });
+        component.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
                 ctrlDown.set(false);
             }
         });
