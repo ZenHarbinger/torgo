@@ -187,7 +187,7 @@
                             <iconFile>torgo.icns</iconFile>
                             <jvmVersion>1.8+</jvmVersion>
                             <version>${project.version}</version>
-                            <jvmOptions>Dsun.java2d.opengl=true</jvmOptions>
+                            <jvmOptions>-Dsun.java2d.opengl=true</jvmOptions>
                             <NSHumanReadableCopyright>2015-2017 Matthew Aguirre</NSHumanReadableCopyright>
                         </configuration>
                         <executions>
