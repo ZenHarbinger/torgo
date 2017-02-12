@@ -15,6 +15,8 @@
  */
 package org.tros.torgo;
 
+import com.apple.eawt.AppEvent.OpenFilesEvent;
+import com.apple.eawt.Application;
 import java.awt.Window;
 import java.io.File;
 import java.util.Set;
@@ -53,7 +55,8 @@ public final class Main {
         //initialize the logging
         MainSplash.splashInit();
         org.tros.utils.logging.Logging.initLogging(TorgoInfo.INSTANCE);
-        org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class);
+        final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class);
+
         Options options = new Options();
         options.addOption("l", "lang", true, "Open using the desired language. [default is 'logo']");
         options.addOption("i", "list", false, "List available languages.");
@@ -112,18 +115,54 @@ public final class Main {
         }
         final String controlLang = lang;
 
+        Controller controller = null;
         if (!quit) {
             prefs.put("lang", lang);
+            controller = TorgoToolkit.getController(controlLang);
+            final Controller ctrl = controller;
             SwingUtilities.invokeLater(() -> {
-                Controller controller = TorgoToolkit.getController(controlLang);
-                if (controller != null) {
-                    controller.run();
+                if (ctrl != null) {
+                    ctrl.run();
                     if (fileArgument != null) {
-                        controller.openFile(new File(fileArgument));
+                        ctrl.openFile(new File(fileArgument));
                     } else {
-                        controller.newFile();
+                        ctrl.newFile();
                     }
                 }
+            });
+        }
+        final Controller ctrl2 = controller;
+        //First, check for if we are on OS X so that it doesn't execute on
+        //other platforms. Note that we are using contains() because it was
+        //called Mac OS X before 10.8 and simply OS X afterwards
+        if (System.getProperty("os.name").contains("OS X")) {
+            Application a = Application.getApplication();
+            a.setOpenFileHandler((OpenFilesEvent e) -> {
+                e.getFiles().forEach((file2) -> {
+                    File file = (File) file2;
+                    logger.warn("FILE: {0}", file.getAbsolutePath());
+                    int index = file.getName().lastIndexOf('.');
+                    String lang2 = "dynamic-logo";
+                    String ext2;
+                    if (index >= 0) {
+                        ext2 = file.getName().substring(index + 1);
+                        if (ext2 != null && TorgoToolkit.getToolkits().contains(ext2)) {
+                            lang2 = ext2;
+                        }
+                    }
+                    final String lang3 = lang2; //Handle your file however you'd like
+                    logger.warn("LANG: {0}", lang3);
+                    if (ctrl2 != null) {
+                        ctrl2.close();
+                    }
+                    Controller controller2 = TorgoToolkit.getController(lang3);
+                    SwingUtilities.invokeLater(() -> {
+                        if (controller2 != null) {
+                            controller2.run();
+                            controller2.openFile(file);
+                        }
+                    });
+                });
             });
         }
     }
