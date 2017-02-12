@@ -26,16 +26,48 @@
                     <key>public.mime-type</key>
                     <string>text/dynamic-logo</string>
                 </dict>
+                <key>UTTypeIconFile</key>
+                <string>torgo-file.icns</string>
+            </dict>
+            <dict>
+                <key>UTTypeIdentifier</key>
+                <string>org.tros.lexical-logo</string>
+                <key>UTTypeDescription</key>
+                <string>Lexical Logo Script</string>
+                <key>UTTypeConformsTo</key>
+                <array>
+                    <string>public.plain-text</string>
+                </array>
+                <key>UTTypeTagSpecification</key>
+                <dict>
+                    <key>com.apple.ostype</key>
+                    <string>LEXICAL-LOGO</string>
+                    <key>public.filename-extension</key>
+                    <array>
+                        <string>lexical-logo</string>
+                    </array>
+                    <key>public.mime-type</key>
+                    <string>text/lexical-logo</string>
+                </dict>
+                <key>UTTypeIconFile</key>
+                <string>torgo-file.icns</string>
             </dict>
         </array>
         <key>CFBundleDocumentTypes</key>
         <array>
             <dict>
                 <key>CFBundleTypeName</key>
-                <string>Dynamic Logo Script</string>
+                <string>Logo Script</string>
+                <key>CFBundleTypeIconFile</key>
+                <string>torgo-file.icns</string>
+                <!-- <key>CFBundleTypeIconFiles</key>
+                <array>
+                    <string>torgo.icns</string>
+                </array> -->
                 <key>LSItemContentTypes</key>
                 <array>
                     <string>org.tros.dynamic-logo</string>
+                    <string>org.tros.lexical-logo</string>
                 </array>
                 <key>LSHandlerRank</key>
                 <string>Owner</string>
