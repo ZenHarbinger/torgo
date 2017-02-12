@@ -184,10 +184,16 @@
                         <configuration>
                             <mainClass>org.tros.torgo.Main</mainClass>
                             <generateDiskImageFile>true</generateDiskImageFile>
+                            <dictionaryFile>Info.plist</dictionaryFile>
                             <iconFile>torgo.icns</iconFile>
                             <jvmVersion>1.8+</jvmVersion>
                             <version>${project.version}</version>
                             <jvmOptions>-Dsun.java2d.opengl=true</jvmOptions>
+                            <additionalResources>
+                                <!--https://stackoverflow.com/questions/39193868/bundle-java-program-for-mac-users-with-maven-from-gnu-linux -->
+                                <fileSet>
+                                    <directory>macOS/</directory>
+                                </fileSet></additionalResources>
                             <NSHumanReadableCopyright>2015-2017 Matthew Aguirre</NSHumanReadableCopyright>
                         </configuration>
                         <executions>

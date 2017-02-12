@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
     <dict>
+        <key>SplashFile</key>
+        <string>$APP_PACKAGE/Contents/Resources/splash.png</string>
         <key>UTExportedTypeDeclarations</key>
         <array>
             <dict>
@@ -26,7 +28,6 @@
                 </dict>
             </dict>
         </array>
-        <key>CFBundleDevelopmentRegion</key>
         <key>CFBundleTypeName</key>
         <string>Dynamic Logo Script</string>
         <key>LSItemContentTypes</key>
@@ -35,79 +36,51 @@
         </array>
         <key>LSHandlerRank</key>
         <string>Owner</string>
-        <string>English</string>
-        <key>CFBundleExecutable</key>
-        <string>JavaAppLauncher</string>
-        <key>CFBundleIconFile</key>
-        <string>torgo.icns</string>
-        <key>CFBundleIdentifier</key>
-        <string>org.tros.torgo.Main</string>
-        <key>CFBundleDisplayName</key>
-        <string>torgo</string>
-        <key>CFBundleInfoDictionaryVersion</key>
-        <string>6.0</string>
-        <key>CFBundleName</key>
-        <string>torgo</string>
-        <key>CFBundlePackageType</key>
-        <string>APPL</string>
-        <key>CFBundleShortVersionString</key>
-        <string>1.7.0</string>
-        <key>CFBundleSignature</key>
-        <string>????</string>
-        <key>CFBundleVersion</key>
-        <string>1</string>
-        <key>NSHumanReadableCopyright</key>
-        <string></string>
-        <key>NSHighResolutionCapable</key>
-        <true/>
-        <key>NSSupportsAutomaticGraphicsSwitching</key>
-        <true/>
-        <key>JVMRuntime</key>
-        <string></string>
-        <key>JVMRuntimePath</key>
-        <string></string>
-        <key>JVMMainClassName</key>
-        <string>org.tros.torgo.Main</string>
-        <key>JVMClassPaths</key>
-        <array>
-            <string>org/tros/torgo/1.7.0/torgo-1.7.0.jar</string>
-            <string>org/jsoup/jsoup/1.10.1/jsoup-1.10.1.jar</string>
-            <string>commons-logging/commons-logging/1.2/commons-logging-1.2.jar</string>
-            <string>org/apache/commons/commons-lang3/3.5/commons-lang3-3.5.jar</string>
-            <string>commons-io/commons-io/2.5/commons-io-2.5.jar</string>
-            <string>commons-cli/commons-cli/1.3.1/commons-cli-1.3.1.jar</string>
-            <string>org/apache/commons/commons-collections4/4.1/commons-collections4-4.1.jar</string>
-            <string>org/antlr/antlr4-runtime/4.6/antlr4-runtime-4.6.jar</string>
-            <string>org/tros/rsyntaxtextarea/2.6.0/rsyntaxtextarea-2.6.0.jar</string>
-            <string>commons-beanutils/commons-beanutils/1.9.3/commons-beanutils-1.9.3.jar</string>
-            <string>commons-collections/commons-collections/3.2.2/commons-collections-3.2.2.jar</string>
-            <string>org/apache/xmlgraphics/batik-svggen/1.8/batik-svggen-1.8.jar</string>
-            <string>org/apache/xmlgraphics/batik-awt-util/1.8/batik-awt-util-1.8.jar</string>
-            <string>org/apache/xmlgraphics/batik-util/1.8/batik-util-1.8.jar</string>
-            <string>xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.jar</string>
-            <string>org/apache/xmlgraphics/batik-anim/1.8/batik-anim-1.8.jar</string>
-            <string>org/apache/xmlgraphics/batik-css/1.8/batik-css-1.8.jar</string>
-            <string>org/apache/xmlgraphics/batik-dom/1.8/batik-dom-1.8.jar</string>
-            <string>org/apache/xmlgraphics/batik-xml/1.8/batik-xml-1.8.jar</string>
-            <string>xalan/xalan/2.7.0/xalan-2.7.0.jar</string>
-            <string>org/apache/xmlgraphics/batik-ext/1.8/batik-ext-1.8.jar</string>
-            <string>org/apache/xmlgraphics/batik-parser/1.8/batik-parser-1.8.jar</string>
-            <string>org/apache/xmlgraphics/batik-svg-dom/1.8/batik-svg-dom-1.8.jar</string>
-            <string>xml-apis/xml-apis-ext/1.3.04/xml-apis-ext-1.3.04.jar</string>
-            <string>org/dockingframes/docking-frames-common/1.1.1/docking-frames-common-1.1.1.jar</string>
-            <string>org/dockingframes/docking-frames-core/1.1.1/docking-frames-core-1.1.1.jar</string>
-        </array>
-        <key>JVMVersion</key>
-        <string>1.8+</string>
-        <key>JVMOptions</key>
-        <array>
-            <string>-Dapple.laf.useScreenMenuBar=true</string>
-            <string>-Xdock:name=torgo</string>
-            <string>-Dsun.java2d.opengl=true</string>
-        </array>
-        <key>JVMArguments</key>
-        <array/>
-        <key>LauncherWorkingDirectory</key>
-        <string>$APP_ROOT</string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+    <key>CFBundleExecutable</key>
+    <string>${cfBundleExecutable}</string>
+    <key>CFBundleIconFile</key>
+    <string>${iconFile}</string>
+    <key>CFBundleIdentifier</key>
+    <string>${mainClass}</string>
+    <key>CFBundleDisplayName</key>
+    <string>${bundleName}</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>${bundleName}</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>${version}</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>NSHumanReadableCopyright</key>
+    <string></string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSSupportsAutomaticGraphicsSwitching</key>
+    <true/>
+    <key>JVMRuntime</key>
+    <string>${jrePath}</string>
+    <key>JVMRuntimePath</key>
+    <string>${jreFullPath}</string>
+    <key>JVMMainClassName</key>
+    <string>${mainClass}</string>
+    <key>JVMClassPaths</key>
+    ${classpath}
+    <key>JVMVersion</key>
+    <string>${jvmVersion}</string>
+    <key>JVMOptions</key>
+    ${jvmOptions}
+    <key>JVMArguments</key>
+    <array/>
+    <key>WorkingDirectory</key>
+    <string>$APP_PACKAGE/Contents/Resources</string>
+    <key>LauncherWorkingDirectory</key>
+    <string>${workingDirectory}</string>
     </dict>
 </plist>
