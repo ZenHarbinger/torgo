@@ -53,7 +53,8 @@ public final class Main {
         //initialize the logging
         MainSplash.splashInit();
         org.tros.utils.logging.Logging.initLogging(TorgoInfo.INSTANCE);
-        org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class);
+        final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class);
+
         Options options = new Options();
         options.addOption("l", "lang", true, "Open using the desired language. [default is 'logo']");
         options.addOption("i", "list", false, "List available languages.");
@@ -112,19 +113,28 @@ public final class Main {
         }
         final String controlLang = lang;
 
+        Controller controller = null;
         if (!quit) {
             prefs.put("lang", lang);
+            controller = TorgoToolkit.getController(controlLang);
+            final Controller ctrl = controller;
             SwingUtilities.invokeLater(() -> {
-                Controller controller = TorgoToolkit.getController(controlLang);
-                if (controller != null) {
-                    controller.run();
+                if (ctrl != null) {
+                    ctrl.run();
                     if (fileArgument != null) {
-                        controller.openFile(new File(fileArgument));
+                        ctrl.openFile(new File(fileArgument));
                     } else {
-                        controller.newFile();
+                        ctrl.newFile();
                     }
                 }
             });
+        }
+
+        //First, check for if we are on OS X so that it doesn't execute on
+        //other platforms. Note that we are using contains() because it was
+        //called Mac OS X before 10.8 and simply OS X afterwards
+        if (System.getProperty("os.name").contains("OS X")) {
+            MainMac.handleFileActivation(controller);
         }
     }
 
