@@ -188,7 +188,10 @@
                             <iconFile>torgo.icns</iconFile>
                             <jvmVersion>1.8+</jvmVersion>
                             <version>${project.version}</version>
-                            <jvmOptions>-Dsun.java2d.opengl=true</jvmOptions>
+                            <jvmOptions>
+                                <string>-Dsun.java2d.opengl=true</string>
+                                <string>-splash:$APP_ROOT/Contents/Resources/splash.png</string>
+                            </jvmOptions>
                             <additionalResources>
                                 <!--https://stackoverflow.com/questions/39193868/bundle-java-program-for-mac-users-with-maven-from-gnu-linux -->
                                 <fileSet>
