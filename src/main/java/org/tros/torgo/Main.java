@@ -130,12 +130,7 @@ public final class Main {
             });
         }
 
-        //First, check for if we are on OS X so that it doesn't execute on
-        //other platforms. Note that we are using contains() because it was
-        //called Mac OS X before 10.8 and simply OS X afterwards
-        if (System.getProperty("os.name").contains("OS X")) {
-            MainMac.handleFileActivation(controller);
-        }
+        MainMac.handleFileActivation(controller);
     }
 
     public static void loadIcon(Window frame) {

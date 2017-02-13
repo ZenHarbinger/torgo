@@ -35,35 +35,43 @@ public final class MainMac {
      * @param controller
      */
     public static void handleFileActivation(Controller controller) {
-        final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(MainMac.class);
-        Application a = Application.getApplication();
-        a.setOpenFileHandler((AppEvent.OpenFilesEvent e) -> {
-            e.getFiles().forEach((file2) -> {
-                File file = (File) file2;
-                logger.warn("FILE: {0}", file.getAbsolutePath());
-                int index = file.getName().lastIndexOf('.');
-                String lang = "dynamic-logo";
-                String ext;
-                if (index >= 0) {
-                    ext = file.getName().substring(index + 1);
-                    if (ext != null && TorgoToolkit.getToolkits().contains(ext)) {
-                        lang = ext;
-                    }
-                }
-                logger.warn("LANG: {0}", lang);
-                if (lang.equals(controller.getLang())) {
-                    controller.openFile(file);
-                } else {
-                    controller.close();
-                    Controller controller2 = TorgoToolkit.getController(lang);
-                    SwingUtilities.invokeLater(() -> {
-                        if (controller2 != null) {
-                            controller2.run();
-                            controller2.openFile(file);
+        //First, check for if we are on OS X so that it doesn't execute on
+        //other platforms. Note that we are using contains() because it was
+        //called Mac OS X before 10.8 and simply OS X afterwards
+        if (System.getProperty("os.name").contains("OS X")) {
+            final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(MainMac.class);
+            Application a = Application.getApplication();
+            a.setOpenFileHandler((AppEvent.OpenFilesEvent e) -> {
+                e.getFiles().forEach((file2) -> {
+                    File file = (File) file2;
+                    logger.info("FILE: {0}", file.getAbsolutePath());
+                    int index = file.getName().lastIndexOf('.');
+                    String lang = "dynamic-logo";
+                    String ext;
+                    if (index >= 0) {
+                        ext = file.getName().substring(index + 1);
+                        if (ext != null && TorgoToolkit.getToolkits().contains(ext)) {
+                            lang = ext;
                         }
-                    });
-                }
+                    }
+                    logger.info("LANG: {0}", lang);
+                    if (lang.equals(controller.getLang())) {
+                        controller.openFile(file);
+                    } else {
+                        java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoToolkit.class);
+                        prefs.put("lang", lang);
+
+                        controller.close();
+                        Controller controller2 = TorgoToolkit.getController(lang);
+                        SwingUtilities.invokeLater(() -> {
+                            if (controller2 != null) {
+                                controller2.run();
+                                controller2.openFile(file);
+                            }
+                        });
+                    }
+                });
             });
-        });
+        }
     }
 }
