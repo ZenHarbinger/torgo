@@ -18,7 +18,6 @@ package org.tros.torgo.swing;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
@@ -56,43 +55,8 @@ public abstract class ZoomableComponent {
             zoomReset();
         };
 
-        final AtomicBoolean ctrlDown = new AtomicBoolean(false);
-        component.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent ke) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent ke) {
-                if ((ke.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
-                    ctrlDown.set(true);
-                }
-                if ((ke.getKeyCode() == KeyEvent.VK_EQUALS)
-                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK))
-                        || (ke.getKeyCode() == KeyEvent.VK_ADD)
-                        && (ke.getModifiers() == (KeyEvent.CTRL_MASK))) {
-                    increase.run();
-                }
-                if ((ke.getKeyCode() == KeyEvent.VK_MINUS || ke.getKeyCode() == KeyEvent.VK_SUBTRACT)
-                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
-                    decrease.run();
-                }
-                if ((ke.getKeyCode() == KeyEvent.VK_0 || ke.getKeyCode() == KeyEvent.VK_NUMPAD0)
-                        && ((ke.getModifiers() == KeyEvent.CTRL_MASK))) {
-                    reset.run();
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent ke) {
-                if (ke.getModifiers() == 0) {
-                    ctrlDown.set(false);
-                }
-            }
-        });
-
         component.addMouseWheelListener((MouseWheelEvent mwe) -> {
-            if (ctrlDown.get()) {
+            if ((mwe.getModifiers() & KeyEvent.CTRL_MASK) == KeyEvent.CTRL_MASK) {
                 if (mwe.getPreciseWheelRotation() < 0) {
                     increase.run();
                 } else {
@@ -124,7 +88,7 @@ public abstract class ZoomableComponent {
                 try {
                     //HACK: for RSyntaxTextArea
                     Method method = component.getClass().getMethod("getPopupMenu");
-                    popupMenu = (JPopupMenu)method.invoke(component);
+                    popupMenu = (JPopupMenu) method.invoke(component);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     popupMenu = component.getComponentPopupMenu();
                 }
@@ -164,28 +128,6 @@ public abstract class ZoomableComponent {
             public void mouseExited(MouseEvent me) {
                 r.run();
                 component.removeMouseListener(this);
-            }
-        });
-        component.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-            }
-
-            @Override
-            public void mousePressed(MouseEvent me) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent me) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent me) {
-            }
-
-            @Override
-            public void mouseExited(MouseEvent me) {
-                ctrlDown.set(false);
             }
         });
     }

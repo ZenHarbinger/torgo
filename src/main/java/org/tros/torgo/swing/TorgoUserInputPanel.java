@@ -144,7 +144,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         Font font = new Font(Font.MONOSPACED, Font.PLAIN, (int) prefs.getFloat("font-size", DEFAULT_FONT_SIZE));
         inputTextArea.setFont(font);
         outputTextArea.setFont(font);
-        zoom = new ZoomableMixin(inputTextArea);
+        zoom = new ZoomableMixin(scrollPane);
 
         inputTab.add(scrollPane, BorderLayout.CENTER);
 
