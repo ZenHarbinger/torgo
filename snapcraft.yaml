@@ -1,5 +1,5 @@
 name: torgo
-version: 1.7.0
+version: 1.7.1
 summary: A Logo interpreter written in Java.
 description: A Logo interpreter written in Java.
 grade: stable
