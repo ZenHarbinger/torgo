@@ -18,14 +18,16 @@ package org.tros.torgo.swing;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import org.tros.utils.logging.Logger;
 import org.tros.utils.logging.Logging;
 
@@ -81,20 +83,56 @@ public abstract class ZoomableComponent {
         jmi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, InputEvent.CTRL_MASK));
         jmi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, InputEvent.CTRL_MASK));
         jmi3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, InputEvent.CTRL_MASK));
-        SwingUtilities.invokeLater(() -> {
-            JPopupMenu popupMenu;
-            try {
-                //HACK: for RSyntaxTextArea
-                Method method = popupMenuContainer.getClass().getMethod("getPopupMenu");
-                popupMenu = (JPopupMenu) method.invoke(popupMenuContainer);
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                popupMenu = popupMenuContainer.getComponentPopupMenu();
+        final AtomicBoolean added = new AtomicBoolean(false);
+        final Runnable r = () -> {
+
+            if (!added.get()) {
+                added.set(true);
+                JPopupMenu popupMenu;
+                try {
+                    //HACK: for RSyntaxTextArea
+                    Method method = popupMenuContainer.getClass().getMethod("getPopupMenu");
+                    popupMenu = (JPopupMenu) method.invoke(popupMenuContainer);
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    popupMenu = popupMenuContainer.getComponentPopupMenu();
+                }
+                popupMenu = popupMenu == null ? new JPopupMenu() : popupMenu;
+                popupMenu.add(jmi1);
+                popupMenu.add(jmi2);
+                popupMenu.add(jmi3);
+                popupMenuContainer.setComponentPopupMenu(popupMenu);
             }
-            popupMenu = popupMenu == null ? new JPopupMenu() : popupMenu;
-            popupMenu.add(jmi1);
-            popupMenu.add(jmi2);
-            popupMenu.add(jmi3);
-            popupMenuContainer.setComponentPopupMenu(popupMenu);
+        };
+        popupMenuContainer.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                r.run();
+                component.removeMouseListener(this);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+                r.run();
+                component.removeMouseListener(this);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                r.run();
+                component.removeMouseListener(this);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+                r.run();
+                component.removeMouseListener(this);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+                r.run();
+                component.removeMouseListener(this);
+            }
         });
     }
 
