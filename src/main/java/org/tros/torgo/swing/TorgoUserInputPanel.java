@@ -68,8 +68,8 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
 
     private class ZoomableMixin extends ZoomableComponent {
 
-        ZoomableMixin(JComponent component) {
-            super(component);
+        ZoomableMixin(JComponent component, JComponent popupMenuContainer) {
+            super(component, popupMenuContainer);
         }
 
         @Override
@@ -144,7 +144,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         Font font = new Font(Font.MONOSPACED, Font.PLAIN, (int) prefs.getFloat("font-size", DEFAULT_FONT_SIZE));
         inputTextArea.setFont(font);
         outputTextArea.setFont(font);
-        zoom = new ZoomableMixin(scrollPane);
+        zoom = new ZoomableMixin(scrollPane, inputTextArea);
 
         inputTab.add(scrollPane, BorderLayout.CENTER);
 
