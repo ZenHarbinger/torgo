@@ -74,4 +74,13 @@ public class LogoPanelTest {
         panel.addListener(listener);
         panel.removeListener(listener);
     }
+    
+    /**
+     * Test of zoomIn and zoomOut methods, of class LogoPanel.
+     */
+    @Test
+    public void testZoomInOut() {
+        LogoPanel panel = new LogoPanel(null);
+        panel.testZoom();  
+    }
 }
