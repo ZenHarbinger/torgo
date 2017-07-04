@@ -109,6 +109,12 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         }
         zoom = new ZoomableMixin((JComponent) this);
     }
+    
+    public void testZoom() {
+        zoom.zoomIn();
+        zoom.zoomOut();
+        zoom.zoomReset();
+    }
 
     @Override
     public void addListener(DrawListener listener) {
