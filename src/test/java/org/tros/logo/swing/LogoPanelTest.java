@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.tros.logo.DebugInterpreterTest;
 import org.tros.torgo.TorgoInfo;
 import org.tros.utils.logging.Logging;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -82,5 +83,11 @@ public class LogoPanelTest {
     public void testZoomInOut() {
         LogoPanel panel = new LogoPanel(null);
         panel.testZoom();  
+    }
+
+    @Test
+    public void testCloneDrawable() {
+        LogoPanel panel = new LogoPanel(null);
+        assertNotNull(panel.cloneDrawable().cloneDrawable());
     }
 }
