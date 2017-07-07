@@ -67,5 +67,19 @@ public class ControllerBaseTest {
         assertNotNull(base.getFilter());
         assertNull(base.getFile());
     }
-   
+    
+    @Test
+    public void testPrintCanvas() {
+        DynamicLogoController controller = new DynamicLogoController();
+        ControllerBase base = (ControllerBase) controller;
+        base.printCanvas();
+    }
+    
+    @Test
+    public void testGetWindowName() {
+        DynamicLogoController controller = new DynamicLogoController();
+        ControllerBase base = (ControllerBase) controller;
+        String nametest = base.getWindowName();
+        assertNotNull(nametest);
+    }
 }
