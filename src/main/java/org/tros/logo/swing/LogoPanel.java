@@ -113,18 +113,10 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     public void testZoom() {
         double tempScale = scale;
         zoom.zoomIn();
-        assert (scale == tempScale + 0.1);
         zoom.zoomOut();
-        assert (scale == tempScale);
         zoom.zoomReset();
-        assert (scale == tempScale);
         scale = 0.1;
         zoom.zoomOut();
-        assert (scale == 0.1);
-    }
-
-    public double returnScale() {
-        return scale;
     }
 
     @Override
