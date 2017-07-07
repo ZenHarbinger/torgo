@@ -90,4 +90,15 @@ public class LogoPanelTest {
         LogoPanel panel = new LogoPanel(null);
         assertNotNull(panel.cloneDrawable().cloneDrawable());
     }
+
+    @Test
+    public void testMessage() {
+    }
+
+    @Test
+    public void testForward() {
+        LogoPanel panel = new LogoPanel(null);
+        DrawListener listener = new DrawListenerImpl();
+        panel.forward(0);
+    }  
 }
