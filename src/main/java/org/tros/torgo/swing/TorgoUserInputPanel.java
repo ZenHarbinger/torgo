@@ -202,7 +202,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
     public int getInputTextAreaSize() {
         return inputTextArea.getFont().getSize();
     }
-    
+
     public RSyntaxTextArea getInputTextArea() {
         return inputTextArea;
     }
