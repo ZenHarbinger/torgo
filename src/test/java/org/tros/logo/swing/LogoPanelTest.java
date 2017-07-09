@@ -24,6 +24,10 @@ import org.junit.Test;
 import org.tros.logo.DebugInterpreterTest;
 import org.tros.torgo.TorgoInfo;
 import org.tros.utils.logging.Logging;
+import static org.junit.Assert.*;
+import org.tros.torgo.TorgoTextConsole;
+import org.tros.logo.LogoController;
+import org.tros.torgo.Controller;
 
 /**
  *
@@ -74,4 +78,47 @@ public class LogoPanelTest {
         panel.addListener(listener);
         panel.removeListener(listener);
     }
+
+    /**
+     * Test of zoomIn and zoomOut methods, of class LogoPanel.
+     */
+    @Test
+    public void testZoomInOut() {
+        LogoPanel panel = new LogoPanel(null);
+        panel.testZoom();  
+    }
+
+    @Test
+    public void testCloneDrawable() {
+        LogoPanel panel = new LogoPanel(null);
+        assertNotNull(panel.cloneDrawable().cloneDrawable());
+    }
+
+    @Test
+    public void testMessage() {
+        Controller controller = null;
+        //LogoPanel panel = new LogoPanel(new TorgoTextConsole());
+        
+    }
+
+    @Test
+    public void testForward() {
+        LogoPanel panel = new LogoPanel(null);
+        DrawListener listener = new DrawListenerImpl();
+        panel.forward(0);
+    }
+
+    @Test
+    public void testPause() throws Exception {
+        LogoPanel panel = new LogoPanel(null);
+        
+        Thread t = new Thread() {
+            public void run () {
+            panel.pause(10000);
+            }
+        };
+            t.start();
+            Thread.sleep(100); // let the other thread start
+            t.interrupt();
+    } 
 }
