@@ -1,17 +1,12 @@
 /*
- * Copyright 2016 Matthew Aguirre
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2016 Matthew Aguirre Licensed under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package org.tros.torgo.swing;
 
@@ -45,38 +40,46 @@ import org.tros.utils.ImageUtils;
  *
  * @author matta
  */
-public class TorgoUserInputPanel implements TorgoTextConsole {
+public class TorgoUserInputPanel implements TorgoTextConsole
+{
 
-    public static final String DEBUG_ICON = "debugging/breakpointsView/Breakpoint.png";
-    private static final float DEFAULT_FONT_SIZE = 12;
-    private static final int FONT_INCREMENT_SIZE = 1;
-    private static final int FONT_MAX_SIZE = 50;
-    private static final int FONT_MIN_SIZE = 5;
+    public static final String                    DEBUG_ICON          =
+        "debugging/breakpointsView/Breakpoint.png";
+    private static final float                    DEFAULT_FONT_SIZE   = 12;
+    private static final int                      FONT_INCREMENT_SIZE = 1;
+    private static final int                      FONT_MAX_SIZE       = 50;
+    private static final int                      FONT_MIN_SIZE       = 5;
 
-    protected final Controller controller;
+    protected final Controller                    controller;
 
-    private final RSyntaxTextArea inputTextArea;
-    private final Gutter gutter;
+    private final RSyntaxTextArea                 inputTextArea;
+    private final Gutter                          gutter;
 
-    private final JConsole outputTextArea;
-    private final JTabbedPane tabs;
+    private final JConsole                        outputTextArea;
+    private final JTabbedPane                     tabs;
 
     private final LayeredHighlighter.LayerPainter defaultHighlighter;
     private final LayeredHighlighter.LayerPainter breakpointHighlighter;
-    private final java.util.prefs.Preferences prefs;
-    private final ZoomableMixin zoom;
+    private final java.util.prefs.Preferences     prefs;
+    private final ZoomableMixin                   zoom;
 
-    private class ZoomableMixin extends ZoomableComponent {
 
-        ZoomableMixin(JComponent component) {
+    private class ZoomableMixin extends ZoomableComponent
+    {
+
+        ZoomableMixin(JComponent component)
+        {
             super(component);
         }
 
+
         @Override
-        protected void zoomIn() {
+        protected void zoomIn()
+        {
             Font font1 = inputTextArea.getFont();
-            float size = (float) (font1.getSize2D() + FONT_INCREMENT_SIZE);
-            if (size <= FONT_MAX_SIZE) {
+            float size = (float)(font1.getSize2D() + FONT_INCREMENT_SIZE);
+            if (size <= FONT_MAX_SIZE)
+            {
                 font1 = font1.deriveFont(size);
                 inputTextArea.setFont(font1);
                 outputTextArea.setFont(font1);
@@ -84,11 +87,14 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
             }
         }
 
+
         @Override
-        protected void zoomOut() {
+        protected void zoomOut()
+        {
             Font font1 = inputTextArea.getFont();
-            float size = (float) (font1.getSize2D() - FONT_INCREMENT_SIZE);
-            if (size >= FONT_MIN_SIZE) {
+            float size = (float)(font1.getSize2D() - FONT_INCREMENT_SIZE);
+            if (size >= FONT_MIN_SIZE)
+            {
                 font1 = font1.deriveFont(size);
                 inputTextArea.setFont(font1);
                 outputTextArea.setFont(font1);
@@ -96,8 +102,10 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
             }
         }
 
+
         @Override
-        protected void zoomReset() {
+        protected void zoomReset()
+        {
             Font font1 = inputTextArea.getFont();
             font1 = font1.deriveFont(DEFAULT_FONT_SIZE);
             inputTextArea.setFont(font1);
@@ -105,6 +113,7 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
             prefs.putFloat("font-size", DEFAULT_FONT_SIZE);
         }
     }
+
 
     /**
      * Constructor.
@@ -115,12 +124,18 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
      * @param syntax
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public TorgoUserInputPanel(Controller controller, String name, boolean editable, String syntax) {
+    public TorgoUserInputPanel(
+        Controller controller,
+        String name,
+        boolean editable,
+        String syntax)
+    {
         this.controller = controller;
         defaultHighlighter = DefaultHighlighter.DefaultPainter;
-        breakpointHighlighter = new DefaultHighlighter.DefaultHighlightPainter(Color.PINK);
+        breakpointHighlighter = new DefaultHighlighter.DefaultHighlightPainter(
+            Color.PINK);
 
-        //SOURCE
+        // SOURCE
         JPanel inputTab = new JPanel();
         inputTab.setLayout(new BorderLayout());
 
@@ -128,27 +143,30 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
         inputTextArea.setAntiAliasingEnabled(true);
         inputTextArea.setCodeFoldingEnabled(true);
         inputTextArea.setSyntaxEditingStyle(syntax);
-        RTextScrollPane scrollPane = new org.fife.ui.rtextarea.RTextScrollPane(inputTextArea);
+        RTextScrollPane scrollPane = new org.fife.ui.rtextarea.RTextScrollPane(
+            inputTextArea);
         scrollPane.setIconRowHeaderEnabled(true);
         gutter = scrollPane.getGutter();
         gutter.setBookmarkIcon(ImageUtils.getIcon(DEBUG_ICON));
         gutter.setBookmarkingEnabled(true);
 
-        prefs = java.util.prefs.Preferences.userNodeForPackage(TorgoUserInputPanel.class);
+        prefs = java.util.prefs.Preferences.userNodeForPackage(
+            TorgoUserInputPanel.class);
 
         outputTextArea = new JConsole();
         outputTextArea.setEditable(editable);
-        //get default pref
-        //update prefs
+        // get default pref
+        // update prefs
 
-        Font font = new Font(Font.MONOSPACED, Font.PLAIN, (int) prefs.getFloat("font-size", DEFAULT_FONT_SIZE));
+        Font font = new Font(Font.MONOSPACED, Font.PLAIN, (int)prefs.getFloat(
+            "font-size", DEFAULT_FONT_SIZE));
         inputTextArea.setFont(font);
         outputTextArea.setFont(font);
         zoom = new ZoomableMixin(scrollPane);
 
         inputTab.add(scrollPane, BorderLayout.CENTER);
 
-        //TABS
+        // TABS
         tabs = new JTabbedPane();
         tabs.add(name, inputTab);
 
@@ -158,31 +176,37 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
              * Clears the highlighted areas.
              */
             @Override
-            public void started() {
+            public void started()
+            {
                 Highlighter hl = inputTextArea.getHighlighter();
                 inputTextArea.setEditable(false);
                 hl.removeAllHighlights();
             }
 
-            /**
-             * Clears the highlighted areas.
-             */
-            @Override
-            public void finished() {
-                Highlighter hl = inputTextArea.getHighlighter();
-                inputTextArea.setEditable(true);
-                hl.removeAllHighlights();
-            }
 
             /**
              * Clears the highlighted areas.
              */
             @Override
-            public void error(Exception e) {
+            public void finished()
+            {
                 Highlighter hl = inputTextArea.getHighlighter();
                 inputTextArea.setEditable(true);
                 hl.removeAllHighlights();
             }
+
+
+            /**
+             * Clears the highlighted areas.
+             */
+            @Override
+            public void error(Exception e)
+            {
+                Highlighter hl = inputTextArea.getHighlighter();
+                inputTextArea.setEditable(true);
+                hl.removeAllHighlights();
+            }
+
 
             /**
              * Append a message to the output area.
@@ -190,52 +214,70 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
              * @param msg
              */
             @Override
-            public void message(String msg) {
+            public void message(String msg)
+            {
             }
 
+
             @Override
-            public void currStatement(CodeBlock block, Scope scope) {
+            public void currStatement(CodeBlock block, Scope scope)
+            {
             }
         });
     }
 
-    public int getInputTextAreaSize() {
+
+    public int getInputTextAreaSize()
+    {
         return inputTextArea.getFont().getSize();
     }
 
-    public RSyntaxTextArea getInputTextArea() {
+
+    public RSyntaxTextArea getInputTextArea()
+    {
         return inputTextArea;
     }
 
-    public void zoomInTest() {
+
+    public void zoomInTest()
+    {
         zoom.zoomIn();
     }
 
-    public void zoomOutTest() {
+
+    public void zoomOutTest()
+    {
         zoom.zoomOut();
     }
 
-    public void zoomResetTest() {
+
+    public void zoomResetTest()
+    {
         zoom.zoomReset();
     }
+
 
     /**
      * Reset the control to initial state.
      */
     @Override
-    public void reset() {
+    public void reset()
+    {
         clearSource();
         clearOutputTextArea();
         gutter.removeAllTrackingIcons();
     }
 
+
     /**
      * Clear the output text area.
      */
     @Override
-    public void clearOutputTextArea() {
+    public void clearOutputTextArea()
+    {
         outputTextArea.clearScreen();
     }
+
 
     /**
      * Append text to the output text area.
@@ -243,10 +285,12 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
      * @param what
      */
     @Override
-    public void appendToOutputTextArea(String what) {
+    public void appendToOutputTextArea(String what)
+    {
         what = what.trim();
         outputTextArea.println(what);
     }
+
 
     /**
      * Get the source to interpret.
@@ -254,9 +298,11 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
      * @return
      */
     @Override
-    public String getSource() {
+    public String getSource()
+    {
         return (inputTextArea.getText());
     }
+
 
     /**
      * Set the source to interpret.
@@ -264,10 +310,12 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
      * @param source
      */
     @Override
-    public void setSource(String source) {
+    public void setSource(String source)
+    {
         source = source.replace("\r", "");
         inputTextArea.setText(source);
     }
+
 
     /**
      * Append a string to the source.
@@ -275,11 +323,15 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
      * @param source
      */
     @Override
-    public void appendToSource(String source) {
-        if (inputTextArea.isEditable()) {
-            inputTextArea.setText(inputTextArea.getText() + System.getProperty("line.separator") + source);
+    public void appendToSource(String source)
+    {
+        if (inputTextArea.isEditable())
+        {
+            inputTextArea.setText(inputTextArea.getText() + System.getProperty(
+                "line.separator") + source);
         }
     }
+
 
     /**
      * Insert a string into the source at the cursor.
@@ -287,39 +339,58 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
      * @param source
      */
     @Override
-    public void insertIntoSource(String source) {
-        if (inputTextArea.isEditable()) {
+    public void insertIntoSource(String source)
+    {
+        if (inputTextArea.isEditable())
+        {
             int c = 0;
             boolean success = false;
-            try {
-                if (inputTextArea.getClass().getMethod("getCaretOffsetFromLineStart") != null) {
-                    c = ((Integer) inputTextArea.getClass().getMethod("getCaretOffsetFromLineStart").invoke(inputTextArea));
+            try
+            {
+                if (inputTextArea.getClass().getMethod(
+                    "getCaretOffsetFromLineStart") != null)
+                {
+                    c = ((Integer)inputTextArea.getClass().getMethod(
+                        "getCaretOffsetFromLineStart").invoke(inputTextArea));
                     success = true;
                 }
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
+            }
+            catch (NoSuchMethodException | SecurityException
+                | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException ex)
+            {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(
+                    TorgoUserInputPanel.class).fatal(null, ex);
             }
 
-            if (success) {
-                if (c != 0) {
+            if (success)
+            {
+                if (c != 0)
+                {
                     source = System.getProperty("line.separator") + source;
                 }
                 inputTextArea.insert(source, inputTextArea.getCaretPosition());
-            } else {
+            }
+            else
+            {
                 appendToSource(source);
             }
         }
     }
 
+
     /**
      * Clear the source.
      */
     @Override
-    public void clearSource() {
-        if (inputTextArea.isEditable()) {
+    public void clearSource()
+    {
+        if (inputTextArea.isEditable())
+        {
             setSource("");
         }
     }
+
 
     /**
      * To to a position in the source.
@@ -327,13 +398,19 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
      * @param position
      */
     @Override
-    public void gotoPosition(int position) {
-        try {
+    public void gotoPosition(int position)
+    {
+        try
+        {
             inputTextArea.setCaretPosition(position);
-        } catch (Exception ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).warn(null, ex);
+        }
+        catch (Exception ex)
+        {
+            org.tros.utils.logging.Logging.getLogFactory().getLogger(
+                TorgoUserInputPanel.class).warn(null, ex);
         }
     }
+
 
     /**
      * Highlight a section of the source. Check for set breakpoints from the
@@ -344,39 +421,56 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
      * @param endChar
      */
     @Override
-    public void highlight(int line, int startChar, int endChar) {
+    public void highlight(int line, int startChar, int endChar)
+    {
         boolean paused = false;
-        for (GutterIconInfo gii : gutter.getBookmarks()) {
+        for (GutterIconInfo gii : gutter.getBookmarks())
+        {
             int offset = 0;
-            try {
-                //Not sure why a -1 here works, needs more testing.
+            try
+            {
+                // Not sure why a -1 here works, needs more testing.
                 offset = inputTextArea.getLineStartOffset(line - 1);
-            } catch (BadLocationException ex) {
             }
-            if (gii.getMarkedOffset() == offset) {
+            catch (BadLocationException ex)
+            {
+            }
+            if (gii.getMarkedOffset() == offset)
+            {
                 controller.pauseInterpreter();
                 paused = true;
                 gotoPosition(startChar);
                 Highlighter hl = inputTextArea.getHighlighter();
                 hl.removeAllHighlights();
-                try {
-                    hl.addHighlight(startChar, endChar + 1, breakpointHighlighter);
-                } catch (BadLocationException ex) {
-                    org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
+                try
+                {
+                    hl.addHighlight(startChar, endChar + 1,
+                        breakpointHighlighter);
+                }
+                catch (BadLocationException ex)
+                {
+                    org.tros.utils.logging.Logging.getLogFactory().getLogger(
+                        TorgoUserInputPanel.class).fatal(null, ex);
                 }
             }
         }
-        if (!paused && line > 0) {
+        if (!paused && line > 0)
+        {
             Highlighter hl = inputTextArea.getHighlighter();
             hl.removeAllHighlights();
-            try {
+            try
+            {
                 hl.addHighlight(startChar, endChar + 1, defaultHighlighter);
                 gotoPosition(startChar);
-            } catch (BadLocationException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoUserInputPanel.class).fatal(null, ex);
+            }
+            catch (BadLocationException ex)
+            {
+                org.tros.utils.logging.Logging.getLogFactory().getLogger(
+                    TorgoUserInputPanel.class).fatal(null, ex);
             }
         }
     }
+
 
     /**
      * Get the swing component of the object.
@@ -384,7 +478,8 @@ public class TorgoUserInputPanel implements TorgoTextConsole {
      * @return
      */
     @Override
-    public ArrayList<ImmutablePair<String, Component>> getTorgoComponents() {
+    public ArrayList<ImmutablePair<String, Component>> getTorgoComponents()
+    {
         ArrayList<ImmutablePair<String, Component>> ret = new ArrayList<>();
         ret.add(new ImmutablePair("Input", tabs));
         ret.add(new ImmutablePair("Output", outputTextArea));
