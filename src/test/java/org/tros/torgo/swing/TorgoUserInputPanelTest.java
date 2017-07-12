@@ -60,7 +60,11 @@ public class TorgoUserInputPanelTest {
     public void testZoomIn() {
         TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", false, "text/logo");
         panel.zoomInTest();
-        assertEquals(panel.getInputTextAreaSize(), 12);
+        assertEquals(panel.getInputTextAreaSize(), 6);
+        for (int i = 0; i < 50; i++) {
+            panel.zoomInTest();
+        }
+        assertEquals(panel.getInputTextAreaSize(), 50);
     }
 
     @Test
@@ -68,6 +72,10 @@ public class TorgoUserInputPanelTest {
         TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", false, "text/logo");
         panel.zoomOutTest();
         assertEquals(panel.getInputTextAreaSize(), 11);
+        for (int i = 0; i < 30; i++) {
+            panel.zoomOutTest();
+        }
+        assertEquals(panel.getInputTextAreaSize(), 5);
     }
 
     @Test
