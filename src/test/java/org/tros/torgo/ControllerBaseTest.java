@@ -95,14 +95,4 @@ public class ControllerBaseTest
         assertNotNull(nametest);
     }
 
-
-    @Test
-    public void testFile()
-    {
-        DynamicLogoController controller = new DynamicLogoController();
-        ControllerBase base = (ControllerBase)controller;
-        assertNull(base.getFile());
-
-    }
-
 }
