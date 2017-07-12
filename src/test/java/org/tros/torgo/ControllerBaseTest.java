@@ -96,13 +96,13 @@ public class ControllerBaseTest
     }
 
 
+    @Test
     public void testFile()
     {
         DynamicLogoController controller = new DynamicLogoController();
         ControllerBase base = (ControllerBase)controller;
-        base.openFile();
-        base.saveFile();
         assertNull(base.getFile());
+
     }
 
 }
