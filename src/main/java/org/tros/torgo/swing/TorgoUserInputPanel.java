@@ -40,7 +40,7 @@ import org.tros.torgo.interpreter.Scope;
 import org.tros.torgo.TorgoTextConsole;
 import org.tros.utils.ImageUtils;
 
-/**
+/** 
  * Main display of text io.
  *
  * @author matta
