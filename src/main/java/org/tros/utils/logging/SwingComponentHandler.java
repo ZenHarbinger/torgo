@@ -239,6 +239,10 @@ public final class SwingComponentHandler extends Handler {
         paused = !paused;
     }
 
+    public boolean isPaused() {
+        return paused;
+    }
+
     private void timer() {
         if (paused) {
             return;
@@ -302,5 +306,12 @@ public final class SwingComponentHandler extends Handler {
             });
             TEXT_AREA.select(DOC.getLength(), DOC.getLength());
         });
+    }
+
+    /**
+    * For testing of publish method.
+    */
+    public ArrayList<LogRecord> getRecords() {
+        return records;
     }
 }
