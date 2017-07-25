@@ -28,6 +28,8 @@ import org.tros.logo.DynamicLogoController;
 import org.tros.torgo.swing.TorgoToolBarTest;
 import java.util.logging.LogRecord;
 import java.util.logging.Level;
+import java.lang.reflect.Method;
+import org.tros.utils.logging.SwingComponentHandler;
 /**
  *
  * @author Samuel Washburn
@@ -72,6 +74,8 @@ public class SwingComponentHandlerTest {
         assertFalse(handler.isPaused());
         handler.pause();
         assertTrue(handler.isPaused());
+        handler.pause();
+        assertFalse(handler.isPaused());
     }
 
     @Test
@@ -89,5 +93,17 @@ public class SwingComponentHandlerTest {
         assertTrue(handler.getRecords().contains(record));
         handler.publish(record2);
         assertFalse(handler.getRecords().contains(record2));
+    }
+
+    @Test
+    public void testTimer() throws Exception {
+        SwingComponentHandler handler = new SwingComponentHandler();
+        Class c = handler.getClass();
+        Method method = c.getDeclaredMethod("timer", (Class[]) null);
+        method.setAccessible(true);
+        method.invoke(handler, (Object[]) null);
+        handler.pause();
+        assertTrue(handler.isPaused());
+        method.invoke(handler, (Object[]) null);
     }
 }
