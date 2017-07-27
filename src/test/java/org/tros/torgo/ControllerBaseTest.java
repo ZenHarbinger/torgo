@@ -89,8 +89,6 @@ public class ControllerBaseTest {
     public void testOpenFile() {
         DynamicLogoController controller = new DynamicLogoController();
         ControllerBase base = (ControllerBase) controller;
-        File file = new File("Yes");
-        base.openFile(file);
         
     }
 }
