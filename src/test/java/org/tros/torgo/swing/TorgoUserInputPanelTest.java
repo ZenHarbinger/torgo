@@ -106,6 +106,7 @@ public class TorgoUserInputPanelTest {
         
     }
     
+    /**
     @Test
     public void testInsertIntoSource() {
         TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", true, "text/logo");
@@ -125,6 +126,7 @@ public class TorgoUserInputPanelTest {
         assertTrue(pan.getInputTextArea().getText().contains(""));
         assertTrue(pan.getSource().equals(""));
     }
+    */
     
     @Test
     public void testHighLight() {
