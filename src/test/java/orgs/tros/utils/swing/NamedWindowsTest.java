@@ -2,6 +2,7 @@ package orgs.tros.utils.swing;
 
 import static org.junit.Assert.*;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,7 +43,7 @@ public class NamedWindowsTest
         for (int i = 0; i < 10000; i++) {
         NamedWindow win = new NamedWindow("Huh" , i, i);
         ComponentEvent event = new ComponentEvent(win, i);
-        
+
         }
     }
 
