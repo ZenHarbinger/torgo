@@ -106,5 +106,25 @@ public class TorgoUserInputPanelTest {
         
     }
     
+    @Test
+    public void testInsertIntoSource() {
+        TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", true, "text/logo");
+        panel.insertIntoSource("test");
+        assertTrue(panel.getInputTextArea().getText().contains("test"));
+        assertEquals(panel.getInputTextArea().getText().length(), 4);
+        panel.clearSource();
+        assertEquals(panel.getInputTextArea().getText().length(), 0);
+        
+        TorgoUserInputPanel pan = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", false, "text/logo");
+        assertEquals(pan.getInputTextArea().getText().length(), 0);
+        pan.insertIntoSource("logic");
+        assertEquals(pan.getInputTextArea().getText().length(), 5);
+        assertTrue(pan.getInputTextArea().getText().contains("logic"));
+        pan.clearSource();
+        assertEquals(pan.getInputTextArea().getText().length(), 0);
+        assertTrue(pan.getInputTextArea().getText().contains(""));
+        assertTrue(pan.getSource().equals(""));
+    }
+    
     
 }
