@@ -98,6 +98,7 @@ public class LogoPanelTest {
     public void testMessage() {
         Controller controller = null;
         //LogoPanel panel = new LogoPanel(new TorgoTextConsole());
+        LogoPanel panel = new LogoPanel(null);
         
     }
 
@@ -121,4 +122,12 @@ public class LogoPanelTest {
             Thread.sleep(100); // let the other thread start
             t.interrupt();
     } 
+    
+    @Test
+    public void testRight() {
+        LogoPanel panel = new LogoPanel(null);
+        panel.right(100);
+        panel.left(100);
+    }
+    
 }
