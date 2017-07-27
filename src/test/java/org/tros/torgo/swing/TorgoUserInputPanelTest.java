@@ -126,5 +126,21 @@ public class TorgoUserInputPanelTest {
         assertTrue(pan.getSource().equals(""));
     }
     
+    @Test
+    public void testHighLight() {
+        TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", true, "text/logo");
+        for (int i = 0; i < 50; i++) {
+            panel.highlight(i, i, i);
+        }
+    }
+    
+    @Test
+    public void testgoToPosition() {
+        TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", true, "text/logo");
+        for (int i = 0; i < 50; i++) {
+            panel.gotoPosition(i);
+        }
+    }
+    
     
 }
