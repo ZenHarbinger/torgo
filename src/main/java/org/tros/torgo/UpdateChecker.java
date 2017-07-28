@@ -34,6 +34,9 @@ public class UpdateChecker {
     private String updateVersion;
     private boolean checkForUpdate;
 
+    private boolean urlExceptionTest = false;
+    private boolean ioExceptionTest = false;
+
     static {
         LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(UpdateChecker.class);
     }
@@ -46,6 +49,12 @@ public class UpdateChecker {
     public boolean hasUpdate() {
         boolean ret = false;
         try {
+            if (urlExceptionTest) {
+                throw new MalformedURLException();
+            }
+            if (ioExceptionTest) {
+                throw new IOException();
+            }
             if (checkForUpdate) {
                 Document doc = org.jsoup.Jsoup.connect(UPDATE_ADDRESS).get();
                 Elements elementsByTag = doc.getElementsByTag(TAG);
@@ -56,8 +65,10 @@ public class UpdateChecker {
                 }
             }
         } catch (MalformedURLException ex) {
+            urlExceptionTest();
             LOGGER.error(ex.getMessage(), ex);
         } catch (IOException ex) {
+            ioExceptionTest();
             org.tros.utils.logging.Logging.getLogFactory().getLogger(UpdateChecker.class).warn(null, ex);
         }
         return ret;
@@ -75,5 +86,21 @@ public class UpdateChecker {
         java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(UpdateChecker.class);
         prefs.putBoolean("check-for-update", value);
         checkForUpdate = value;
+    }
+
+    public void urlExceptionTest() {
+        urlExceptionTest = !urlExceptionTest;
+    }
+
+    public void ioExceptionTest() {
+        ioExceptionTest = !ioExceptionTest;
+    }
+
+    public boolean getURLException() {
+        return urlExceptionTest;
+    }
+
+    public boolean getIOException() {
+        return ioExceptionTest;
     }
 }
