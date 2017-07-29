@@ -90,5 +90,59 @@ public class TorgoUserInputPanelTest {
         TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", true, "text/logo");
         panel.appendToSource("test");
         assertTrue(panel.getInputTextArea().getText().contains("test"));
+        assertEquals(panel.getInputTextArea().getText().length(), 5);
+        panel.clearSource();
+        assertEquals(panel.getInputTextArea().getText().length(), 0);
+        
+        TorgoUserInputPanel pan = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", false, "text/logo");
+        assertEquals(pan.getInputTextArea().getText().length(), 0);
+        pan.appendToSource("logic");
+        assertEquals(pan.getInputTextArea().getText().length(), 6);
+        assertTrue(pan.getInputTextArea().getText().contains("logic"));
+        pan.clearSource();
+        assertEquals(pan.getInputTextArea().getText().length(), 0);
+        assertTrue(pan.getInputTextArea().getText().contains(""));
+        assertTrue(pan.getSource().equals(""));
+        
     }
+    
+    /**
+    @Test
+    public void testInsertIntoSource() {
+        TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", true, "text/logo");
+        panel.insertIntoSource("test");
+        assertTrue(panel.getInputTextArea().getText().contains("test"));
+        assertEquals(panel.getInputTextArea().getText().length(), 4);
+        panel.clearSource();
+        assertEquals(panel.getInputTextArea().getText().length(), 0);
+        
+        TorgoUserInputPanel pan = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", false, "text/logo");
+        assertEquals(pan.getInputTextArea().getText().length(), 0);
+        pan.insertIntoSource("logic");
+        assertEquals(pan.getInputTextArea().getText().length(), 5);
+        assertTrue(pan.getInputTextArea().getText().contains("logic"));
+        pan.clearSource();
+        assertEquals(pan.getInputTextArea().getText().length(), 0);
+        assertTrue(pan.getInputTextArea().getText().contains(""));
+        assertTrue(pan.getSource().equals(""));
+    }
+    */
+    
+    @Test
+    public void testHighLight() {
+        TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", true, "text/logo");
+        for (int i = 0; i < 50; i++) {
+            panel.highlight(i, i, i);
+        }
+    }
+    
+    @Test
+    public void testgoToPosition() {
+        TorgoUserInputPanel panel = new TorgoUserInputPanel(new DynamicLogoController(), "Logo", true, "text/logo");
+        for (int i = 0; i < 50; i++) {
+            panel.gotoPosition(i);
+        }
+    }
+    
+    
 }

@@ -80,8 +80,8 @@ public class AboutWindowTest {
     @Test
     public void test() {
         LOGGER.info("goToURI");
-//        AboutWindow.goToURI(AboutWindow.APACHE_LICENSE_ADDRESS);
-//        AboutWindow.goToURI("not a valid uri");
+        AboutWindow.goToURI(AboutWindow.APACHE_LICENSE_ADDRESS);
+        AboutWindow.goToURI("not a valid uri");
     }
 
 }
