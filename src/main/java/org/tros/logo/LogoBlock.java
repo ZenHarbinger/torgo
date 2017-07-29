@@ -264,4 +264,8 @@ abstract class LogoBlock implements CodeBlock {
         }
         return variables.get(0).keySet();
     }
+
+    public ArrayList<CodeBlock> getCommandsList() {
+        return commands;
+    }
 }
