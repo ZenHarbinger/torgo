@@ -130,4 +130,18 @@ public class LogoPanelTest {
         panel.left(100);
     }
     
+    @Test
+    public void testNestedDrawable() {
+        LogoPanel panel = new LogoPanel(null);
+        //forward
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.forward(0);
+        assertTrue(panel.getTestCheck());
+        //backward
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.backward(0);
+        assertTrue(panel.getTestCheck());
+    }
 }
