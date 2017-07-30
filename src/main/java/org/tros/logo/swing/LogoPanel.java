@@ -345,6 +345,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -370,6 +378,13 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -403,6 +418,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -428,6 +451,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -453,6 +484,15 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
+        submitCommand(command);
         submitCommand(command);
     }
 
@@ -501,6 +541,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -528,6 +576,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -564,6 +620,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -649,6 +713,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -718,6 +790,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -748,6 +828,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -778,6 +866,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -808,6 +904,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -841,6 +945,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -866,6 +978,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
