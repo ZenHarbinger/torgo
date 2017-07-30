@@ -377,4 +377,6 @@ public class LogoControllerTest {
         controller.close();
         prefs.putBoolean("wait-for-repaint", checked);
     }
+    
+    
 }
