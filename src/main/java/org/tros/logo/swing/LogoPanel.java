@@ -64,6 +64,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     private double scale = 1.0;
     private TurtleState turtleState;
 
+    private boolean testing = false;
+    private boolean checkTesting = false;
+
     private class ZoomableMixin extends ZoomableComponent {
 
         ZoomableMixin(JComponent component) {
@@ -264,6 +267,13 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -302,6 +312,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -910,5 +928,24 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     @Override
     public Component getComponent() {
         return this;
+    }
+
+    /**
+     * For testing nested drawable classes.
+     */
+    public void setTesting() {
+        testing = true;
+        checkTesting = false;
+    }
+
+    public boolean getTestCheck() {
+        return checkTesting;
+    }
+
+    private static class DrawListenerImpl implements DrawListener {
+
+        @Override
+        public void drawn(Drawable sender) {
+        }
     }
 }
