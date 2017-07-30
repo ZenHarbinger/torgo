@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 import org.tros.torgo.TorgoTextConsole;
 import org.tros.logo.LogoController;
 import org.tros.torgo.Controller;
+import java.awt.Font;
 
 /**
  *
@@ -142,6 +143,81 @@ public class LogoPanelTest {
         panel.setTesting();
         assertFalse(panel.getTestCheck());
         panel.backward(0);
+        assertTrue(panel.getTestCheck());
+        //left
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.left(0);
+        assertTrue(panel.getTestCheck());
+        //right
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.right(0);
+        assertTrue(panel.getTestCheck());
+        //setXY
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.setXY(0, 0);
+        assertTrue(panel.getTestCheck());
+        //penUp
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.penUp();
+        assertTrue(panel.getTestCheck());
+        //penDown
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.penDown();
+        assertTrue(panel.getTestCheck());
+        //clear
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.clear();
+        assertTrue(panel.getTestCheck());
+        //home
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.home();
+        assertTrue(panel.getTestCheck());
+        //canvascolor
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.canvascolor("blue");
+        assertTrue(panel.getTestCheck());
+        //pencolor
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.pencolor("blue");
+        assertTrue(panel.getTestCheck());
+        //drawString
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.drawString("test");
+        assertTrue(panel.getTestCheck());
+        //fontSize
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.fontSize(5);
+        assertTrue(panel.getTestCheck());
+        //fontName
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.fontName(Font.DIALOG);
+        assertTrue(panel.getTestCheck());
+        //fontStyle
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.fontStyle(Font.BOLD);
+        assertTrue(panel.getTestCheck());
+        //hideTurtle
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.hideTurtle();
+        assertTrue(panel.getTestCheck());
+        //showTurtle
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.showTurtle();
         assertTrue(panel.getTestCheck());
     }
 }
