@@ -29,6 +29,9 @@ import org.tros.torgo.TorgoTextConsole;
 import org.tros.logo.LogoController;
 import org.tros.torgo.Controller;
 import java.awt.Font;
+import java.lang.reflect.Method;
+import org.tros.logo.swing.LogoPanel;
+import java.awt.Color;
 
 /**
  *
@@ -99,8 +102,8 @@ public class LogoPanelTest {
     public void testMessage() {
         Controller controller = null;
         //LogoPanel panel = new LogoPanel(new TorgoTextConsole());
-        LogoPanel panel = new LogoPanel(null);
-        
+        //LogoPanel panel = new LogoPanel(null);
+        //panel.message("test");
     }
 
     @Test
@@ -130,7 +133,10 @@ public class LogoPanelTest {
         panel.right(100);
         panel.left(100);
     }
-    
+
+    /**
+     * Test of methods within nested Drawable classes.
+     */
     @Test
     public void testNestedDrawable() {
         LogoPanel panel = new LogoPanel(null);
@@ -219,5 +225,39 @@ public class LogoPanelTest {
         assertFalse(panel.getTestCheck());
         panel.showTurtle();
         assertTrue(panel.getTestCheck());
+        //private methods
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.testCanvasColor();
+        assertTrue(panel.getTestCheck());
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.testPenColor();
+        assertTrue(panel.getTestCheck());
+    }
+    
+    /**
+     * Test of exception handling.
+     */
+    public void testExceptions() {
+        LogoPanel panel = new LogoPanel(null);
+        panel.setTestingEx();
+        panel = new LogoPanel(null);
+        assertTrue(panel.getTestCheck());
+        
+        LogoPanel panel2 = new LogoPanel(null);
+        panel2.setTestingEx();
+        panel2.clear();
+        assertTrue(panel2.getTestCheck());
+        
+        LogoPanel panel3 = new LogoPanel(null);
+        panel3.setTestingEx();
+        panel3.repaint();
+        assertTrue(panel3.getTestCheck());
+    }
+    
+    public void testDrawListenerImpl() {
+        LogoPanel panel = new LogoPanel(null);
+        panel.testDrawListener();
     }
 }
