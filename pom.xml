@@ -410,6 +410,18 @@
             <version>1.10.1</version>
         </dependency>
         <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>3.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
@@ -494,6 +506,6 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <INSTALL_BUILDER_HOME>/opt/installbuilder-16.11.1</INSTALL_BUILDER_HOME>
         <LAUNCH4J_HOME>/opt/launch4j</LAUNCH4J_HOME>
-        <skipTests>true</skipTests>
+        <skipTests>false</skipTests>
     </properties>
 </project>

@@ -23,6 +23,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.utils.logging.Logging;
+import java.net.MalformedURLException;
+import java.io.IOException;
+//import static org.easymock.EasyMock.*;
+import org.easymock.*;
+import org.junit.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  *
@@ -70,5 +77,18 @@ public class UpdateCheckerTest {
         assertTrue(checker.getCheckForUpdate());
         checker.hasUpdate();
         assertNotNull(checker.getUpdateVersion());
+    }
+
+    @Test
+    public void testHasUpdate() {
+        checker.urlExceptionTest();
+        assertTrue(checker.getURLException());
+        checker.hasUpdate();
+        assertFalse(checker.getURLException());
+        
+        checker.ioExceptionTest();
+        assertTrue(checker.getIOException());
+        checker.hasUpdate();
+        assertFalse(checker.getIOException());
     }
 }
