@@ -66,6 +66,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     private boolean testing = false;
     private boolean checkTesting = false;
+    private boolean testingEx = false;
 
     private class ZoomableMixin extends ZoomableComponent {
 
@@ -107,7 +108,12 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         URL resource = ClassLoader.getSystemClassLoader().getResource("turtle.png");
         try {
             turtle = ImageIO.read(resource);
+            if (testingEx) {
+                throw new IOException();
+            }
         } catch (IOException ex) {
+            testingEx = false;
+            checkTesting = true;
             org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
         }
         zoom = new ZoomableMixin((JComponent) this);
@@ -503,6 +509,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             @Override
             public void draw(Graphics2D g2, TurtleState turtleState) {
                 try {
+                    if (testingEx) {
+                        throw new Exception();
+                    }
                     //Check style is off because we need to save the current transform.
                     //and it's first use is not close to it's declaration.
                     // -- Matt
@@ -525,6 +534,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                     g2.setTransform(saveXform);
                     //CHECKSTYLE:ON
                 } catch (Exception ex) {
+                    testingEx = false;
+                    checkTesting = true;
                 }
             }
 
@@ -548,6 +559,9 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             Drawable clone = command.cloneDrawable();
             testing = false;
             checkTesting = true;
+        }
+        if (testingEx) {
+            command.draw(null, turtleState);
         }
         submitCommand(command);
     }
@@ -652,7 +666,19 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
+    }
+
+    public void testCanvasColor() {
+        canvascolor(Color.yellow);
     }
 
     @Override
@@ -687,6 +713,14 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
                 return this;
             }
         };
+        if (testing) {
+            DrawListener listener = new DrawListenerImpl();
+            command.addListener(listener);
+            command.removeListener(listener);
+            Drawable clone = command.cloneDrawable();
+            testing = false;
+            checkTesting = true;
+        }
         submitCommand(command);
     }
 
@@ -722,6 +756,10 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             checkTesting = true;
         }
         submitCommand(command);
+    }
+
+    public void testPenColor() {
+        pencolor(Color.yellow);
     }
 
     private Color getColorByName(String color) {
@@ -1035,8 +1073,13 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
             java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userNodeForPackage(LogoMenuBar.class);
             if (prefs.getBoolean(LogoMenuBar.WAIT_FOR_REPAINT, true)) {
                 try {
+                    if (testingEx) {
+                        throw new InterruptedException();
+                    }
                     SwingUtilities.invokeAndWait(LogoPanel.super::repaint);
                 } catch (InterruptedException | InvocationTargetException ex) {
+                    testingEx = false;
+                    checkTesting = true;
                     org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
                 }
             } else {
@@ -1058,8 +1101,21 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         checkTesting = false;
     }
 
+    /**
+     * For testing exception handling.
+     */
+    public void setTestingEx() {
+        testingEx = true;
+        checkTesting = false;
+    }
+
     public boolean getTestCheck() {
         return checkTesting;
+    }
+
+    public void testDrawListener() {
+        DrawListenerImpl listener = new DrawListenerImpl();
+        listener.drawn(null);
     }
 
     private static class DrawListenerImpl implements DrawListener {
