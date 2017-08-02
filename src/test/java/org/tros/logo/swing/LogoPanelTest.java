@@ -239,14 +239,16 @@ public class LogoPanelTest {
     /**
      * Test of exception handling.
      */
+    @Test
     public void testExceptions() {
-        LogoPanel panel = new LogoPanel(null);
-        panel.setTestingEx();
-        panel = new LogoPanel(null);
-        assertTrue(panel.getTestCheck());
+        //LogoPanel panel = new LogoPanel(null);
+        //panel.setTestingEx();
+        //panel = new LogoPanel(null);
+        //assertTrue(panel.getTestCheck());
         
         LogoPanel panel2 = new LogoPanel(null);
         panel2.setTestingEx();
+        assertFalse(panel2.getTestCheck());
         panel2.clear();
         assertTrue(panel2.getTestCheck());
         
@@ -256,6 +258,7 @@ public class LogoPanelTest {
         assertTrue(panel3.getTestCheck());
     }
     
+    @Test
     public void testDrawListenerImpl() {
         LogoPanel panel = new LogoPanel(null);
         panel.testDrawListener();
