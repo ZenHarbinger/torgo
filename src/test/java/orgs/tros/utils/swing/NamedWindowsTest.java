@@ -51,6 +51,9 @@ public class NamedWindowsTest
     	NamedWindow win = new NamedWindow("Yes", 100, 100);
     	assertFalse(win.getTest());
     	assertFalse(win.getTestCheck());
+    	win.testOverrideMethods();
+    	assertFalse(win.getTest());
+    	assertFalse(win.getTestCheck());
     	win.setTesting();
     	assertTrue(win.getTest());
     	assertFalse(win.getTestCheck());

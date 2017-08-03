@@ -85,6 +85,7 @@ public class NamedWindow extends JFrame {
             public void componentHidden(ComponentEvent e) {
             }
         });
+        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     public void testOverrideMethods() {
