@@ -19,6 +19,8 @@ import javax.swing.JFrame;
  */
 public class NamedWindow extends JFrame {
 
+    private boolean checkTesting = false;
+    private boolean testing = false;
     public static final int DEFAULT_WIDTH = 1152;
     public static final int DEFAULT_HEIGHT = 864;
 
@@ -83,6 +85,37 @@ public class NamedWindow extends JFrame {
             public void componentHidden(ComponentEvent e) {
             }
         });
+        if (testing) {
+            NamedWindow window = new NamedWindow("Yes", 100, 100);
+            ComponentEvent event = new ComponentEvent(window, 10);
+            CompListener listener = new CompListener();
+            listener.componentShown(event);
+            listener.componentMoved(event);
+            listener.componentResized(event);
+            listener.componentHidden(event);
+            testing = false;
+            checkTesting = true;
+        }
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    
+    private static class CompListener implements ComponentListener {
+        
+        @Override
+        public void componentResized(ComponentEvent e) {
+        }
+
+        @Override
+        public void componentMoved(ComponentEvent e) {
+        }
+
+        @Override
+        public void componentShown(ComponentEvent e) {
+        }
+
+        @Override
+        public void componentHidden(ComponentEvent e) {
+        }
     }
 }
