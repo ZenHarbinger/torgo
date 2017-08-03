@@ -108,12 +108,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
         URL resource = ClassLoader.getSystemClassLoader().getResource("turtle.png");
         try {
             turtle = ImageIO.read(resource);
-            if (testingEx) {
-                throw new IOException();
-            }
         } catch (IOException ex) {
-            testingEx = false;
-            checkTesting = true;
             org.tros.utils.logging.Logging.getLogFactory().getLogger(LogoPanel.class).fatal(null, ex);
         }
         zoom = new ZoomableMixin((JComponent) this);
