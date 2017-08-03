@@ -97,7 +97,6 @@ public class NamedWindow extends JFrame {
         }
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
     private static class CompListener implements ComponentListener {
         @Override
         public void componentResized(ComponentEvent e) {
