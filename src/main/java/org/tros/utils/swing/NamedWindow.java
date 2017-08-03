@@ -87,7 +87,6 @@ public class NamedWindow extends JFrame {
         });
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
     public void testOverrideMethods() {
         if (testing) {
             window = new NamedWindow("Yes", 100, 100);
@@ -101,16 +100,13 @@ public class NamedWindow extends JFrame {
             checkTesting = true;
         }
     }
-    
     public void setTesting() {
     	testing = true;
     	checkTesting = false;
     }
-    
     public boolean getTestCheck() {
     	return checkTesting;
     }
-    
     public boolean getTest() {
     	return testing;
     }
