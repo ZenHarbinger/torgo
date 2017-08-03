@@ -22,6 +22,7 @@ public class NamedWindow extends JFrame {
     public static final int DEFAULT_HEIGHT = 864;
     private boolean checkTesting = false;
     private boolean testing = false;
+    private NamedWindow window;
 
     public NamedWindow(final String name) {
         this(name, DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -84,8 +85,12 @@ public class NamedWindow extends JFrame {
             public void componentHidden(ComponentEvent e) {
             }
         });
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    public void testOverrideMethods() {
         if (testing) {
-            NamedWindow window = new NamedWindow("Yes", 100, 100);
+            window = new NamedWindow("Yes", 100, 100);
             ComponentEvent event = new ComponentEvent(window, 10);
             CompListener listener = new CompListener();
             listener.componentShown(event);
@@ -95,7 +100,19 @@ public class NamedWindow extends JFrame {
             testing = false;
             checkTesting = true;
         }
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    public void setTesting() {
+    	testing = true;
+    	checkTesting = false;
+    }
+    
+    public boolean getTestCheck() {
+    	return checkTesting;
+    }
+    
+    public boolean getTest() {
+    	return testing;
     }
     private static class CompListener implements ComponentListener {
         @Override
