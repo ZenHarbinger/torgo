@@ -18,11 +18,11 @@ import javax.swing.JFrame;
  * @author matta
  */
 public class NamedWindow extends JFrame {
-
-    private boolean checkTesting = false;
-    private boolean testing = false;
+    
     public static final int DEFAULT_WIDTH = 1152;
     public static final int DEFAULT_HEIGHT = 864;
+    private boolean checkTesting = false;
+    private boolean testing = false;
 
     public NamedWindow(final String name) {
         this(name, DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -99,9 +99,7 @@ public class NamedWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    
     private static class CompListener implements ComponentListener {
-        
         @Override
         public void componentResized(ComponentEvent e) {
         }
