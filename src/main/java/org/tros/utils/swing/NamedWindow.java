@@ -101,7 +101,6 @@ public class NamedWindow extends JFrame {
     private static final class CompeListener implements ComponentListener {
         private CompeListener() {
         }
-        
         @Override
         public void componentResized(ComponentEvent e) {
         }
