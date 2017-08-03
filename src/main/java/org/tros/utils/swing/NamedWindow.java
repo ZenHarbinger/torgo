@@ -21,7 +21,6 @@ public class NamedWindow extends JFrame {
 
     public static final int DEFAULT_WIDTH = 1152;
     public static final int DEFAULT_HEIGHT = 864;
-    
     private boolean testing = false;
     private boolean checkTesting = false;
 
@@ -88,8 +87,8 @@ public class NamedWindow extends JFrame {
         });
         if (testing) {
             CompeListener listen = new CompeListener();
-            NamedWindow win = new NamedWindow("Huh" , 10, 10);
-            ComponentEvent event = new ComponentEvent(win, 1);
+            NamedWindow win = new NamedWindow("Huh", 10, 10);
+            ComponentEvent event = new ComponentEvent(win , 1);
             listen.componentShown(event);
             listen.componentMoved(event);
             listen.componentResized(event);
@@ -99,34 +98,29 @@ public class NamedWindow extends JFrame {
         }
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
-    private static class CompeListener implements ComponentListener {
+    private static final class CompeListener implements ComponentListener {
         
         private CompeListener() {
             
         }
-
+        
         @Override
-        public void componentResized(ComponentEvent e)
-        {
+        public void componentResized(ComponentEvent e) {
             
         }
 
         @Override
-        public void componentMoved(ComponentEvent e)
-        {
+        public void componentMoved(ComponentEvent e) {
             
         }
 
         @Override
-        public void componentShown(ComponentEvent e)
-        {
+        public void componentShown(ComponentEvent e) {
             
         }
 
         @Override
-        public void componentHidden(ComponentEvent e)
-        {
+        public void componentHidden(ComponentEvent e) {
             
         }
     }

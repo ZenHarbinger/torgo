@@ -41,7 +41,7 @@ public class NamedWindowsTest
     public void testWindow()
     {
         for (int i = 0; i < 10000; i++) {
-        NamedWindow win = new NamedWindow("Huh" , i, i);
+        NamedWindow win = new NamedWindow("Huh", i, i);
         //ComponentEvent event = new ComponentEvent(win, i);
 
         }
