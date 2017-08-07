@@ -48,6 +48,7 @@ public final class SwingComponentHandler extends Handler {
     private final java.util.Timer timer;
     private int maxSize;
     private int timeField;
+    private int test;
 
     static {
         STYLE_MAP = new HashMap<>();
@@ -141,14 +142,31 @@ public final class SwingComponentHandler extends Handler {
         Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.FINE, "Started...");
     }
 
+    public int getTest() {
+        return test;
+    }
+
+    public void checkTesting() {
+        test = 0;
+    }
+
+    public void testConfigure(int testNum) {
+        test = testNum;
+        configure();
+    }
+
     private void configure() {
         LogManager manager = LogManager.getLogManager();
         String cname = getClass().getName();
 
         String size = manager.getProperty(cname + ".limit");
         int s = 50000;
+        if (test == 1) {
+            size = "five";
+        }
         if (size != null) {
             try {
+                checkTesting();
                 s = Integer.parseInt(size);
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -158,8 +176,9 @@ public final class SwingComponentHandler extends Handler {
 
         String timerProp = manager.getProperty(cname + ".timer");
         int time = 500;
-        if (timer != null) {
+        if (timer != null || test == 2) {
             try {
+                checkTesting();
                 time = Integer.parseInt(timerProp);
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -169,8 +188,12 @@ public final class SwingComponentHandler extends Handler {
 
         String level = manager.getProperty(cname + ".level");
         Level def = Level.INFO;
+        if (test == 3) {
+            level = "five";
+        }
         if (level != null) {
             try {
+                checkTesting();
                 def = Level.parse(level);
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
