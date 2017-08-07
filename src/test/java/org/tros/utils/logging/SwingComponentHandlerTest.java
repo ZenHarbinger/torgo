@@ -106,4 +106,15 @@ public class SwingComponentHandlerTest {
         assertTrue(handler.isPaused());
         method.invoke(handler, (Object[]) null);
     }
+    
+    @Test
+    public void testPrivateMethods() {
+        SwingComponentHandler handler = new SwingComponentHandler();
+        handler.testConfigure(1);
+        assertEquals(handler.getTest(), 0);
+        handler.testConfigure(2);
+        assertEquals(handler.getTest(), 0);
+        handler.testConfigure(3);
+        assertEquals(handler.getTest(), 0);
+    }
 }
