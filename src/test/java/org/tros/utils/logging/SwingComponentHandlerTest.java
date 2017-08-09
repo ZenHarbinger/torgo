@@ -111,10 +111,14 @@ public class SwingComponentHandlerTest {
     public void testPrivateMethods() {
         SwingComponentHandler handler = new SwingComponentHandler();
         handler.testConfigure(1);
-        assertEquals(handler.getTest(), 0);
+        assertFalse(handler.checkTesting());
         handler.testConfigure(2);
-        assertEquals(handler.getTest(), 0);
+        assertFalse(handler.checkTesting());
         handler.testConfigure(3);
-        assertEquals(handler.getTest(), 0);
+        assertFalse(handler.checkTesting());
+        handler.testConfigure(4);
+        assertFalse(handler.checkTesting());
+        handler.testConfigure(5);
+        assertFalse(handler.checkTesting());
     }
 }
