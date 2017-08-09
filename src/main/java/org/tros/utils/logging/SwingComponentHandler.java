@@ -48,7 +48,7 @@ public final class SwingComponentHandler extends Handler {
     private final java.util.Timer timer;
     private int maxSize;
     private int timeField;
-    private int test;
+    private boolean test = false;
 
     static {
         STYLE_MAP = new HashMap<>();
@@ -142,69 +142,99 @@ public final class SwingComponentHandler extends Handler {
         Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.FINE, "Started...");
     }
 
-    public int getTest() {
+    public boolean checkTesting() {
         return test;
     }
 
-    public void checkTesting() {
-        test = 0;
-    }
-
-    public void testConfigure(int testNum) {
-        test = testNum;
-        configure();
+    public void testConfigure(int which) {
+        test = true;
+        switch (which) {
+            case 1:
+                configSize();
+            case 2:
+                configTime();
+            case 3:
+                configLevel();
+            case 4:
+                configFormat();
+            case 5:
+                configFilter();
+        }
     }
 
     private void configure() {
+        configSize();
+        configTime();
+        configLevel();
+        configFormat();
+        configFilter();
+    }
+
+    private void configSize() {
         LogManager manager = LogManager.getLogManager();
         String cname = getClass().getName();
-
         String size = manager.getProperty(cname + ".limit");
         int s = 50000;
-        if (test == 1) {
-            size = "five";
+        if (test) {
+            size = "5";
         }
         if (size != null) {
             try {
-                checkTesting();
+                test = false;
                 s = Integer.parseInt(size);
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         this.setLimit(s);
+    }
 
+    private void configTime() {
+        LogManager manager = LogManager.getLogManager();
+        String cname = getClass().getName();
         String timerProp = manager.getProperty(cname + ".timer");
         int time = 500;
-        if (timer != null || test == 2) {
+        if (timer != null || test) {
             try {
-                checkTesting();
+                test = false;
                 time = Integer.parseInt(timerProp);
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         this.timeField = time;
+    }
 
+    private void configLevel() {
+        LogManager manager = LogManager.getLogManager();
+        String cname = getClass().getName();
         String level = manager.getProperty(cname + ".level");
         Level def = Level.INFO;
-        if (test == 3) {
+        if (test) {
             level = "five";
         }
         if (level != null) {
             try {
-                checkTesting();
+                test = false;
                 def = Level.parse(level);
             } catch (IllegalArgumentException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         this.setLevel(def);
+    }
 
+    private void configFormat() {
+        LogManager manager = LogManager.getLogManager();
+        String cname = getClass().getName();
         String formatter = manager.getProperty(cname + ".formatter");
         Formatter fmmt = null;
+        if (test) {
+            formatter = "test";
+        }
         if (formatter != null) {
             try {
+                test = false;
                 fmmt = (Formatter) Class.forName(formatter).newInstance();
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -214,11 +244,19 @@ public final class SwingComponentHandler extends Handler {
             fmmt = new SimpleFormatter();
         }
         this.setFormatter(fmmt);
+    }
 
+    private void configFilter() {
+        LogManager manager = LogManager.getLogManager();
+        String cname = getClass().getName();
         String filter = manager.getProperty(cname + ".filter");
         Filter filt = null;
+        if (test) {
+            filter = "test";
+        }
         if (filter != null) {
             try {
+                test = false;
                 filt = (Filter) Class.forName(filter).newInstance();
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
