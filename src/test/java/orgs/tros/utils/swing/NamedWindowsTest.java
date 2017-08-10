@@ -41,10 +41,26 @@ public class NamedWindowsTest
     public void testWindow()
     {
         for (int i = 0; i < 10000; i++) {
-        NamedWindow win = new NamedWindow("Huh" , i, i);
+        NamedWindow win = new NamedWindow("Huh", i, i);
         ComponentEvent event = new ComponentEvent(win, i);
-
         }
+    }
+    
+    @Test
+    public void testComponentMethods() {
+    	NamedWindow win = new NamedWindow("Yes", 100, 100);
+    	assertFalse(win.getTest());
+    	assertFalse(win.getTestCheck());
+    	win.testOverrideMethods();
+    	assertFalse(win.getTest());
+    	assertFalse(win.getTestCheck());
+    	win.setTesting();
+    	assertTrue(win.getTest());
+    	assertFalse(win.getTestCheck());
+    	win.testOverrideMethods();
+    	assertFalse(win.getTest());
+    	assertTrue(win.getTestCheck());
+    	
     }
 
 }
