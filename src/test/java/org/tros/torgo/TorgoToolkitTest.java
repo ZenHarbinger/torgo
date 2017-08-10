@@ -1,12 +1,12 @@
 /*
  * Copyright 2015 Matthew Aguirre
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +33,7 @@ import org.tros.utils.logging.Logging;
 public class TorgoToolkitTest {
 
     private final static Logger LOGGER;
-    
+
     static {
         Logging.initLogging(TorgoInfo.INSTANCE);
         LOGGER = Logger.getLogger(TorgoToolkitTest.class.getName());
@@ -66,6 +66,26 @@ public class TorgoToolkitTest {
         LOGGER.info("constructor");
         TorgoToolkit tt = new TorgoToolkit();
         assertNotNull(tt);
+    }
+
+    /**
+     * Test of hidden constructor exceptions.
+     */
+    @Test
+    public void testInitializerExceptions() {
+        LOGGER.info("initializer exceptions");
+        TorgoToolkit.configExceptionTest1();
+        assertTrue(TorgoToolkit.getConfigExcep1());
+        TorgoToolkit.initController();
+        assertFalse(TorgoToolkit.getConfigExcep1());
+        TorgoToolkit.configExceptionTest2();
+        assertTrue(TorgoToolkit.getConfigExcep2());
+        TorgoToolkit.initInterpreterVis();
+        assertFalse(TorgoToolkit.getConfigExcep2());
+        TorgoToolkit.configExceptionTest3();
+        assertTrue(TorgoToolkit.getConfigExcep3());
+        TorgoToolkit.initResAccessor();
+        assertFalse(TorgoToolkit.getConfigExcep3());
     }
 
     /**

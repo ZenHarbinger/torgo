@@ -28,6 +28,10 @@ import static org.junit.Assert.*;
 import org.tros.torgo.TorgoTextConsole;
 import org.tros.logo.LogoController;
 import org.tros.torgo.Controller;
+import java.awt.Font;
+import java.lang.reflect.Method;
+import org.tros.logo.swing.LogoPanel;
+import java.awt.Color;
 
 /**
  *
@@ -98,8 +102,8 @@ public class LogoPanelTest {
     public void testMessage() {
         Controller controller = null;
         //LogoPanel panel = new LogoPanel(new TorgoTextConsole());
-        LogoPanel panel = new LogoPanel(null);
-        
+        //LogoPanel panel = new LogoPanel(null);
+        //panel.message("test");
     }
 
     @Test
@@ -129,5 +133,134 @@ public class LogoPanelTest {
         panel.right(100);
         panel.left(100);
     }
+
+    /**
+     * Test of methods within nested Drawable classes.
+     */
+    @Test
+    public void testNestedDrawable() {
+        LogoPanel panel = new LogoPanel(null);
+        //forward
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.forward(0);
+        assertTrue(panel.getTestCheck());
+        //backward
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.backward(0);
+        assertTrue(panel.getTestCheck());
+        //left
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.left(0);
+        assertTrue(panel.getTestCheck());
+        //right
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.right(0);
+        assertTrue(panel.getTestCheck());
+        //setXY
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.setXY(0, 0);
+        assertTrue(panel.getTestCheck());
+        //penUp
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.penUp();
+        assertTrue(panel.getTestCheck());
+        //penDown
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.penDown();
+        assertTrue(panel.getTestCheck());
+        //clear
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.clear();
+        assertTrue(panel.getTestCheck());
+        //home
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.home();
+        assertTrue(panel.getTestCheck());
+        //canvascolor
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.canvascolor("blue");
+        assertTrue(panel.getTestCheck());
+        //pencolor
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.pencolor("blue");
+        assertTrue(panel.getTestCheck());
+        //drawString
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.drawString("test");
+        assertTrue(panel.getTestCheck());
+        //fontSize
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.fontSize(5);
+        assertTrue(panel.getTestCheck());
+        //fontName
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.fontName(Font.DIALOG);
+        assertTrue(panel.getTestCheck());
+        //fontStyle
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.fontStyle(Font.BOLD);
+        assertTrue(panel.getTestCheck());
+        //hideTurtle
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.hideTurtle();
+        assertTrue(panel.getTestCheck());
+        //showTurtle
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.showTurtle();
+        assertTrue(panel.getTestCheck());
+        //private methods
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.testCanvasColor();
+        assertTrue(panel.getTestCheck());
+        panel.setTesting();
+        assertFalse(panel.getTestCheck());
+        panel.testPenColor();
+        assertTrue(panel.getTestCheck());
+    }
     
+    /**
+     * Test of exception handling.
+     */
+    @Test
+    public void testExceptions() {
+        //LogoPanel panel = new LogoPanel(null);
+        //panel.setTestingEx();
+        //panel = new LogoPanel(null);
+        //assertTrue(panel.getTestCheck());
+        
+        LogoPanel panel2 = new LogoPanel(null);
+        panel2.setTestingEx();
+        assertFalse(panel2.getTestCheck());
+        panel2.clear();
+        assertTrue(panel2.getTestCheck());
+        
+        LogoPanel panel3 = new LogoPanel(null);
+        panel3.setTestingEx();
+        panel3.repaint();
+        assertTrue(panel3.getTestCheck());
+    }
+    
+    @Test
+    public void testDrawListenerImpl() {
+        LogoPanel panel = new LogoPanel(null);
+        panel.testDrawListener();
+    }
 }

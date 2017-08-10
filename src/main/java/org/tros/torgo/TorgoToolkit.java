@@ -23,7 +23,6 @@ import java.util.Set;
 import org.tros.utils.ResourceAccessor;
 
 /**
- *
  * @author matta
  */
 public final class TorgoToolkit {
@@ -37,9 +36,14 @@ public final class TorgoToolkit {
     private static final HashMap<String, ResourceAccessor> RESOURCE_MAP;
     private static final ServiceLoader<ResourceAccessor> RESOURCES;
 
-    private static final org.tros.utils.logging.Logger LOGGER = org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoToolkit.class);
+    private static final org.tros.utils.logging.Logger LOGGER
+            = org.tros.utils.logging.Logging.getLogFactory().getLogger(TorgoToolkit.class);
 
     private static String defaultResourceAccessor;
+
+    private static boolean configExcep1 = false;
+    private static boolean configExcep2 = false;
+    private static boolean configExcep3 = false;
 
     /**
      * Static constructor.
@@ -47,28 +51,57 @@ public final class TorgoToolkit {
     static {
         CONTROLLER_MAP = new HashMap<>();
         CONTROLLERS = ServiceLoader.load(Controller.class);
+        initController();
+        VIZ_MAP = new HashMap<>();
+        VIZUALIZERS = ServiceLoader.load(InterpreterVisualization.class);
+        initInterpreterVis();
+        RESOURCE_MAP = new HashMap<>();
+        RESOURCES = ServiceLoader.load(ResourceAccessor.class);
+        initResAccessor();
+    }
+
+    /**
+     * Hidden constructor.
+     */
+    protected TorgoToolkit() {
+    }
+
+    public static void initController() {
         try {
+            if (configExcep1) {
+                throw new ServiceConfigurationError("test");
+            }
             for (Controller controller : CONTROLLERS) {
                 LOGGER.info(MessageFormat.format("Loaded: {0}", controller.getClass().getName()));
                 CONTROLLER_MAP.put(controller.getLang(), controller);
             }
         } catch (ServiceConfigurationError serviceError) {
+            configExceptionTest1();
             LOGGER.warn(null, serviceError);
         }
-        VIZ_MAP = new HashMap<>();
-        VIZUALIZERS = ServiceLoader.load(InterpreterVisualization.class);
+    }
+
+    public static void initInterpreterVis() {
         try {
+            if (configExcep2) {
+                throw new ServiceConfigurationError("test");
+            }
             for (InterpreterVisualization viz : VIZUALIZERS) {
                 LOGGER.info(MessageFormat.format("Loaded: {0}", viz.getClass().getName()));
                 VIZ_MAP.put(viz.getName(), viz);
             }
         } catch (ServiceConfigurationError serviceError) {
+            configExceptionTest2();
             LOGGER.warn(null, serviceError);
         }
-        RESOURCE_MAP = new HashMap<>();
-        RESOURCES = ServiceLoader.load(ResourceAccessor.class);
+    }
+
+    public static void initResAccessor() {
         boolean set = false;
         try {
+            if (configExcep3) {
+                throw new ServiceConfigurationError("test");
+            }
             for (ResourceAccessor ressource : RESOURCES) {
                 LOGGER.info(MessageFormat.format("Loaded: {0}", ressource.getClass().getName()));
                 RESOURCE_MAP.put(ressource.getName(), ressource);
@@ -78,14 +111,9 @@ public final class TorgoToolkit {
                 }
             }
         } catch (ServiceConfigurationError serviceError) {
+            configExceptionTest3();
             LOGGER.warn(null, serviceError);
         }
-    }
-
-    /**
-     * Hidden constructor.
-     */
-    protected TorgoToolkit() {
     }
 
     /**
@@ -152,5 +180,29 @@ public final class TorgoToolkit {
      */
     public static ResourceAccessor getDefaultResourceAccessor() {
         return getResourceAccessor(defaultResourceAccessor);
+    }
+
+    public static void configExceptionTest1() {
+        configExcep1 = !configExcep1;
+    }
+
+    public static boolean getConfigExcep1() {
+        return configExcep1;
+    }
+
+    public static void configExceptionTest2() {
+        configExcep2 = !configExcep2;
+    }
+
+    public static boolean getConfigExcep2() {
+        return configExcep2;
+    }
+
+    public static void configExceptionTest3() {
+        configExcep3 = !configExcep3;
+    }
+
+    public static boolean getConfigExcep3() {
+        return configExcep3;
     }
 }
