@@ -386,6 +386,7 @@ public abstract class ControllerBase implements Controller {
     /**
      * Helper method called during run().
      */
+    @CoverageIgnore
     protected void runHelper() {
     }
 
@@ -415,7 +416,6 @@ public abstract class ControllerBase implements Controller {
     }
 
     @Override
-    @CoverageIgnore
     public void openFile(File file) {
         try {
             openFile(new URL(file.toString()));
@@ -443,7 +443,6 @@ public abstract class ControllerBase implements Controller {
      * @param file the file to open.
      */
     @Override
-    @CoverageIgnore
     public void openFile(URL file) {
         try {
             init();
@@ -464,8 +463,8 @@ public abstract class ControllerBase implements Controller {
     /**
      * Open a file.
      */
-    @Override
     @CoverageIgnore
+    @Override
     public void openFile() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(getFilter());
@@ -483,6 +482,7 @@ public abstract class ControllerBase implements Controller {
     /**
      * Save the script as a new file.
      */
+    @CoverageIgnore
     @Override
     public void saveFileAs() {
         JFileChooser chooser = new JFileChooser();
@@ -507,6 +507,7 @@ public abstract class ControllerBase implements Controller {
     /**
      * Save the script.
      */
+    @CoverageIgnore
     @Override
     public void saveFile() {
         if (filename == null) {
