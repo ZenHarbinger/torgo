@@ -58,6 +58,7 @@ import org.tros.torgo.swing.Localization;
 import org.tros.torgo.swing.TorgoMenuBar;
 import org.tros.utils.swing.NamedWindow;
 import org.tros.utils.AutoResetEvent;
+import org.tros.utils.CoverageIgnore;
 import org.tros.utils.ImageUtils;
 import org.tros.utils.PathUtils;
 
@@ -414,6 +415,7 @@ public abstract class ControllerBase implements Controller {
     }
 
     @Override
+    @CoverageIgnore
     public void openFile(File file) {
         try {
             openFile(new URL(file.toString()));
@@ -441,6 +443,7 @@ public abstract class ControllerBase implements Controller {
      * @param file the file to open.
      */
     @Override
+    @CoverageIgnore
     public void openFile(URL file) {
         try {
             init();
@@ -462,6 +465,7 @@ public abstract class ControllerBase implements Controller {
      * Open a file.
      */
     @Override
+    @CoverageIgnore
     public void openFile() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(getFilter());

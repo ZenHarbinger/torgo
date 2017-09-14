@@ -84,7 +84,9 @@ public class PathUtilsTest {
         LOGGER.info("getTempDir");
         String result = PathUtils.getTempDir();
         assertNotNull(result);
-
+        String result2 = PathUtils.getTempDir(TorgoToolkit.getBuildInfo());
+        assertNotNull(result2);
+        assertNotEquals(result, result2);
     }
 
     /**
