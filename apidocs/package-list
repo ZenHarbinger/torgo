@@ -1,0 +1,13 @@
+org.tros.logo
+org.tros.logo.antlr
+org.tros.logo.rsyntax
+org.tros.logo.swing
+org.tros.torgo
+org.tros.torgo.interpreter
+org.tros.torgo.interpreter.types
+org.tros.torgo.swing
+org.tros.torgo.viz
+org.tros.utils
+org.tros.utils.converters
+org.tros.utils.logging
+org.tros.utils.swing
