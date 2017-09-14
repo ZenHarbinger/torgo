@@ -98,7 +98,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     /**
      * Constructor.
      *
-     * @param textOutput
+     * @param textOutput the text output component.
      */
     public LogoPanel(TorgoTextConsole textOutput) {
         console = textOutput;
@@ -136,7 +136,7 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
     /**
      * Paint.
      *
-     * @param g
+     * @param g the graphics component.
      */
     @Override
     public void paintComponent(Graphics g) {
@@ -172,8 +172,8 @@ public class LogoPanel extends JPanel implements TorgoScreen, LogoCanvas, Buffer
 
     /**
      *
-     * @param g2d
-     * @param turtleState
+     * @param g2d the graphics component.
+     * @param turtleState the turtle state.
      */
     @Override
     public void draw(Graphics2D g2d, TurtleState turtleState) {

@@ -53,9 +53,9 @@ public class ReturnValue extends InterpreterValue {
     /**
      * Constructor.
      *
-     * @param type
-     * @param value
-     * @param result
+     * @param type the interpreter type.
+     * @param value the value.
+     * @param result the result status.
      */
     public ReturnValue(InterpreterType type, Object value, ProcessResult result) {
         super(type, value);
@@ -65,7 +65,7 @@ public class ReturnValue extends InterpreterValue {
     /**
      * Return the type of the result.
      *
-     * @return
+     * @return the result.
      */
     public ProcessResult getResult() {
         return result;

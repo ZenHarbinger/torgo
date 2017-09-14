@@ -25,7 +25,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.tros.torgo.Main;
-import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.TorgoToolkit;
 import org.tros.utils.logging.Logging;
 
 /**
@@ -37,7 +37,7 @@ public class ImageUtilsTest {
     private final static Logger LOGGER;
 
     static {
-        Logging.initLogging(TorgoInfo.INSTANCE);
+        Logging.initLogging(TorgoToolkit.getBuildInfo());
         LOGGER = Logger.getLogger(ImageUtilsTest.class.getName());
     }
 

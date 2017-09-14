@@ -29,8 +29,8 @@ public class LexicalScope extends ScopeImpl implements Scope {
     /**
      * Looks in the lexical stack for variables to use.
      *
-     * @param name
-     * @return
+     * @param name the name of the value to get.
+     * @return the value.
      */
     @Override
     public InterpreterValue get(String name) {
@@ -46,6 +46,8 @@ public class LexicalScope extends ScopeImpl implements Scope {
 
     /**
      * Pop the current code block.
+     *
+     * @return the block popped.
      */
     @Override
     public CodeBlock pop() {
@@ -57,7 +59,7 @@ public class LexicalScope extends ScopeImpl implements Scope {
     /**
      * Push a new code block.
      *
-     * @param block
+     * @param block the block to push.
      */
     @Override
     public void push(CodeBlock block) {
@@ -68,8 +70,8 @@ public class LexicalScope extends ScopeImpl implements Scope {
     /**
      * Set the value of a variable in the scope.
      *
-     * @param name
-     * @param value
+     * @param name the name of the variable.
+     * @param value the value of the variable.
      */
     @Override
     public void set(String name, InterpreterValue value) {
@@ -90,8 +92,8 @@ public class LexicalScope extends ScopeImpl implements Scope {
     /**
      * Set the value of a variable in the current block.
      *
-     * @param name
-     * @param value
+     * @param name the name of the variable.
+     * @param value the value of the variable.
      */
     @Override
     public void setNew(String name, InterpreterValue value) {
@@ -102,8 +104,8 @@ public class LexicalScope extends ScopeImpl implements Scope {
     /**
      * Get a function available in the scope.
      *
-     * @param name
-     * @return
+     * @param name the name of the function.
+     * @return the function.
      */
     @Override
     public CodeFunction getFunction(String name) {
@@ -120,7 +122,7 @@ public class LexicalScope extends ScopeImpl implements Scope {
     /**
      * Get the names of variables.
      *
-     * @return
+     * @return all variables currently available.
      */
     @Override
     public Collection<String> variables() {
@@ -136,8 +138,8 @@ public class LexicalScope extends ScopeImpl implements Scope {
     /**
      * Get the names of variables.
      *
-     * @param value
-     * @return
+     * @param value the depth of the stack to peek into.
+     * @return the variables and values available at the specified depth.
      */
     @Override
     public Map<String, InterpreterValue> variablesPeek(int value) {

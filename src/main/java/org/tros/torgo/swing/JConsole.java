@@ -68,15 +68,15 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import org.tros.torgo.Main;
-import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.TorgoToolkit;
 
 // Things that are not in the core packages
 /**
  * A JFC/Swing based console for the BeanShell desktop. This is a descendant of
  * the old AWTConsole.
  *
- * Improvements by: Mark Donszelmann <Mark.Donszelmann@cern.ch>
- * including Cut & Paste
+ * Improvements by: Mark Donszelmann &lt;Mark.Donszelmann@cern.ch&gt;
+ * including Cut &amp; Paste
  *
  * Improvements by: Daniel Leuck including Color and Image support, key press
  * bug workaround
@@ -235,7 +235,7 @@ public class JConsole extends JScrollPane
             font = new Font(FALLBACK_HEADER_FONT, Font.PLAIN, HEADER_SIZE);
         }
         print(ico);
-        print(MessageFormat.format(" {0} v{1}", TorgoInfo.INSTANCE.getApplicationName(), TorgoInfo.INSTANCE.getVersion()), font, Color.GRAY);
+        print(MessageFormat.format(" {0} v{1}", TorgoToolkit.getBuildInfo().getApplicationName(), TorgoToolkit.getBuildInfo().getVersion()), font, Color.GRAY);
         println();
     }
 
@@ -762,7 +762,7 @@ public class JConsole extends JScrollPane
 
     @Override
     public String toString() {
-        return MessageFormat.format("{0} console", TorgoInfo.INSTANCE.getApplicationName());
+        return MessageFormat.format("{0} console", TorgoToolkit.getBuildInfo().getApplicationName());
     }
 
     // MouseListener Interface

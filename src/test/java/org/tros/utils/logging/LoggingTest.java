@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.TorgoToolkit;
 
 /**
  *
@@ -54,7 +54,7 @@ public class LoggingTest {
     @Test
     public void testInitLogging_BuildInfo() {
         System.out.println("initLogging");
-        Logging.initLogging(TorgoInfo.INSTANCE);
+        Logging.initLogging(TorgoToolkit.getBuildInfo());
     }
 
     /**
@@ -63,7 +63,7 @@ public class LoggingTest {
     @Test
     public void testInitLogging_BuildInfo_Class() {
         System.out.println("initLogging");
-        Logging.initLogging(TorgoInfo.INSTANCE, Logging.class);
+        Logging.initLogging(TorgoToolkit.getBuildInfo(), Logging.class);
     }
 
     /**
@@ -72,7 +72,7 @@ public class LoggingTest {
     @Test
     public void testGetLogFactory() {
         System.out.println("getLogFactory");
-        Logging.initLogging(TorgoInfo.INSTANCE, Logging.class);
+        Logging.initLogging(TorgoToolkit.getBuildInfo(), Logging.class);
         LogFactory result = Logging.getLogFactory();
         assertNotNull(result);
     }

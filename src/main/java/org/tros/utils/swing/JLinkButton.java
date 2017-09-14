@@ -54,7 +54,7 @@ public final class JLinkButton extends JButton {
     /**
      * Constructor with action.
      *
-     * @param action
+     * @param action the action to perform.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public JLinkButton(Action action) {
@@ -65,7 +65,7 @@ public final class JLinkButton extends JButton {
     /**
      * Constructor with icon.
      *
-     * @param icon
+     * @param icon the icon for the button.
      */
     public JLinkButton(Icon icon) {
         this(null, icon, null);
@@ -74,7 +74,7 @@ public final class JLinkButton extends JButton {
     /**
      * Constructor with text.
      *
-     * @param s
+     * @param s the text of the button.
      */
     public JLinkButton(String s) {
         this(s, null, null);
@@ -83,7 +83,7 @@ public final class JLinkButton extends JButton {
     /**
      * Constructor with URL.
      *
-     * @param url
+     * @param url the URL target.
      */
     public JLinkButton(URL url) {
         this(null, null, url);
@@ -92,8 +92,8 @@ public final class JLinkButton extends JButton {
     /**
      * Constructor with text and url.
      *
-     * @param s
-     * @param url
+     * @param s the text.
+     * @param url the URL.
      */
     public JLinkButton(String s, URL url) {
         this(s, null, url);
@@ -102,8 +102,8 @@ public final class JLinkButton extends JButton {
     /**
      * Constructor with icon and url.
      *
-     * @param icon
-     * @param url
+     * @param icon the icon.
+     * @param url the URL.
      */
     public JLinkButton(Icon icon, URL url) {
         this(null, icon, url);
@@ -112,9 +112,9 @@ public final class JLinkButton extends JButton {
     /**
      * Constructor with text, icon, and url.
      *
-     * @param text
-     * @param icon
-     * @param url
+     * @param text the text.
+     * @param icon the icon.
+     * @param url the URL.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public JLinkButton(String text, Icon icon, URL url) {

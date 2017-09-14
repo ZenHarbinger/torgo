@@ -20,7 +20,7 @@ public class ManualResetEvent {
     /**
      * Constructor.
      *
-     * @param open
+     * @param open initial state of the reset event.
      */
     public ManualResetEvent(boolean open) {
         this.open = open;
@@ -29,7 +29,8 @@ public class ManualResetEvent {
     /**
      * Wait for signal.
      *
-     * @throws InterruptedException
+     * @throws InterruptedException thrown if the thread is terminated during
+     * wait.
      */
     public void waitOne() throws InterruptedException {
         synchronized (monitor) {
@@ -42,9 +43,10 @@ public class ManualResetEvent {
     /**
      * Wait for signal.
      *
-     * @param milliseconds
-     * @return
-     * @throws InterruptedException
+     * @param milliseconds time to wait.
+     * @return if the thread has gained the signal before timeout.
+     * @throws InterruptedException thrown if the thread is terminated during
+     * wait.
      */
     public boolean waitOne(long milliseconds) throws InterruptedException {
         boolean ret;
@@ -78,7 +80,7 @@ public class ManualResetEvent {
     /**
      * Is the event open?
      *
-     * @return
+     * @return the state of the event.
      */
     public boolean isOpen() {
         return open;

@@ -263,6 +263,41 @@
             </build>
         </profile>
     </profiles>
+    <reporting>
+        <plugins>
+            <!-- Normally, we take off the dependency report, saves time. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                        <format>xml</format>
+                    </formats>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <failOnError>false</failOnError>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
     <build>
         <plugins>
             <!--            <plugin>
@@ -393,6 +428,9 @@
                         <format>xml</format>
                     </formats>
                     <check/>
+                    <ignoreMethodAnnotations>
+                        <ignoreMethodAnnotation>org.tros.utils.CoverageIgnore</ignoreMethodAnnotation>
+                    </ignoreMethodAnnotations>                    
                 </configuration>
             </plugin>
         </plugins>

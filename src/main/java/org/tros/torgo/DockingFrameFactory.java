@@ -44,9 +44,9 @@ public final class DockingFrameFactory {
     /**
      * This method simulates the creation of a layout.
      *
-     * @param display
-     * @param input
-     * @return
+     * @param display the component to display
+     * @param input array list
+     * @return element
      */
     public static XElement createLayout(Component display, ArrayList<ImmutablePair<String, Component>> input) {
         /* This method simulates the creation of a layout */
@@ -81,12 +81,12 @@ public final class DockingFrameFactory {
     /**
      * Try to read in the layout config from various locations.
      *
-     * @param lang
-     * @return
+     * @param lang interpreter language
+     * @return element
      */
     public static XElement read(String lang) {
         //read from saved file:
-        String layoutFileName = PathUtils.getApplicationConfigDirectory(TorgoInfo.INSTANCE) + java.io.File.separatorChar + lang + "-layout.xml";
+        String layoutFileName = PathUtils.getApplicationConfigDirectory(TorgoToolkit.getBuildInfo()) + java.io.File.separatorChar + lang + "-layout.xml";
         File layoutFile = new File(layoutFileName);
         if (layoutFile.exists()) {
             try {

@@ -23,14 +23,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.torgo.TorgoInfo;
 import org.tros.utils.logging.Logging;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.tros.torgo.interpreter.CodeBlock;
 import org.tros.torgo.interpreter.InterpreterListener;
 import org.tros.torgo.interpreter.Scope;
-import java.util.Collection;
 import java.util.ArrayList;
+import org.tros.torgo.TorgoToolkit;
 
 /**
  *
@@ -41,7 +40,7 @@ public class LogoBlockTest {
     private final static Logger LOGGER;
 
     static {
-        Logging.initLogging(TorgoInfo.INSTANCE);
+        Logging.initLogging(TorgoToolkit.getBuildInfo());
         LOGGER = Logger.getLogger(LogoBlockTest.class.getName());
     }
 

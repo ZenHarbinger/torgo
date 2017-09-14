@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.interpreter.InterpreterType;
 import org.tros.utils.logging.Logging;
 
@@ -35,7 +35,7 @@ public class NumberTypeTest {
     private final static Logger LOGGER;
 
     static {
-        Logging.initLogging(TorgoInfo.INSTANCE);
+        Logging.initLogging(TorgoToolkit.getBuildInfo());
         LOGGER = Logger.getLogger(NumberTypeTest.class.getName());
     }
 

@@ -16,12 +16,17 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
  */
 public interface ConverterRegister {
 
+    /**
+     * Register the conversion types.
+     *
+     * @param convertUtilsBean registrar.
+     */
     void register(ConvertUtilsBean convertUtilsBean);
 
     /**
      * Get a list of conversions From one class type (Left) to another (Right).
      *
-     * @return
+     * @return list of supported conversions.
      */
     List<ImmutablePair<Class<?>, Class<?>>> getConversions();
 

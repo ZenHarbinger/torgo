@@ -34,7 +34,7 @@ class LogoIf extends LogoBlock {
     /**
      * Constructor.
      *
-     * @param ctx
+     * @param ctx the parser context from antlr.
      */
     protected LogoIf(ParserRuleContext ctx) {
         super(ctx);
@@ -43,8 +43,8 @@ class LogoIf extends LogoBlock {
     /**
      * Process the if statement.
      *
-     * @param scope
-     * @return
+     * @param scope the current scope of the program.
+     * @return a return value of success.
      */
     @Override
     public ReturnValue process(Scope scope) {

@@ -39,7 +39,7 @@ public class TorgoMenuBarTest {
     private final static Logger LOGGER;
 
     static {
-        Logging.initLogging(TorgoInfo.INSTANCE);
+        Logging.initLogging(TorgoToolkit.getBuildInfo());
         LOGGER = Logger.getLogger(TorgoMenuBarTest.class.getName());
     }
     

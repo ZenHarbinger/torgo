@@ -46,8 +46,8 @@ class LogoStatement extends LogoBlock {
     /**
      * Constructor.
      *
-     * @param command
-     * @param ctx
+     * @param command the logo command.
+     * @param ctx the parser context from antlr.
      */
     protected LogoStatement(String command, ParserRuleContext ctx, LogoCanvas canvas) {
         super(ctx);
@@ -59,7 +59,7 @@ class LogoStatement extends LogoBlock {
     /**
      * Get the command.
      *
-     * @return
+     * @return the logo command.
      */
     public String getCommand() {
         return command;
@@ -68,8 +68,8 @@ class LogoStatement extends LogoBlock {
     /**
      * Process the statement.
      *
-     * @param scope
-     * @return
+     * @param scope the current scope of the application.
+     * @return the success of evaluating the command.
      */
     @Override
     public ReturnValue process(Scope scope) {

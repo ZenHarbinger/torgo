@@ -7,6 +7,8 @@
 package org.tros.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Mailbox: A synchronized class for high-performance message handling. Since
@@ -14,11 +16,11 @@ import java.util.ArrayList;
  * sending/receiving thread without the need for polling. This solves that
  * problem.
  *
- * @param <T>
+ * @param <T> The type of messages being sent.
  */
 public class Mailbox<T> {
 
-    private final java.util.ArrayList<T> messages;
+    private final List<T> messages;
     private boolean halt;
 
     /**
@@ -32,7 +34,7 @@ public class Mailbox<T> {
     /**
      * Get the size.
      *
-     * @return
+     * @return the number of messages waiting to be processed.
      */
     public synchronized int size() {
         return messages.size();
@@ -52,7 +54,7 @@ public class Mailbox<T> {
      * Add a message to the queue, notifying any waiting processes that a
      * message is available.
      *
-     * @param inMsg
+     * @param inMsg a new message to process.
      */
     public synchronized void addMessage(T inMsg) {
         if (!halt) {
@@ -64,7 +66,7 @@ public class Mailbox<T> {
     /**
      * Receive a message from the queue.
      *
-     * @return
+     * @return the next message to process once one arrives.
      */
     public synchronized T getMessage() {
         if (halt) {
@@ -88,9 +90,9 @@ public class Mailbox<T> {
     /**
      * Get all messages in the mailbox.
      *
-     * @return
+     * @return all waiting messages to process.
      */
-    public synchronized ArrayList<T> getMessages() {
+    public synchronized Collection<T> getMessages() {
         if (halt) {
             return null;
         }
@@ -105,7 +107,7 @@ public class Mailbox<T> {
                 return null;
             }
         }
-        ArrayList<T> ret = new ArrayList<>(messages);
+        Collection<T> ret = new ArrayList<>(messages);
         messages.clear();
         return ret;
     }
@@ -113,7 +115,7 @@ public class Mailbox<T> {
     /**
      * Is the mailbox halted?
      *
-     * @return
+     * @return true if halted, false otherwise.
      */
     public boolean isHalted() {
         return halt;

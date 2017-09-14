@@ -12,6 +12,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TimerTask;
 import java.util.logging.Filter;
 import java.util.logging.Formatter;
@@ -370,9 +371,11 @@ public final class SwingComponentHandler extends Handler {
     }
 
     /**
-    * For testing of publish method.
-    */
-    public ArrayList<LogRecord> getRecords() {
+     * For testing of publish method.
+     *
+     * @return the list of records to process.
+     */
+    public List<LogRecord> getRecords() {
         return records;
     }
 }

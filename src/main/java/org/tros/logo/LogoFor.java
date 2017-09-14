@@ -58,8 +58,8 @@ class LogoFor extends LogoBlock {
     /**
      * Process the for loop.
      *
-     * @param scope
-     * @return
+     * @param scope the current scope of the program.
+     * @return a return value of success.
      */
     @Override
     public ReturnValue process(Scope scope) {

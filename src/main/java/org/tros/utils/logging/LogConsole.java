@@ -45,7 +45,7 @@ public final class LogConsole extends JFrame {
     /**
      * Constructor.
      *
-     * @param level
+     * @param level the level to log at.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     private LogConsole(Level level) {

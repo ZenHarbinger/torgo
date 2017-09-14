@@ -21,12 +21,12 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 public class ColorConverter implements Converter, ConverterRegister {
 
     /**
-     * Convert.
+     * Converts a string to color and vice versa.
      *
-     * @param <T>
-     * @param type
-     * @param value
-     * @return
+     * @param <T> type
+     * @param type the target type
+     * @param value the current value
+     * @return new instance of a class.
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -41,7 +41,9 @@ public class ColorConverter implements Converter, ConverterRegister {
         } else {
             try {
                 return (T) Color.class.getField(value.toString()).get(null);
-            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            } catch (NoSuchFieldException ex) {
+                return (T) Color.decode(value.toString());
+            } catch (SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             }
             return (T) Color.decode(value.toString());
         }
@@ -50,7 +52,7 @@ public class ColorConverter implements Converter, ConverterRegister {
     /**
      * Register the conversion types.
      *
-     * @param convertUtilsBean
+     * @param convertUtilsBean registrar.
      */
     @Override
     public void register(ConvertUtilsBean convertUtilsBean) {
@@ -63,11 +65,11 @@ public class ColorConverter implements Converter, ConverterRegister {
     /**
      * Get provided conversions.
      *
-     * @return
+     * @return list of supported conversions.
      */
     @Override
     public List<ImmutablePair<Class<?>, Class<?>>> getConversions() {
-        ArrayList<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<>();
+        List<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<>();
         ret.add(new ImmutablePair<>(String.class, Color.class));
         ret.add(new ImmutablePair<>(Color.class, String.class));
         return ret;

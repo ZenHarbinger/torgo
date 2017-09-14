@@ -33,7 +33,7 @@ class LogoProg extends LogoBlock {
     /**
      * Constructor.
      *
-     * @param ctx
+     * @param ctx the parser context from antlr.
      */
     protected LogoProg(ParserRuleContext ctx) {
         super(ctx);
@@ -44,8 +44,8 @@ class LogoProg extends LogoBlock {
      * to the program and thus differs from a 'LogoBlock' by needing to do an
      * initial scope.push().
      *
-     * @param scope
-     * @return
+     * @param scope the current scope of the program.
+     * @return the result of processing the block.
      */
     @Override
     public ReturnValue process(Scope scope) {

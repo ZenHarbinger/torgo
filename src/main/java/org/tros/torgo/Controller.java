@@ -39,21 +39,21 @@ public interface Controller {
     /**
      * Open a specified file.
      *
-     * @param file
+     * @param file the file to open.
      */
     void openFile(File file);
 
     /**
      * Open a specified location based on URL.
      *
-     * @param file
+     * @param file the URL to open.
      */
     void openFile(URL file);
 
     /**
      * Return the file that is open.  Null if no file open.
      *
-     * @return
+     * @return the file that was read.
      */
     File getFile();
 
@@ -110,56 +110,56 @@ public interface Controller {
     /**
      * Insert a command into the source.
      *
-     * @param command
+     * @param command a string command to insert into the source.
      */
     void insertCommand(String command);
 
     /**
      * Add a controller listener.
      *
-     * @param listener
+     * @param listener the listener to add.
      */
     void addControllerListener(ControllerListener listener);
 
     /**
      * Remove Controller Listener.
      *
-     * @param listener
+     * @param listener the listener to remove.
      */
     void removeControllerListener(ControllerListener listener);
 
     /**
      * Add an interpreter listener.
      *
-     * @param listener
+     * @param listener the listener to add.
      */
     void addInterpreterListener(InterpreterListener listener);
 
     /**
      * Remove an interpreter listener.
      *
-     * @param listener
+     * @param listener the listener to remove.
      */
     void removeInterpreterListener(InterpreterListener listener);
 
     /**
      * Set the source for the interpreter.
      *
-     * @param src
+     * @param src the source to interpret.
      */
     void setSource(String src);
 
     /**
      * Set the source for the interpreter.
      *
-     * @return
+     * @return the source to interpret.
      */
     String getSource();
 
     /**
      * Get the language of the interpreter.
      *
-     * @return
+     * @return the language of the source to interpret.
      */
     String getLang();
 
@@ -171,14 +171,14 @@ public interface Controller {
     /**
      * Enable.
      *
-     * @param name
+     * @param name the interpreter that is enabled.
      */
     void enable(String name);
 
     /**
      * Disable.
      *
-     * @param name
+     * @param name the interpreter to disable.
      */
     void disable(String name);
 }

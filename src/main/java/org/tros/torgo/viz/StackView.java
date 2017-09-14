@@ -75,9 +75,9 @@ public class StackView implements InterpreterVisualization {
         /**
          * Constructor.
          *
-         * @param cb
-         * @param depth
-         * @param scope
+         * @param cb the current block.
+         * @param depth the depth of the stack.
+         * @param scope the scope.
          */
         public ScopeItem(CodeBlock cb, int depth, Scope scope) {
             super();
@@ -89,7 +89,7 @@ public class StackView implements InterpreterVisualization {
         /**
          * String displayed in the list.
          *
-         * @return
+         * @return the current block or function.
          */
         @Override
         public String toString() {
@@ -102,7 +102,7 @@ public class StackView implements InterpreterVisualization {
 
         /**
          *
-         * @return
+         * @return a string.
          */
         public String getToolTip() {
             TreeMap<String, InterpreterValue> vars = new TreeMap<>(scope.variablesPeek(depth));
@@ -119,7 +119,7 @@ public class StackView implements InterpreterVisualization {
          * Create the SliceWatchFrame if one does not exist, otherwise return
          * the one that already exists.
          *
-         * @return
+         * @return a new frame.
          */
         public SliceWatchFrame createWatchFrame() {
             if (swf == null) {
@@ -149,7 +149,7 @@ public class StackView implements InterpreterVisualization {
         /**
          * Constructor.
          *
-         * @param item
+         * @param item a scope item.
          */
         public SliceWatchFrame(ScopeItem item) {
             this.item = item;
@@ -161,7 +161,7 @@ public class StackView implements InterpreterVisualization {
         /**
          * Refresh the contents of the frame.
          *
-         * @param scope
+         * @param scope the current scope of the program.
          */
         @Override
         public final void refresh(Scope scope) {
@@ -204,7 +204,7 @@ public class StackView implements InterpreterVisualization {
         /**
          * Constructor.
          *
-         * @param scope
+         * @param scope the current scope of the program.
          */
         public VariableWatchFrame(Scope scope) {
             super("Variable-Watch");
@@ -220,7 +220,7 @@ public class StackView implements InterpreterVisualization {
         /**
          * Refresh all values in this frame.
          *
-         * @param scope
+         * @param scope the current scope of the program.
          */
         @Override
         public final void refresh(Scope scope) {
@@ -275,7 +275,7 @@ public class StackView implements InterpreterVisualization {
     /**
      * Create a new visualization.
      *
-     * @return
+     * @return a new stack view visualization.
      */
     @Override
     public InterpreterVisualization create() {
@@ -285,7 +285,7 @@ public class StackView implements InterpreterVisualization {
     /**
      * Called to get the display name.
      *
-     * @return
+     * @return the class name for display.
      */
     @Override
     public String getName() {
@@ -306,9 +306,9 @@ public class StackView implements InterpreterVisualization {
     /**
      * Called when executing.
      *
-     * @param name
-     * @param controller
-     * @param interpreter
+     * @param name the name.
+     * @param controller the controller.
+     * @param interpreter the interpreter.
      */
     @Override
     public void watch(String name, final Controller controller, InterpreterThread interpreter) {
@@ -340,7 +340,7 @@ public class StackView implements InterpreterVisualization {
 
             /**
              *
-             * @param e
+             * @param e error handling.
              */
             @Override
             public void error(Exception e) {
@@ -348,7 +348,7 @@ public class StackView implements InterpreterVisualization {
 
             /**
              *
-             * @param msg
+             * @param msg message.
              */
             @Override
             public void message(String msg) {
@@ -356,8 +356,8 @@ public class StackView implements InterpreterVisualization {
 
             /**
              *
-             * @param block
-             * @param scope
+             * @param block the current block.
+             * @param scope the current scope of the program.
              */
             @Override
             public void currStatement(CodeBlock block, Scope scope) {
@@ -376,7 +376,7 @@ public class StackView implements InterpreterVisualization {
             /**
              * Show a tool tip.
              *
-             * @param e
+             * @param e the mouse event.
              */
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -392,7 +392,7 @@ public class StackView implements InterpreterVisualization {
             /**
              * Pop up a frame with the variables at the specified stack point.
              *
-             * @param evt
+             * @param evt the mouse event.
              */
             @Override
             public void mouseClicked(final MouseEvent evt) {
@@ -430,8 +430,8 @@ public class StackView implements InterpreterVisualization {
             /**
              * Populate the list.
              *
-             * @param scope
-             * @param block
+             * @param scope the current scope of the program.
+             * @param block the block.
              */
             @Override
             public void scopePopped(Scope scope, final CodeBlock block) {
@@ -452,8 +452,8 @@ public class StackView implements InterpreterVisualization {
             /**
              * Remove from the list.
              *
-             * @param scope
-             * @param block
+             * @param scope the current scope of the program.
+             * @param block the block.
              */
             @Override
             public void scopePushed(final Scope scope, final CodeBlock block) {
@@ -479,9 +479,9 @@ public class StackView implements InterpreterVisualization {
             /**
              * Update any viz of the scope.
              *
-             * @param scope
-             * @param name
-             * @param value
+             * @param scope the current scope of the program.
+             * @param name the name.
+             * @param value the value.
              */
             @Override
             public void variableSet(final Scope scope, String name, InterpreterValue value) {

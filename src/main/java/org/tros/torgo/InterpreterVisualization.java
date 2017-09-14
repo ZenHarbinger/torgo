@@ -26,23 +26,23 @@ public interface InterpreterVisualization {
     /**
      * Do the visualization.
      *
-     * @param name
-     * @param controller
-     * @param interpreter
+     * @param name the name of the visualization.
+     * @param controller the controller.
+     * @param interpreter the interpreter thread.
      */
     void watch(String name, Controller controller, InterpreterThread interpreter);
 
     /**
      * Abstract Factory Method.
      *
-     * @return
+     * @return a new visualization.
      */
     InterpreterVisualization create();
 
     /**
      * The name of the visualization.
      *
-     * @return
+     * @return the name of the visualization.
      */
     String getName();
 }

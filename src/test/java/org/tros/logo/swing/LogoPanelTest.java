@@ -22,16 +22,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.tros.logo.DebugInterpreterTest;
-import org.tros.torgo.TorgoInfo;
 import org.tros.utils.logging.Logging;
 import static org.junit.Assert.*;
-import org.tros.torgo.TorgoTextConsole;
-import org.tros.logo.LogoController;
 import org.tros.torgo.Controller;
 import java.awt.Font;
-import java.lang.reflect.Method;
-import org.tros.logo.swing.LogoPanel;
-import java.awt.Color;
+import org.tros.torgo.TorgoToolkit;
 
 /**
  *
@@ -42,7 +37,7 @@ public class LogoPanelTest {
     private final static Logger LOGGER;
 
     static {
-        Logging.initLogging(TorgoInfo.INSTANCE);
+        Logging.initLogging(TorgoToolkit.getBuildInfo());
         LOGGER = Logger.getLogger(DebugInterpreterTest.class.getName());
     }
 

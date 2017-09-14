@@ -11,6 +11,7 @@ import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.tros.utils.converters.UtilsBeanFactory;
+import org.tros.utils.logging.Logging;
 
 /**
  * Provides conversion from one object type to another.
@@ -24,13 +25,18 @@ public final class TypeHandler {
 
     public static final FastDateFormat DEFAULT_DATE_FORMAT = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_FORMAT;
 
+    /**
+     * Constructor.
+     */
+    @CoverageIgnore
     private TypeHandler() {
     }
+
     /**
      * Calendar to string.
      *
-     * @param value
-     * @return
+     * @param value Calendar to convert.
+     * @return String value.
      */
     public static String dateToString(final java.util.Calendar value) {
         return DEFAULT_DATE_FORMAT.format(value.getTime());
@@ -39,8 +45,8 @@ public final class TypeHandler {
     /**
      * Date to string.
      *
-     * @param value
-     * @return
+     * @param value Date to convert.
+     * @return String value.
      */
     public static String dateToString(final java.util.Date value) {
         return DEFAULT_DATE_FORMAT.format(value);
@@ -49,9 +55,9 @@ public final class TypeHandler {
     /**
      * Date from string.
      *
-     * @param value
-     * @return
-     * @throws ParseException
+     * @param value String value
+     * @return Date representation
+     * @throws ParseException Error reading String as Date.
      */
     public static java.util.Date dateFromString(String value) throws ParseException {
         return DEFAULT_DATE_FORMAT.parse(value);
@@ -60,9 +66,9 @@ public final class TypeHandler {
     /**
      * String to calendar.
      *
-     * @param value
-     * @return
-     * @throws ParseException
+     * @param value String value
+     * @return Calendar representation.
+     * @throws ParseException Error reading String as Calendar.
      */
     public static java.util.Calendar calendarFromString(final String value) throws ParseException {
         java.util.Calendar c = java.util.Calendar.getInstance();
@@ -73,8 +79,8 @@ public final class TypeHandler {
     /**
      * Color to hex string.
      *
-     * @param color
-     * @return
+     * @param color The color to convert.
+     * @return the hex representation.
      */
     public static String colorToHex(final java.awt.Color color) {
         return toString(color);
@@ -83,15 +89,15 @@ public final class TypeHandler {
     /**
      * Convert string to specified object type.
      *
-     * @param <T>
-     * @param type
-     * @param val
-     * @return
+     * @param <T> the type.
+     * @param type the type.
+     * @param val the String representation.
+     * @return an instance of the type.
      */
     public static <T> T fromString(final Class<T> type, final String val) {
         T o = convert(type, val);
         if (o == null) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(TypeHandler.class).warn("Cannot convert {0} to {1}", new Object[]{val, type.getName()});
+            Logging.getLogFactory().getLogger(TypeHandler.class).warn("Cannot convert {0} to {1}", new Object[]{val, type.getName()});
         }
         return o;
     }
@@ -99,8 +105,8 @@ public final class TypeHandler {
     /**
      * Convert object to String. All objects convert to string.
      *
-     * @param val
-     * @return
+     * @param val the object to convert to String.
+     * @return A string representation of the object.
      */
     public static String toString(final Object val) {
         String o = (String) convert(String.class, val);
@@ -110,10 +116,10 @@ public final class TypeHandler {
     /**
      * Convert an object to a specified type.
      *
-     * @param <T>
-     * @param to
-     * @param val
-     * @return
+     * @param <T> the type.
+     * @param to to target type.
+     * @param val the from value.
+     * @return a new object of converted values.
      */
     public static <T> T convert(Class<T> to, Object val) {
         Converter lookup = UtilsBeanFactory.getConverter(val.getClass(), to);

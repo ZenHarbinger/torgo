@@ -40,6 +40,8 @@ final class LexicalListener extends LogoBaseListener implements LexicalAnalyzer 
 
     /**
      * Hidden constructor, force use of "lexicalAnalysis" method.
+     *
+     * @param canvas the drawing surface for display.
      */
     private LexicalListener(LogoCanvas canvas) {
         this.canvas = canvas;
@@ -48,7 +50,8 @@ final class LexicalListener extends LogoBaseListener implements LexicalAnalyzer 
     /**
      * Walk the parse tree and build a command structure to interpret.
      *
-     * @param tree
+     * @param tree the parse tree from antlr.
+     * @param canvas the drawing surface for display.
      * @return
      */
     protected static LexicalAnalyzer lexicalAnalysis(ParseTree tree, LogoCanvas canvas) {
@@ -283,7 +286,7 @@ final class LexicalListener extends LogoBaseListener implements LexicalAnalyzer 
     /**
      * Gets the CodeBlock object that is the beginning of the program.
      *
-     * @return
+     * @return the starting point in the program.
      */
     @Override
     public CodeBlock getEntryPoint() {
@@ -293,7 +296,7 @@ final class LexicalListener extends LogoBaseListener implements LexicalAnalyzer 
     /**
      * Gets all of the CodeBlock objects defined by the program.
      *
-     * @return
+     * @return the collection of blocks in the program.
      */
     @Override
     public Collection<CodeBlock> getCodeBlocks() {

@@ -34,7 +34,7 @@ import java.awt.Color;
  * this is called "GUIConsoleInterface" it might just as well be used by a more
  * sophisticated text-only command line.
  * <p>
- * Note: we may want to express the command line history, editing, and cut &
+ * Note: we may want to express the command line history, editing, and cut &amp;
  * paste functionality here as well at some point.
  */
 public interface GUIConsoleInterface extends ConsoleInterface {
@@ -45,7 +45,7 @@ public interface GUIConsoleInterface extends ConsoleInterface {
     /**
      * e.g. the wait cursor
      *
-     * @param on
+     * @param on wait for feedback.
      */
     void setWaitFeedback(boolean on);
 }

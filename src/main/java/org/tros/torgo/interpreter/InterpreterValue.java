@@ -31,8 +31,8 @@ public class InterpreterValue {
     /**
      * Constructor.
      *
-     * @param type
-     * @param value
+     * @param type the type.
+     * @param value the value.
      */
     public InterpreterValue(InterpreterType type, Object value) {
         this.value = value;
@@ -42,7 +42,7 @@ public class InterpreterValue {
     /**
      * Get the object value.
      *
-     * @return
+     * @return the value.
      */
     public Object getValue() {
         return value;
@@ -51,7 +51,7 @@ public class InterpreterValue {
     /**
      * Get the type.
      *
-     * @return
+     * @return the type.
      */
     public InterpreterType getType() {
         return type;
@@ -60,7 +60,7 @@ public class InterpreterValue {
     /**
      * To String.
      *
-     * @return
+     * @return the value.
      */
     @Override
     public String toString() {

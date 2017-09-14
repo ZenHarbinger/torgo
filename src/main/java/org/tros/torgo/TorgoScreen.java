@@ -31,7 +31,7 @@ public interface TorgoScreen {
     /**
      * Get a Swing component to put on the screen.
      *
-     * @return
+     * @return the swing component to put on the screen.
      */
     Component getComponent();
 }

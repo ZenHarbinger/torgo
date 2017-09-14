@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.TorgoToolkit;
 import org.tros.utils.logging.Logging;
 
 /**
@@ -34,7 +34,7 @@ public class PathUtilsTest {
     private final static Logger LOGGER;
     
     static {
-        Logging.initLogging(TorgoInfo.INSTANCE);
+        Logging.initLogging(TorgoToolkit.getBuildInfo());
         LOGGER = Logger.getLogger(PathUtilsTest.class.getName());
     }
 
@@ -62,8 +62,8 @@ public class PathUtilsTest {
      */
     @Test
     public void testConstructor() {
-        PathUtils pu = new PathUtils();
-        assertNotNull(pu);
+//        PathUtils pu = new PathUtils();
+//        assertNotNull(pu);
     }
 
     /**
@@ -93,7 +93,7 @@ public class PathUtilsTest {
     @Test
     public void testGetApplicationDirectory() {
         LOGGER.info("getApplicationDirectory");
-        String result = PathUtils.getApplicationDirectory(TorgoInfo.INSTANCE);
+        String result = PathUtils.getApplicationDirectory(TorgoToolkit.getBuildInfo());
         assertNotNull(result);
     }
 
@@ -103,7 +103,7 @@ public class PathUtilsTest {
     @Test
     public void testGetApplicationEtcDirectory() {
         LOGGER.info("getApplicationEtcDirectory");
-        String result = PathUtils.getApplicationEtcDirectory(TorgoInfo.INSTANCE);
+        String result = PathUtils.getApplicationEtcDirectory(TorgoToolkit.getBuildInfo());
         assertNotNull(result);
     }
 
@@ -113,7 +113,7 @@ public class PathUtilsTest {
     @Test
     public void testGetApplicationLibDirectory() {
         LOGGER.info("getApplicationLibDirectory");
-        String result = PathUtils.getApplicationLibDirectory(TorgoInfo.INSTANCE);
+        String result = PathUtils.getApplicationLibDirectory(TorgoToolkit.getBuildInfo());
         assertNotNull(result);
     }
 
@@ -123,7 +123,7 @@ public class PathUtilsTest {
     @Test
     public void testGetApplicationConfigDirectory() {
         LOGGER.info("getApplicationConfigDirectory");
-        String result = PathUtils.getApplicationConfigDirectory(TorgoInfo.INSTANCE);
+        String result = PathUtils.getApplicationConfigDirectory(TorgoToolkit.getBuildInfo());
         assertNotNull(result);
     }
 
@@ -133,7 +133,7 @@ public class PathUtilsTest {
     @Test
     public void testGetLogDirectory() {
         LOGGER.info("getLogDirectory");
-        String result = PathUtils.getLogDirectory(TorgoInfo.INSTANCE);
+        String result = PathUtils.getLogDirectory(TorgoToolkit.getBuildInfo());
         assertNotNull(result);
     }
 }

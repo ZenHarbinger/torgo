@@ -20,16 +20,13 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.tros.torgo.TorgoInfo;
-import org.tros.utils.logging.Logging;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.logo.DynamicLogoController;
 import org.tros.torgo.swing.TorgoToolBarTest;
 import java.util.logging.LogRecord;
 import java.util.logging.Level;
 import java.lang.reflect.Method;
-import org.tros.utils.logging.SwingComponentHandler;
+import org.tros.torgo.TorgoToolkit;
 /**
  *
  * @author Samuel Washburn
@@ -38,7 +35,7 @@ public class SwingComponentHandlerTest {
     private final static Logger LOGGER;
     
     static {
-        Logging.initLogging(TorgoInfo.INSTANCE);
+        Logging.initLogging(TorgoToolkit.getBuildInfo());
         LOGGER = Logger.getLogger(TorgoToolBarTest.class.getName());
     }
 

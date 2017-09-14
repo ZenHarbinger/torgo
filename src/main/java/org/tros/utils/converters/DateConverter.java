@@ -15,6 +15,8 @@ import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.tros.utils.TypeHandler;
+import org.tros.utils.logging.Logger;
+import org.tros.utils.logging.Logging;
 
 /**
  * Convert Date/Calendar to/from String.
@@ -23,6 +25,8 @@ import org.tros.utils.TypeHandler;
  */
 public class DateConverter implements Converter, ConverterRegister {
 
+    private static final Logger LOGGER = Logging.getLogFactory().getLogger(DateConverter.class);
+
     /**
      * Constructor.
      */
@@ -30,12 +34,12 @@ public class DateConverter implements Converter, ConverterRegister {
     }
 
     /**
-     * Convert.
+     * Converts a string to date or calendar and vice versa.
      *
-     * @param <T>
-     * @param type
-     * @param value
-     * @return
+     * @param <T> type
+     * @param type the target type
+     * @param value the current value
+     * @return new instance of a class.
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -54,14 +58,14 @@ public class DateConverter implements Converter, ConverterRegister {
             try {
                 return (T) TypeHandler.calendarFromString(val);
             } catch (ParseException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(DateConverter.class).fatal(null, ex);
+                LOGGER.fatal(null, ex);
             }
         } else if (Date.class.isAssignableFrom(type)) {
             String val = (String) value;
             try {
                 return (T) TypeHandler.dateFromString(val);
             } catch (ParseException ex) {
-                org.tros.utils.logging.Logging.getLogFactory().getLogger(DateConverter.class).fatal(null, ex);
+                LOGGER.fatal(null, ex);
             }
         }
         return (T) value.toString();
@@ -70,11 +74,11 @@ public class DateConverter implements Converter, ConverterRegister {
     /**
      * Get provided conversions.
      *
-     * @return
+     * @return list of supported conversions.
      */
     @Override
     public List<ImmutablePair<Class<?>, Class<?>>> getConversions() {
-        ArrayList<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<>();
+        List<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<>();
         ret.add(new ImmutablePair<>(String.class, Date.class));
         ret.add(new ImmutablePair<>(Date.class, String.class));
         ret.add(new ImmutablePair<>(String.class, Calendar.class));
@@ -83,9 +87,9 @@ public class DateConverter implements Converter, ConverterRegister {
     }
 
     /**
-     * Register conversion types.
+     * Register the conversion types.
      *
-     * @param convertUtilsBean
+     * @param convertUtilsBean registrar.
      */
     @Override
     public void register(ConvertUtilsBean convertUtilsBean) {
@@ -96,12 +100,4 @@ public class DateConverter implements Converter, ConverterRegister {
         convertUtilsBean.register(this, Calendar.class);
         convertUtilsBean.register(this, Date.class);
     }
-
-//    public static void main(String[] args) {
-//        Converter lookup = UtilsBeanFactory.getConverter(Date.class, String.class);
-//        String hex = TypeHandler.dateToString(Calendar.getInstance());
-//
-//        Date convert = lookup.convert(Date.class, hex);
-//        System.out.println(convert.toString());
-//    }
 }

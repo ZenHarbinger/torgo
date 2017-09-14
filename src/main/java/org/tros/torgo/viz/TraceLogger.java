@@ -47,7 +47,7 @@ public class TraceLogger implements InterpreterVisualization {
     /**
      * Create a new instance.
      *
-     * @return
+     * @return a new trace logger.
      */
     @Override
     public InterpreterVisualization create() {
@@ -57,7 +57,7 @@ public class TraceLogger implements InterpreterVisualization {
     /**
      * Get the name of the type (for display).
      *
-     * @return
+     * @return the trace logger class name.
      */
     @Override
     public String getName() {
@@ -67,9 +67,9 @@ public class TraceLogger implements InterpreterVisualization {
     /**
      * Do the work.
      *
-     * @param name
-     * @param controller
-     * @param interpreter
+     * @param name the name.
+     * @param controller the controller.
+     * @param interpreter the interpreter.
      */
     @Override
     public void watch(final String name, final Controller controller, final InterpreterThread interpreter) {
@@ -100,8 +100,8 @@ public class TraceLogger implements InterpreterVisualization {
             /**
              * This is where the bulk of the code will go.
              *
-             * @param block
-             * @param scope
+             * @param block the block.
+             * @param scope the scope.
              */
             @Override
             public void currStatement(CodeBlock block, Scope scope) {

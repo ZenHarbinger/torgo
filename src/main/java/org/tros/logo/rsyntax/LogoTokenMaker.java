@@ -714,6 +714,8 @@ public class LogoTokenMaker extends AbstractJFlexTokenMaker {
 
   /**
    * Closes the input stream.
+   * 
+   * @throws java.io.IOException error on close.
    */
   public final void yyclose() throws java.io.IOException {
     zzAtEOF = true;            /* indicate end of file */
@@ -726,6 +728,8 @@ public class LogoTokenMaker extends AbstractJFlexTokenMaker {
 
   /**
    * Returns the current lexical state.
+   * 
+   * @return the current lexical state.
    */
   public final int yystate() {
     return zzLexicalState;
@@ -744,6 +748,8 @@ public class LogoTokenMaker extends AbstractJFlexTokenMaker {
 
   /**
    * Returns the text matched by the current regular expression.
+   * 
+   * @return the text matched by the current regular expression.
    */
   public final String yytext() {
     return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
@@ -768,6 +774,8 @@ public class LogoTokenMaker extends AbstractJFlexTokenMaker {
 
   /**
    * Returns the length of the matched text region.
+   * 
+   * @return the length of the matched text region.
    */
   public final int yylength() {
     return zzMarkedPos-zzStartRead;

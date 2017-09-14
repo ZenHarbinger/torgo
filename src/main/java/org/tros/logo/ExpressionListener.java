@@ -41,7 +41,7 @@ final class ExpressionListener extends LogoBaseListener {
     /**
      * Hidden constructor, forces use of "evaluateDouble" method.
      *
-     * @param scope
+     * @param scope the scope at the current point in execution.
      */
     private ExpressionListener(Scope scope) {
         this.scope = scope;
@@ -51,8 +51,8 @@ final class ExpressionListener extends LogoBaseListener {
     /**
      * Evaluate an expression as defined in the logo.g4 grammar.
      *
-     * @param scope
-     * @param ctx
+     * @param scope the scope at the current point in execution.
+     * @param ctx the parse tree context from antlr
      * @return
      */
     protected static InterpreterValue evaluate(Scope scope, ParseTree ctx) {

@@ -27,15 +27,15 @@ public interface CodeFunction extends CodeBlock {
     /**
      * The name of the function.
      *
-     * @return
+     * @return the name of the function.
      */
     String getFunctionName();
 
     /**
      * Run function w/o any parameters.
      *
-     * @param scope
-     * @return
+     * @param scope the current scope of the program.
+     * @return the value after interpreting the function.
      */
     @Override
     ReturnValue process(Scope scope);
@@ -43,9 +43,9 @@ public interface CodeFunction extends CodeBlock {
     /**
      * Process with parameters.
      *
-     * @param scope
-     * @param params
-     * @return
+     * @param scope the current scope of the program.
+     * @param params a map of parameters passed into the function.
+     * @return the value after interpreting the function.
      */
     ReturnValue process(Scope scope, Map<String, InterpreterValue> params);
 }

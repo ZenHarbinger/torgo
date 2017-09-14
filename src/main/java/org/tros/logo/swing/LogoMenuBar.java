@@ -80,9 +80,9 @@ public final class LogoMenuBar extends TorgoMenuBar {
     /**
      * Constructor.
      *
-     * @param parent
-     * @param controller
-     * @param canvas
+     * @param parent the parent component.
+     * @param controller the controller.
+     * @param canvas the canvas.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public LogoMenuBar(Component parent, Controller controller, LogoCanvas canvas) {
@@ -110,10 +110,10 @@ public final class LogoMenuBar extends TorgoMenuBar {
      * Create a SVG image. The image handler will write all images files to
      * "res/images".
      *
-     * @param p
-     * @param outStream
-     * @throws UnsupportedEncodingException
-     * @throws SVGGraphics2DIOException
+     * @param p the drawable component.
+     * @param outStream the the output stream.
+     * @throws UnsupportedEncodingException error on unsupported encoding.
+     * @throws SVGGraphics2DIOException error on error to conversion.
      */
     private void generateSVG(Drawable p, OutputStream outStream) throws UnsupportedEncodingException, SVGGraphics2DIOException {
         DOMImplementation domImpl
@@ -138,12 +138,12 @@ public final class LogoMenuBar extends TorgoMenuBar {
     /**
      * Create an animated GIF.
      *
-     * @param p
-     * @param canvas
-     * @param filename
-     * @throws UnsupportedEncodingException
-     * @throws SVGGraphics2DIOException
-     * @throws IOException
+     * @param p the drawable component.
+     * @param canvas the canvas.
+     * @param filename the file to write to.
+     * @throws UnsupportedEncodingException error on unsupported encoding.
+     * @throws SVGGraphics2DIOException error on error to conversion.
+     * @throws IOException error writing to file.
      */
     private void generateGIF(final Drawable p, final BufferedImageProvider canvas, String filename) throws UnsupportedEncodingException, SVGGraphics2DIOException, IOException {
         final ImageOutputStream output = new FileImageOutputStream(new File(filename));
@@ -175,8 +175,8 @@ public final class LogoMenuBar extends TorgoMenuBar {
     /**
      * Set up the menus for examples.
      *
-     * @param name
-     * @param base
+     * @param name the name.
+     * @param base the base.
      * @return
      */
     private JMenu setupMenu(String name, String base) {
@@ -214,7 +214,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
     /**
      * Set up the export menu.
      *
-     * @return
+     * @return a new menu.
      */
     private JMenu setupExportMenu() {
         JMenu exportMenu = new JMenu(Localization.getLocalizedString("ExportMenu"));
@@ -323,7 +323,7 @@ public final class LogoMenuBar extends TorgoMenuBar {
     /**
      * Set up the tools menu.
      *
-     * @return
+     * @return a new menu.
      */
     private JMenu setupToolsMenu() {
         toolsPenColorChooser = new JMenuItem(Localization.getLocalizedString("ToolsPenColorChooser"));

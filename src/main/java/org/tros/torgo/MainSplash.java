@@ -75,7 +75,7 @@ public final class MainSplash {
     /**
      * Display text in status area of Splash. Note: no validation it will fit.
      *
-     * @param str - text to be displayed
+     * @param str text to be displayed
      */
     public static void splashText(String str) {
         if (mySplash != null && mySplash.isVisible()) {
@@ -94,7 +94,7 @@ public final class MainSplash {
      *
      * This number can be updated.
      *
-     * @param steps
+     * @param steps the number of steps to fill in.
      */
     public static void setNumSteps(int steps) {
         if (steps > 0) {
@@ -114,7 +114,7 @@ public final class MainSplash {
     /**
      * Add a specified number of steps to the completed.
      *
-     * @param steps
+     * @param steps the number of steps to add.
      */
     public static void addSteps(int steps) {
         if (steps > 0) {
@@ -125,7 +125,7 @@ public final class MainSplash {
     /**
      * Update splash progress.
      *
-     * @param percent
+     * @param percent the percent to fill in.
      */
     private static void splashProgress(double percent) {
         if (mySplash != null && mySplash.isVisible()) {

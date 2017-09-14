@@ -18,6 +18,7 @@ import javax.swing.JFrame;
  * @author matta
  */
 public class NamedWindow extends JFrame {
+
     public static final int DEFAULT_WIDTH = 1152;
     public static final int DEFAULT_HEIGHT = 864;
     private boolean checkTesting = false;
@@ -31,9 +32,9 @@ public class NamedWindow extends JFrame {
     /**
      * Constructor.
      *
-     * @param name
-     * @param width
-     * @param height
+     * @param name the name of the window.
+     * @param width the width of the window.
+     * @param height the height of the window.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public NamedWindow(final String name, int width, int height) {
@@ -87,6 +88,7 @@ public class NamedWindow extends JFrame {
         });
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
     public void testOverrideMethods() {
         if (testing) {
             window = new NamedWindow("Yes", 100, 100);
@@ -100,17 +102,22 @@ public class NamedWindow extends JFrame {
             checkTesting = true;
         }
     }
+
     public void setTesting() {
-    	testing = true;
-    	checkTesting = false;
+        testing = true;
+        checkTesting = false;
     }
+
     public boolean getTestCheck() {
-    	return checkTesting;
+        return checkTesting;
     }
+
     public boolean getTest() {
-    	return testing;
+        return testing;
     }
+
     private static class CompListener implements ComponentListener {
+
         @Override
         public void componentResized(ComponentEvent e) {
         }

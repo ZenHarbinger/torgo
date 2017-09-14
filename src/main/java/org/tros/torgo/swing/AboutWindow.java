@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import org.tros.torgo.Main;
-import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.TorgoToolkit;
 import org.tros.torgo.UpdateChecker;
 import org.tros.utils.BuildInfo;
 import org.tros.utils.ImageUtils;
@@ -103,7 +103,7 @@ public class AboutWindow extends JDialog {
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new GridLayout(7, 1));
 
-        BuildInfo toroInfo = TorgoInfo.INSTANCE;
+        BuildInfo toroInfo = TorgoToolkit.getBuildInfo();
         torgoButton.setText(String.format("Torgo %s", toroInfo.getVersion()));
         torgoButton.setBorderPainted(false);
         torgoButton.setOpaque(false);
@@ -120,14 +120,14 @@ public class AboutWindow extends JDialog {
         l.setToolTipText(l.getText());
         textPanel.add(l);
 
-        apacheButton.setText(TorgoInfo.INSTANCE.getCopy());
+        apacheButton.setText(TorgoToolkit.getBuildInfo().getCopy());
         apacheButton.setBorderPainted(false);
         apacheButton.setOpaque(false);
         apacheButton.setToolTipText(APACHE_LICENSE_ADDRESS);
         textPanel.add(apacheButton);
 
         JTextArea ta = new JTextArea();
-        ta.setText(TorgoInfo.INSTANCE.getAbout());
+        ta.setText(TorgoToolkit.getBuildInfo().getAbout());
         ta.setEditable(false);
         textPanel.add(ta);
 

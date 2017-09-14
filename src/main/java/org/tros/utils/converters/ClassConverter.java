@@ -11,20 +11,27 @@ import java.util.List;
 import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.tros.utils.logging.Logger;
+import org.tros.utils.logging.Logging;
 
 /**
+ * Converts a string to a Class type.
  *
  * @author matta
  */
 public class ClassConverter implements Converter, ConverterRegister {
 
+    private static final Logger LOGGER = Logging.getLogFactory().getLogger(ClassConverter.class);
+
     /**
-     * Convert.
+     * Convert an object to a class type.
      *
-     * @param <T>
-     * @param type
-     * @param value
-     * @return
+     * The object is created using Class.forName(value.toString());
+     *
+     * @param <T> type
+     * @param type the target type
+     * @param value the current value
+     * @return new instance of a class.
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -32,7 +39,7 @@ public class ClassConverter implements Converter, ConverterRegister {
         try {
             return (T) Class.forName(value.toString());
         } catch (ClassNotFoundException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(ClassConverter.class).fatal(null, ex);
+            LOGGER.fatal(null, ex);
         }
         return null;
     }
@@ -40,7 +47,7 @@ public class ClassConverter implements Converter, ConverterRegister {
     /**
      * Get the provided conversions.
      *
-     * @param convertUtilsBean
+     * @param convertUtilsBean register conversions.
      */
     @Override
     public void register(ConvertUtilsBean convertUtilsBean) {
@@ -51,11 +58,11 @@ public class ClassConverter implements Converter, ConverterRegister {
     /**
      * Get the conversion types.
      *
-     * @return
+     * @return conversions supported.
      */
     @Override
     public List<ImmutablePair<Class<?>, Class<?>>> getConversions() {
-        ArrayList<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<>();
+        List<ImmutablePair<Class<?>, Class<?>>> ret = new ArrayList<>();
         ret.add(new ImmutablePair<>(String.class, Class.class));
         return ret;
     }

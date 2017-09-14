@@ -26,14 +26,14 @@ public interface LexicalAnalyzer {
     /**
      * Code block representing the entry point to the interpreted script.
      *
-     * @return
+     * @return the starting point for the interpreted code.
      */
     CodeBlock getEntryPoint();
 
     /**
      * A collection of all code blocks defined in the script.
      *
-     * @return
+     * @return the collection of all blocks defined in the script.
      */
     Collection<CodeBlock> getCodeBlocks();
 }

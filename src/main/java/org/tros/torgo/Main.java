@@ -47,12 +47,12 @@ public final class Main {
     /**
      * Entry Point.
      *
-     * @param args
+     * @param args command line arguments.
      */
     public static void main(String[] args) {
         //initialize the logging
         MainSplash.splashInit();
-        org.tros.utils.logging.Logging.initLogging(TorgoInfo.INSTANCE);
+        org.tros.utils.logging.Logging.initLogging(TorgoToolkit.getBuildInfo());
         final org.tros.utils.logging.Logger logger = org.tros.utils.logging.Logging.getLogFactory().getLogger(Main.class);
 
         Options options = new Options();

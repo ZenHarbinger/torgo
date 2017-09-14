@@ -56,8 +56,8 @@ public class TorgoToolBar extends JToolBar implements ControllerListener {
     /**
      * Constructor.
      *
-     * @param parent
-     * @param controller
+     * @param parent the parent.
+     * @param controller the controller.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public TorgoToolBar(final Component parent, final Controller controller) {

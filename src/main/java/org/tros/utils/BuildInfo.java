@@ -32,4 +32,8 @@ public interface BuildInfo {
     String getCompany();
 
     void setCompany(String value);
+
+    String getCopy();
+
+    String getAbout();
 }

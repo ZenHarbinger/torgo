@@ -116,7 +116,7 @@ public class GifSequenceWriter {
      * Close this GifSequenceWriter object. This does not close the underlying
      * stream, just finishes off the GIF.
      *
-     * @throws java.io.IOException
+     * @throws java.io.IOException error writing to file.
      */
     public void close() throws IOException {
         gifWriter.endWriteSequence();

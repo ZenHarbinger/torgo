@@ -20,12 +20,15 @@ import java.util.HashMap;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.Set;
+import org.tros.utils.BuildInfo;
 import org.tros.utils.ResourceAccessor;
 
 /**
  * @author matta
  */
 public final class TorgoToolkit {
+
+    private static final TorgoInfo BUILD_INFO;
 
     private static final HashMap<String, Controller> CONTROLLER_MAP;
     private static final ServiceLoader<Controller> CONTROLLERS;
@@ -49,6 +52,7 @@ public final class TorgoToolkit {
      * Static constructor.
      */
     static {
+        BUILD_INFO = new TorgoInfo();
         CONTROLLER_MAP = new HashMap<>();
         CONTROLLERS = ServiceLoader.load(Controller.class);
         initController();
@@ -114,6 +118,10 @@ public final class TorgoToolkit {
             configExceptionTest3();
             LOGGER.warn(null, serviceError);
         }
+    }
+
+    public static BuildInfo getBuildInfo() {
+        return BUILD_INFO;
     }
 
     /**

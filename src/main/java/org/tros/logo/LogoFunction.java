@@ -38,8 +38,8 @@ class LogoFunction extends LogoBlock implements CodeFunction {
     /**
      * Constructor.
      *
-     * @param functionName
-     * @param ctx
+     * @param functionName the function name.
+     * @param ctx the parser context from antlr.
      */
     protected LogoFunction(String functionName, ParserRuleContext ctx) {
         super(ctx);
@@ -49,7 +49,7 @@ class LogoFunction extends LogoBlock implements CodeFunction {
     /**
      * Get the function name.
      *
-     * @return
+     * @return the function name.
      */
     @Override
     public String getFunctionName() {
@@ -59,8 +59,8 @@ class LogoFunction extends LogoBlock implements CodeFunction {
     /**
      * Process the function.
      *
-     * @param scope
-     * @return
+     * @param scope the current scope of the program.
+     * @return the value of the evaluated function.
      */
     @Override
     public ReturnValue process(Scope scope, Map<String, InterpreterValue> params) {

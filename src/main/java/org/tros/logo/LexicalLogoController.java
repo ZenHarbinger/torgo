@@ -35,7 +35,7 @@ public final class LexicalLogoController extends LogoController {
     /**
      * Get the supported language.
      *
-     * @return
+     * @return the name of the supported language.
      */
     @Override
     public String getLang() {

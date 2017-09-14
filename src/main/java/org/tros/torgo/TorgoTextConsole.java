@@ -29,7 +29,7 @@ public interface TorgoTextConsole {
     /**
      * Append to the output text area.
      *
-     * @param message
+     * @param message the message to put in the output text area.
      */
     void appendToOutputTextArea(String message);
 
@@ -41,14 +41,14 @@ public interface TorgoTextConsole {
     /**
      * Get the source.
      *
-     * @return
+     * @return the the source that is being interpreter.
      */
     String getSource();
 
     /**
      * Set the source.
      *
-     * @param source
+     * @param source set the source to be interpreted.
      */
     void setSource(String source);
 
@@ -60,14 +60,14 @@ public interface TorgoTextConsole {
     /**
      * Append a string onto the source.
      *
-     * @param source
+     * @param source source to append.
      */
     void appendToSource(String source);
 
     /**
      * Insert a string into the source.
      *
-     * @param source
+     * @param source source to insert.
      */
     void insertIntoSource(String source);
 //    default void insertIntoSource(String source) {
@@ -77,16 +77,16 @@ public interface TorgoTextConsole {
     /**
      * Go to position on the console.
      *
-     * @param position
+     * @param position the position/line number.
      */
     void gotoPosition(int position);
 
     /**
      * Highlight a section of text on the console.
      *
-     * @param line
-     * @param startChar
-     * @param endChar
+     * @param line the line.
+     * @param startChar the start position.
+     * @param endChar the end position.
      */
     void highlight(int line, int startChar, int endChar);
 
@@ -96,9 +96,9 @@ public interface TorgoTextConsole {
     void reset();
 
     /**
-     * Return the Swing component for this control.
+     * Return the Swing component(s) for this control.
      *
-     * @return
+     * @return the swing component(s) for this control.
      */
     ArrayList<ImmutablePair<String, Component>> getTorgoComponents();
 }

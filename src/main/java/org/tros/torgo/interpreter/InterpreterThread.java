@@ -38,8 +38,8 @@ public abstract class InterpreterThread extends Thread {
     /**
      * Constructor.
      *
-     * @param source
-     * @param scope
+     * @param source the source to interpret.
+     * @param scope the scope to use.
      */
     public InterpreterThread(String source, Scope scope) {
         this.scope = scope;
@@ -50,7 +50,7 @@ public abstract class InterpreterThread extends Thread {
     /**
      * Check to see if the thread is halted.
      *
-     * @return
+     * @return if the thread is halted.
      */
     public final boolean isHalted() {
         return monitor.isHalted();
@@ -66,7 +66,7 @@ public abstract class InterpreterThread extends Thread {
     /**
      * Add a specified listener.
      *
-     * @param listener
+     * @param listener the listener to add.
      */
     public final void addInterpreterListener(InterpreterListener listener) {
         listeners.addListener(listener);
@@ -75,7 +75,7 @@ public abstract class InterpreterThread extends Thread {
     /**
      * Remove a specified listener.
      *
-     * @param listener
+     * @param listener the listener to remove.
      */
     public final void removeInterpreterListener(InterpreterListener listener) {
         listeners.removeListener(listener);
@@ -85,8 +85,8 @@ public abstract class InterpreterThread extends Thread {
      * Get the lexical analysis results from the source. Uses ANTLR to parse and
      * set up for interpreting.
      *
-     * @param source
-     * @return
+     * @param source the source to process.
+     * @return a lexical analyzer.
      */
     protected abstract LexicalAnalyzer getLexicalAnalysis(String source);
 
@@ -124,8 +124,8 @@ public abstract class InterpreterThread extends Thread {
                 /**
                  * Pass on the currStatement event to any listeners.
                  *
-                 * @param block
-                 * @param scope
+                 * @param block the current block.
+                 * @param scope the current scope of the program.
                  */
                 @Override
                 public void currStatement(CodeBlock block, Scope scope) {
@@ -147,7 +147,7 @@ public abstract class InterpreterThread extends Thread {
     /**
      * Process an exception during execution.
      *
-     * @param ex
+     * @param ex the exception.
      */
     protected final void processException(Exception ex) {
         listeners.fire().error(ex);
@@ -158,7 +158,7 @@ public abstract class InterpreterThread extends Thread {
     /**
      * Allow derived classes to change/enhance this.
      *
-     * @param ex
+     * @param ex the exception.
      */
     protected void processExceptionHelper(Exception ex) {
         try {
@@ -174,7 +174,7 @@ public abstract class InterpreterThread extends Thread {
     /**
      * Start the processing of the script.
      *
-     * @param entryPoint
+     * @param entryPoint the entry point to start at.
      */
     protected abstract void process(CodeBlock entryPoint);
 

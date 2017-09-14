@@ -32,7 +32,7 @@ public final class MainMac {
     /**
      * Handle file activation via macOS open-file.
      *
-     * @param controller
+     * @param controller the controller to use.
      */
     public static void handleFileActivation(Controller controller) {
         //First, check for if we are on OS X so that it doesn't execute on

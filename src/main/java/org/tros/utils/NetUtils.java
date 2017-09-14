@@ -12,6 +12,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
+import org.tros.utils.logging.Logging;
 
 /**
  * Provides to net level functionality.
@@ -30,21 +32,22 @@ public final class NetUtils {
         try {
             ip = getIP();
         } catch (SocketException ex) {
-            org.tros.utils.logging.Logging.getLogFactory().getLogger(NetUtils.class).warn(null, ex);
+            Logging.getLogFactory().getLogger(NetUtils.class).warn(null, ex);
         }
     }
 
     /**
      * Hidden Constructor.
      */
+    @CoverageIgnore
     private NetUtils() {
     }
 
     /**
      * Get an IP.
      *
-     * @return
-     * @throws SocketException
+     * @return the first IP address available.
+     * @throws SocketException on network error.
      */
     public static InetAddress getIP() throws SocketException {
         if (ip != null) {
@@ -61,19 +64,19 @@ public final class NetUtils {
                     if (ia.getAddress().getAddress().length == 4) {
                         //4 for ipv4, 16 for ipv6
                         ip = ia.getAddress();
-                        return ip;
+                        break;
                     }
                 }
             }
         }
-        return null;
+        return ip;
     }
 
     /**
      * Get all IPs.
      *
-     * @return
-     * @throws SocketException
+     * @return all IP addresses available.
+     * @throws SocketException on network error.
      */
     public static InetAddress[] getIPs() throws SocketException {
         if (ips != null) {
@@ -82,7 +85,7 @@ public final class NetUtils {
 
         Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
         NetworkInterface ni;
-        ArrayList<InetAddress> ret = new ArrayList<>();
+        List<InetAddress> ret = new ArrayList<>();
         while (nis.hasMoreElements()) {
             ni = nis.nextElement();
             if (!ni.isLoopback()/*not loopback*/ && ni.isUp()/*it works now*/) {

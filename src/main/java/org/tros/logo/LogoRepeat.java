@@ -43,7 +43,7 @@ class LogoRepeat extends LogoBlock {
     /**
      * Constructor.
      *
-     * @param ctx
+     * @param ctx the parser context from antlr.
      */
     protected LogoRepeat(ParserRuleContext ctx) {
         super(ctx);
@@ -52,8 +52,8 @@ class LogoRepeat extends LogoBlock {
     /**
      * Process the repeat.
      *
-     * @param scope
-     * @return
+     * @param scope the current scope of the program.
+     * @return success if all repeated blocks are successful.
      */
     @Override
     public ReturnValue process(Scope scope) {

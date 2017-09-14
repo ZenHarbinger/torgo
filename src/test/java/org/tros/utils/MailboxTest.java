@@ -15,7 +15,7 @@
  */
 package org.tros.utils;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.TorgoToolkit;
 import org.tros.utils.logging.Logging;
 
 /**
@@ -38,7 +38,7 @@ public class MailboxTest {
     private final static Logger LOGGER;
 
     static {
-        Logging.initLogging(TorgoInfo.INSTANCE);
+        Logging.initLogging(TorgoToolkit.getBuildInfo());
         LOGGER = Logger.getLogger(MailboxTest.class.getName());
     }
 
@@ -138,7 +138,7 @@ public class MailboxTest {
         }
         assertEquals(size, ints.size());
 
-        ArrayList<Integer> messages = ints.getMessages();
+        Collection<Integer> messages = ints.getMessages();
         assertEquals(size, messages.size());
 
         ints.halt();
@@ -157,7 +157,7 @@ public class MailboxTest {
         }
         assertEquals(size, ints.size());
 
-        ArrayList<Integer> messages = ints.getMessages();
+        Collection<Integer> messages = ints.getMessages();
         assertEquals(size, messages.size());
 
         ints.halt();
@@ -280,7 +280,7 @@ public class MailboxTest {
 
         final Mailbox<Integer> ints2 = new Mailbox<>();
         read = new Thread(() -> {
-            ArrayList<Integer> messages = ints2.getMessages();
+            Collection<Integer> messages = ints2.getMessages();
             assertNull(messages);
         });
         read.start();
@@ -320,7 +320,7 @@ public class MailboxTest {
         AtomicBoolean wa2 = new AtomicBoolean(false);
         Mailbox<Integer> ints2 = new Mailbox<>();
         Thread read2 = new Thread(() -> {
-            ArrayList<Integer> messages = ints2.getMessages();
+            Collection<Integer> messages = ints2.getMessages();
             assertNull(messages);
             wa2.set(true);
         });

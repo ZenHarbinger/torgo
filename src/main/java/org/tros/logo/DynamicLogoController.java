@@ -35,7 +35,7 @@ public final class DynamicLogoController extends LogoController {
     /**
      * Get the supported language.
      *
-     * @return
+     * @return the name of the supported language.
      */
     @Override
     public String getLang() {

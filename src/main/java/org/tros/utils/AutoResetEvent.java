@@ -20,7 +20,7 @@ public class AutoResetEvent {
     /**
      * Constructor.
      *
-     * @param open
+     * @param open default value for the reset event.
      */
     public AutoResetEvent(boolean open) {
         isOpen = open;
@@ -29,7 +29,7 @@ public class AutoResetEvent {
     /**
      * Wait until signaled.
      *
-     * @throws InterruptedException
+     * @throws InterruptedException if halted during wait.
      */
     public void waitOne() throws InterruptedException {
         synchronized (monitor) {
@@ -43,9 +43,9 @@ public class AutoResetEvent {
     /**
      * Wait until signaled.
      *
-     * @param timeout
-     * @return
-     * @throws InterruptedException
+     * @param timeout time to wait.
+     * @return true if active.
+     * @throws InterruptedException if halted during wait.
      */
     public boolean waitOne(long timeout) throws InterruptedException {
         boolean ret = true;

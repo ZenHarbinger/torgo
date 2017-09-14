@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
-import org.tros.torgo.TorgoInfo;
+import org.tros.torgo.TorgoToolkit;
 
 /**
  *
@@ -35,7 +35,7 @@ public abstract class PropertiesInitializer {
 
             String dir = null;
             if (!BuildInfo.class.isAssignableFrom(this.getClass())) {
-                dir = PathUtils.getApplicationConfigDirectory(TorgoInfo.INSTANCE);
+                dir = PathUtils.getApplicationConfigDirectory(TorgoToolkit.getBuildInfo());
             }
 
             this.initializeFromProperties();
@@ -46,7 +46,7 @@ public abstract class PropertiesInitializer {
     /**
      * Initialize from properties file if possible.
      *
-     * @param dir
+     * @param dir the directory to search for properties files.
      */
     private void initializeFromProperties(String dir) {
         if (dir == null) {
@@ -153,9 +153,9 @@ public abstract class PropertiesInitializer {
     /**
      * Set values.
      *
-     * @param p
-     * @param value
-     * @return
+     * @param p the property descriptor.
+     * @param value the value.
+     * @return true if set, false otherwise.
      */
     protected boolean setValueHelper(PropertyDescriptor p, String value) {
         return false;
@@ -164,8 +164,8 @@ public abstract class PropertiesInitializer {
     /**
      * Set name value.
      *
-     * @param name
-     * @param value
+     * @param name the name.
+     * @param value the value.
      */
     protected void setNameValuePair(String name, String value) {
     }

@@ -35,22 +35,22 @@ public interface InterpreterListener {
     /**
      * Signal that there was an error with the interpreter.
      *
-     * @param e
+     * @param e the error to handle.
      */
     void error(Exception e);
 
     /**
      * Signal a message from the interpreter. This could be a print statement.
      *
-     * @param msg
+     * @param msg the message to print.
      */
     void message(String msg);
 
     /**
      * The current block of code executing with the current state.
      *
-     * @param block
-     * @param scope
+     * @param block the block being processed.
+     * @param scope the current scope of the program.
      */
     void currStatement(CodeBlock block, Scope scope);
 }

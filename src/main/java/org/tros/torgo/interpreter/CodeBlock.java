@@ -29,28 +29,28 @@ public interface CodeBlock extends InterpreterType, HaltListener {
     /**
      * Add a command to the list.
      *
-     * @param command
+     * @param command the command to add.
      */
     void addCommand(CodeBlock command);
 
     /**
      * Add a collection of commands to the list.
      *
-     * @param commands
+     * @param commands the commands to add.
      */
     void addCommand(Collection<CodeBlock> commands);
 
     /**
      * Add an interpreter listener.
      *
-     * @param listener
+     * @param listener the listener to add.
      */
     void addInterpreterListener(InterpreterListener listener);
 
     /**
      * Get the commands to interpret.
      *
-     * @return
+     * @return the commands in the current block.
      */
     CodeBlock[] getCommands();
 
@@ -65,7 +65,7 @@ public interface CodeBlock extends InterpreterType, HaltListener {
     /**
      * Process the statement(s).
      *
-     * @param scope
+     * @param scope the current scope of the program.
      * @return true if we should continue, false otherwise
      */
     ReturnValue process(Scope scope);
@@ -73,75 +73,75 @@ public interface CodeBlock extends InterpreterType, HaltListener {
     /**
      * Add listener to this object.
      *
-     * @param listener
+     * @param listener the listener to add.
      */
     void removeInterpreterListener(InterpreterListener listener);
 
     /**
      * Check to see if this code block defines a function.
      *
-     * @param name
-     * @return
+     * @param name the name of the function.
+     * @return if the function is contained in the current block.
      */
     boolean hasFunction(String name);
 
     /**
      * Get a function if it is defined.
      *
-     * @param name
-     * @return
+     * @param name the name of the function.
+     * @return the function representation to interpret.
      */
     CodeFunction getFunction(String name);
 
     /**
      * Add a function to this code block.
      *
-     * @param function
+     * @param function the function to add.
      */
     void addFunction(CodeFunction function);
 
     /**
      * Get the local context of this ANTLR generated parse tree stub.
      *
-     * @return
+     * @return the parser context from antlr.
      */
     ParserRuleContext getParserRuleContext();
 
     /**
      * Check to see if there is a variable in the block.
      *
-     * @param name
-     * @return
+     * @param name the name of the variable.
+     * @return true if the block has the variable.
      */
     boolean hasVariable(String name);
 
     /**
      * Set the value of the variable in the block.
      *
-     * @param name
-     * @param value
+     * @param name the name of the variable.
+     * @param value the value of the variable.
      */
     void setVariable(String name, InterpreterValue value);
 
     /**
      * Get the value of a variable in the block.
      *
-     * @param name
-     * @return
+     * @param name the name of the variable.
+     * @return the value of the variable.
      */
     InterpreterValue getVariable(String name);
 
     /**
      * Get the names of local variables.
      *
-     * @return
+     * @return the collection of variables contained by the current block.
      */
     Collection<String> localVariables();
 
     /**
      * Get the lexical parent.
      *
-     * @return
+     * @return the lexical parent block.
      */
     CodeBlock getParent();
 }

@@ -25,25 +25,25 @@ public interface ScopeListener {
     /**
      * Scope was popped.
      *
-     * @param scope
-     * @param block
+     * @param scope the current scope of the program.
+     * @param block the block popped.
      */
     void scopePopped(Scope scope, CodeBlock block);
 
     /**
      * Scope was pushed.
      *
-     * @param scope
-     * @param block
+     * @param scope the current scope of the program.
+     * @param block the block pushed.
      */
     void scopePushed(Scope scope, CodeBlock block);
 
     /**
      * Variable was set.
      *
-     * @param scope
-     * @param name
-     * @param value
+     * @param scope the current scope of the program.
+     * @param name the name of the variable.
+     * @param value the value of the variable.
      */
     void variableSet(Scope scope, String name, InterpreterValue value);
 }

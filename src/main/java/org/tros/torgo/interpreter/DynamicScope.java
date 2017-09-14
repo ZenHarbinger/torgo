@@ -40,7 +40,7 @@ public class DynamicScope extends ScopeImpl implements Scope {
     /**
      * Push a new level onto the scope.
      *
-     * @param block
+     * @param block the block to push.
      */
     @Override
     public void push(CodeBlock block) {
@@ -51,6 +51,8 @@ public class DynamicScope extends ScopeImpl implements Scope {
 
     /**
      * Pop back to the previous scope level.
+     *
+     * @return the popped block.
      */
     @Override
     public CodeBlock pop() {
@@ -64,8 +66,8 @@ public class DynamicScope extends ScopeImpl implements Scope {
     /**
      * Get the value of a variable at the current scoping level.
      *
-     * @param name
-     * @return
+     * @param name the value to get.
+     * @return the value.
      */
     @Override
     public InterpreterValue get(String name) {
@@ -87,8 +89,8 @@ public class DynamicScope extends ScopeImpl implements Scope {
     /**
      * Set the value of a variable at a current scoping level.
      *
-     * @param name
-     * @param value
+     * @param name the name to set.
+     * @param value the value to set.
      */
     @Override
     public void set(String name, InterpreterValue value) {
@@ -110,8 +112,8 @@ public class DynamicScope extends ScopeImpl implements Scope {
      * Defines a new variable at the top level of the scope. Once the current
      * level of the scope is popped off, it will no longer be available.
      *
-     * @param name
-     * @param value
+     * @param name the name to set.
+     * @param value the value to set.
      */
     @Override
     public void setNew(String name, InterpreterValue value) {
@@ -122,8 +124,8 @@ public class DynamicScope extends ScopeImpl implements Scope {
     /**
      * Get a function in the scope.
      *
-     * @param name
-     * @return
+     * @param name the name of the function.
+     * @return the function.
      */
     @Override
     public CodeFunction getFunction(String name) {
@@ -138,7 +140,7 @@ public class DynamicScope extends ScopeImpl implements Scope {
     /**
      * Get the names of variables.
      *
-     * @return
+     * @return a collection of all variables.
      */
     @Override
     public Collection<String> variables() {
@@ -152,8 +154,8 @@ public class DynamicScope extends ScopeImpl implements Scope {
     /**
      * Get the names of variables.
      *
-     * @param value
-     * @return
+     * @param value the depth of the stack to check.
+     * @return a map of all variables at that depth.
      */
     @Override
     public Map<String, InterpreterValue> variablesPeek(int value) {

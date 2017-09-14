@@ -6,13 +6,16 @@
  */
 package org.tros.utils;
 
+import java.io.File;
+
 /**
  *
  * @author matta
  */
 public final class PathUtils {
 
-    protected PathUtils() {
+    @CoverageIgnore
+    private PathUtils() {
     }
 
     /**
@@ -30,8 +33,10 @@ public final class PathUtils {
     /**
      * Get the specified property directory.
      *
-     * @param prop
-     * @return
+     * If the directory us not writable, the temp directory is returned.
+     *
+     * @param prop the property to get a directory for.
+     * @return a directory path for the specified property.
      */
     public static String getDir(String prop) {
         String dir = System.getProperty(prop);
@@ -48,7 +53,7 @@ public final class PathUtils {
     /**
      * Get the temp dir.
      *
-     * @return
+     * @return the temp dir.
      */
     public static String getTempDir() {
         String dir = System.getProperty("torgo.temp");
@@ -56,6 +61,30 @@ public final class PathUtils {
             dir = System.getProperty("java.io.tmpdir");
         }
         return dir;
+    }
+
+    /**
+     * Get the temp dir.
+     *
+     * @param bi Application description.
+     * @return the path to the temp dir.
+     */
+    public static String getTempDir(BuildInfo bi) {
+        String home = System.getProperty("torgo.temp");
+        String ret;
+        if (home == null) {
+            home = getApplicationDirectory(bi);
+            String sep = File.separator;
+            //this should come out to something like: /home/matta/.ArtisTech/AlgoLink
+            ret = String.format("%s%stmp", home, sep);
+        } else {
+            ret = home;
+        }
+        java.io.File dir = new java.io.File(ret);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return ret;
     }
 
     /**
@@ -71,7 +100,7 @@ public final class PathUtils {
         String ret;
         if (home == null) {
             home = getHomeDir();
-            String sep = System.getProperty("file.separator");
+            String sep = File.separator;
             //this should come out to something like: /home/matta/.ArtisTech/AlgoLink
             ret = String.format("%s%s.%s%s%s", home, sep, bi.getCompany(), sep, bi.getApplicationName());
         } else {
@@ -87,15 +116,16 @@ public final class PathUtils {
     /**
      * Get the etc dir.
      *
-     * @param bi
-     * @return
+     * @param bi Application description.
+     * @return A string value for a path that can be read containing config
+     * files.
      */
     public static String getApplicationEtcDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.etc");
         String ret;
         if (home == null) {
             home = getHomeDir();
-            String sep = System.getProperty("file.separator");
+            String sep = File.separator;
             //this should come out to something like: /home/matta/.ArtisTech/AlgoLink
             ret = String.format("%s%s.%s%s%s", home, sep, bi.getCompany(), sep, bi.getApplicationName());
         } else {
@@ -110,15 +140,17 @@ public final class PathUtils {
 
     /**
      * Get the lib dir.
-     * @param bi
-     * @return
+     *
+     * @param bi Application description.
+     * @return A string value for a path that can be read containing plugin jar
+     * files.
      */
     public static String getApplicationLibDirectory(BuildInfo bi) {
         String home = System.getProperty("torgo.lib");
         String ret;
         if (home == null) {
             home = getApplicationEtcDirectory(bi);
-            String sep = System.getProperty("file.separator");
+            String sep = File.separator;
             //this should come out to something like: /home/matta/.ArtisTech/AlgoLink
             ret = String.format("%s%slib", home, sep);
         } else {
@@ -143,7 +175,7 @@ public final class PathUtils {
         String ret;
         if (home == null) {
             home = getApplicationEtcDirectory(bi);
-            String sep = System.getProperty("file.separator");
+            String sep = File.separator;
             //this should come out to something like: /home/matta/.ArtisTech/AlgoLink
             ret = String.format("%s%sconf", home, sep);
         } else {
@@ -168,7 +200,7 @@ public final class PathUtils {
         String ret;
         if (home == null) {
             home = getApplicationDirectory(bi);
-            String sep = System.getProperty("file.separator");
+            String sep = File.separator;
             //this should come out to something like: /home/matta/.ArtisTech/AlgoLink
             ret = String.format("%s%slog", home, sep);
         } else {

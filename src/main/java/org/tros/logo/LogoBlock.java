@@ -18,6 +18,7 @@ package org.tros.logo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.apache.commons.lang3.event.EventListenerSupport;
@@ -52,7 +53,7 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Constructor.
      *
-     * @param ctx
+     * @param ctx the parser context from antlr.
      */
     protected LogoBlock(ParserRuleContext ctx) {
         this.ctx = ctx;
@@ -71,7 +72,7 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Add a command to the list.
      *
-     * @param command
+     * @param command the command to add to the list.
      */
     @Override
     public final void addCommand(CodeBlock command) {
@@ -83,7 +84,7 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Add a collection of commands to the list.
      *
-     * @param commands
+     * @param commands the commands to add to the list.
      */
     @Override
     public final void addCommand(Collection<CodeBlock> commands) {
@@ -93,7 +94,7 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Get the commands to interpret.
      *
-     * @return
+     * @return the commands at the current block.
      */
     @Override
     public final CodeBlock[] getCommands() {
@@ -114,7 +115,7 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Process the statement(s).
      *
-     * @param scope
+     * @param scope the current scope of the program.
      * @return true if we should continue, false otherwise
      */
     @Override
@@ -137,9 +138,9 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Look for a function with the specified name.
      *
-     * @param name
-     * @param scope
-     * @return
+     * @param name the name of the function.
+     * @param scope the current scope of the program.
+     * @return a function from the scope.
      */
     public CodeFunction getFunction(String name, Scope scope) {
         return scope.getFunction(name);
@@ -148,8 +149,8 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Look for a function with the specified name.
      *
-     * @param name
-     * @return
+     * @param name the name of the function.
+     * @return a function from the block.
      */
     @Override
     public CodeFunction getFunction(String name) {
@@ -159,20 +160,19 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Look for a function with the specified name.
      *
-     * @param name
-     * @return
+     * @param name the name of the function.
+     * @return if the block has the function.
      */
     @Override
     public boolean hasFunction(String name) {
         return functions.containsKey(name);
     }
 
-
     /**
      * Add a function to the current object. This allows for local declaration
      * of functions.
      *
-     * @param function
+     * @param function the function to add.
      */
     @Override
     public void addFunction(CodeFunction function) {
@@ -182,7 +182,7 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Called when the halt monitor is halted.
      *
-     * @param monitor
+     * @param monitor the monitor to check for a halted status.
      */
     @Override
     public void halted(ImmutableHaltMonitor monitor) {
@@ -197,8 +197,8 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Check for a variable in the block.
      *
-     * @param name
-     * @return
+     * @param name the name of a variable to check for.
+     * @return if the block has the variable.
      */
     @Override
     public boolean hasVariable(String name) {
@@ -208,8 +208,8 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Set a variable in the block.
      *
-     * @param name
-     * @param value
+     * @param name the name of the variable.
+     * @param value the value of the variable
      */
     @Override
     public void setVariable(String name, InterpreterValue value) {
@@ -219,8 +219,8 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Get the value of a variable in the block.
      *
-     * @param name
-     * @return
+     * @param name the name of the variable.
+     * @return the value of the variable.
      */
     @Override
     public InterpreterValue getVariable(String name) {
@@ -236,7 +236,7 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Get the lexical parent.
      *
-     * @return
+     * @return the lexical parent block.
      */
     @Override
     public CodeBlock getParent() {
@@ -246,7 +246,7 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Set the lexical parent.
      *
-     * @param value
+     * @param value the lexical parent block.
      */
     protected void setParent(CodeBlock value) {
         this.parent = value;
@@ -255,7 +255,7 @@ abstract class LogoBlock implements CodeBlock {
     /**
      * Get the names of local variables.
      *
-     * @return
+     * @return a collection of variable names.
      */
     @Override
     public Collection<String> localVariables() {
@@ -265,7 +265,12 @@ abstract class LogoBlock implements CodeBlock {
         return variables.get(0).keySet();
     }
 
-    public ArrayList<CodeBlock> getCommandsList() {
+    /**
+     * Get the list of commands.
+     *
+     * @return the list of commands.
+     */
+    public List<CodeBlock> getCommandsList() {
         return commands;
     }
 }

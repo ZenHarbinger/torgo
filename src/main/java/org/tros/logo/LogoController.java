@@ -96,8 +96,8 @@ public abstract class LogoController extends ControllerBase {
     /**
      * Get an interpreter thread.
      *
-     * @param source
-     * @return
+     * @param source the string representation of the program to interpret.
+     * @return a thread ready to interpret the source.
      */
     @Override
     protected InterpreterThread createInterpreterThread(String source) {

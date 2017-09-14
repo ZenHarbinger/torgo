@@ -59,7 +59,7 @@ public class UpdateChecker {
                 Document doc = org.jsoup.Jsoup.connect(UPDATE_ADDRESS).get();
                 Elements elementsByTag = doc.getElementsByTag(TAG);
                 updateVersion = elementsByTag.text();
-                String version = TorgoInfo.INSTANCE.getVersion();
+                String version = TorgoToolkit.getBuildInfo().getVersion();
                 if (!version.contains(SNAPSHOT)) {
                     ret = !updateVersion.contains(version);
                 }
