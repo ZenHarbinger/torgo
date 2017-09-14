@@ -48,6 +48,7 @@ public abstract class PropertiesInitializer {
      *
      * @param dir the directory to search for properties files.
      */
+    @CoverageIgnore
     private void initializeFromProperties(String dir) {
         if (dir == null) {
             return;
