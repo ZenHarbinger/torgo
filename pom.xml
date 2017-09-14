@@ -423,14 +423,21 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>2.7</version>
                 <configuration>
-                    <formats>
-                        <format>html</format>
-                        <format>xml</format>
-                    </formats>
-                    <check/>
-                    <ignoreMethodAnnotations>
-                        <ignoreMethodAnnotation>org.tros.utils.CoverageIgnore</ignoreMethodAnnotation>
-                    </ignoreMethodAnnotations>                    
+                    <instrumentation>
+                        <excludes>
+                            <!--
+                            <exclude>org/tros/utils/PropertiesInitializer.class</exclude>
+                            <exclude>org/tros/utils/ImageUtils*.class</exclude>
+                            <exclude>org/tros/utils/ReflectionsFactory.class</exclude>
+                            <exclude>org/tros/utils/logging/SwingComponentHandler*.class</exclude>
+                            <exclude>org/tros/utils/logging/Logging.class</exclude>
+                            <exclude>org/tros/utils/logging/LogConsoleFormatter.class</exclude>
+                            -->
+                        </excludes>
+                        <ignoreMethodAnnotations>
+                            <ignoreMethodAnnotation>org.tros.utils.CoverageIgnore</ignoreMethodAnnotation>
+                        </ignoreMethodAnnotations>                    
+                    </instrumentation>                 
                 </configuration>
             </plugin>
         </plugins>
