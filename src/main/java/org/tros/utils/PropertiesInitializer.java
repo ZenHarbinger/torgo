@@ -158,6 +158,7 @@ public abstract class PropertiesInitializer {
      * @param value the value.
      * @return true if set, false otherwise.
      */
+    @CoverageIgnore
     protected boolean setValueHelper(PropertyDescriptor p, String value) {
         return false;
     }
