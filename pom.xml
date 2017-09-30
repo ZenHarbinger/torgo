@@ -517,9 +517,9 @@
             <version>1.9.1</version>
         </dependency>
         <dependency>
-            <groupId>org.dockingframes</groupId>
+            <groupId>org.tros</groupId>
             <artifactId>docking-frames-common</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2-P19c</version>
         </dependency>
         <dependency>
             <groupId>com.yuvimasory</groupId>
@@ -551,6 +551,6 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <INSTALL_BUILDER_HOME>/opt/installbuilder-16.11.1</INSTALL_BUILDER_HOME>
         <LAUNCH4J_HOME>/opt/launch4j</LAUNCH4J_HOME>
-        <skipTests>false</skipTests>
+        <skipTests>true</skipTests>
     </properties>
 </project>

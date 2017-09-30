@@ -16,7 +16,6 @@
 package org.tros.torgo.swing;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -60,7 +59,7 @@ public abstract class ZoomableComponent {
         };
 
         component.addMouseWheelListener((MouseWheelEvent mwe) -> {
-            if ((mwe.getModifiers() & KeyEvent.CTRL_MASK) == KeyEvent.CTRL_MASK) {
+            if (mwe.isControlDown()) {
                 if (mwe.getPreciseWheelRotation() < 0) {
                     increase.run();
                 } else {
@@ -80,9 +79,9 @@ public abstract class ZoomableComponent {
         jmi3.addActionListener((ActionEvent ae) -> {
             reset.run();
         });
-        jmi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, InputEvent.CTRL_MASK));
-        jmi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, InputEvent.CTRL_MASK));
-        jmi3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, InputEvent.CTRL_MASK));
+        jmi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, ActionEvent.CTRL_MASK));
+        jmi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionEvent.CTRL_MASK));
+        jmi3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, ActionEvent.CTRL_MASK));
         final AtomicBoolean added = new AtomicBoolean(false);
         final Runnable r = () -> {
 

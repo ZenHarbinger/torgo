@@ -9,6 +9,7 @@ package org.tros.utils.logging;
 import java.awt.Color;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -236,8 +237,8 @@ public final class SwingComponentHandler extends Handler {
         if (formatter != null) {
             try {
                 test = false;
-                fmmt = (Formatter) Class.forName(formatter).newInstance();
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                fmmt = (Formatter) Class.forName(formatter).getConstructor().newInstance();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -258,8 +259,8 @@ public final class SwingComponentHandler extends Handler {
         if (filter != null) {
             try {
                 test = false;
-                filt = (Filter) Class.forName(filter).newInstance();
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                filt = (Filter) Class.forName(filter).getConstructor().newInstance();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(SwingComponentHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -75,8 +74,8 @@ import org.tros.torgo.TorgoToolkit;
  * A JFC/Swing based console for the BeanShell desktop. This is a descendant of
  * the old AWTConsole.
  *
- * Improvements by: Mark Donszelmann &lt;Mark.Donszelmann@cern.ch&gt;
- * including Cut &amp; Paste
+ * Improvements by: Mark Donszelmann &lt;Mark.Donszelmann@cern.ch&gt; including
+ * Cut &amp; Paste
  *
  * Improvements by: Daniel Leuck including Color and Image support, key press
  * bug workaround
@@ -297,7 +296,7 @@ public class JConsole extends JScrollPane
                 break;
 
             case (KeyEvent.VK_U):	// clear line
-                if ((e.getModifiers() & InputEvent.CTRL_MASK) > 0) {
+                if (e.isControlDown()) {
                     replaceRange("", cmdStart, textLength());
                     histLine = 0;
                     e.consume();
@@ -333,8 +332,7 @@ public class JConsole extends JScrollPane
             // Control-C
             case (KeyEvent.VK_C):
                 if (text.getSelectedText() == null) {
-                    if (((e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                            && (e.getID() == KeyEvent.KEY_PRESSED)) {
+                    if (e.isControlDown() && (e.getID() == KeyEvent.KEY_PRESSED)) {
                         append("^C");
                     }
                     e.consume();
@@ -350,10 +348,7 @@ public class JConsole extends JScrollPane
                 break;
 
             default:
-                if ((e.getModifiers()
-                        & (InputEvent.CTRL_MASK
-                        | InputEvent.ALT_MASK
-                        | InputEvent.META_MASK)) == 0) {
+                if (e.isControlDown() || e.isAltDown() || e.isMetaDown()) {
                     // plain character
                     forceCaretMoveToEnd();
                 }
