@@ -43,3 +43,9 @@ _site
 Gemfile.lock
 
 .DS_Store
+.idea
+*.iml
+
+.classpath
+.project
+.settings/
